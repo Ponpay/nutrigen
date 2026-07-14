@@ -40,9 +40,10 @@ resources/
 ```
 
 ## 7. Status Frontend (Frontend Freeze)
-**Kondisi Saat Ini**: Frontend Portal Kader sudah selesai ±96% dan dalam status **FROZEN**. Segala bentuk struktur HTML, ID class Tailwind, dan arsitektur form sudah disiapkan untuk integrasi.
+**Kondisi Saat Ini**: Frontend **Portal Kader** dan **Portal Puskesmas** sudah selesai 100% dan dalam status **FROZEN**. Segala bentuk struktur HTML, komponen Blade, ID class Tailwind, dan arsitektur form sudah disiapkan untuk integrasi.
 
-## 8. Halaman yang Sudah Selesai (Portal Kader)
+## 8. Halaman yang Sudah Selesai
+**Portal Kader:**
 1. Dashboard (`kader/dashboard.blade.php`)
 2. Daftar Balita (`kader/daftar-balita.blade.php`)
 3. Tambah / Edit Balita (`kader/daftar-balita-baru.blade.php`)
@@ -53,11 +54,18 @@ resources/
 8. Laporan (`kader/laporan.blade.php`)
 9. Profil Kader (`kader/profil-kader.blade.php`)
 
+**Portal Puskesmas:**
+1. Dashboard (`puskesmas/dashboard.blade.php`)
+2. Antrean Validasi (`puskesmas/validasi.blade.php`)
+3. Data Balita (`puskesmas/balita.blade.php`)
+4. Posyandu & Kader (`puskesmas/posyandu.blade.php`)
+5. Laporan Evaluasi (`puskesmas/laporan.blade.php`)
+6. Pengaturan (`puskesmas/pengaturan.blade.php`)
+
 ## 9. Halaman yang Belum Selesai (Mockup Stage)
-Halaman berikut masih berupa kerangka/mockup dan akan dikembangkan setelah sistem inti kader selesai:
-- Portal Puskesmas (`puskesmas/dashboard`, `puskesmas/validasi`)
+Halaman berikut masih berupa kerangka/mockup dan akan dikembangkan selanjutnya:
 - Portal Ibu (`ibu/dashboard`, `ibu/pertumbuhan`)
-- Integrasi Chart.js (Grafik Pertumbuhan)
+- Integrasi Chart.js (Grafik Pertumbuhan KMS Digital)
 - Halaman Login (Autentikasi)
 
 ## 10. Catatan Frontend Freeze

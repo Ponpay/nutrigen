@@ -1,6 +1,6 @@
-# Frontend-Backend Contract (Portal Kader)
+# Frontend-Backend Contract
 
-Dokumen ini memetakan halaman frontend (Blade) yang telah di-*freeze* dengan spesifikasi Backend (Controller, Route, dan Variabel) yang wajib diimplementasikan.
+Dokumen ini memetakan halaman frontend (Blade) yang telah di-*freeze* dengan spesifikasi Backend (Controller, Route, dan Variabel) yang wajib diimplementasikan. Mencakup **Portal Kader** dan **Portal Puskesmas**.
 
 ---
 
@@ -122,3 +122,59 @@ Dokumen ini memetakan halaman frontend (Blade) yang telah di-*freeze* dengan spe
 - **Data yang harus dikirim (to Blade)**:
   - `$kaderName`, `$role`, `$email`, `$phone`, `$status`, `$avatarUrl`, `$posyanduName`, `$desa`, `$puskesmas`, `$kecamatan`.
 - **Logout Action**: Menggunakan `POST` ke `route('logout')`. (Hapus route placeholder GET logout di `web.php`).
+
+---
+
+## BAGIAN II: PORTAL PUSKESMAS (FRONTEND FREEZE)
+
+### 11. Dashboard Puskesmas
+- **Route Name**: `puskesmas.dashboard`
+- **URI**: `GET /puskesmas`
+- **Controller**: `PuskesmasDashboardController@index`
+- **Blade File**: `puskesmas.dashboard`
+- **Data yang harus dikirim (to Blade)**:
+  - `$stats`, `$posyandus`
+
+### 12. Antrean Validasi
+- **Route Name**: `puskesmas.validasi`
+- **URI**: `GET /puskesmas/validasi`
+- **Controller**: `PuskesmasValidasiController@index`
+- **Blade File**: `puskesmas.validasi`
+- **Data yang harus dikirim (to Blade)**:
+  - `$children` (Eager load `posyandu`, `orang_tua`, `pengukurans` limit terakhir beserta z-scorenya).
+  - `$filters` (tab, posyandu_id).
+- **Submit Action (Process Validasi)**: `POST` ke `route('puskesmas.validasi.process', $id)` (Action Approve/Reject).
+
+### 13. Data Balita (Direktori)
+- **Route Name**: `puskesmas.balita`
+- **URI**: `GET /puskesmas/balita`
+- **Controller**: `PuskesmasBalitaController@index`
+- **Blade File**: `puskesmas.balita`
+- **Data yang harus dikirim (to Blade)**:
+  - `$children`, `$filters`
+
+### 14. Posyandu & Kader
+- **Route Name**: `puskesmas.posyandu`
+- **URI**: `GET /puskesmas/posyandu`
+- **Controller**: `PuskesmasPosyanduController@index`
+- **Blade File**: `puskesmas.posyandu`
+- **Data yang harus dikirim (to Blade)**:
+  - `$posyandus` (Collection list sidebar).
+  - `$selectedPosyandu` (Detail posyandu di panel utama, eager load `kaders`).
+  - `$filters`
+
+### 15. Laporan Evaluasi
+- **Route Name**: `puskesmas.laporan`
+- **URI**: `GET /puskesmas/laporan`
+- **Controller**: `PuskesmasLaporanController@index`
+- **Blade File**: `puskesmas.laporan`
+- **Data yang harus dikirim (to Blade)**:
+  - `$stats`, `$reports` (agregat per posyandu), `$distribution`, `$trends`, `$filters`.
+
+### 16. Pengaturan
+- **Route Name**: `puskesmas.pengaturan`
+- **URI**: `GET /puskesmas/pengaturan`
+- **Controller**: `PuskesmasPengaturanController@index`
+- **Blade File**: `puskesmas.pengaturan`
+- **Data yang harus dikirim (to Blade)**:
+  - `$puskesmas`, `$user`

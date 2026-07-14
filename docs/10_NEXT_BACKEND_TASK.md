@@ -47,4 +47,4 @@ Silakan kerjakan secara berurutan (*step-by-step*).
 
 ---
 **Catatan untuk Bintang:**
-Mulailah dari FASE 1 & FASE 2. Frontend untuk Portal Kader sudah *Freeze* dan 100% siap di-wiring menggunakan dokumen `06_FRONTEND_BACKEND_CONTRACT.md`. Selamat bekerja!
+Mulailah dari FASE 1 & FASE 2. Frontend untuk **Portal Kader** dan **Portal Puskesmas** sudah **Freeze** dan 100% siap di-wiring menggunakan dokumen `06_FRONTEND_BACKEND_CONTRACT.md`. Selamat bekerja!

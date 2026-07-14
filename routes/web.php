@@ -62,3 +62,21 @@ Route::view('/profil-kader', 'kader.profil-kader')->name('kader.profil');
 Route::get('/logout', function () {
     return redirect()->route('dashboard');
 })->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes — NutriGen Puskesmas Module (Preview)
+|--------------------------------------------------------------------------
+| Temporary routes for UI/UX preview and layout testing.
+| To be replaced by controllers in the backend phase.
+*/
+Route::prefix('puskesmas')->name('puskesmas.')->group(function () {
+    Route::view('/dashboard', 'puskesmas.dashboard')->name('dashboard');
+    Route::view('/validasi', 'puskesmas.validasi')->name('validasi');
+    
+    // Future views for next steps (using dashboard temporarily to avoid 404s if clicked)
+    Route::view('/balita', 'puskesmas.balita')->name('balita');
+    Route::view('/posyandu', 'puskesmas.posyandu')->name('posyandu');
+    Route::view('/laporan', 'puskesmas.laporan')->name('laporan');
+    Route::view('/pengaturan', 'puskesmas.pengaturan')->name('pengaturan');
+});

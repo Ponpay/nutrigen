@@ -20,6 +20,9 @@ class Pengukuran extends Model
         'tanggal_ukur' => 'date',
         'berat_badan' => 'float',
         'tinggi_badan' => 'float',
+        'z_score_bb_u' => 'float',
+        'z_score_tb_u' => 'float',
+        'z_score_bb_tb' => 'float',
     ];
 
     /**
@@ -28,6 +31,14 @@ class Pengukuran extends Model
     public function balita(): BelongsTo
     {
         return $this->belongsTo(Balita::class);
+    }
+
+    /**
+     * Get the Jadwal associated with the Pengukuran.
+     */
+    public function jadwal(): BelongsTo
+    {
+        return $this->belongsTo(Jadwal::class);
     }
 
     /**

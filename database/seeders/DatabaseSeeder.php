@@ -128,11 +128,15 @@ class DatabaseSeeder extends Seeder
 
                 $pengukuran = Pengukuran::factory()->create([
                     'balita_id' => $balita->id,
+                    'jadwal_id' => $jadwalHistoris->id,
                     'kader_id' => $kader1->id,
                     'posyandu_id' => $posyandu1->id,
                     'tanggal_ukur' => Carbon::now()->subMonths($month)->format('Y-m-d'),
                     'berat_badan' => $beratBadan,
                     'tinggi_badan' => $tinggiBadan,
+                    'z_score_bb_u' => 0.5,
+                    'z_score_tb_u' => 0.6,
+                    'z_score_bb_tb' => 0.4,
                 ]);
 
                 // All historical data is valid
@@ -148,11 +152,15 @@ class DatabaseSeeder extends Seeder
             // This satisfies the demo requirement: Kader input -> Pending -> Puskesmas validates
             $pengukuranBaru = Pengukuran::factory()->create([
                 'balita_id' => $balita->id,
+                'jadwal_id' => $jadwalAktif->id,
                 'kader_id' => $kader1->id,
                 'posyandu_id' => $posyandu1->id,
                 'tanggal_ukur' => Carbon::now()->format('Y-m-d'),
                 'berat_badan' => $beratAwal + (7 * 0.5),
                 'tinggi_badan' => $tinggiAwal + (7 * 1.2),
+                'z_score_bb_u' => 0.4,
+                'z_score_tb_u' => 0.5,
+                'z_score_bb_tb' => 0.3,
             ]);
 
             Validasi::factory()->create([

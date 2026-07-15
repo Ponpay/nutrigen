@@ -12,9 +12,9 @@ class ValidasiFactory extends Factory
     {
         return [
             'pengukuran_id' => Pengukuran::factory(),
-            'petugas_id' => PetugasPuskesmas::factory(),
-            'status_validasi' => $this->faker->randomElement(['pending', 'valid']),
-            'catatan' => $this->faker->sentence(),
+            'petugas_id' => null,
+            'status_validasi' => 'pending',
+            'catatan' => null,
         ];
     }
 }

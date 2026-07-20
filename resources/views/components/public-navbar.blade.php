@@ -3,7 +3,9 @@
 @endphp
 
 {{-- Navigation Wrapper --}}
-<div x-data="{ scrolled: false, mobileMenuOpen: false }" @scroll.window="scrolled = (window.pageYOffset > 20)">
+<div x-data="{ scrolled: false, mobileMenuOpen: false }" 
+     @scroll.window="scrolled = (window.scrollY > 20 || document.documentElement.scrollTop > 20)"
+     x-init="scrolled = (window.scrollY > 20 || document.documentElement.scrollTop > 20)">
     {{-- Navigation --}}
     <nav :class="{'nav-glass shadow-[0_4px_20px_rgba(0,0,0,0.02)]': scrolled, 'bg-transparent py-2': !scrolled}"
          class="fixed w-full z-50 transition-all duration-500">

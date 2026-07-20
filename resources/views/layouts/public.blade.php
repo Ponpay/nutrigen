@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth overflow-x-hidden">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,7 @@
 
     @stack('head')
 </head>
-<body class="antialiased bg-slate-50 text-slate-900 selection:bg-emerald-500 selection:text-white overflow-x-hidden">
+<body class="antialiased bg-slate-50 text-slate-900 selection:bg-emerald-500 selection:text-white">
 
     <x-public-navbar />
 

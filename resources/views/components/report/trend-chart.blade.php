@@ -1,5 +1,35 @@
 @props(['trends'])
 
+@php
+    $count = count($trends) > 0 ? count($trends) : 1;
+    $colWidth = 100 / $count;
+    
+    // Helpers
+    $getX = function($index) use ($colWidth) {
+        return ($index * $colWidth) + ($colWidth / 2);
+    };
+    
+    $getY = function($percent) {
+        return 100 - $percent;
+    };
+    
+    // Calculate SVG polyline points
+    $normalPoints = [];
+    $berisikoPoints = [];
+    
+    foreach($trends as $index => $t) {
+        $x = $getX($index);
+        $yNormal = $getY($t['pct_normal']);
+        $yBerisiko = $getY($t['pct_berisiko']);
+        
+        $normalPoints[] = "$x,$yNormal";
+        $berisikoPoints[] = "$x,$yBerisiko";
+    }
+    
+    $normalPoly = implode(' ', $normalPoints);
+    $berisikoPoly = implode(' ', $berisikoPoints);
+@endphp
+
 <div class="px-5 lg:px-6 mt-6 pb-10">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
         
@@ -44,19 +74,17 @@
             </div>
 
             <!-- Trend Lines (SVG) -->
-            <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <!-- Normal Line (Green) -->
-                <!-- Mock coordinates for the trend: points represent (x,y) percentages -->
-                <!-- E.g. Jan(0, 20), Feb(20, 18), Mar(40, 15), Apr(60, 10), May(80, 12), Jun(100, 5) - where 0 is top and 100 is bottom -->
                 <polyline 
-                    points="0,20 20,18 40,15 60,10 80,12 100,5" 
+                    points="{{ $normalPoly }}" 
                     fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
                     vector-effect="non-scaling-stroke"
                 />
                 
                 <!-- Berisiko Line (Red) -->
                 <polyline 
-                    points="0,80 20,82 40,85 60,90 80,88 100,95" 
+                    points="{{ $berisikoPoly }}" 
                     fill="none" stroke="#f43f5e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
                     vector-effect="non-scaling-stroke"
                 />
@@ -66,19 +94,23 @@
             <!-- We'll just place a few dots for aesthetics to simulate hover points -->
             <div class="absolute inset-0 flex justify-between items-stretch">
                 <!-- Data Point Columns -->
-                @foreach([20, 18, 15, 10, 12, 5] as $index => $normalY)
+                @foreach($trends as $index => $t)
+                    @php
+                        $yNormal = $getY($t['pct_normal']);
+                        $yBerisiko = $getY($t['pct_berisiko']);
+                    @endphp
                     <div class="flex-1 relative group cursor-pointer h-full border-x border-transparent hover:bg-slate-50/50 transition-colors">
                         <!-- Dot Normal -->
-                        <div class="absolute w-3 h-3 bg-white border-2 border-emerald-500 rounded-full top-[{{ $normalY }}%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 shadow-sm transition-transform group-hover:scale-150"></div>
+                        <div class="absolute w-3 h-3 bg-white border-2 border-emerald-500 rounded-full left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 shadow-sm transition-transform group-hover:scale-150" style="top: {{ $yNormal }}%;"></div>
                         
                         <!-- Dot Berisiko -->
-                        @php $berisikoY = 100 - $normalY; @endphp
-                        <div class="absolute w-3 h-3 bg-white border-2 border-rose-500 rounded-full top-[{{ $berisikoY }}%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 shadow-sm transition-transform group-hover:scale-150"></div>
+                        <div class="absolute w-3 h-3 bg-white border-2 border-rose-500 rounded-full left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 shadow-sm transition-transform group-hover:scale-150" style="top: {{ $yBerisiko }}%;"></div>
                         
                         <!-- Tooltip -->
                         <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none whitespace-nowrap">
-                            <span class="font-bold text-emerald-400">Normal: {{ 100 - $normalY }}%</span><br>
-                            <span class="font-bold text-rose-400">Berisiko: {{ $normalY }}%</span>
+                            <div class="mb-1 pb-1 border-b border-slate-600 text-center font-bold text-slate-300">{{ $t['bulan'] }}</div>
+                            <span class="font-bold text-emerald-400">Normal: {{ $t['pct_normal'] }}% ({{ $t['normal'] }})</span><br>
+                            <span class="font-bold text-rose-400">Berisiko: {{ $t['pct_berisiko'] }}% ({{ $t['berisiko'] }})</span>
                         </div>
                     </div>
                 @endforeach
@@ -87,6 +119,27 @@
         </div>
 
         <!-- Conclusion Insight -->
+        @php
+            $validTrends = array_filter($trends, fn($t) => $t['total'] > 0);
+            
+            if (count($validTrends) < 2) {
+                $insight = "Belum cukup data historis untuk analisis tren yang valid.";
+            } else {
+                $first = reset($validTrends)['pct_normal'];
+                $last = end($validTrends)['pct_normal'];
+                $diff = $last - $first;
+                
+                if ($diff == 0) {
+                    $insight = "Tren persentase balita berstatus normal stabil tanpa perubahan pada bulan-bulan yang memiliki data riil.";
+                } else {
+                    $isPositive = $diff > 0;
+                    $sign = $isPositive ? '+' : '';
+                    $colorClass = $isPositive ? 'text-emerald-600' : 'text-rose-600';
+                    $trendWord = $isPositive ? 'peningkatan' : 'penurunan';
+                    $insight = "Terjadi **{$trendWord} persentase balita normal** sebesar <span class=\"font-bold {$colorClass}\">{$sign}{$diff}%</span> dibandingkan bulan pertama yang tercatat pada wilayah sasaran.";
+                }
+            }
+        @endphp
         <div class="mt-12 bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-4 items-start">
             <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -96,7 +149,7 @@
             <div>
                 <h4 class="text-sm font-bold text-slate-800">Insight & Analisis</h4>
                 <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                    Terjadi **peningkatan balita berstatus normal** sebesar <span class="font-bold text-emerald-600">+15%</span> dalam 6 bulan terakhir, menandakan bahwa intervensi PMT (Pemberian Makanan Tambahan) di 3 Posyandu sasaran menunjukkan hasil yang positif.
+                    {!! $insight !!}
                 </p>
             </div>
         </div>

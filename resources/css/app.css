@@ -1,3 +1,94 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ============================================================
+ * Base Resets
+ * In @layer base: overrides browser defaults, lowest priority
+ * ============================================================ */
+@layer base {
+    body {
+        -webkit-tap-highlight-color: transparent;
+        overscroll-behavior-y: none;
+    }
+}
+
+/* ============================================================
+ * Public Layout — Shared Visual Utilities
+ *
+ * INTENTIONALLY non-layered (declared after @tailwind utilities).
+ * Non-layered CSS has higher cascade priority than @layer utilities,
+ * matching the behaviour of the original inline <style> blocks.
+ *
+ * DO NOT wrap in @layer components — doing so lowers their priority
+ * below Tailwind utilities, breaking glassmorphism and animations.
+ *
+ * Used by:
+ *   - resources/views/layouts/public.blade.php
+ *   - resources/views/components/public-navbar.blade.php
+ *   - resources/views/welcome.blade.php
+ *   - resources/views/team.blade.php
+ * ============================================================ */
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Navbar — glassmorphism effect (applied via Alpine :class on scroll) */
+.nav-glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.4);
+}
+
+/* Section backgrounds */
+.mesh-bg {
+    background-color: #f8fafc;
+    background-image:
+        radial-gradient(at 0% 0%, hsla(160, 100%, 94%, 0.6) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(210, 100%, 95%, 0.6) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, hsla(160, 100%, 94%, 0.6) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, hsla(210, 100%, 95%, 0.6) 0px, transparent 50%);
+}
+
+.dark-mesh {
+    background-color: #020617;
+    background-image:
+        radial-gradient(at 0% 0%, hsla(160, 100%, 15%, 0.5) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, hsla(210, 100%, 15%, 0.5) 0px, transparent 50%);
+}
+
+/* Text gradient (emerald-to-cyan) */
+.text-gradient {
+    background: linear-gradient(135deg, #059669 0%, #0284c7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Scroll-triggered reveal animation (driven by Alpine x-intersect) */
+.reveal-element {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-element.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================================
+ * Utility Helpers
+ * In @layer utilities: participates in Tailwind's utility layer
+ * ============================================================ */
+@layer utilities {
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}

@@ -1,6 +1,6 @@
 @props(['pengukurans'])
 
-<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+<div class="bg-white p-5 rounded-[2rem] border border-slate-200 shadow-sm">
     <h3 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-slate-400">
             <path fill-rule="evenodd" d="M12 2.25v1.5a.75.75 0 01-1.5 0V2.25H9v1.5a.75.75 0 01-1.5 0V2.25H6v1.5a.75.75 0 01-1.5 0V2.25H3v19.5h18V2.25h-1.5v1.5a.75.75 0 01-1.5 0V2.25h-1.5v1.5a.75.75 0 01-1.5 0V2.25h-1.5zM7.5 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm-9 4.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" clip-rule="evenodd" />
@@ -8,41 +8,52 @@
         Riwayat Pengukuran & Validasi
     </h3>
     
-    <div class="relative pl-4 border-l-2 border-slate-200 flex flex-col gap-6">
+    <div class="relative pl-5 border-l-2 border-slate-100 flex flex-col gap-6 ml-2 mt-2">
         @forelse($pengukurans as $p)
             @php
-                $statusColor = $p['status_validasi'] === 'approved' ? 'emerald' : ($p['status_validasi'] === 'rejected' ? 'rose' : 'amber');
+                // Since validation is dropped in MVP, we simulate everything as valid
+                $statusColor = 'emerald';
+                $simulatedStatus = 'VALID';
             @endphp
             <div class="relative">
-                <div class="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-300 ring-4 ring-white"></div>
-                <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex flex-col gap-3">
+                <!-- Glowing Timeline Dot -->
+                <div class="absolute -left-[27px] top-1.5 w-3 h-3 rounded-full bg-{{ $statusColor }}-500 ring-4 ring-{{ $statusColor }}-50 shadow-sm"></div>
+                
+                <div class="bg-white border border-slate-200 rounded-[1.5rem] p-5 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
                     
                     <!-- Top Row: Date & Status -->
-                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <span class="text-sm font-bold text-slate-700">{{ date('d M Y', strtotime($p['created_at'])) }} (Umur: {{ $p['umur_bulan'] }} Bln)</span>
-                        <div class="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-{{ $statusColor }}-100 text-{{ $statusColor }}-700">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                        <span class="text-[13px] font-black text-slate-800">{{ date('d M Y', strtotime($p['created_at'])) }} <span class="text-slate-400 font-medium ml-1">(Umur: {{ $p['umur_bulan'] }} Bln)</span></span>
+                        <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 ring-1 ring-{{ $statusColor }}-200/50">
                             <span class="w-1.5 h-1.5 rounded-full bg-{{ $statusColor }}-500"></span>
-                            {{ $p['status_validasi'] }}
+                            {{ $simulatedStatus }}
                         </div>
                     </div>
                     
                     <!-- Data Pengukuran -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-                        <div>
-                            <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-widest">Berat (BB)</span>
-                            <span class="font-semibold text-slate-700">{{ $p['berat_badan'] }} kg</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Berat (BB)</span>
+                            <span class="font-black text-slate-800 text-[14px]">{{ $p['berat_badan'] }} <span class="text-slate-500 font-medium text-[11px]">kg</span></span>
                         </div>
-                        <div>
-                            <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-widest">Tinggi (TB)</span>
-                            <span class="font-semibold text-slate-700">{{ $p['tinggi_badan'] }} cm</span>
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Tinggi (TB)</span>
+                            <span class="font-black text-slate-800 text-[14px]">{{ $p['tinggi_badan'] }} <span class="text-slate-500 font-medium text-[11px]">cm</span></span>
                         </div>
-                        <div>
-                            <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-widest">Z-Score (BB/U)</span>
-                            <span class="font-semibold text-slate-700">{{ $p['z_score_bb_u'] }}</span>
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Z-Score (BB/U)</span>
+                            <span class="font-black text-slate-800 text-[14px]">{{ $p['z_score_bb_u'] }}</span>
                         </div>
-                        <div>
-                            <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-widest">Status Gizi</span>
-                            <span class="font-semibold text-slate-700">{{ $p['status_gizi'] }}</span>
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Status Gizi</span>
+                            @php
+                                $giziColor = 'slate';
+                                $giziLower = strtolower($p['status_gizi']);
+                                if(in_array($giziLower, ['normal', 'gizi baik'])) $giziColor = 'emerald';
+                                elseif(in_array($giziLower, ['kurang', 'kurus', 'risiko lebih'])) $giziColor = 'amber';
+                                elseif(in_array($giziLower, ['stunting', 'gizi buruk', 'sangat kurus', 'obesitas'])) $giziColor = 'rose';
+                            @endphp
+                            <span class="font-black text-{{ $giziColor }}-600 text-[14px]">{{ $p['status_gizi'] }}</span>
                         </div>
                     </div>
 

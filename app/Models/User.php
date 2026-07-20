@@ -34,10 +34,18 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the Petugas Puskesmas profile associated with the user.
+     * Get the Puskesmas profile associated with the user.
      */
-    public function petugasPuskesmas(): HasOne
+    public function puskesmas(): HasOne
     {
-        return $this->hasOne(PetugasPuskesmas::class);
+        return $this->hasOne(Puskesmas::class);
+    }
+
+    /**
+     * Get the OrangTua profile associated with the user.
+     */
+    public function orangTua(): HasOne
+    {
+        return $this->hasOne(OrangTua::class);
     }
 }

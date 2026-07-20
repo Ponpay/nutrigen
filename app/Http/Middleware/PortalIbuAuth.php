@@ -18,22 +18,21 @@ class PortalIbuAuth
     {
         $token = $request->query('token');
 
+        // Fallback for local development if no token provided in URL and no session exists
+        if (!$token && app()->environment('local') && !$request->session()->has('portal_ibu_id')) {
+            $token = 'demo-token';
+        }
+
         if ($token) {
             $ibu = Ibu::where('token_whatsapp', $token)->first();
             if ($ibu) {
                 // Store authenticated ibu_id in session
                 $request->session()->put('portal_ibu_id', $ibu->id);
                 
-                // Optional: remove token from URL for cleaner address bar
-                return redirect($request->url());
-            }
-        }
-
-        // Bypass for local development if no session and no token
-        if (app()->environment('local') && !$request->session()->has('portal_ibu_id')) {
-            $ibu = Ibu::first();
-            if ($ibu) {
-                $request->session()->put('portal_ibu_id', $ibu->id);
+                // If it was from URL, we can optionally remove token from URL for cleaner address bar
+                if ($request->query('token')) {
+                    return redirect($request->url());
+                }
             }
         }
 

@@ -1,43 +1,61 @@
 @props(['color' => 'blue', 'title', 'value'])
 
 @php
-    $bgClass = 'bg-white';
-    $borderClass = 'border-slate-200';
+    $bgClass = '';
     $iconColorClass = '';
     $titleColorClass = 'text-slate-600';
     $valueColorClass = 'text-slate-900';
-    $accentColorClass = '';
+    $shadowClass = 'shadow-sm';
 
     switch($color) {
         case 'emerald':
-            $iconColorClass = 'text-emerald-500 bg-emerald-50';
-            $accentColorClass = 'border-l-emerald-500';
+            $bgClass = 'bg-gradient-to-br from-emerald-50 to-emerald-100/80 border border-emerald-200/60';
+            $iconColorClass = 'text-emerald-700 bg-white shadow-sm ring-1 ring-emerald-200';
+            $titleColorClass = 'text-emerald-800';
+            $valueColorClass = 'text-emerald-950';
             break;
         case 'blue':
-            $iconColorClass = 'text-blue-500 bg-blue-50';
-            $accentColorClass = 'border-l-blue-500';
+            $bgClass = 'bg-gradient-to-br from-blue-50 to-blue-100/80 border border-blue-200/60';
+            $iconColorClass = 'text-blue-700 bg-white shadow-sm ring-1 ring-blue-200';
+            $titleColorClass = 'text-blue-800';
+            $valueColorClass = 'text-blue-950';
             break;
         case 'amber':
-            $iconColorClass = 'text-amber-500 bg-amber-50';
-            $accentColorClass = 'border-l-amber-500';
+            $bgClass = 'bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200/60';
+            $iconColorClass = 'text-amber-700 bg-white shadow-sm ring-1 ring-amber-200';
+            $titleColorClass = 'text-amber-800';
+            $valueColorClass = 'text-amber-950';
             break;
         case 'rose':
-            $iconColorClass = 'text-rose-500 bg-rose-50';
-            $accentColorClass = 'border-l-rose-500';
+            $bgClass = 'bg-gradient-to-br from-rose-50 to-rose-100/80 border border-rose-200/60';
+            $iconColorClass = 'text-rose-700 bg-white shadow-sm ring-1 ring-rose-200';
+            $titleColorClass = 'text-rose-800';
+            $valueColorClass = 'text-rose-950';
             break;
         default:
-            $iconColorClass = 'text-slate-500 bg-slate-100';
-            $accentColorClass = 'border-l-slate-400';
+            $bgClass = 'bg-gradient-to-br from-slate-50 to-slate-100/80 border border-slate-200/60';
+            $iconColorClass = 'text-slate-700 bg-white shadow-sm ring-1 ring-slate-200';
+            $titleColorClass = 'text-slate-800';
+            $valueColorClass = 'text-slate-950';
             break;
     }
 @endphp
 
-<div class="{{ $bgClass }} border {{ $borderClass }} border-l-[3px] {{ $accentColorClass }} rounded-xl p-4 lg:p-5 flex flex-col gap-1 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-    <div class="flex items-center gap-3 z-10 mb-2">
-        <div class="p-2 rounded-lg {{ $iconColorClass }} shrink-0 group-hover:scale-110 transition-transform">
+<div class="{{ $bgClass }} rounded-[1.25rem] p-5 lg:p-6 flex flex-col shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow duration-300">
+    <!-- Subtle glow overlay on hover -->
+    <div class="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+
+    <div class="flex items-center gap-3.5 z-10 mb-2.5">
+        <div class="p-2.5 rounded-xl {{ $iconColorClass }} shrink-0">
             {{ $slot }}
         </div>
-        <span class="text-[10px] font-bold {{ $titleColorClass }} tracking-wider uppercase leading-snug">{{ $title }}</span>
+        <span class="text-[10px] font-black {{ $titleColorClass }} tracking-widest uppercase leading-snug">{{ $title }}</span>
     </div>
-    <span class="text-3xl font-extrabold {{ $valueColorClass }} z-10">{{ $value }}</span>
+    <span class="text-3xl lg:text-4xl font-black {{ $valueColorClass }} z-10 tracking-tight">{{ $value }}</span>
+    
+    @if(isset($subtext))
+        <div class="text-[11px] text-slate-400 font-medium mt-2.5 z-10">
+            {{ $subtext }}
+        </div>
+    @endif
 </div>

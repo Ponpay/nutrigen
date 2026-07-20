@@ -5,7 +5,7 @@
     'actions' => null,
 ])
 
-<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+<div {{ $attributes->merge(['class' => 'flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6']) }}>
     <div>
         @if($breadcrumbs)
         <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">{{ $breadcrumbs }}</p>

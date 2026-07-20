@@ -1,174 +1,174 @@
 @extends('layouts.puskesmas')
 @section('page-title', 'Pengaturan')
+@section('page-breadcrumbs', 'Pengaturan')
 @section('page-mode', 'app')
 @section('content')
 
 {{-- Backend Contract:
-    Controller: PuskesmasPengaturanController@index
-    Expected Variables: $puskesmas, $petugas
+    Controller: PuskesmasController@pengaturan & updatePengaturan
+    Expected Variables: $puskesmas, $user
 --}}
 
-<!-- Full-viewport Split View: Institution Management -->
-<div class="flex flex-col lg:flex-row flex-1 overflow-hidden">
+<div class="flex flex-col lg:flex-row flex-1 overflow-hidden" x-data="{ 
+    editMode: false,
+    formData: {
+        nama: '{{ addslashes($puskesmas['nama']) }}',
+        alamat: '{{ addslashes($puskesmas['alamat']) }}'
+    }
+}">
 
     <!-- LEFT PANEL: Settings Navigation -->
-    <div class="w-full lg:w-[260px] xl:w-[280px] flex flex-col border-r border-slate-200 bg-slate-50/60 shrink-0 overflow-hidden">
+    <x-puskesmas.settings-sidebar active="profil" />
 
-        <!-- Panel Header -->
-        <div class="bg-slate-50 border-b border-slate-200 px-5 pt-5 pb-4">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Institution</p>
-            <h2 class="text-base font-bold text-slate-800">Pengaturan</h2>
-        </div>
-
-        <!-- Nav Menu -->
-        <nav class="p-3 flex flex-col gap-1 overflow-y-auto">
-            <a href="#profil" id="nav-profil" class="settings-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all bg-white text-teal-700 shadow-sm border border-slate-200">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 shrink-0">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
+    <!-- RIGHT PANEL: Settings Canvas -->
+    <div class="flex-1 flex flex-col overflow-y-auto bg-[#F8FAFC] p-4 lg:p-8">
+        
+        @if (session('success'))
+            <div class="mb-6 mx-auto w-full max-w-4xl bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] rounded-xl p-4 flex items-center gap-3 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-[#10B981]">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
                 </svg>
-                <span>Profil Institusi</span>
-            </a>
-            <a href="#petugas" id="nav-petugas" class="settings-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 shrink-0">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-                <span>Profil Petugas</span>
-            </a>
-            <a href="#keamanan" id="nav-keamanan" class="settings-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 shrink-0">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                </svg>
-                <span>Keamanan Akun</span>
-            </a>
-            <a href="#notifikasi" id="nav-notifikasi" class="settings-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 shrink-0">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                </svg>
-                <span>Notifikasi</span>
-            </a>
-
-            <div class="border-t border-slate-200 mt-2 pt-2">
-                <p class="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sistem</p>
-                <a href="#informasi" id="nav-informasi" class="settings-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 shrink-0">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                    </svg>
-                    <span>Informasi Sistem</span>
-                </a>
+                <span class="text-sm font-semibold">{{ session('success') }}</span>
             </div>
-        </nav>
-    </div><!-- end left panel -->
+        @endif
 
-    <!-- RIGHT PANEL: Settings Form Canvas -->
-    <div class="flex-1 flex flex-col overflow-y-auto bg-slate-50/30">
-
-        <!-- Form Canvas: Padded content area -->
-        <div class="max-w-3xl w-full mx-auto my-0 lg:my-6 bg-white lg:border lg:border-slate-200 lg:rounded-3xl lg:shadow-sm px-6 py-8 lg:px-12 lg:py-12 flex flex-col gap-16">
+        <form method="POST" action="{{ route('puskesmas.pengaturan.update') }}" class="max-w-4xl w-full mx-auto flex flex-col gap-6">
+            @csrf
+            @method('PUT')
 
             <!-- SECTION: Profil Institusi -->
-            <section id="profil">
-                <div class="mb-6">
-                    <h3 class="text-xl font-extrabold text-slate-800">Profil Institusi</h3>
-                    <p class="text-sm text-slate-500 mt-1">Informasi resmi puskesmas yang tercatat pada sistem NutriGen.</p>
-                </div>
-
-                <!-- Logo Upload -->
-                <div class="flex items-start gap-5 p-5 bg-slate-50 border border-slate-200 rounded-2xl mb-6">
-                    <div class="w-16 h-16 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center border border-teal-200/60 shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
-                        </svg>
+            <div class="bg-white border border-[#E2E8F0] rounded-2xl shadow-sm overflow-hidden">
+                <!-- Header Card -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 border-b border-[#E2E8F0]">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                              <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm14.25 6a.75.75 0 01-.75.75h-2.25v2.25a.75.75 0 01-1.5 0v-2.25H10.5v2.25a.75.75 0 01-1.5 0v-2.25H6.75a.75.75 0 010-1.5h2.25V6.75a.75.75 0 011.5 0v2.25h2.25v-2.25a.75.75 0 011.5 0v2.25h2.25a.75.75 0 01.75.75z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-[#1E293B]">Profil Institusi</h3>
+                            <p class="text-sm text-[#64748B]">Informasi resmi puskesmas yang tercatat pada sistem NutriGen.</p>
+                        </div>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-slate-800">Logo Puskesmas</p>
-                        <p class="text-xs text-slate-500 mt-0.5 mb-3">Logo resmi yang ditampilkan pada laporan PDF.</p>
-                        <button type="button" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-100 shadow-sm transition-colors">
-                            Ganti Logo
+                        <button type="button" x-show="!editMode" @click="editMode = true" class="px-4 py-2 text-sm font-semibold text-[#047857] bg-white hover:bg-[#F8FAFC] border border-[#047857] rounded-xl flex items-center gap-2 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                              <path d="M2.695 14.763l-1.262 3.152a.5.5 0 00.65.65l3.152-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" />
+                            </svg>
+                            Edit Profil
                         </button>
-                    </div>
-                </div>
-
-                <!-- Fields -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="flex flex-col gap-2.5">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Nama Puskesmas</label>
-                        <input type="text" value="Puskesmas Melati" class="w-full px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition shadow-sm font-medium">
-                    </div>
-                    <div class="flex flex-col gap-2.5">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Kode Registrasi</label>
-                        <input type="text" value="P117101" disabled class="w-full px-4 py-3 text-sm bg-slate-100 border border-slate-200 rounded-xl text-slate-400 cursor-not-allowed font-medium">
-                    </div>
-                    <div class="flex flex-col gap-2.5 md:col-span-2">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Alamat</label>
-                        <textarea rows="3" class="w-full px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition shadow-sm resize-none font-medium">Jl. Teuku Umar No. 15, Kec. Baiturrahman, Kota Banda Aceh</textarea>
-                    </div>
-                </div>
-
-                <!-- Save Action -->
-                <div class="flex justify-end mt-8 pt-6 border-t border-slate-100">
-                    <button type="button" class="px-6 py-3 text-sm font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm transition-all hover:-translate-y-px active:translate-y-0">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </section>
-
-            <!-- SECTION: Profil Petugas -->
-            <section id="petugas">
-                <div class="mb-6 pb-4 border-t border-slate-200 pt-6">
-                    <h3 class="text-xl font-extrabold text-slate-800">Profil Petugas</h3>
-                    <p class="text-sm text-slate-500 mt-1">Data identitas petugas yang terdaftar sebagai pengelola portal.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="flex flex-col gap-2.5">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Nama Lengkap</label>
-                        <input type="text" value="Dr. Siti Rahma, S.Gz" class="w-full px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition shadow-sm font-medium">
-                    </div>
-                    <div class="flex flex-col gap-2.5">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">NIP / NIK</label>
-                        <input type="text" value="198505152009012003" class="w-full px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition shadow-sm font-medium">
-                    </div>
-                    <div class="flex flex-col gap-2.5">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Email</label>
-                        <input type="email" value="siti.rahma@puskesmas.id" class="w-full px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition shadow-sm font-medium">
-                    </div>
-                    <div class="flex flex-col gap-2.5">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">No. HP</label>
-                        <input type="text" value="+62 813-1234-5678" class="w-full px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition shadow-sm font-medium">
-                    </div>
-                </div>
-
-                <div class="flex justify-end mt-8 pt-6 border-t border-slate-100">
-                    <button type="button" class="px-6 py-3 text-sm font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm transition-all hover:-translate-y-px active:translate-y-0">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </section>
-
-            <!-- SECTION: Informasi Sistem -->
-            <section id="informasi">
-                <div class="mb-5 pb-4 border-t border-slate-200 pt-6">
-                    <h3 class="text-xl font-extrabold text-slate-800">Informasi Sistem</h3>
-                    <p class="text-sm text-slate-500 mt-1">Versi aplikasi dan status layanan NutriGen.</p>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
-                        <p class="text-xs text-slate-500 uppercase tracking-wide font-bold">Versi</p>
-                        <p class="text-sm font-bold text-slate-800 mt-1.5">NutriGen v2.0.0</p>
-                    </div>
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
-                        <p class="text-xs text-slate-500 uppercase tracking-wide font-bold">Status</p>
-                        <div class="flex items-center gap-2 mt-1.5">
-                            <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
-                            <p class="text-sm font-bold text-emerald-700">Operasional</p>
+                        <div x-show="editMode" class="flex items-center gap-2" x-cloak>
+                            <button type="button" @click="editMode = false; formData.nama = '{{ addslashes($puskesmas['nama']) }}'; formData.alamat = '{{ addslashes($puskesmas['alamat']) }}'" class="px-4 py-2 text-sm font-semibold text-[#475569] bg-white hover:bg-[#F1F5F9] border border-[#E2E8F0] rounded-xl transition-colors">
+                                Batal
+                            </button>
+                            <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-[#10B981] hover:bg-[#059669] rounded-xl shadow-sm transition-colors">
+                                Simpan Perubahan
+                            </button>
                         </div>
                     </div>
                 </div>
-            </section>
 
-        </div>
-    </div><!-- end right panel -->
+                <!-- Body Card -->
+                <div class="p-6 md:p-8">
+                    <div class="flex flex-col lg:flex-row gap-8">
+                        <!-- Left: Logo -->
+                        <div class="w-full lg:w-48 shrink-0 flex flex-col gap-4">
+                            <p class="text-xs font-bold text-[#334155]">Logo Puskesmas</p>
+                            <div class="w-32 h-32 rounded-2xl bg-white border border-[#E2E8F0] flex flex-col items-center justify-center p-4 text-[#94A3B8] shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 mb-2 text-[#10B981]">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                <span class="text-[10px] font-semibold text-center leading-tight">Ganti Logo</span>
+                            </div>
+                            <button type="button" disabled class="px-4 py-2 w-32 text-xs font-semibold text-[#047857] bg-white border border-[#047857] rounded-xl cursor-not-allowed flex items-center justify-center gap-2 opacity-50">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                                </svg>
+                                Ganti Logo
+                            </button>
+                        </div>
 
-</div><!-- end split view -->
+                        <!-- Right: Data Fields -->
+                        <div class="flex-1">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                
+                                <!-- Field: Nama Puskesmas -->
+                                <div class="col-span-1 md:col-span-2 flex flex-col sm:flex-row sm:items-start py-2 border-b border-[#F1F5F9]">
+                                    <span class="w-48 shrink-0 text-xs font-medium text-[#64748B] mb-1 sm:mb-0 mt-1">Nama Puskesmas</span>
+                                    <div class="flex-1">
+                                        <p x-show="!editMode" class="text-sm font-semibold text-[#1E293B]">{{ $puskesmas['nama'] }}</p>
+                                        <div x-show="editMode" x-cloak>
+                                            <input type="text" name="nama" x-model="formData.nama" class="w-full px-3 py-2 text-sm bg-white border border-[#CBD5E1] rounded-lg text-[#1E293B] focus:outline-none focus:ring-1 focus:ring-[#10B981] focus:border-[#10B981] font-medium">
+                                            @error('nama') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Field: Kode Registrasi -->
+                                <div class="col-span-1 md:col-span-2 flex flex-col sm:flex-row sm:items-start py-2 border-b border-[#F1F5F9]">
+                                    <span class="w-48 shrink-0 text-xs font-medium text-[#64748B] mb-1 sm:mb-0 mt-1">Kode Registrasi</span>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-[#1E293B]">{{ $puskesmas['kode_registrasi'] }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Field: Alamat -->
+                                <div class="col-span-1 md:col-span-2 flex flex-col sm:flex-row py-2 border-b border-[#F1F5F9]">
+                                    <span class="w-48 shrink-0 text-xs font-medium text-[#64748B] mb-1 sm:mb-0 mt-1">Alamat</span>
+                                    <div class="flex-1">
+                                        <p x-show="!editMode" class="text-sm font-semibold text-[#1E293B] leading-relaxed">{{ $puskesmas['alamat'] }}</p>
+                                        <div x-show="editMode" x-cloak>
+                                            <textarea name="alamat" x-model="formData.alamat" rows="2" class="w-full px-3 py-2 text-sm bg-white border border-[#CBD5E1] rounded-lg text-[#1E293B] focus:outline-none focus:ring-1 focus:ring-[#10B981] focus:border-[#10B981] font-medium resize-none"></textarea>
+                                            @error('alamat') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Tentang Puskesmas -->
+            <div class="bg-white border border-[#E2E8F0] rounded-2xl shadow-sm p-6 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+                <div class="flex items-start gap-4 flex-1">
+                    <div class="w-12 h-12 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M4.5 3.75a3 3 0 00-3 3v10.5a3 3 0 003 3h15a3 3 0 003-3V6.75a3 3 0 00-3-3h-15zm4.125 3a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zm-3.873 8.703a4.126 4.126 0 017.746 0 .75.75 0 01-.71.947h-6.326a.75.75 0 01-.71-.947zM15 9a.75.75 0 01.75-.75h2.25a.75.75 0 01.75.75v.5a.75.75 0 01-.75.75h-2.25a.75.75 0 01-.75-.75V9z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-[#1E293B]">Tentang Puskesmas</h3>
+                        <p class="text-sm text-[#64748B] mt-1 line-clamp-2">Deskripsi resmi puskesmas belum diatur pada sistem. Data kapasitas tercatat di sistem sebagai berikut:</p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col gap-4 border-l-0 md:border-l border-[#E2E8F0] pl-0 md:pl-8 shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="text-[#64748B]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs text-[#64748B]">Jumlah Posyandu</p>
+                            <p class="text-sm font-semibold text-[#1E293B]">{{ $puskesmas['jumlah_posyandu'] }} Posyandu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INFO BAR -->
+            <div class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-4 flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#10B981] shrink-0">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                </svg>
+                <p class="text-sm text-[#475569]">Pastikan data yang Anda lihat sudah benar. Klik tombol <span class="font-bold">"Edit Profil"</span> untuk melakukan perubahan.</p>
+            </div>
+
+        </form>
+    </div>
+</div>
 
 @endsection

@@ -3,251 +3,158 @@
 @section('page-title', 'Jadwal Posyandu')
 
 @section('content')
-<div class="flex flex-col bg-slate-50 min-h-screen pb-32">
-    <!-- Hero Section -->
-    <div class="bg-white px-5 pt-8 pb-8 rounded-b-[2.5rem] shadow-sm border-b border-slate-200 z-20 relative overflow-hidden">
-        <!-- Watermark Icon -->
-        <div class="absolute -top-6 -right-6 text-slate-200 opacity-20 transform rotate-12 pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-48 h-48">
-              <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
-              <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" clip-rule="evenodd" />
+{{-- 
+    CANVAS BACKGROUND 
+    Provides strong contrast against the white workspace shell. 
+--}}
+<div class="-mt-4 lg:mt-0 min-h-screen bg-slate-50/50 pb-24 lg:pb-16 selection:bg-emerald-100 selection:text-emerald-900">
+    
+    {{-- ── MOBILE: COMPACT STICKY HEADER (Opaque & High Z-Index to prevent overlap) ── --}}
+    <div class="md:hidden bg-white sticky -top-4 z-[45] isolate border-b border-slate-200 shadow-sm px-4 py-3 flex items-center justify-between">
+        <a href="{{ route('kader.dashboard') }}" 
+           class="p-2 -ml-2 bg-slate-50 text-slate-500 hover:text-slate-800 rounded-full transition-colors focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
+        </a>
+        <div class="flex flex-col items-center">
+            <h2 class="text-[15px] font-bold text-slate-800">Jadwal Posyandu</h2>
         </div>
+        <div class="w-9"></div> {{-- Spacer for absolute centering --}}
+    </div>
 
-        <div class="max-w-4xl mx-auto w-full relative z-10 flex flex-col">
-            <!-- (1) Judul & Deskripsi -->
-            <div class="flex items-center gap-3 pb-5">
-                <a href="{{ route('dashboard') }}" class="flex flex-shrink-0 items-center justify-center w-11 h-11 -ml-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-slate-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                </a>
-                <div>
-                    <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">Jadwal Posyandu</h1>
-                    <p class="text-sm font-medium text-slate-500 mt-0.5">Kelola seluruh jadwal kegiatan Posyandu.</p>
-                </div>
-            </div>
-            
-            <!-- Divider -->
-            <div class="border-t border-slate-100/80 mb-5"></div>
-            
-            <!-- (2) Mini Summary Cards -->
-            <div class="grid grid-cols-3 gap-2.5 sm:gap-4 mb-5">
-                <!-- Total Jadwal -->
-                <div class="bg-gradient-to-br from-white to-slate-50 border border-slate-100 rounded-2xl p-3 sm:p-4 flex flex-col justify-center shadow-sm relative overflow-hidden">
-                    <div class="absolute -bottom-2 -right-2 text-slate-200/50">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
-                          <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <span class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 line-clamp-1 relative z-10">Total Jadwal</span>
-                    <span class="text-xl sm:text-2xl font-black text-slate-800 relative z-10">{{ $totalSchedule ?? 12 }}</span>
-                </div>
-                <!-- Hari Ini -->
-                <div class="bg-gradient-to-br from-white to-teal-50/50 border border-teal-100/50 rounded-2xl p-3 sm:p-4 flex flex-col justify-center shadow-sm relative overflow-hidden">
-                    <div class="absolute -bottom-2 -right-2 text-teal-100/50">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
-                          <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <span class="text-[10px] sm:text-xs font-bold text-teal-600/80 uppercase tracking-wider mb-1 line-clamp-1 relative z-10">Hari Ini</span>
-                    <span class="text-xl sm:text-2xl font-black text-teal-700 relative z-10">{{ $todaySchedule ?? 3 }}</span>
-                </div>
-                <!-- Balita Terdaftar -->
-                <div class="bg-gradient-to-br from-white to-emerald-50/50 border border-emerald-100/50 rounded-2xl p-3 sm:p-4 flex flex-col justify-center shadow-sm relative overflow-hidden">
-                    <div class="absolute -bottom-2 -right-2 text-emerald-100/50">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
-                          <path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z" clip-rule="evenodd" />
-                          <path d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 016.576-3.036c.32.32.613.67.872 1.05zM18.918 14.254a8.287 8.287 0 011.308 5.135 9.687 9.687 0 001.764-.44l.115-.04a.563.563 0 00.373-.487l.01-.121a3.75 3.75 0 00-6.576-3.036c-.32.32-.613.67-.872 1.05z" />
-                        </svg>
-                    </div>
-                    <span class="text-[10px] sm:text-xs font-bold text-emerald-600/80 uppercase tracking-wider mb-1 line-clamp-1 relative z-10">Balita Ikut</span>
-                    <span class="text-xl sm:text-2xl font-black text-emerald-700 relative z-10">{{ $registeredChildren ?? 128 }}</span>
-                </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="border-t border-slate-100/80 mb-5"></div>
-
-            <!-- (3) Search Bar -->
-            <div class="relative w-full">
-                <input type="text" placeholder="Cari jadwal, lokasi, atau kegiatan..." class="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-12 py-4 text-sm text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all placeholder:text-slate-400 shadow-sm hover:shadow-md">
-                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-400">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                    </svg>
-                </div>
-                <!-- Filter Icon (Visual Only) -->
-                <div class="absolute inset-y-0 right-4 flex items-center cursor-pointer group">
-                    <div class="p-1.5 bg-slate-50 rounded-lg border border-slate-200 group-hover:bg-slate-100 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-500">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
-                        </svg>
-                    </div>
-                </div>
+    {{-- ── DESKTOP/TABLET: COMPACT HEADER ── --}}
+    <div class="hidden md:flex px-4 sm:px-6 lg:px-8 py-5 lg:py-6 max-w-7xl mx-auto w-full items-end justify-between">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Jadwal Posyandu</h1>
+            <p class="text-[13px] sm:text-sm font-medium text-slate-500 mt-1">Kelola dan rencanakan kegiatan operasional Posyandu.</p>
+        </div>
+        <div class="hidden lg:flex items-center gap-3 mb-1">
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-50/50 border border-amber-200/50">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+                <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest">Tahap Perancangan</span>
             </div>
         </div>
     </div>
 
-    <!-- Main Content Container -->
-    <div class="max-w-4xl mx-auto w-full px-5 mt-6 flex flex-col gap-5">
+    {{-- ── MAIN WORKSPACE SHELL ── --}}
+    <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mt-4 md:mt-0">
         
-        <!-- Filter Chips -->
-        <div class="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-hide" style="scrollbar-width: none;">
-            <button type="button" class="flex-shrink-0 flex items-center gap-1.5 px-5 py-2.5 bg-teal-600 text-white rounded-full text-sm font-bold shadow-md shadow-teal-500/20 transition-all hover:-translate-y-0.5">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
-                Semua
-            </button>
-            <button type="button" class="flex-shrink-0 px-5 py-2.5 bg-white text-slate-500 border border-slate-200 rounded-full text-sm font-semibold hover:bg-slate-50 hover:text-slate-700 hover:shadow-sm transition-all hover:-translate-y-0.5">Hari Ini</button>
-            <button type="button" class="flex-shrink-0 px-5 py-2.5 bg-white text-slate-500 border border-slate-200 rounded-full text-sm font-semibold hover:bg-slate-50 hover:text-slate-700 hover:shadow-sm transition-all hover:-translate-y-0.5">Minggu Ini</button>
-            <button type="button" class="flex-shrink-0 px-5 py-2.5 bg-white text-slate-500 border border-slate-200 rounded-full text-sm font-semibold hover:bg-slate-50 hover:text-slate-700 hover:shadow-sm transition-all hover:-translate-y-0.5">Selesai</button>
-        </div>
-
-        <!-- Schedule List -->
-        <div class="flex flex-col gap-4 mt-1">
+        {{-- The White Shell --}}
+        <div class="bg-white rounded-[24px] sm:rounded-[32px] shadow-sm ring-1 ring-inset ring-slate-200/60 p-3 sm:p-4">
             
-            @forelse($jadwals ?? [1, 2, 3] as $index => $jadwal)
-                @php
-                    $isToday = $index === 0;
-                    $isDone = $index === 2;
+            {{-- The "Pill" Container (Tinted Workspace) --}}
+            <div class="bg-gradient-to-br from-slate-50/80 to-slate-50/30 rounded-[20px] sm:rounded-[28px] p-5 sm:p-8 lg:p-12 flex flex-col lg:flex-row gap-10 lg:gap-16 items-center ring-1 ring-inset ring-slate-100/50">
+                
+                {{-- ── LEFT COLUMN: VISION & ILLUSTRATION ── --}}
+                <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
                     
-                    // Badges with Icons
-                    $badgeText = $isToday ? 'Hari Ini' : ($isDone ? 'Selesai' : 'Mendatang');
-                    $badgeColor = $isToday ? 'bg-amber-50 text-amber-600 border-amber-200' : ($isDone ? 'bg-slate-100 text-slate-500 border-slate-200' : 'bg-teal-50 text-teal-600 border-teal-200');
-                    
-                    $badgeIcon = '';
-                    if ($isToday) {
-                        $badgeIcon = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />';
-                    } elseif ($isDone) {
-                        $badgeIcon = '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />';
-                    } else {
-                        $badgeIcon = '<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />';
-                    }
-                    
-                    // Date blocks
-                    $dateNum = $isToday ? '12' : ($isDone ? '07' : '09');
-                    $dateMonth = $isToday ? 'MEI' : ($isDone ? 'JUL' : 'JUN');
-                    
-                    if ($isToday) {
-                        $dateBlockBg = 'bg-gradient-to-br from-teal-50 to-teal-100/70 ring-1 ring-teal-200 shadow-sm shadow-teal-500/10';
-                        $dateBlockNum = 'text-teal-700';
-                        $dateBlockMonth = 'text-teal-600';
-                    } elseif ($isDone) {
-                        $dateBlockBg = 'bg-gradient-to-br from-slate-50 to-slate-100 ring-1 ring-slate-200 shadow-sm shadow-slate-500/5';
-                        $dateBlockNum = 'text-slate-500';
-                        $dateBlockMonth = 'text-slate-400';
-                    } else {
-                        $dateBlockBg = 'bg-gradient-to-br from-emerald-50 to-emerald-100/70 ring-1 ring-emerald-200 shadow-sm shadow-emerald-500/10';
-                        $dateBlockNum = 'text-emerald-700';
-                        $dateBlockMonth = 'text-emerald-600';
-                    }
-                @endphp
-
-                <!-- Card Jadwal -->
-                <a href="{{ route('jadwal.show') }}" class="group block w-full bg-gradient-to-b from-white to-slate-50/50 border border-slate-200/80 rounded-[1.75rem] p-5 shadow-sm hover:shadow-lg hover:shadow-teal-500/10 hover:border-teal-300 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col gap-4">
-                    <!-- Top section -->
-                    <div>
-                        <div class="flex items-start justify-between mb-4">
-                            <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl group-hover:text-teal-700 transition-colors leading-tight max-w-[70%]">{{ $scheduleTitle ?? 'Posyandu Melati 1' }}</h3>
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-extrabold uppercase tracking-widest border {{ $badgeColor }} shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
-                                    {!! $badgeIcon !!}
-                                </svg>
-                                {{ $badgeText }}
-                            </span>
-                        </div>
-
-                        <div class="flex gap-4 sm:gap-5">
-                            <!-- Date Block -->
-                            <div class="flex-shrink-0 w-16 sm:w-20 h-20 sm:h-24 {{ $dateBlockBg }} rounded-2xl flex flex-col items-center justify-center">
-                                <span class="text-3xl sm:text-4xl font-black {{ $dateBlockNum }} leading-none tracking-tight">{{ $dateNum }}</span>
-                                <span class="text-[10px] sm:text-xs font-extrabold {{ $dateBlockMonth }} uppercase tracking-widest mt-1 sm:mt-1.5">{{ $dateMonth }}</span>
-                            </div>
-                            
-                            <!-- Info Details -->
-                            <div class="flex flex-col justify-center gap-2.5 flex-grow">
-                                <!-- Date & Time -->
-                                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                                    <div class="flex items-center gap-2 text-slate-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 opacity-70">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                                        </svg>
-                                        <span class="text-sm font-semibold">Minggu, {{ $dateNum }} {{ ucfirst(strtolower($dateMonth)) }} 2024</span>
-                                    </div>
-                                    <div class="hidden sm:block w-1.5 h-1.5 rounded-full bg-slate-300"></div>
-                                    <div class="flex items-center gap-2 text-slate-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 opacity-70">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        <span class="text-sm font-semibold">08.00 - 11.00 WIB</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- Location -->
-                                <div class="flex items-center gap-2 text-slate-500 mt-0.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 opacity-70">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                    </svg>
-                                    <span class="text-sm font-semibold line-clamp-1">Di Balai Desa Lampeuneurut</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="border-t border-slate-100 border-dashed"></div>
-
-                    <!-- Footer Section -->
-                    <div class="flex items-center justify-between w-full">
-                        <!-- Balita Count -->
-                        <div class="flex items-center gap-2 text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-teal-600">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                            </svg>
-                            <span class="text-xs font-bold uppercase tracking-wide">{{ $registered ?? 35 }} Balita Terdaftar</span>
-                        </div>
+                    {{-- Illustration Composition (Integrated & Soft) --}}
+                    <div class="relative w-32 h-32 sm:w-36 sm:h-36 mb-6 shrink-0 group">
                         
-                        <span class="inline-flex items-center gap-1.5 text-xs font-extrabold text-teal-600 uppercase tracking-widest group-hover:text-teal-700 transition-colors">
-                            Detail Jadwal
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        {{-- Subtle background aura instead of harsh glows --}}
+                        <div class="absolute inset-2 bg-gradient-to-tr from-emerald-100 to-sky-50 rounded-full blur-xl opacity-70"></div>
+                        
+                        {{-- Main Center Icon (Calendar) --}}
+                        <div class="absolute inset-0 bg-white rounded-3xl shadow-sm ring-1 ring-slate-200/50 flex items-center justify-center transition-transform hover:scale-105 duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="w-14 h-14 text-emerald-500">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                             </svg>
+                        </div>
+                            
+                        {{-- Notification Bell Accent (Integrated into corner) --}}
+                        <div class="absolute -top-1.5 -right-1.5 w-10 h-10 bg-gradient-to-br from-amber-50 to-white text-amber-500 rounded-xl flex items-center justify-center shadow-sm ring-1 ring-amber-100/80 transition-transform group-hover:-rotate-12 duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                            </svg>
+                        </div>
+
+                        {{-- Healthcare Check Accent (Integrated into corner) --}}
+                        <div class="absolute -bottom-1.5 -left-1.5 w-10 h-10 bg-gradient-to-br from-sky-50 to-white text-sky-500 rounded-xl flex items-center justify-center shadow-sm ring-1 ring-sky-100/80 transition-transform group-hover:rotate-12 duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    {{-- Roadmap Badge --}}
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-100/50 text-emerald-700 text-[10px] font-bold uppercase tracking-widest rounded-full mb-5 ring-1 ring-inset ring-emerald-200/50">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                         </span>
+                        Planned For Next Release
                     </div>
-                </a>
-            @empty
-                <!-- Empty State -->
-                <div class="flex flex-col items-center justify-center bg-white border border-slate-200 border-dashed rounded-[2rem] py-16 px-6 text-center mt-2 shadow-sm">
-                    <div class="w-24 h-24 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 text-slate-300 rounded-[2rem] flex items-center justify-center mb-6 shadow-sm transform -rotate-6 group-hover:rotate-0 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    
+                    {{-- Typography & Vision --}}
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 tracking-tight mb-3 leading-tight">Asisten Penjadwalan Pintar</h2>
+                    <p class="text-[14px] sm:text-[15px] lg:text-[15px] text-slate-500 leading-relaxed font-medium mb-8 max-w-md mx-auto lg:mx-0">
+                        Kami sedang merancang asisten cerdas untuk menyusun jadwal imunisasi dan penimbangan secara otomatis, agar tugas Posyandu menjadi jauh lebih ringan.
+                    </p>
+
+                    {{-- Action CTA --}}
+                    <a href="{{ route('balita.index') }}" class="group inline-flex items-center justify-center h-11 sm:h-12 px-6 sm:px-7 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white rounded-xl font-bold text-[14px] shadow-sm shadow-emerald-500/20 hover:shadow-md hover:-translate-y-[1px] transition-all duration-300 gap-2 focus:outline-none focus:ring-4 focus:ring-emerald-500/30 w-full sm:w-max whitespace-nowrap">
+                        Kelola Data Balita
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                         </svg>
-                    </div>
-                    <h3 class="text-xl font-extrabold text-slate-800 mb-2 tracking-tight">Belum Ada Jadwal</h3>
-                    <p class="text-sm font-medium text-slate-500 max-w-[280px] mx-auto leading-relaxed mb-6">Saat ini tidak ada jadwal kegiatan Posyandu yang terdaftar. Yuk, buat jadwal baru untuk balita!</p>
-                    <a href="{{ route('jadwal.create') }}" class="inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-full shadow-md shadow-teal-500/20 font-bold text-sm transition-all hover:-translate-y-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-                        Tambah Jadwal
                     </a>
                 </div>
-            @endforelse
 
+                {{-- ── RIGHT COLUMN: FEATURE PREVIEW ── --}}
+                <div class="w-full lg:w-1/2 flex flex-col gap-4 mt-4 lg:mt-0">
+                    <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1 text-center lg:text-left">Sneak Peek Fitur Utama</h3>
+                    
+                    {{-- Features Container --}}
+                    <div class="flex flex-col gap-3 sm:gap-4 mt-2 lg:mt-3">
+                        
+                        {{-- Feature 1 (Emerald) --}}
+                        <div class="bg-gradient-to-r from-emerald-50/40 to-transparent rounded-2xl p-4 sm:p-5 ring-1 ring-inset ring-emerald-100/50 flex items-start gap-4 sm:gap-5 transition-transform hover:-translate-y-0.5 duration-300 hover:shadow-sm">
+                            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white text-emerald-600 flex flex-shrink-0 items-center justify-center shadow-sm ring-1 ring-inset ring-emerald-200/50">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-[14px] sm:text-[15px] font-bold text-slate-800 leading-snug">Sistem Penjadwalan Otomatis</h4>
+                                <p class="text-[13px] text-slate-500 mt-1 leading-relaxed">Menyusun jadwal kegiatan bulanan berdasarkan siklus KMS tanpa perlu catat manual.</p>
+                            </div>
+                        </div>
+
+                        {{-- Feature 2 (Sky) --}}
+                        <div class="bg-gradient-to-r from-sky-50/40 to-transparent rounded-2xl p-4 sm:p-5 ring-1 ring-inset ring-sky-100/50 flex items-start gap-4 sm:gap-5 transition-transform hover:-translate-y-0.5 duration-300 hover:shadow-sm">
+                            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white text-sky-600 flex flex-shrink-0 items-center justify-center shadow-sm ring-1 ring-inset ring-sky-200/50">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-[14px] sm:text-[15px] font-bold text-slate-800 leading-snug">Notifikasi Pintar WhatsApp</h4>
+                                <p class="text-[13px] text-slate-500 mt-1 leading-relaxed">Kirim pengingat jadwal posyandu langsung ke gawai orang tua balita secara terpusat.</p>
+                            </div>
+                        </div>
+
+                        {{-- Feature 3 (Amber) --}}
+                        <div class="bg-gradient-to-r from-amber-50/40 to-transparent rounded-2xl p-4 sm:p-5 ring-1 ring-inset ring-amber-100/50 flex items-start gap-4 sm:gap-5 transition-transform hover:-translate-y-0.5 duration-300 hover:shadow-sm">
+                            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white text-amber-600 flex flex-shrink-0 items-center justify-center shadow-sm ring-1 ring-inset ring-amber-200/50">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-[14px] sm:text-[15px] font-bold text-slate-800 leading-snug">Rekapitulasi Partisipasi</h4>
+                                <p class="text-[13px] text-slate-500 mt-1 leading-relaxed">Pantau tren partisipasi bulanan dan tingkat kehadiran dalam satu dasbor visual terpadu.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
-
-    <!-- Floating Action Button -->
-    <div class="fixed bottom-24 lg:bottom-10 right-5 lg:right-10 z-40">
-        <a href="{{ route('jadwal.create') }}" class="flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-4 rounded-full shadow-lg shadow-teal-600/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-teal-600/40 focus:outline-none font-bold text-sm border border-teal-500/50">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                <path fill-rule="evenodd" d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
-            </svg>
-            <span class="hidden sm:inline">Tambah Jadwal</span>
-        </a>
     </div>
 </div>
 @endsection

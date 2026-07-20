@@ -1,6 +1,11 @@
 @props(['child'])
 
-<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+@php
+    $chartId = 'chart-' . uniqid();
+    $curveColor = $child['jenis_kelamin'] == 'L' ? '#0ea5e9' : '#ec4899'; // Blue for boys, Pink for girls
+@endphp
+
+<div id="{{ $chartId }}" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
     <div class="flex items-center justify-between mb-4">
         <h3 class="text-xs font-bold text-slate-800 uppercase tracking-widest flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-slate-400">
@@ -9,38 +14,148 @@
             </svg>
             Grafik Pertumbuhan KMS
         </h3>
-        <select class="text-xs border-slate-200 rounded text-slate-600 bg-slate-50 px-2 py-1 focus:ring-teal-500">
-            <option>BB/U (Berat Badan menurut Umur)</option>
-            <option selected>TB/U (Tinggi Badan menurut Umur)</option>
-            <option>BB/TB (Berat Badan menurut Tinggi Badan)</option>
+        <select class="chart-indicator-select text-xs border-slate-200 rounded text-slate-600 bg-slate-50 px-2 py-1 focus:ring-sky-500 font-bold">
+            <option value="tbu" selected>TB/U (Tinggi Badan menurut Umur)</option>
+            <option value="bbu">BB/U (Berat Badan menurut Umur)</option>
         </select>
     </div>
     
     <div class="relative h-64 w-full bg-slate-50 border border-slate-100 rounded-xl overflow-hidden flex items-center justify-center">
-        <!-- SVG Dummy Curve (Menyesuaikan Jenis Kelamin) -->
-        @php
-            $curveColor = $child['jenis_kelamin'] == 'L' ? '#0ea5e9' : '#ec4899'; // Blue for boys, Pink for girls
-        @endphp
-        <svg class="w-full h-full text-slate-200" viewBox="0 0 600 200" preserveAspectRatio="none">
-            <!-- Zones -->
-            <path d="M0,70 Q150,65 300,55 T600,40 L600,200 L0,200 Z" fill="#f0fdf4" />
-            <path d="M0,130 Q150,125 300,115 T600,95 L600,200 L0,200 Z" fill="#fffbeb" />
-            <path d="M0,170 Q150,165 300,155 T600,140 L600,200 L0,200 Z" fill="#fff1f2" />
+        <!-- SVG Dynamic Curve (Menyesuaikan Jenis Kelamin & Data Real) -->
+        <svg class="w-full h-full text-slate-200" viewBox="0 -10 600 220" preserveAspectRatio="none">
+            <!-- Zones (WHO Standard Z-Score mapping: y=100 is 0 SD. 1 SD = 25px) -->
+            <!-- +3 SD to +2 SD (y=25 to y=50) -->
+            <rect x="0" y="25" width="600" height="25" fill="#fef08a" opacity="0.3"/>
+            <!-- +2 SD to -2 SD (y=50 to y=150) (Normal) -->
+            <rect x="0" y="50" width="600" height="100" fill="#f0fdf4"/>
+            <!-- -2 SD to -3 SD (y=150 to y=175) (Kurang/Stunting/Wasted) -->
+            <rect x="0" y="150" width="600" height="25" fill="#fef08a" opacity="0.5"/>
+            <!-- Below -3 SD (y=175 to y=200) (Buruk/Severely Stunted) -->
+            <rect x="0" y="175" width="600" height="25" fill="#fee2e2" opacity="0.6"/>
+            
             <!-- Grid Lines -->
-            <line x1="0" y1="70" x2="600" y2="70" stroke="currentColor" stroke-dasharray="4" stroke-width="1" />
-            <line x1="0" y1="130" x2="600" y2="130" stroke="currentColor" stroke-dasharray="4" stroke-width="1" />
-            <!-- Plot Line -->
-            <path d="M0,110 Q150,105 300,120 T600,180" fill="none" stroke="{{ $curveColor }}" stroke-width="3" />
-            <!-- Points -->
-            <circle cx="300" cy="120" r="4" fill="{{ $curveColor }}" stroke="#fff" stroke-width="2" />
-            <circle cx="600" cy="180" r="6" fill="{{ $curveColor }}" stroke="#fff" stroke-width="2" class="animate-pulse" />
+            <!-- +2 SD -->
+            <line x1="0" y1="50" x2="600" y2="50" stroke="#cbd5e1" stroke-dasharray="4" stroke-width="1" />
+            <!-- 0 SD -->
+            <line x1="0" y1="100" x2="600" y2="100" stroke="#94a3b8" stroke-dasharray="2" stroke-width="1" />
+            <!-- -2 SD -->
+            <line x1="0" y1="150" x2="600" y2="150" stroke="#cbd5e1" stroke-dasharray="4" stroke-width="1" />
+            <!-- -3 SD -->
+            <line x1="0" y1="175" x2="600" y2="175" stroke="#fca5a5" stroke-dasharray="4" stroke-width="1" />
+
+            <!-- Y Axis SVG Labels (to prevent wrapping) -->
+            <text x="10" y="22" fill="#64748b" font-size="11" font-weight="bold">+3 SD</text>
+            <text x="10" y="46" fill="#64748b" font-size="11" font-weight="bold">+2 SD</text>
+            <text x="10" y="96" fill="#64748b" font-size="11" font-weight="bold">0 SD</text>
+            <text x="10" y="146" fill="#64748b" font-size="11" font-weight="bold">-2 SD</text>
+            <text x="10" y="171" fill="#ef4444" font-size="11" font-weight="bold">-3 SD</text>
+
+            <!-- Plot Line (Dynamic) -->
+            <path class="plot-line" d="" fill="none" stroke="{{ $curveColor }}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            
+            <!-- Points (Dynamic) -->
+            <g class="dots-group"></g>
         </svg>
-        <!-- Y Axis Labels -->
-        <div class="absolute left-2 top-0 bottom-0 py-4 flex flex-col justify-between text-[10px] text-slate-400 font-medium">
-            <span>+2 SD</span>
-            <span>0 SD</span>
-            <span>-2 SD</span>
-            <span>-3 SD</span>
+
+        <!-- Empty State Overlay -->
+        <div class="empty-state-overlay absolute inset-0 flex items-center justify-center bg-slate-50/80 backdrop-blur-sm hidden">
+            <div class="text-center">
+                <p class="text-sm font-bold text-slate-500">Belum ada data pengukuran.</p>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    (function() {
+        const container = document.getElementById('{{ $chartId }}');
+        const select = container.querySelector('.chart-indicator-select');
+        const plotPath = container.querySelector('.plot-line');
+        const dotsGroup = container.querySelector('.dots-group');
+        const emptyState = container.querySelector('.empty-state-overlay');
+        
+        // Data dari database. Reverse array agar urutan kronologis (kiri ke kanan)
+        const rawData = @json($child['pengukurans'] ?? []);
+        const data = [...rawData].reverse();
+
+        function drawChart(indicator) {
+            let d = "";
+            dotsGroup.innerHTML = ''; // clear previous dots
+
+            if (data.length === 0) {
+                plotPath.setAttribute('d', '');
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            // Simpan koordinat untuk mempermudah perhitungan kurva
+            const points = [];
+
+            data.forEach((p, index) => {
+                // Pilih z-score sesuai indikator
+                const z = indicator === 'tbu' ? p.z_score_tb_u : p.z_score_bb_u;
+                const zVal = parseFloat(z) || 0;
+                
+                // Hitung koordinat SVG
+                let x = 300; 
+                if (data.length > 1) {
+                    const padding = 60;
+                    const availableWidth = 600 - (padding * 2);
+                    const spacing = availableWidth / (data.length - 1);
+                    x = padding + (index * spacing);
+                }
+                
+                let y = 100 - (zVal * 25);
+                y = Math.max(10, Math.min(210, y)); // clamp
+                
+                points.push({x, y, zVal, umur: parseFloat(p.umur_bulan) || 0});
+            });
+
+            // Gambar garis dan titik
+            points.forEach((pt, index) => {
+                // Construct path string dengan kurva Bezier halus (Monotone Cubic)
+                if (index === 0) {
+                    d += `M${pt.x},${pt.y} `;
+                } else {
+                    const prevPt = points[index - 1];
+                    const cpX = (prevPt.x + pt.x) / 2;
+                    // Format: C cp1X,cp1Y cp2X,cp2Y endX,endY
+                    d += `C${cpX},${prevPt.y} ${cpX},${pt.y} ${pt.x},${pt.y} `;
+                }
+
+                // Create dot
+                const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                dot.setAttribute('cx', pt.x);
+                dot.setAttribute('cy', pt.y);
+                dot.setAttribute('r', index === data.length - 1 ? '5' : '3.5');
+                dot.setAttribute('fill', '{{ $curveColor }}');
+                dot.setAttribute('stroke', '#fff');
+                dot.setAttribute('stroke-width', '2.5');
+                
+                if (index === data.length - 1) {
+                    dot.classList.add('animate-pulse');
+                    dot.setAttribute('r', '6');
+                }
+                
+                // Hover tooltip
+                const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+                title.textContent = `Umur: ${pt.umur} bln\nZ-Score: ${pt.zVal.toFixed(2)}`;
+                dot.appendChild(title);
+                
+                dotsGroup.appendChild(dot);
+            });
+
+            plotPath.setAttribute('d', d);
+        }
+
+        // Event listener untuk perubahan indikator
+        select.addEventListener('change', function(e) {
+            drawChart(e.target.value);
+        });
+
+        // Eksekusi awal
+        drawChart(select.value);
+    })();
+</script>

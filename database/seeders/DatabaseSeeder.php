@@ -4,18 +4,15 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Puskesmas;
 use App\Models\Posyandu;
-use App\Models\PetugasPuskesmas;
 use App\Models\Kader;
-use App\Models\Ibu;
+use App\Models\OrangTua;
 use App\Models\Balita;
-use App\Models\Jadwal;
 use App\Models\Pengukuran;
-use App\Models\Validasi;
-use App\Models\Notification;
-use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,160 +21,150 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Admin
-        $admin = User::factory()->create([
-            'name' => 'Administrator Dinas',
-            'email' => 'admin@nutrigen.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
-
-        // 2. Puskesmas & Petugas
-        $puskesmas = Puskesmas::factory()->create([
-            'kode_puskesmas' => 'P123456',
-            'nama' => 'Puskesmas Sukamaju',
-        ]);
-
-        $petugasUser = User::factory()->create([
-            'name' => 'dr. Siti',
-            'email' => 'petugas@nutrigen.com',
+        // 1. Create Puskesmas User & Data
+        $userPuskesmas = User::create([
+            'name' => 'Admin Puskesmas',
+            'email' => 'puskesmas@nutrigen.com',
             'password' => Hash::make('password'),
             'role' => 'puskesmas',
         ]);
 
-        $petugas = PetugasPuskesmas::factory()->create([
-            'user_id' => $petugasUser->id,
-            'puskesmas_id' => $puskesmas->id,
-            'jabatan' => 'Kepala Gizi',
+        $puskesmas = Puskesmas::create([
+            'user_id' => $userPuskesmas->id,
+            'nama' => 'Puskesmas Kecamatan Sehat',
+            'kode_faskes' => 'PKS-001',
+            'alamat' => 'Jl. Kesehatan No. 1, Kota Sehat',
         ]);
 
-        // 3. Posyandu
-        $posyandu1 = Posyandu::factory()->create([
+        // 2. Create Posyandus
+        $posyandu1 = Posyandu::create([
+            'puskesmas_id' => $puskesmas->id,
+            'nama' => 'Posyandu Mawar',
+            'desa_kelurahan' => 'Desa Makmur',
+            'alamat' => 'Balai Desa Makmur',
+        ]);
+
+        $posyandu2 = Posyandu::create([
             'puskesmas_id' => $puskesmas->id,
             'nama' => 'Posyandu Melati',
-        ]);
-        $posyandu2 = Posyandu::factory()->create([
-            'puskesmas_id' => $puskesmas->id,
-            'nama' => 'Posyandu Anggrek',
+            'desa_kelurahan' => 'Desa Sejahtera',
+            'alamat' => 'Balai Desa Sejahtera',
         ]);
 
-        // 4. Kader
-        $kaderUser1 = User::factory()->create([
-            'name' => 'Ibu Kader 1',
-            'email' => 'kader1@nutrigen.com',
-            'password' => Hash::make('password'),
-            'role' => 'kader',
-        ]);
-        $kader1 = Kader::factory()->create([
-            'user_id' => $kaderUser1->id,
-            'posyandu_id' => $posyandu1->id,
-        ]);
+        $posyandus = [$posyandu1, $posyandu2];
 
-        $kaderUser2 = User::factory()->create([
-            'name' => 'Ibu Kader 2',
-            'email' => 'kader2@nutrigen.com',
-            'password' => Hash::make('password'),
-            'role' => 'kader',
-        ]);
-        $kader2 = Kader::factory()->create([
-            'user_id' => $kaderUser2->id,
-            'posyandu_id' => $posyandu2->id,
-        ]);
+        // 3. Create Kader
+        $kaderData = [
+            ['name' => 'Kader Mawar 1', 'email' => 'kader1@nutrigen.com', 'posyandu' => $posyandu1],
+            ['name' => 'Kader Mawar 2', 'email' => 'kader2@nutrigen.com', 'posyandu' => $posyandu1],
+            ['name' => 'Kader Melati 1', 'email' => 'kader3@nutrigen.com', 'posyandu' => $posyandu2],
+        ];
 
-        // 5. Ibu & Balita (5 Pairs)
-        $ibus = [];
-        $balitas = [];
-        for ($i = 1; $i <= 5; $i++) {
-            $ibu = Ibu::factory()->create([
-                'nama' => 'Bunda Balita ' . $i,
-                'token_whatsapp' => 'demo-token-' . $i,
+        $kaders = [];
+        foreach ($kaderData as $idx => $data) {
+            $userKader = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make('password'),
+                'role' => 'kader',
             ]);
-            $ibus[] = $ibu;
 
-            $balita = Balita::factory()->create([
-                'ibu_id' => $ibu->id,
-                'nama' => 'Anak Balita ' . $i,
-                'tanggal_lahir' => Carbon::now()->subMonths(rand(12, 36)),
+            $kaders[] = Kader::create([
+                'user_id' => $userKader->id,
+                'posyandu_id' => $data['posyandu']->id,
+                'nama' => $data['name'],
+                'no_hp' => '08123456789' . $idx,
             ]);
-            $balitas[] = $balita;
         }
 
-        // Specifically set the first Ibu to have token "demo-token" for the Landing Page demo button
-        $ibus[0]->update(['token_whatsapp' => 'demo-token']);
+        // 4. Create OrangTua (10)
+        $orangTuas = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $userIbu = User::create([
+                'name' => 'Ibu Budi ' . $i,
+                'email' => 'ibu'.$i.'@nutrigen.com',
+                'password' => Hash::make('password'),
+                'role' => 'ibu',
+            ]);
 
-        // 6. Jadwal (Past & Active)
-        $jadwalAktif = Jadwal::factory()->create([
-            'posyandu_id' => $posyandu1->id,
-            'tanggal' => Carbon::now()->format('Y-m-d'),
-        ]);
+            $orangTuas[] = OrangTua::create([
+                'user_id' => $userIbu->id,
+                'nik_ibu' => '320101' . str_pad($i, 10, '0', STR_PAD_LEFT),
+                'nama_ibu' => 'Ibu Budi ' . $i,
+                'nama_ayah' => 'Bapak Budi ' . $i,
+                'no_hp_whatsapp' => '081100000' . str_pad($i, 3, '0', STR_PAD_LEFT),
+                'alamat' => 'Jl. Perumahan No. ' . $i,
+            ]);
+        }
 
-        // 7. Pengukuran (Historis + Current)
-        foreach ($balitas as $balita) {
-            $beratAwal = 5.0; // Base weight
-            $tinggiAwal = 60.0; // Base height
+        // 5. Create Balita (15) and Measurements
+        // Distribution: 8 Normal, 4 Risiko, 3 Stunting
+        $balitaProfiles = [
+            ['status' => 'Normal', 'z_tbu_start' => -0.5, 'tb_start' => 75.0, 'bb_start' => 9.5],
+            ['status' => 'Normal', 'z_tbu_start' => 0.2, 'tb_start' => 76.5, 'bb_start' => 10.0],
+            ['status' => 'Normal', 'z_tbu_start' => 1.0, 'tb_start' => 78.0, 'bb_start' => 10.5],
+            ['status' => 'Normal', 'z_tbu_start' => -1.0, 'tb_start' => 74.0, 'bb_start' => 9.0],
+            ['status' => 'Normal', 'z_tbu_start' => 0.5, 'tb_start' => 77.0, 'bb_start' => 10.2],
+            ['status' => 'Normal', 'z_tbu_start' => -0.8, 'tb_start' => 74.5, 'bb_start' => 9.2],
+            ['status' => 'Normal', 'z_tbu_start' => 1.5, 'tb_start' => 79.0, 'bb_start' => 11.0],
+            ['status' => 'Normal', 'z_tbu_start' => 0.0, 'tb_start' => 76.0, 'bb_start' => 9.8],
+            ['status' => 'Risiko', 'z_tbu_start' => -1.8, 'tb_start' => 72.0, 'bb_start' => 8.5],
+            ['status' => 'Risiko', 'z_tbu_start' => -1.9, 'tb_start' => 71.5, 'bb_start' => 8.3],
+            ['status' => 'Risiko', 'z_tbu_start' => -1.6, 'tb_start' => 72.5, 'bb_start' => 8.7],
+            ['status' => 'Risiko', 'z_tbu_start' => -1.7, 'tb_start' => 72.2, 'bb_start' => 8.6],
+            ['status' => 'Stunting', 'z_tbu_start' => -2.5, 'tb_start' => 69.0, 'bb_start' => 7.5],
+            ['status' => 'Stunting', 'z_tbu_start' => -2.8, 'tb_start' => 68.0, 'bb_start' => 7.2],
+            ['status' => 'Stunting', 'z_tbu_start' => -3.1, 'tb_start' => 67.0, 'bb_start' => 6.8],
+        ];
 
-            // 6 Months Historical Data
-            for ($month = 6; $month >= 1; $month--) {
-                $jadwalHistoris = Jadwal::factory()->create([
-                    'posyandu_id' => $posyandu1->id,
-                    'tanggal' => Carbon::now()->subMonths($month)->format('Y-m-d'),
-                ]);
+        $now = Carbon::now();
 
-                $beratBadan = $beratAwal + ((7 - $month) * 0.5);
-                $tinggiBadan = $tinggiAwal + ((7 - $month) * 1.2);
+        foreach ($balitaProfiles as $index => $profile) {
+            $ibu = $orangTuas[$index % 10];
+            $posyandu = $posyandus[$index % 2];
+            $kader = $kaders[$index % 3]; // The kader recording the measurement
 
-                $pengukuran = Pengukuran::factory()->create([
+            // Base age around 12 to 24 months
+            $umurBulanSaatIni = 12 + ($index % 12); 
+            $tanggalLahir = $now->copy()->subMonths($umurBulanSaatIni)->subDays(rand(1, 28));
+
+            $balita = Balita::create([
+                'orang_tua_id' => $ibu->id,
+                'posyandu_id' => $posyandu->id,
+                'nik' => '320101' . str_pad($index, 10, '0', STR_PAD_LEFT),
+                'nama' => 'Anak ' . $ibu->nama_ibu,
+                'jenis_kelamin' => $index % 2 == 0 ? 'L' : 'P',
+                'tanggal_lahir' => $tanggalLahir,
+                'berat_lahir' => 3.0 + ($index * 0.1),
+                'panjang_lahir' => 50.0 + ($index * 0.5),
+            ]);
+
+            // Create 3 months of measurement history
+            $currentTb = $profile['tb_start'];
+            $currentBb = $profile['bb_start'];
+            $currentZ = $profile['z_tbu_start'];
+
+            for ($m = 2; $m >= 0; $m--) {
+                $tanggalUkur = $now->copy()->subMonths($m)->startOfMonth()->addDays(rand(1, 5));
+                $umurBulanUkur = $umurBulanSaatIni - $m;
+
+                Pengukuran::create([
                     'balita_id' => $balita->id,
-                    'jadwal_id' => $jadwalHistoris->id,
-                    'kader_id' => $kader1->id,
-                    'posyandu_id' => $posyandu1->id,
-                    'tanggal_ukur' => Carbon::now()->subMonths($month)->format('Y-m-d'),
-                    'berat_badan' => $beratBadan,
-                    'tinggi_badan' => $tinggiBadan,
-                    'z_score_bb_u' => 0.5,
-                    'z_score_tb_u' => 0.6,
-                    'z_score_bb_tb' => 0.4,
+                    'kader_id' => $kader->id,
+                    'tanggal_ukur' => $tanggalUkur,
+                    'umur_bulan' => $umurBulanUkur,
+                    'berat_badan' => $currentBb,
+                    'tinggi_badan' => $currentTb,
+                    'z_score_bbu' => $currentZ + 0.1, // Approximate
+                    'z_score_tbu' => $currentZ,
+                    'status_gizi' => $profile['status'],
                 ]);
 
-                // All historical data is valid
-                Validasi::factory()->create([
-                    'pengukuran_id' => $pengukuran->id,
-                    'petugas_id' => $petugas->id,
-                    'status_validasi' => 'valid',
-                    'catatan' => 'Validasi historis',
-                ]);
+                // Simulate slight growth for the next month
+                $growthRate = $profile['status'] === 'Stunting' ? 0.3 : ($profile['status'] === 'Risiko' ? 0.6 : 0.9);
+                $currentTb += $growthRate;
+                $currentBb += ($growthRate * 0.2);
             }
-
-            // Current Month Data (Pending Validasi)
-            // This satisfies the demo requirement: Kader input -> Pending -> Puskesmas validates
-            $pengukuranBaru = Pengukuran::factory()->create([
-                'balita_id' => $balita->id,
-                'jadwal_id' => $jadwalAktif->id,
-                'kader_id' => $kader1->id,
-                'posyandu_id' => $posyandu1->id,
-                'tanggal_ukur' => Carbon::now()->format('Y-m-d'),
-                'berat_badan' => $beratAwal + (7 * 0.5),
-                'tinggi_badan' => $tinggiAwal + (7 * 1.2),
-                'z_score_bb_u' => 0.4,
-                'z_score_tb_u' => 0.5,
-                'z_score_bb_tb' => 0.3,
-            ]);
-
-            Validasi::factory()->create([
-                'pengukuran_id' => $pengukuranBaru->id,
-                'petugas_id' => null,
-                'status_validasi' => 'pending',
-                'catatan' => null,
-            ]);
-
-            // Notification for the new measurement
-            Notification::factory()->create([
-                'ibu_id' => $balita->ibu_id,
-                'petugas_id' => null,
-                'title' => 'Pengukuran Baru Selesai',
-                'type' => 'info',
-                'message' => "Data pengukuran {$balita->nama} bulan ini sedang divalidasi oleh Puskesmas.",
-            ]);
         }
     }
 }

@@ -20,7 +20,7 @@
                 </svg>
             </a>
             <div class="flex flex-col">
-                <span class="inline-flex items-center px-1.5 py-0.5 bg-teal-50 text-teal-700 text-[10px] font-extrabold uppercase tracking-widest rounded border border-teal-200/60 w-max mb-1">
+                <span class="inline-flex items-center px-1.5 py-0.5 bg-mint-50 text-mint-700 text-[10px] font-extrabold uppercase tracking-widest rounded border border-mint-200/60 w-max mb-1">
                     Operasional Posyandu
                 </span>
                 <h1 class="text-xl font-black text-slate-800 tracking-tight leading-none mb-1">Tambah Jadwal Baru</h1>
@@ -33,14 +33,14 @@
     <div class="max-w-5xl mx-auto w-full px-5 mt-5">
         
         <!-- Mobile Information Banner -->
-        <div class="lg:hidden bg-gradient-to-r from-teal-50/80 to-white border border-teal-100 rounded-xl p-3 mb-5 flex items-center gap-3 shadow-sm">
-            <div class="p-1.5 bg-white border border-teal-100 text-teal-600 rounded-lg shrink-0 shadow-sm">
+        <div class="lg:hidden bg-gradient-to-r from-mint-50/80 to-white border border-mint-100 rounded-xl p-3 mb-5 flex items-center gap-3 shadow-sm">
+            <div class="p-1.5 bg-white border border-mint-100 text-mint-600 rounded-lg shrink-0 shadow-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                 </svg>
             </div>
             <span class="text-[11px] font-medium text-slate-600 leading-snug">
-                <strong class="text-teal-700 font-extrabold">Tips:</strong> Pastikan jadwal tidak berbenturan dengan agenda lain.
+                <strong class="text-mint-700 font-extrabold">Tips:</strong> Pastikan jadwal tidak berbenturan dengan agenda lain.
             </span>
         </div>
 
@@ -69,7 +69,7 @@
                         <!-- SECTION 1: Informasi Penyelenggara -->
                         <div class="mb-5">
                             <h3 class="text-[10px] font-extrabold text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-teal-500 shadow-sm shadow-teal-500/50"></div> 
+                                <div class="w-2 h-2 rounded-full bg-mint-500 shadow-sm shadow-mint-500/50"></div> 
                                 Informasi Lokasi
                             </h3>
                             <div class="space-y-4">
@@ -82,7 +82,7 @@
                                         Pilih Posyandu
                                     </label>
                                     <div class="relative">
-                                        <select id="posyandu_id" name="posyandu_id" class="w-full bg-slate-50 border border-slate-200 hover:border-teal-300 text-slate-800 text-sm font-semibold rounded-2xl px-4 py-3.5 appearance-none focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-400 transition-all cursor-pointer shadow-sm">
+                                        <select id="posyandu_id" name="posyandu_id" class="w-full bg-slate-50 border border-slate-200 hover:border-mint-300 text-slate-800 text-sm font-semibold rounded-2xl px-4 py-3.5 appearance-none focus:outline-none focus:ring-4 focus:ring-mint-500/10 focus:border-mint-400 transition-all cursor-pointer shadow-sm">
                                             <option value="" disabled selected>Pilih nama Posyandu penyelenggara</option>
                                             <option value="1">Posyandu Melati 1</option>
                                             <option value="2">Posyandu Mawar 2</option>
@@ -104,7 +104,7 @@
                                         </svg>
                                         Tempat Kegiatan
                                     </label>
-                                    <input type="text" id="lokasi" name="lokasi" placeholder="Masukkan lokasi atau alamat spesifik" class="w-full bg-slate-50 border border-slate-200 hover:border-teal-300 text-slate-800 text-sm font-semibold rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-400 transition-all placeholder:text-slate-400 placeholder:font-medium shadow-sm">
+                                    <input type="text" id="lokasi" name="lokasi" placeholder="Masukkan lokasi atau alamat spesifik" class="w-full bg-slate-50 border border-slate-200 hover:border-mint-300 text-slate-800 text-sm font-semibold rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-mint-500/10 focus:border-mint-400 transition-all placeholder:text-slate-400 placeholder:font-medium shadow-sm">
                                 </div>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                                         </svg>
                                         Tanggal
                                     </label>
-                                    <input type="date" id="tanggal" name="tanggal" class="w-full bg-slate-50 border border-slate-200 hover:border-teal-300 text-slate-800 text-sm font-semibold rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-400 transition-all placeholder:text-slate-400 shadow-sm">
+                                    <input type="date" id="tanggal" name="tanggal" class="w-full bg-slate-50 border border-slate-200 hover:border-mint-300 text-slate-800 text-sm font-semibold rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-mint-500/10 focus:border-mint-400 transition-all placeholder:text-slate-400 shadow-sm">
                                 </div>
 
                                 <!-- Waktu Mulai & Selesai Terhubung -->
@@ -139,7 +139,7 @@
                                         Rentang Waktu
                                     </label>
                                     <div class="flex items-center gap-2">
-                                        <input type="time" id="waktu_mulai" name="waktu_mulai" class="flex-1 bg-slate-50 border border-slate-200 hover:border-teal-300 text-slate-800 text-sm font-semibold rounded-2xl px-3 py-3.5 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-400 transition-all shadow-sm">
+                                        <input type="time" id="waktu_mulai" name="waktu_mulai" class="flex-1 bg-slate-50 border border-slate-200 hover:border-mint-300 text-slate-800 text-sm font-semibold rounded-2xl px-3 py-3.5 focus:outline-none focus:ring-4 focus:ring-mint-500/10 focus:border-mint-400 transition-all shadow-sm">
                                         
                                         <span class="text-slate-300 font-black shrink-0">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3 h-3">
@@ -147,7 +147,7 @@
                                             </svg>
                                         </span>
                                         
-                                        <input type="time" id="waktu_selesai" name="waktu_selesai" class="flex-1 bg-slate-50 border border-slate-200 hover:border-teal-300 text-slate-800 text-sm font-semibold rounded-2xl px-3 py-3.5 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-400 transition-all shadow-sm">
+                                        <input type="time" id="waktu_selesai" name="waktu_selesai" class="flex-1 bg-slate-50 border border-slate-200 hover:border-mint-300 text-slate-800 text-sm font-semibold rounded-2xl px-3 py-3.5 focus:outline-none focus:ring-4 focus:ring-mint-500/10 focus:border-mint-400 transition-all shadow-sm">
                                     </div>
                                 </div>
                             </div>
@@ -169,13 +169,13 @@
                                     </svg>
                                     Catatan Penjadwalan
                                 </label>
-                                <textarea id="catatan" name="catatan" rows="3" placeholder="Tambahkan catatan khusus bila ada..." class="w-full bg-slate-50 border border-slate-200 hover:border-teal-300 text-slate-800 text-sm font-semibold rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-400 transition-all placeholder:text-slate-400 placeholder:font-medium resize-none shadow-sm"></textarea>
+                                <textarea id="catatan" name="catatan" rows="3" placeholder="Tambahkan catatan khusus bila ada..." class="w-full bg-slate-50 border border-slate-200 hover:border-mint-300 text-slate-800 text-sm font-semibold rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-mint-500/10 focus:border-mint-400 transition-all placeholder:text-slate-400 placeholder:font-medium resize-none shadow-sm"></textarea>
                             </div>
                         </div>
                         
                         <!-- CTA Isolated Area -->
                         <div class="mt-4 pt-6 pb-6 px-6 bg-slate-50/50 -mx-6 -mb-6 border-t border-slate-100 flex justify-center rounded-b-3xl">
-                            <button type="submit" class="w-full sm:max-w-xs bg-teal-600 text-white px-5 py-3.5 rounded-full font-bold shadow-lg shadow-teal-500/20 hover:bg-teal-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-teal-500/20 transition-all duration-200 flex items-center justify-center gap-2 group">
+                            <button type="submit" class="w-full sm:max-w-xs bg-mint-600 text-white px-5 py-3.5 rounded-full font-bold shadow-lg shadow-mint-500/20 hover:bg-mint-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-mint-500/20 transition-all duration-200 flex items-center justify-center gap-2 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform group-hover:scale-110">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -221,10 +221,10 @@
 
                     <!-- Checklist Tips -->
                     <div class="border-t border-slate-100/80 pt-5 px-1">
-                        <h3 class="text-[10px] font-extrabold text-teal-600 uppercase tracking-widest mb-3">Checklist Penjadwalan</h3>
+                        <h3 class="text-[10px] font-extrabold text-mint-600 uppercase tracking-widest mb-3">Checklist Penjadwalan</h3>
                         <ul class="space-y-3">
                             <li class="flex items-start gap-2">
-                                <div class="shrink-0 text-teal-600 mt-0.5">
+                                <div class="shrink-0 text-mint-600 mt-0.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5">
                                       <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                     </svg>
@@ -232,7 +232,7 @@
                                 <span class="text-xs font-medium text-slate-600 pt-0.5 leading-snug">Hindari tanggal merah/libur.</span>
                             </li>
                             <li class="flex items-start gap-2">
-                                <div class="shrink-0 text-teal-600 mt-0.5">
+                                <div class="shrink-0 text-mint-600 mt-0.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5">
                                       <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                     </svg>
@@ -240,7 +240,7 @@
                                 <span class="text-xs font-medium text-slate-600 pt-0.5 leading-snug">Cek tenaga medis tersedia.</span>
                             </li>
                             <li class="flex items-start gap-2">
-                                <div class="shrink-0 text-teal-600 mt-0.5">
+                                <div class="shrink-0 text-mint-600 mt-0.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5">
                                       <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                     </svg>

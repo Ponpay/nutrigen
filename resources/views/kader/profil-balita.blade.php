@@ -26,26 +26,6 @@
 --}}
 
 @php
-    // ============================================================
-    // DEMO DATA — REMOVE IN PRODUCTION
-    // ============================================================
-    // Backend: Remove this entire @php block and inject all
-    // variables from BalitaController@show.
-    // The $balitaId variable is already available from the route.
-    $balitaId   = $balitaId ?? null;
-    $childName  = $childName  ?? 'Aisyah Putri';
-    $gender     = $gender     ?? 'Perempuan';
-    $age        = $age        ?? '2 Tahun 2 Bulan';
-    $nik        = $nik        ?? '320101XXXXXXXXX';
-    $motherName = $motherName ?? 'Siti Aminah';
-    $motherPhone= $motherPhone?? '081234567890';
-    $posyanduName=$posyanduName?? 'Melati 1';
-    $address    = $address    ?? 'Jl. Kenanga No 12';
-    $addressSub = $addressSub ?? 'Desa Melati';
-    $status     = $status     ?? 'Normal';
-    $status_type= $status_type?? 'success';
-
-    // Explicit color map — avoids Tailwind purge issues
     $colorMap = [
         'success' => 'emerald',
         'warning' => 'amber',
@@ -53,323 +33,395 @@
     ];
     $colorClass = $colorMap[$status_type] ?? 'slate';
 
-    // Explicit Tailwind class sets for status badge (no interpolation)
     $statusBadgeClasses = [
-        'success' => 'bg-emerald-50 text-emerald-700 border-emerald-100',
-        'warning' => 'bg-amber-50 text-amber-700 border-amber-100',
-        'danger'  => 'bg-rose-50 text-rose-700 border-rose-100',
+        'success' => 'bg-emerald-50 text-emerald-700 border-emerald-200/60 shadow-[0_2px_8px_-4px_rgba(16,185,129,0.4)]',
+        'warning' => 'bg-amber-50 text-amber-700 border-amber-200/60 shadow-[0_2px_8px_-4px_rgba(245,158,11,0.4)]',
+        'danger'  => 'bg-rose-50 text-rose-700 border-rose-200/60 shadow-[0_2px_8px_-4px_rgba(225,29,72,0.4)]',
     ];
     $statusDotClasses = [
         'success' => 'bg-emerald-500',
         'warning' => 'bg-amber-500',
         'danger'  => 'bg-rose-500',
     ];
-    $badgeClasses = $statusBadgeClasses[$status_type] ?? 'bg-slate-50 text-slate-700 border-slate-100';
+    $badgeClasses = $statusBadgeClasses[$status_type] ?? 'bg-slate-50 text-slate-700 border-slate-200/60 shadow-sm';
     $dotClass     = $statusDotClasses[$status_type]   ?? 'bg-slate-500';
-
-    // Demo measurements — replace with $measurements from controller
-    $measurements = $measurements ?? [
-        ['date' => '10 Mei 2026',  'weight' => '12.5', 'weight_trend' =>  0.5, 'height' => '87.2', 'head_circ' => '48.0', 'status' => 'Normal', 'status_type' => 'success'],
-        ['date' => '10 Apr 2026',  'weight' => '12.0', 'weight_trend' =>  0.2, 'height' => '86.5', 'head_circ' => '47.5', 'status' => 'Normal', 'status_type' => 'success'],
-        ['date' => '10 Mar 2026',  'weight' => '11.8', 'weight_trend' => -0.1, 'height' => '86.0', 'head_circ' => '47.0', 'status' => 'Kurang', 'status_type' => 'warning'],
-    ];
-
-    $latestMeasure = $latestMeasure ?? $measurements[0];
 @endphp
 
-<div class="bg-slate-50 min-h-screen relative w-full pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-12">
+<!-- MAIN CANVAS -->
+<div class="bg-[#F8FAFC] min-h-screen relative w-full pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-16 font-sans">
     
     <!-- ========================================== -->
-    <!-- DESKTOP GLOBAL PAGE HEADER                 -->
+    <!-- HERO WORKSPACE (Apple Health / Notion Vibe)-->
     <!-- ========================================== -->
-    <div class="hidden lg:flex bg-white border-b border-slate-100 sticky top-0 z-50 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.03)]">
-        <div class="max-w-6xl mx-auto px-6 py-4 w-full flex items-center justify-between">
-            <div class="flex items-center gap-3">
-            <a href="{{ route('balita.index') }}" class="flex flex-shrink-0 items-center justify-center w-10 h-10 -ml-2 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-full transition-all focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                </a>
-                <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">Profil Balita</h1>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                {{-- Backend: pass $balitaId to route for edit --}}
-                <a href="{{ route('balita.edit') }}" class="flex items-center gap-2 text-slate-600 hover:text-teal-700 bg-white hover:bg-teal-50 border border-slate-200 hover:border-teal-200 px-5 py-2.5 rounded-2xl transition-colors font-bold text-[13px] shadow-sm focus:outline-none">
-                    Edit Data
-                </a>
-            </div>
-        </div>
-    </div>
+    <div class="bg-white border-b border-slate-200/60 relative z-40">
+        <!-- Subtle Ambient Gradient based on Status -->
+        @if($status_type === 'danger')
+            <div class="absolute inset-0 bg-gradient-to-b from-rose-50/40 to-transparent pointer-events-none"></div>
+        @elseif($status_type === 'warning')
+            <div class="absolute inset-0 bg-gradient-to-b from-amber-50/40 to-transparent pointer-events-none"></div>
+        @else
+            <div class="absolute inset-0 bg-gradient-to-b from-emerald-50/40 to-transparent pointer-events-none"></div>
+        @endif
 
-    <!-- ========================================== -->
-    <!-- MOBILE ULTRA-COMPACT HEADER (Sticky)       -->
-    <!-- ========================================== -->
-    <div class="lg:hidden bg-white px-4 py-3 border-b border-slate-100 sticky top-0 z-50 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.03)] flex items-center justify-between">
-        <div class="flex items-center gap-3 overflow-hidden">
-            <!-- Back Button -->
-            <a href="{{ route('balita.index') }}" class="flex-shrink-0 text-slate-400 hover:text-slate-900 focus:outline-none p-1 -ml-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-            </a>
+        <div class="max-w-7xl mx-auto w-full px-5 py-6 lg:py-8 relative">
             
-            <!-- Compact Identity -->
-            <div class="flex items-center gap-2.5 overflow-hidden">
-                <div class="w-9 h-9 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 opacity-70">
-                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <div class="flex flex-col truncate mt-0.5">
-                    <h1 class="text-[13px] font-extrabold text-slate-900 leading-none truncate tracking-tight">{{ $childName }}</h1>
-                    <span class="text-[10px] font-medium text-slate-500 mt-0.5 truncate">{{ $age }}</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Status Pill -->
-        <div class="flex items-center gap-1.5 {{ $badgeClasses }} px-2 py-1.5 rounded-lg border shrink-0 ml-2">
-            <div class="w-1.5 h-1.5 rounded-full {{ $dotClass }}"></div>
-            <span class="text-[9px] font-black uppercase tracking-widest">{{ $status }}</span>
-        </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- 2-COLUMN WORKSPACE CONTAINER               -->
-    <!-- ========================================== -->
-    <div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-0 lg:gap-8 lg:px-6 mt-0 lg:mt-8">
-        
-        <!-- LEFT COLUMN: DESKTOP IDENTITY & CONTEXT -->
-        <div class="hidden lg:flex w-full lg:w-1/3 flex-col shrink-0 lg:sticky lg:top-28 self-start z-10">
-            <!-- Identity Card -->
-            <div class="bg-white p-6 border border-slate-100 rounded-[1.25rem] shadow-[0_4px_20px_-8px_rgba(0,0,0,0.03)] flex flex-col gap-6">
-                <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100 overflow-hidden shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9 opacity-80">
-                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+            <!-- Top Nav Row (Back & Actions) -->
+            <div class="flex items-center justify-between mb-8">
+                <a href="{{ route('balita.index') }}" class="group flex items-center gap-2.5 text-slate-400 hover:text-slate-800 transition-colors font-medium text-[14px]">
+                    <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-200 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                         </svg>
                     </div>
-                    <div class="flex flex-col flex-1 mt-1">
-                        <h2 class="text-xl font-extrabold text-slate-900 leading-tight mb-1 tracking-tight">{{ $childName }}</h2>
-                        <span class="text-[13px] font-medium text-slate-500">{{ $gender }} • {{ $age }}</span>
-                    </div>
+                    Daftar Balita
+                </a>
+                
+                <div class="flex items-center gap-2">
+                    <a href="{{ route('balita.edit', $balitaId) }}" class="flex items-center justify-center bg-slate-100 text-slate-600 hover:text-slate-900 px-4 h-[36px] rounded-full hover:bg-slate-200 transition-colors font-bold text-[13px] shadow-sm">
+                        Edit Data
+                    </a>
+                    <form id="delete-balita-{{ $balitaId }}" action="{{ route('balita.destroy', $balitaId) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" onclick="window.NutriAlert.confirm('Hapus Data Balita?', 'Hapus permanen data balita beserta seluruh riwayat pengukurannya?', 'Ya, Hapus', 'Batal').then((result) => { if(result.isConfirmed) document.getElementById('delete-balita-{{ $balitaId }}').submit(); })" class="flex items-center justify-center bg-rose-50 border border-rose-100 text-rose-600 hover:text-rose-700 hover:bg-rose-100 px-4 h-[36px] rounded-full transition-colors font-bold text-[13px] shadow-sm">
+                            Hapus
+                        </button>
+                    </form>
                 </div>
+            </div>
+            
+            <!-- Identity Row -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 lg:gap-8">
+                
+                <!-- Avatar & Core Info -->
+                <div class="flex flex-row items-center sm:items-start lg:items-center gap-4 sm:gap-5 w-full lg:w-auto">
+                    
+                    <!-- Avatar -->
+                    <div class="relative shrink-0">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-slate-50 to-slate-100 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)] ring-1 ring-slate-200/80 flex items-center justify-center text-slate-300 relative z-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 sm:w-10 sm:h-10 opacity-50">
+                                <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Text Identity -->
+                    <div class="flex flex-col w-full min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1.5 sm:mb-2">
+                            <h1 class="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight truncate">{{ $childName }}</h1>
+                            <!-- Modern Status Badge -->
+                            <div class="flex items-center gap-1.5 {{ $badgeClasses }} px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border bg-white/90 shadow-sm">
+                                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full {{ $dotClass }} animate-pulse"></div>
+                                <span class="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest">{{ $status }}</span>
+                            </div>
 
-                <div class="flex items-center justify-between border-t border-slate-100 pt-5">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Status Gizi</span>
-                    <div class="flex items-center gap-2 {{ $badgeClasses }} px-3 py-1.5 rounded-xl border">
-                        <div class="w-2 h-2 rounded-full {{ $dotClass }} shadow-sm"></div>
-                        <span class="text-[10px] font-black uppercase tracking-widest">{{ $status }}</span>
+                            <!-- Validasi Status Badge -->
+                            @if(isset($latestMeasure) && $latestMeasure['status_validasi'])
+                                @php
+                                    $valColors = match($latestMeasure['status_validasi']) {
+                                        'pending' => 'bg-amber-50 text-amber-700 border-amber-200/60',
+                                        'approved' => 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+                                        'rejected' => 'bg-rose-50 text-rose-700 border-rose-200/60',
+                                        default => 'bg-slate-50 text-slate-700 border-slate-200/60'
+                                    };
+                                    $valIcon = match($latestMeasure['status_validasi']) {
+                                        'pending' => '⏳',
+                                        'approved' => '✔',
+                                        'rejected' => '✖',
+                                        default => ''
+                                    };
+                                @endphp
+                                <div class="flex items-center gap-1.5 {{ $valColors }} px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border bg-white/90 shadow-sm">
+                                    <span class="text-[10px] sm:text-[11px] leading-none">{{ $valIcon }}</span>
+                                    <span class="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest">{{ $latestMeasure['status_validasi'] }}</span>
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <!-- Metadata Tags -->
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                            <div class="flex items-center gap-1.5 bg-slate-100/80 border border-slate-200/60 px-2 py-1 sm:px-2.5 sm:py-1 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="text-[11px] sm:text-[12px] font-bold text-slate-700">{{ $age }}</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 bg-slate-100/80 border border-slate-200/60 px-2 py-1 sm:px-2.5 sm:py-1 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                                </svg>
+                                <span class="text-[11px] sm:text-[12px] font-medium text-slate-500">Ibu: <span class="font-bold text-slate-700">{{ $motherName }}</span></span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 bg-slate-100/80 border border-slate-200/60 px-2 py-1 sm:px-2.5 sm:py-1 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5" />
+                                </svg>
+                                <span class="text-[11px] sm:text-[12px] font-medium text-slate-500">NIK: <span class="font-bold text-slate-700 font-mono">{{ $nik }}</span></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Desktop Personal Data -->
-            <div class="bg-white border border-slate-100 rounded-[1.25rem] p-6 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.03)] mt-6">
-                <h3 class="text-sm font-black text-slate-900 mb-5 tracking-tight">Informasi Personal</h3>
-                <div class="flex flex-col gap-5">
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">NIK Anak</span>
-                        <span class="text-slate-900 font-bold text-sm">{{ $nik }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Nama Ibu Kandung</span>
-                        <span class="text-slate-900 font-bold text-sm">{{ $motherName }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Nomor Handphone</span>
-                        <span class="text-slate-900 font-bold text-sm">{{ $motherPhone }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Alamat Domisili</span>
-                        <span class="text-slate-900 font-bold text-sm leading-snug">{{ $address }}<br><span class="text-slate-500 text-xs font-medium">{{ $addressSub }}</span></span>
-                    </div>
+                
+                <!-- Mobile Ukur Button -->
+                <div class="block sm:hidden w-full mt-2">
+                    <button onclick="openMeasurementModal()" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 h-[44px] rounded-xl font-bold text-[14px] shadow-[0_4px_12px_-2px_rgba(16,185,129,0.4)] active:scale-[0.98] transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Ukur Sekarang
+                    </button>
+                </div>
+                
+                <!-- Desktop Actions -->
+                <div class="hidden sm:flex lg:hidden w-full mt-4">
+                    <!-- tablet action if needed, currently button is shown below in another block for tablet/desktop -->
+                </div>
+                
+                <!-- Primary CTA (Desktop & Tablet) -->
+                <div class="hidden sm:flex shrink-0">
+                    <button onclick="openMeasurementModal()" class="group relative flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 h-[44px] rounded-full font-bold text-[14px] shadow-[0_8px_20px_-6px_rgba(16,185,129,0.4)] hover:shadow-[0_12px_24px_-8px_rgba(16,185,129,0.6)] hover:-translate-y-0.5 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 group-hover:scale-110 transition-transform duration-300">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Ukur Sekarang
+                        <div class="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                    </button>
                 </div>
             </div>
-            
-            <!-- Desktop In-Flow CTA -->
-            <button onclick="openMeasurementModal()" class="mt-8 flex items-center w-full justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white py-4 rounded-[1.25rem] font-black text-[13px] shadow-[0_8px_20px_-6px_rgba(13,148,136,0.4)] transition-all focus:outline-none hover:-translate-y-0.5">
-                UKUR SEKARANG
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- CENTRAL WORKSPACE                          -->
+    <!-- ========================================== -->
+    <div class="max-w-7xl mx-auto w-full px-5 mt-8 lg:mt-10">
+        
+        <!-- Segmented Tab Navigation -->
+        <div class="inline-flex bg-slate-200/50 p-1 rounded-[14px] mb-8 overflow-x-auto max-w-full hide-scrollbar" id="profile-tabs">
+            <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="tab-btn whitespace-nowrap px-6 py-2.5 rounded-[10px] text-[14px] font-bold text-slate-900 bg-white shadow-sm border border-slate-200/50 transition-all focus:outline-none">
+                Ringkasan
+            </button>
+            <button onclick="switchTab('riwayat')" id="tab-riwayat" class="tab-btn whitespace-nowrap px-6 py-2.5 rounded-[10px] text-[14px] font-semibold text-slate-500 hover:text-slate-800 border border-transparent transition-all focus:outline-none">
+                Riwayat Pengukuran
+            </button>
+            <button onclick="switchTab('grafik')" id="tab-grafik" class="tab-btn whitespace-nowrap px-6 py-2.5 rounded-[10px] text-[14px] font-semibold text-slate-500 hover:text-slate-800 border border-transparent transition-all focus:outline-none">
+                Grafik Pertumbuhan
             </button>
         </div>
-        
-        <!-- ========================================== -->
-        <!-- RIGHT COLUMN: WORKSPACE TABS               -->
-        <!-- ========================================== -->
-        <div class="w-full lg:w-2/3 flex flex-col relative z-20">
-            <div class="bg-white lg:border lg:border-slate-100 lg:rounded-[1.25rem] lg:shadow-[0_4px_20px_-8px_rgba(0,0,0,0.03)] w-full min-h-[500px] flex flex-col relative overflow-hidden">
-                
-                <!-- Tabbed Navigation -->
-                <div class="border-b border-slate-100 w-full z-10 px-2 lg:px-6 bg-white lg:rounded-t-[1.25rem]">
-                    <div class="flex" id="profile-tabs">
-                        <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="flex-1 py-4 text-[13px] font-extrabold text-teal-600 border-b-[3px] border-teal-600 text-center transition-colors focus:outline-none">
-                            Ringkasan
-                        </button>
-                        <button onclick="switchTab('riwayat')" id="tab-riwayat" class="flex-1 py-4 text-[13px] font-bold text-slate-400 border-b-[3px] border-transparent hover:text-slate-800 text-center transition-colors focus:outline-none">
-                            Riwayat
-                        </button>
-                        <button onclick="switchTab('grafik')" id="tab-grafik" class="flex-1 py-4 text-[13px] font-bold text-slate-400 border-b-[3px] border-transparent hover:text-slate-800 text-center transition-colors focus:outline-none">
-                            Grafik
-                        </button>
+
+        <!-- Tab Contents -->
+        <div class="w-full relative pb-20 lg:pb-0">
+            
+            <!-- TAB: RINGKASAN -->
+            <div id="content-ringkasan" class="tab-content flex flex-col gap-8 lg:gap-10">
+                <!-- SKRINING CARD (Medical Alert Style) -->
+                <div class="flex items-start gap-4 p-5 lg:p-6 {{ $status_type == 'danger' ? 'bg-rose-50' : ($status_type == 'warning' ? 'bg-amber-50' : 'bg-emerald-50') }} rounded-[24px] border border-white shadow-[0_2px_12px_-4px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+                    
+                    <!-- Left Accent Border -->
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 {{ $status_type == 'danger' ? 'bg-rose-500' : ($status_type == 'warning' ? 'bg-amber-500' : 'bg-emerald-500') }}"></div>
+                    
+                    <div class="{{ $status_type == 'danger' ? 'text-rose-600' : ($status_type == 'warning' ? 'text-amber-600' : 'text-emerald-600') }} shrink-0 bg-white p-3 rounded-2xl shadow-sm group-hover:scale-105 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7">
+                            <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="flex flex-col ml-1">
+                        <span class="text-[16px] font-extrabold text-slate-900 tracking-tight mb-1.5">Hasil Skrining: <span class="{{ $status_type == 'danger' ? 'text-rose-600' : ($status_type == 'warning' ? 'text-amber-600' : 'text-emerald-600') }}">{{ $latestMeasure['status'] ?? 'Belum Diukur' }}</span></span>
+                        <span class="text-[14px] text-slate-600 font-medium leading-relaxed max-w-3xl">
+                            {{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang anak.' }}
+                        </span>
                     </div>
                 </div>
 
-                <!-- Tab Contents Container -->
-                <div class="p-5 lg:p-8 flex-1 relative bg-slate-50/30">
+                <!-- MEASUREMENT SUMMARY KPI -->
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between px-1">
+                        <h2 class="text-[18px] font-black text-slate-900 tracking-tight">Pengukuran Terakhir</h2>
+                        <span class="text-[12px] font-bold text-emerald-700 bg-emerald-100/80 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                            </svg>
+                            {{ $latestMeasure['date'] ?? 'Belum ada data' }}
+                        </span>
+                    </div>
                     
-                    <!-- TAB: RINGKASAN -->
-                    <div id="content-ringkasan" class="tab-content flex flex-col gap-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
                         
-                        <!-- Hasil Terakhir (Apple Health Style Metric Cards) -->
-                        <div>
-                            <h2 class="text-[15px] font-black text-slate-900 mb-4 flex items-center justify-between tracking-tight">
-                                Pengukuran Terakhir
-                                <span class="text-[11px] font-bold text-slate-500 bg-white border border-slate-200 shadow-sm px-3 py-1 rounded-full">{{ $latestMeasure['date'] }}</span>
-                            </h2>
-                            
-                            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 mb-6">
-                                <!-- BB Card -->
-                                <div class="bg-white border border-slate-100 rounded-2xl p-4 flex flex-col shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)] hover:shadow-md transition-shadow relative overflow-hidden">
-                                    <div class="w-8 h-8 rounded-full bg-sky-50 text-sky-500 flex items-center justify-center mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.312 3 .5m-16.5 0c-1.01.143-2.01.312-3 .5m19.5 0V12a2.25 2.25 0 0 1-2.25 2.25H15m3-2.25V15M7.125 15H3.75m0 0v-2.25m0 2.25V12a2.25 2.25 0 0 1 2.25-2.25h1.5m3-2.25V15" /></svg>
-                                    </div>
-                                    <span class="text-2xl font-black text-slate-900 tracking-tight">{{ $latestMeasure['weight'] }}<span class="text-xs font-semibold text-slate-400 ml-0.5">kg</span></span>
-                                    <span class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Berat Badan</span>
-                                </div>
-                                <!-- TB Card -->
-                                <div class="bg-white border border-slate-100 rounded-2xl p-4 flex flex-col shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)] hover:shadow-md transition-shadow relative overflow-hidden">
-                                    <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" /></svg>
-                                    </div>
-                                    <span class="text-2xl font-black text-slate-900 tracking-tight">{{ $latestMeasure['height'] }}<span class="text-xs font-semibold text-slate-400 ml-0.5">cm</span></span>
-                                    <span class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Tinggi Badan</span>
-                                </div>
-                                <!-- LK Card -->
-                                <div class="col-span-2 lg:col-span-1 bg-white border border-slate-100 rounded-2xl p-4 flex flex-col shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)] hover:shadow-md transition-shadow relative overflow-hidden">
-                                    <div class="w-8 h-8 rounded-full bg-violet-50 text-violet-500 flex items-center justify-center mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>
-                                    </div>
-                                    <span class="text-2xl font-black text-slate-900 tracking-tight">{{ $latestMeasure['head_circ'] }}<span class="text-xs font-semibold text-slate-400 ml-0.5">cm</span></span>
-                                    <span class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Lingkar Kepala</span>
-                                </div>
-                            </div>
-
-                            <!-- WHO Textual Diagnosis -->
-                            <div class="bg-teal-50 border border-teal-100 rounded-2xl p-5 flex items-start gap-4">
-                                <div class="text-teal-600 shrink-0 mt-0.5 bg-white p-2 rounded-full shadow-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                                        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                        <!-- Berat Badan Card -->
+                        <div class="bg-gradient-to-br from-emerald-500/5 to-emerald-500/10 border border-emerald-200/50 rounded-[20px] p-5 lg:p-6 flex flex-col relative overflow-hidden group">
+                            <div class="absolute -right-4 -top-4 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/15 transition-colors duration-500"></div>
+                            <div class="flex items-center justify-between mb-6 relative z-10">
+                                <span class="text-[14px] font-bold text-emerald-800">Berat Badan</span>
+                                <div class="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-emerald-500 border border-emerald-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                      <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
+                                      <path fill-rule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <div class="flex flex-col">
-                                    <span class="text-sm font-black text-teal-900 mb-1 tracking-tight">Pertumbuhan Selaras</span>
-                                    <span class="text-[13px] text-teal-800 font-medium leading-relaxed">
-                                        Anak tumbuh normal. Berat badan naik 0.5kg dari bulan lalu. Lanjutkan pemberian makanan bergizi.
-                                    </span>
-                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-1.5 mt-auto relative z-10">
+                                <span class="text-[36px] lg:text-[44px] font-black text-slate-900 tracking-tighter leading-none">{{ $latestMeasure['weight'] ?? '-' }}</span>
+                                <span class="text-[14px] font-extrabold text-slate-400">kg</span>
                             </div>
                         </div>
-
-                        <!-- Mobile Only: Data Keluarga & Pribadi -->
-                        <!-- Upgraded to grid layout instead of HTML table style -->
-                        <div class="lg:hidden mt-2">
-                            <h2 class="text-[15px] font-black text-slate-900 mb-4 tracking-tight">Informasi Personal</h2>
-                            <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)]">
-                                <div class="grid grid-cols-2 gap-y-5 gap-x-4">
-                                    <div class="flex flex-col gap-1">
-                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">NIK Anak</span>
-                                        <span class="text-slate-900 font-bold text-[13px]">{{ $nik }}</span>
-                                    </div>
-                                    <div class="flex flex-col gap-1">
-                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Nama Ibu Kandung</span>
-                                        <span class="text-slate-900 font-bold text-[13px]">{{ $motherName }}</span>
-                                    </div>
-                                    <div class="flex flex-col gap-1">
-                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Nomor Handphone</span>
-                                        <span class="text-slate-900 font-bold text-[13px]">{{ $motherPhone }}</span>
-                                    </div>
-                                    <div class="flex flex-col gap-1 col-span-2">
-                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Alamat Domisili</span>
-                                        <span class="text-slate-900 font-bold text-[13px] leading-snug">{{ $address }}<br><span class="text-slate-500 font-medium text-xs">{{ $addressSub }}</span></span>
-                                    </div>
+                        
+                        <!-- Tinggi Badan Card -->
+                        <div class="bg-gradient-to-br from-indigo-500/5 to-indigo-500/10 border border-indigo-200/50 rounded-[20px] p-5 lg:p-6 flex flex-col relative overflow-hidden group">
+                            <div class="absolute -right-4 -top-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/15 transition-colors duration-500"></div>
+                            <div class="flex items-center justify-between mb-6 relative z-10">
+                                <span class="text-[14px] font-bold text-indigo-800">Tinggi Badan</span>
+                                <div class="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-indigo-500 border border-indigo-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                      <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06l-3.22-3.22V16.5a.75.75 0 01-1.5 0V4.81L8.03 8.03a.75.75 0 01-1.06-1.06l4.5-4.5z" clip-rule="evenodd" />
+                                      <path fill-rule="evenodd" d="M3 20.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+                                    </svg>
                                 </div>
                             </div>
+                            <div class="flex items-baseline gap-1.5 mt-auto relative z-10">
+                                <span class="text-[36px] lg:text-[44px] font-black text-slate-900 tracking-tighter leading-none">{{ $latestMeasure['height'] ?? '-' }}</span>
+                                <span class="text-[14px] font-extrabold text-slate-400">cm</span>
+                            </div>
                         </div>
-
-                        <!-- Mobile Sticky CTA removed from inline flow -->
+                        
+                        <!-- Lingkar Kepala Card -->
+                        <div class="bg-gradient-to-br from-violet-500/5 to-violet-500/10 border border-violet-200/50 rounded-[20px] p-5 lg:p-6 flex flex-col relative overflow-hidden group">
+                            <div class="absolute -right-4 -top-4 w-32 h-32 bg-violet-500/10 rounded-full blur-2xl group-hover:bg-violet-500/15 transition-colors duration-500"></div>
+                            <div class="flex items-center justify-between mb-6 relative z-10">
+                                <span class="text-[14px] font-bold text-violet-800">Lingkar Kepala</span>
+                                <div class="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-violet-500 border border-violet-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                      <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm0 15a5.25 5.25 0 100-10.5 5.25 5.25 0 000 10.5z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-1.5 mt-auto relative z-10">
+                                <span class="text-[36px] lg:text-[44px] font-black text-slate-900 tracking-tighter leading-none">{{ $latestMeasure['head_circ'] ?? '-' }}</span>
+                                <span class="text-[14px] font-extrabold text-slate-400">cm</span>
+                            </div>
+                        </div>
+                        
                     </div>
+                </div>
 
-                    <!-- TAB: RIWAYAT -->
-                    <div id="content-riwayat" class="tab-content hidden flex flex-col">
-                        <div class="flex flex-col pb-4">
-                            @foreach($measurements as $measure)
-                                <x-timeline-item :measurement="$measure" :is-last="$loop->last" />
-                            @endforeach
-                        </div>
+                <!-- PERSONAL INFORMATION TILES -->
+                <div class="flex flex-col gap-4 mt-2">
+                    <div class="flex items-center justify-between px-1">
+                        <h2 class="text-[18px] font-black text-slate-900 tracking-tight">Informasi Personal</h2>
                     </div>
-
-                    <!-- TAB: GRAFIK -->
-                    <div id="content-grafik" class="tab-content hidden flex flex-col">
-                        <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)] mb-4">
-                            <div class="mb-5">
-                                <select class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-[13px] font-bold rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-400 transition-colors shadow-sm">
-                                    <option>Berat Badan per Umur (BB/U)</option>
-                                    <option>Tinggi Badan per Umur (TB/U)</option>
-                                </select>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Gender -->
+                        <div class="bg-white rounded-[20px] p-5 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] border border-slate-200/60 flex items-start gap-4 hover:border-slate-300 transition-colors">
+                            <div class="w-10 h-10 rounded-[12px] bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                             </div>
-
-                            <div class="relative h-[240px] rounded-xl overflow-hidden border border-slate-100 flex flex-col shadow-inner">
-                                <div class="flex-1 bg-emerald-50/50 flex items-center justify-center">
-                                    <span class="text-[10px] font-bold text-emerald-600/40 uppercase tracking-widest">Normal</span>
-                                </div>
-                                <div class="h-16 bg-amber-50/50 border-t border-amber-100/50 flex items-center justify-center">
-                                    <span class="text-[10px] font-bold text-amber-600/40 uppercase tracking-widest">Kurang</span>
-                                </div>
-                                <div class="h-12 bg-rose-50/50 border-t border-rose-100/50 flex items-center justify-center">
-                                    <span class="text-[10px] font-bold text-rose-600/40 uppercase tracking-widest">Sangat Kurang</span>
-                                </div>
-                                
-                                <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                                    <polyline points="0,190 100,170 200,120 300,70" fill="none" stroke="#0d9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="100" cy="170" r="5" fill="white" stroke="#0d9488" stroke-width="3" />
-                                    <circle cx="200" cy="120" r="5" fill="white" stroke="#0d9488" stroke-width="3" />
-                                    <circle cx="300" cy="70" r="5" fill="white" stroke="#0d9488" stroke-width="3" />
-                                </svg>
+                            <div class="flex flex-col gap-0.5">
+                                <span class="text-[12px] font-bold text-slate-400 uppercase tracking-wide">Jenis Kelamin</span>
+                                <span class="text-slate-900 font-extrabold text-[15px]">{{ $gender }}</span>
                             </div>
                         </div>
+                        
+                        <!-- Posyandu -->
+                        <div class="bg-white rounded-[20px] p-5 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] border border-slate-200/60 flex items-start gap-4 hover:border-slate-300 transition-colors">
+                            <div class="w-10 h-10 rounded-[12px] bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>
+                            </div>
+                            <div class="flex flex-col gap-0.5">
+                                <span class="text-[12px] font-bold text-slate-400 uppercase tracking-wide">Posyandu</span>
+                                <span class="text-slate-900 font-extrabold text-[15px]">{{ $posyanduName }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- HP -->
+                        <div class="bg-white rounded-[20px] p-5 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] border border-slate-200/60 flex items-start gap-4 hover:border-slate-300 transition-colors">
+                            <div class="w-10 h-10 rounded-[12px] bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>
+                            </div>
+                            <div class="flex flex-col gap-0.5">
+                                <span class="text-[12px] font-bold text-slate-400 uppercase tracking-wide">Nomor HP Ibu</span>
+                                <span class="text-slate-900 font-extrabold text-[15px]">{{ $motherPhone }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Alamat -->
+                        <div class="bg-white rounded-[20px] p-5 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] border border-slate-200/60 flex items-start gap-4 hover:border-slate-300 transition-colors sm:col-span-2 lg:col-span-1">
+                            <div class="w-10 h-10 rounded-[12px] bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                            </div>
+                            <div class="flex flex-col gap-0.5">
+                                <span class="text-[12px] font-bold text-slate-400 uppercase tracking-wide">Alamat Lengkap</span>
+                                <span class="text-slate-900 font-bold text-[14px] leading-snug">
+                                    {{ $address }}
+                                    @if($addressSub)
+                                        <span class="text-slate-500 font-medium text-[12px] block mt-0.5">{{ $addressSub }}</span>
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
-        </div>
-        
-        <!-- Mobile In-Flow CTA -->
-        <div class="lg:hidden w-full mt-6 px-4">
-            <div class="flex gap-2.5">
-                {{-- Backend: pass $balitaId to route for edit --}}
-                <a href="{{ route('balita.edit') }}" class="flex items-center justify-center bg-white text-slate-600 border border-slate-200 w-14 rounded-[1.25rem] shadow-sm focus:outline-none h-[54px] hover:bg-slate-50 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                    </svg>
-                </a>
-                <button onclick="openMeasurementModal()" class="flex-1 flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white rounded-[1.25rem] font-black text-[13px] shadow-sm transition-all focus:outline-none h-[54px] active:scale-[0.98]">
-                    UKUR SEKARANG
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                </button>
+
+            <!-- TAB: RIWAYAT -->
+            <div id="content-riwayat" class="tab-content hidden flex flex-col max-w-4xl p-6 lg:p-8 bg-white border border-slate-200/60 rounded-[24px] shadow-sm">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-[18px] font-black text-slate-900 tracking-tight">Riwayat Pengukuran</h2>
+                </div>
+                <div class="flex flex-col">
+                    @forelse($measurements as $measure)
+                        <x-timeline-item :measurement="$measure" :is-last="$loop->last" />
+                    @empty
+                        <div class="py-12 flex flex-col items-center justify-center text-center">
+                            <div class="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mb-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <span class="text-[16px] font-bold text-slate-900">Belum Ada Riwayat</span>
+                            <p class="text-[14px] text-slate-500 mt-1">Anak belum pernah diukur. Silakan lakukan pengukuran pertama.</p>
+                        </div>
+                    @endforelse
+                </div>
             </div>
+
+            <!-- TAB: GRAFIK -->
+            <div id="content-grafik" class="tab-content hidden flex flex-col max-w-5xl p-6 lg:p-8 bg-white border border-slate-200/60 rounded-[24px] shadow-sm">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 gap-4">
+                    <h2 class="text-[18px] font-black text-slate-900 tracking-tight">Grafik Pertumbuhan</h2>
+                    @if(count($measurements) > 0)
+                    <div class="max-w-xs w-full lg:w-auto">
+                        <select class="w-full bg-slate-50 border border-slate-200/80 text-slate-700 text-[14px] font-bold rounded-xl px-4 h-[44px] focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-colors shadow-sm">
+                            <option>Berat Badan per Umur (BB/U)</option>
+                            <option>Tinggi Badan per Umur (TB/U)</option>
+                        </select>
+                    </div>
+                    @endif
+                </div>
+
+                @if(count($measurements) > 0)
+                <div class="relative h-[400px] w-full rounded-[16px] overflow-hidden border border-slate-100 bg-slate-50/50 p-4 lg:p-6">
+                    <canvas id="growthChart" class="w-full h-full"></canvas>
+                </div>
+                @else
+                <div class="py-12 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mb-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-slate-300">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                        </svg>
+                    </div>
+                    <span class="text-[16px] font-bold text-slate-900">Belum Ada Grafik</span>
+                    <p class="text-[14px] text-slate-500 mt-1 max-w-[250px] mx-auto">Lakukan pengukuran terlebih dahulu untuk melihat grafik pertumbuhan.</p>
+                </div>
+                @endif
+            </div>
+
         </div>
-        
     </div>
+    
+    <!-- Mobile Floating CTA (Fixed Bottom) - Removed as it overlaps with footer -->
 </div>
 
 @push('modals')
-
 
 <script>
     function switchTab(tabId) {
@@ -377,8 +429,8 @@
             el.classList.add('hidden');
         });
         
-        const activeClasses = ['text-teal-600', 'border-teal-600'];
-        const inactiveClasses = ['text-slate-400', 'border-transparent', 'hover:text-slate-800'];
+        const activeClasses = ['text-slate-900', 'bg-white', 'shadow-sm', 'border-slate-200/50'];
+        const inactiveClasses = ['text-slate-500', 'border-transparent', 'hover:text-slate-800'];
         
         ['ringkasan', 'riwayat', 'grafik'].forEach(id => {
             const btn = document.getElementById('tab-' + id);
@@ -412,7 +464,88 @@
     });
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rawData = @json($measurements);
+        const chartData = [...rawData].reverse(); // Oldest first for chart
+        
+        const labels = chartData.map(d => d.date);
+        const bbData = chartData.map(d => d.weight);
+        
+        const ctx = document.getElementById('growthChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Berat Badan (kg)',
+                        data: bbData,
+                        borderColor: '#10b981', // emerald-500
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#10b981',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { size: 13, family: "'Inter', sans-serif" },
+                            bodyFont: { size: 14, family: "'Inter', sans-serif", weight: 'bold' },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' kg';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(226, 232, 240, 0.6)',
+                                borderDash: [4, 4],
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: { family: "'Inter', sans-serif", size: 12 },
+                                color: '#64748b'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: { family: "'Inter', sans-serif", size: 12 },
+                                color: '#64748b'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+
 <x-measurement-modal 
+    :balita-id="$balitaId"
     :child-name="$childName" 
     :age="$age" 
     :last-weight="$latestMeasure['weight'] ?? null" 

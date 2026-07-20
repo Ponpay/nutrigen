@@ -1,21 +1,41 @@
 @props(['zscores'])
 
-<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-slate-400">
-            <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
-        </svg>
-        Indikator Z-Score Saat Ini
-    </h3>
-    <div class="grid grid-cols-2 gap-3 sm:gap-4">
+<div class="flex flex-col h-full">
+    <div class="grid grid-cols-2 gap-3 h-full">
         @foreach($zscores as $key => $valData)
-            <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 relative overflow-hidden group">
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ $key }}</span>
-                <p class="text-xl font-extrabold text-{{ $valData['color'] }}-600 mt-0.5">{{ $valData['val'] }}</p>
-                <span class="text-[10px] font-bold text-{{ $valData['color'] }}-700 bg-{{ $valData['color'] }}-100 px-1.5 py-0.5 rounded mt-1 inline-block">
-                    {{ $valData['status'] }}
-                </span>
+            <div class="bg-white border border-slate-200 rounded-lg p-3 flex flex-col justify-center">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $key }}</span>
+                        <p class="text-2xl font-black text-slate-800 leading-none mt-1 tracking-tight">{{ $valData['val'] }}</p>
+                    </div>
+                    <span class="text-[9px] font-bold text-{{ $valData['color'] }}-700 bg-{{ $valData['color'] }}-50 border border-{{ $valData['color'] }}-100 px-1.5 py-0.5 rounded uppercase tracking-wider">
+                        {{ $valData['status'] }}
+                    </span>
+                </div>
             </div>
         @endforeach
+    </div>
+    
+    <!-- Interpretasi Klinis -->
+    <div class="mt-4 bg-sky-50/50 border border-sky-100 rounded-lg p-3">
+        <div class="flex items-start gap-2 text-sky-800">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 shrink-0 mt-0.5 text-sky-600">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+            </svg>
+            <div>
+                <p class="text-[11px] font-bold">Interpretasi</p>
+                <p class="text-[11px] mt-0.5 leading-relaxed">
+                    @php
+                        $tbu = collect($zscores)->firstWhere(fn($val, $key) => $key === 'TB/U')['val'] ?? 0;
+                        if ((float)$tbu < -2) {
+                            echo "Tinggi badan menurut umur dalam kategori Pendek. Disarankan pemantauan gizi dan stimulasi pertumbuhan.";
+                        } else {
+                            echo "Indikator pertumbuhan dalam batas normal.";
+                        }
+                    @endphp
+                </p>
+            </div>
+        </div>
     </div>
 </div>

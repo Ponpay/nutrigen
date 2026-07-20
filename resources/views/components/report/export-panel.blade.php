@@ -14,7 +14,7 @@
                     <p class="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">Unduh laporan dalam format PDF yang siap dicetak. Berisi kop surat Puskesmas, tabel rekapitulasi, dan grafik analitik.</p>
                 </div>
             </div>
-            <button onclick="alert('Demo: Fitur generate PDF akan dikerjakan oleh Backend Developer.')" class="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
+            <button onclick="window.NutriAlert.warning('Fitur Demo', 'Fitur generate PDF akan dikerjakan oleh Backend Developer.')" class="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
@@ -35,7 +35,7 @@
                     <p class="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">Unduh data mentah lengkap per baris (balita, umur, hasil ukur) format `.xlsx` untuk diolah mandiri menggunakan Microsoft Excel.</p>
                 </div>
             </div>
-            <button onclick="alert('Demo: Fitur generate Excel akan dikerjakan oleh Backend Developer menggunakan Laravel Excel.')" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
+            <button onclick="window.NutriAlert.warning('Fitur Demo', 'Fitur generate Excel akan dikerjakan oleh Backend Developer menggunakan Laravel Excel.')" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>

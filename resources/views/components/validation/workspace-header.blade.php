@@ -1,61 +1,58 @@
 @props(['child'])
 
 @php
-    $initials = collect(explode(' ', $child['name']))->map(fn($n) => substr($n, 0, 1))->take(2)->join('');
+    $rekomendasi = '';
+    
+    if ($child['statusType'] === 'danger') {
+        $rekomendasi = "Data menunjukkan deviasi dari standar. Mohon periksa kembali hasil pengukuran.";
+    } elseif ($child['statusType'] === 'warning') {
+        $rekomendasi = "Terdapat indikator yang memerlukan perhatian khusus dari petugas.";
+    } else {
+        $rekomendasi = "Data indikator pertumbuhan terpantau berada pada rentang normal.";
+    }
 @endphp
 
-<div class="bg-white border-b border-slate-200 p-5 shrink-0 sticky top-0 z-10 shadow-sm">
-    <div class="flex items-start gap-5">
-        <!-- Avatar -->
-        <div class="w-16 h-16 rounded-full bg-slate-200 text-slate-500 font-bold text-xl flex items-center justify-center shrink-0 border-2 border-white shadow-md">
-            <span>{{ strtoupper($initials) }}</span>
-        </div>
-        
-        <!-- Profile Info -->
-        <div class="flex-1 min-w-0">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-                <div>
-                    <h2 class="text-2xl font-extrabold text-slate-800 leading-none truncate">{{ $child['name'] }}</h2>
-                    <div class="flex flex-wrap items-center gap-2 mt-2 text-xs font-medium text-slate-500">
-                        <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-600 border border-slate-200">NIK: {{ $child['nik'] }}</span>
-                        <span class="hidden sm:inline">&bull;</span>
-                        <span>{{ $child['gender'] == 'L' ? 'Laki-laki' : 'Perempuan' }}</span>
-                        <span class="hidden sm:inline">&bull;</span>
-                        <span>{{ $child['age'] }}</span>
-                        <span class="hidden sm:inline">&bull;</span>
-                        <span>Anak {{ $child['parent'] }}</span>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:items-end gap-1 sm:text-right shrink-0">
-                    <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400">Status Validasi</span>
-                    <x-status-badge :type="$child['statusType']" :label="$child['statusLabel']" />
+<div class="px-5 lg:px-6 py-4 border-b border-slate-200 bg-white shrink-0">
+    <div class="flex items-start justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-700 font-black text-sm border border-sky-200 shrink-0">
+                {{ collect(explode(' ', $child['name']))->map(fn($n) => substr($n, 0, 1))->take(2)->join('') }}
+            </div>
+            <div>
+                <h1 class="text-lg font-bold text-slate-800 leading-tight">{{ $child['name'] }}</h1>
+                <div class="flex items-center gap-1.5 mt-0.5 text-slate-500 text-[11px] font-medium">
+                    <span class="text-slate-700">NIK: {{ $child['nik'] }}</span>
+                    <span>&bull;</span>
+                    <span>{{ $child['age'] }}</span>
+                    <span>&bull;</span>
+                    <span>{{ $child['posyandu'] }}</span>
+                    <span>&bull;</span>
+                    <span>Kader {{ $child['kader'] }}</span>
                 </div>
             </div>
         </div>
+        <div class="text-right flex flex-col items-end">
+            @php
+                $badgeColors = [
+                    'danger' => 'bg-rose-50 text-rose-700 border-rose-200',
+                    'warning' => 'bg-amber-50 text-amber-700 border-amber-200',
+                    'success' => 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                ];
+                $color = $badgeColors[$child['statusType']] ?? $badgeColors['success'];
+            @endphp
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border {{ $color }}">
+                <span class="w-1.5 h-1.5 rounded-full {{ str_replace(['bg-', '-50', '-100'], ['bg-', '-500', '-500'], explode(' ', $color)[0]) }}"></span>
+                {{ mb_strtoupper($child['statusLabel']) }}
+            </span>
+            <span class="text-[9px] text-slate-400 font-bold mt-1.5 uppercase tracking-widest">{{ \Carbon\Carbon::parse($child['date'])->format('d M') }} {{ $child['time'] }}</span>
+        </div>
     </div>
-
-    <!-- Meta Info Bar -->
-    <div class="mt-5 flex flex-wrap items-center gap-3 sm:gap-4 text-xs bg-slate-50 p-3 rounded-lg border border-slate-100">
-        <div class="flex items-center gap-1.5 text-slate-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-            </svg>
-            <span class="font-semibold">{{ $child['posyandu'] }}</span>
-        </div>
-        <div class="hidden sm:block w-px h-4 bg-slate-300"></div>
-        <div class="flex items-center gap-1.5 text-slate-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-            </svg>
-            <span>{{ $child['kader'] }}</span>
-        </div>
-        <div class="hidden sm:block w-px h-4 bg-slate-300"></div>
-        <div class="flex items-center gap-1.5 text-slate-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-            </svg>
-            <span>{{ $child['date'] }} ({{ $child['time'] }})</span>
-        </div>
+    
+    <!-- Thin Clinical Alert -->
+    <div class="mt-4 flex items-center gap-2 {{ $child['statusType'] === 'danger' ? 'bg-rose-50/50 border-rose-200 text-rose-800' : ($child['statusType'] === 'warning' ? 'bg-amber-50/50 border-amber-200 text-amber-800' : 'bg-emerald-50/50 border-emerald-200 text-emerald-800') }} border rounded-lg px-3 py-2 text-[11px]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 shrink-0">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+        </svg>
+        <span class="font-medium">{{ $rekomendasi }}</span>
     </div>
 </div>

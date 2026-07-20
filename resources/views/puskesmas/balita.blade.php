@@ -7,144 +7,13 @@
     Controller: PuskesmasBalitaController@index
     Expected Variables: $children, $posyandus, $filters
 --}}
-@php
-    $children = [
-        [
-            'id' => 1,
-            'nik' => '3273110204230001',
-            'nama' => 'Dinda Amanda',
-            'tanggal_lahir' => '2024-04-10', // Umur sekitar 27 bln
-            'jenis_kelamin' => 'P',
-            'berat_lahir' => 3.1,
-            'tinggi_lahir' => 49.0,
-            'ibu' => [
-                'nama' => 'Aisyah',
-                'no_hp_wa' => '6281234567890'
-            ],
-            'posyandu' => [
-                'nama' => 'Posyandu Melati 2'
-            ],
-            'pengukurans' => [
-                [
-                    'id' => 101,
-                    'umur_bulan' => 27,
-                    'berat_badan' => 12.1,
-                    'tinggi_badan' => 85.0,
-                    'z_score_bb_u' => '-1.10',
-                    'status_gizi' => 'Risiko Lebih', // Untuk testing warna amber
-                    'status_validasi' => 'pending',
-                    'created_at' => '2026-07-12 10:30:00'
-                ],
-                [
-                    'id' => 100,
-                    'umur_bulan' => 26,
-                    'berat_badan' => 11.5,
-                    'tinggi_badan' => 84.0,
-                    'z_score_bb_u' => '-1.15',
-                    'status_gizi' => 'Normal',
-                    'status_validasi' => 'approved',
-                    'created_at' => '2026-06-12 09:00:00',
-                    'validasi' => [
-                        'validator_name' => 'Dr. Siti',
-                        'status' => 'approved',
-                        'catatan' => 'Pertumbuhan baik.',
-                        'created_at' => '2026-06-13 14:00:00'
-                    ]
-                ]
-            ]
-        ],
-        [
-            'id' => 2,
-            'nik' => '3273110504230004',
-            'nama' => 'Nazwa Aulia',
-            'tanggal_lahir' => '2024-02-15', // Umur sekitar 29 bln
-            'jenis_kelamin' => 'P',
-            'berat_lahir' => 2.8,
-            'tinggi_lahir' => 48.0,
-            'ibu' => [
-                'nama' => 'Budiarti',
-                'no_hp_wa' => '628987654321'
-            ],
-            'posyandu' => [
-                'nama' => 'Posyandu Melati 3'
-            ],
-            'pengukurans' => [
-                [
-                    'id' => 102,
-                    'umur_bulan' => 29,
-                    'berat_badan' => 10.5,
-                    'tinggi_badan' => 88.0,
-                    'z_score_bb_u' => '-1.80',
-                    'status_gizi' => 'Stunting', // Untuk testing warna rose
-                    'status_validasi' => 'rejected',
-                    'created_at' => '2026-07-10 09:15:00',
-                    'validasi' => [
-                        'validator_name' => 'Dr. Budi',
-                        'status' => 'rejected',
-                        'catatan' => 'Data tinggi badan tidak wajar, mohon diukur ulang oleh kader.',
-                        'created_at' => '2026-07-11 10:00:00'
-                    ]
-                ]
-            ]
-        ],
-        [
-            'id' => 3,
-            'nik' => '3273110804240002',
-            'nama' => 'Alif Pratama',
-            'tanggal_lahir' => '2025-01-20', // Umur sekitar 18 bln
-            'jenis_kelamin' => 'L',
-            'berat_lahir' => 3.4,
-            'tinggi_lahir' => 50.0,
-            'ibu' => [
-                'nama' => 'Caca Marica',
-                'no_hp_wa' => '628111222333'
-            ],
-            'posyandu' => [
-                'nama' => 'Posyandu Melati 4'
-            ],
-            'pengukurans' => [
-                [
-                    'id' => 103,
-                    'umur_bulan' => 18,
-                    'berat_badan' => 9.2,
-                    'tinggi_badan' => 78.5,
-                    'z_score_bb_u' => '-2.18',
-                    'status_gizi' => 'Kurang', // Amber
-                    'status_validasi' => 'pending',
-                    'created_at' => '2026-07-11 08:45:00'
-                ],
-                [
-                    'id' => 99,
-                    'umur_bulan' => 17,
-                    'berat_badan' => 8.9,
-                    'tinggi_badan' => 77.0,
-                    'z_score_bb_u' => '-2.10',
-                    'status_gizi' => 'Kurang',
-                    'status_validasi' => 'approved',
-                    'created_at' => '2026-06-11 08:45:00',
-                    'validasi' => [
-                        'validator_name' => 'Dr. Siti',
-                        'status' => 'approved',
-                        'catatan' => 'Tetap pantau asupan gizi anak.',
-                        'created_at' => '2026-06-12 11:00:00'
-                    ]
-                ]
-            ]
-        ]
-    ];
+{{--
+    Data disuplai oleh PuskesmasController@balita
+    Variables tersedia: $children, $posyandus, $filters
+--}}
 
-    $posyandus = [
-        ['id' => 1, 'nama' => 'Melati 2'],
-        ['id' => 2, 'nama' => 'Melati 3'],
-        ['id' => 3, 'nama' => 'Melati 4']
-    ];
 
-    $filters = [
-        'q' => request('q', ''),
-        'posyandu_id' => request('posyandu_id', ''),
-        'status_gizi' => request('status_gizi', '')
-    ];
-@endphp
+
 
 <!-- Toast Notification Container -->
 <div id="toastContainer" class="fixed top-10 right-5 z-50 flex flex-col gap-2"></div>
@@ -153,10 +22,10 @@
 <div class="flex flex-col lg:flex-row flex-1 overflow-hidden">
 
     <!-- LEFT PANEL: Direktori Balita — bg-slate-50/60 (Canvas base) -->
-    <div class="w-full lg:w-[360px] xl:w-[380px] flex flex-col border-r border-slate-200 bg-slate-50/60 shrink-0 overflow-hidden relative z-10">
+    <div class="w-full lg:w-[360px] xl:w-[380px] flex flex-col border-r border-slate-200/80 bg-slate-100/60 shrink-0 overflow-hidden relative z-10">
 
         <!-- Panel Header (sticky) -->
-        <div class="flex flex-col border-b border-slate-200 sticky top-0 z-20 shrink-0 bg-slate-50">
+        <div class="flex flex-col border-b border-slate-200/80 sticky top-0 z-20 shrink-0 bg-slate-50/90 backdrop-blur-xl">
             <div class="px-5 pt-5 pb-4">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Medical Records</p>
                 <h2 class="text-base font-bold text-slate-800">Direktori Balita</h2>
@@ -167,22 +36,22 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
-                        <input type="text" id="searchInput" name="q" value="{{ $filters['q'] }}" placeholder="Cari nama balita..." class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:ring-teal-500 focus:border-teal-500 font-medium bg-white shadow-sm">
+                        <input type="text" id="searchInput" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="Cari nama balita..." class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:ring-mint-500 focus:border-mint-500 font-medium bg-white shadow-sm">
                     </div>
                     
                     <div class="flex gap-2.5">
-                        <select id="posyanduFilter" name="posyandu_id" class="flex-1 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-2 focus:ring-teal-500 focus:border-teal-500 font-medium shadow-sm">
+                        <select id="posyanduFilter" name="posyandu_id" class="flex-1 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-2 focus:ring-mint-500 focus:border-mint-500 font-medium shadow-sm" onchange="this.form.submit()">
                             <option value="">Semua Posyandu</option>
                             @foreach($posyandus as $posyandu)
-                                <option value="{{ $posyandu['nama'] }}" {{ strtolower($filters['posyandu_id']) == strtolower($posyandu['nama']) ? 'selected' : '' }}>{{ $posyandu['nama'] }}</option>
+                                <option value="{{ $posyandu['nama'] }}" {{ strtolower($filters['posyandu_id'] ?? '') == strtolower($posyandu['nama']) ? 'selected' : '' }}>{{ $posyandu['nama'] }}</option>
                             @endforeach
                         </select>
                         
-                        <select id="statusFilter" name="status_gizi" class="flex-1 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-2 focus:ring-teal-500 focus:border-teal-500 font-medium shadow-sm">
+                        <select id="statusFilter" name="status_gizi" class="flex-1 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-2 focus:ring-mint-500 focus:border-mint-500 font-medium shadow-sm" onchange="this.form.submit()">
                             <option value="">Semua Status Gizi</option>
-                            <option value="normal" {{ $filters['status_gizi'] == 'normal' ? 'selected' : '' }}>Normal / Gizi Baik</option>
-                            <option value="kurang" {{ $filters['status_gizi'] == 'kurang' ? 'selected' : '' }}>Kurang / Kurus</option>
-                            <option value="stunting" {{ $filters['status_gizi'] == 'stunting' ? 'selected' : '' }}>Stunting / Gizi Buruk</option>
+                            <option value="normal" {{ ($filters['status_gizi'] ?? '') == 'normal' ? 'selected' : '' }}>Normal / Gizi Baik</option>
+                            <option value="kurang" {{ ($filters['status_gizi'] ?? '') == 'kurang' ? 'selected' : '' }}>Kurang / Kurus</option>
+                            <option value="stunting" {{ ($filters['status_gizi'] ?? '') == 'stunting' ? 'selected' : '' }}>Stunting / Gizi Buruk</option>
                         </select>
                     </div>
                 </form>
@@ -212,15 +81,24 @@
     <div id="drawerOverlay" class="fixed inset-0 bg-slate-900/40 z-30 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
 
     <!-- RIGHT PANEL: Balita Profile Workspace -->
-    <div id="workspaceDrawer" class="fixed inset-x-0 bottom-0 z-40 h-[90vh] bg-white rounded-t-3xl transform translate-y-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col lg:relative lg:inset-auto lg:h-auto lg:translate-y-0 lg:rounded-none lg:flex-1 lg:z-auto lg:shadow-none border-t border-slate-200 lg:border-t-0">
+    <div id="workspaceDrawer" class="fixed inset-x-0 bottom-0 z-40 h-[90vh] bg-white rounded-t-3xl transform translate-y-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col lg:relative lg:inset-auto lg:h-auto lg:translate-y-0 lg:rounded-tl-[2rem] lg:flex-1 lg:z-auto lg:shadow-none border-t border-slate-200 lg:border-t-0 lg:border-l lg:border-slate-200/50">
         
-        <!-- Mobile Drawer Handle -->
-        <div id="drawerHandle" class="w-full flex items-center justify-center py-3 bg-white rounded-t-3xl border-b border-slate-100 lg:hidden shrink-0 cursor-pointer">
-            <div class="w-12 h-1.5 bg-slate-300 rounded-full"></div>
+        <!-- Mobile Drawer Header (Handle & Close Button) -->
+        <div id="drawerHandle" class="w-full flex items-center justify-between px-5 py-3.5 bg-white rounded-t-3xl border-b border-slate-100 lg:hidden shrink-0 cursor-pointer active:bg-slate-50 transition-colors">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest w-16 flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+                Kembali
+            </span>
+            <div class="w-12 h-1.5 bg-slate-200 rounded-full"></div>
+            <div class="w-16 flex justify-end">
+                <div class="bg-slate-100 p-1.5 rounded-full text-slate-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </div>
+            </div>
         </div>
 
         @if(count($children) > 0)
-            <div id="workspacesContainer" class="flex-1 flex flex-col overflow-hidden relative bg-slate-50/30">
+            <div id="workspacesContainer" class="flex-1 flex flex-col overflow-hidden relative bg-slate-50/80 lg:rounded-tl-[2rem]">
                 @foreach($children as $index => $child)
                     <!-- WORKSPACE PANEL (1 per anak) -->
                     <div id="workspace-panel-{{ $child['id'] }}" class="workspace-panel flex-1 flex flex-col h-full absolute inset-0 {{ $index === 0 ? '' : 'hidden' }} overflow-y-auto hide-scrollbar">
@@ -228,19 +106,33 @@
                         <x-balita.profile-header :child="$child" />
                         
                         <!-- Main Content Flow -->
-                        <div class="p-5 lg:p-8 flex flex-col gap-8 shrink-0 pb-12 max-w-4xl mx-auto w-full">
+                        <div class="p-5 lg:p-8 flex flex-col gap-8 shrink-0 pb-24 lg:pb-12 max-w-4xl mx-auto w-full">
                             
                             <!-- Flow: Grafik Pertumbuhan -->
-                            <div class="flex flex-col gap-6">
-                                <h3 class="text-sm font-bold text-slate-800 border-b border-slate-200 pb-2">Grafik Pertumbuhan Antropometri</h3>
-                                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                            <div class="flex flex-col gap-4">
+                                <div class="flex items-center gap-2.5 pb-2 border-b border-slate-200/80">
+                                    <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-[15px] font-black text-slate-800">Grafik Pertumbuhan Antropometri</h3>
+                                </div>
+                                <div class="bg-white border border-slate-200 rounded-[2rem] p-5 sm:p-6 shadow-sm relative z-0">
                                     <x-balita.growth-chart :child="$child" />
                                 </div>
                             </div>
                             
                             <!-- Flow: Riwayat Medis -->
-                            <div class="flex flex-col gap-6">
-                                <h3 class="text-sm font-bold text-slate-800 border-b border-slate-200 pb-2">Riwayat Pengukuran Medis</h3>
+                            <div class="flex flex-col gap-4 mt-4">
+                                <div class="flex items-center gap-2.5 pb-2 border-b border-slate-200/80">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-[15px] font-black text-slate-800">Riwayat Pengukuran Medis</h3>
+                                </div>
                                 <x-balita.measurement-history :pengukurans="$child['pengukurans']" />
                             </div>
 
@@ -289,15 +181,14 @@
 
         function selectBalita(id) {
             document.querySelectorAll('.balita-card-btn').forEach(btn => {
-                btn.classList.remove('ring-2', 'ring-teal-600', 'bg-white', 'shadow-md');
-                btn.classList.add('border-transparent', 'bg-slate-50', 'hover:bg-white', 'hover:shadow-sm', 'opacity-75');
-                btn.classList.remove('opacity-100');
+                btn.classList.remove('bg-sky-50/60', 'border-l-sky-500', 'z-10');
+                btn.classList.add('border-l-transparent', 'bg-white', 'hover:bg-slate-50', 'hover:border-l-slate-300');
             });
             
             const targetBtn = document.querySelector(`.balita-card-btn[data-balita-id="${id}"]`);
             if (targetBtn) {
-                targetBtn.classList.remove('border-transparent', 'bg-slate-50', 'hover:bg-white', 'hover:shadow-sm', 'opacity-75');
-                targetBtn.classList.add('ring-2', 'ring-teal-600', 'bg-white', 'shadow-md', 'opacity-100');
+                targetBtn.classList.remove('border-l-transparent', 'bg-white', 'hover:bg-slate-50', 'hover:border-l-slate-300');
+                targetBtn.classList.add('bg-sky-50/60', 'border-l-sky-500', 'z-10');
             }
 
             document.querySelectorAll('.workspace-panel').forEach(panel => {
@@ -317,56 +208,6 @@
             listContainer.addEventListener('click', (e) => {
                 const btn = e.target.closest('.balita-card-btn');
                 if(btn) selectBalita(btn.dataset.balitaId);
-            });
-        }
-
-        const searchInput = document.getElementById('searchInput');
-        const posyanduFilter = document.getElementById('posyanduFilter');
-        const statusFilter = document.getElementById('statusFilter');
-        const cards = document.querySelectorAll('.balita-card-btn');
-        const emptyState = document.getElementById('noResultState');
-
-        function filterList() {
-            const query = searchInput.value.toLowerCase();
-            const posyandu = posyanduFilter.value.toLowerCase();
-            const status = statusFilter.value.toLowerCase();
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const cName = card.dataset.nama || '';
-                const cPosyandu = card.dataset.posyandu || '';
-                const cStatus = card.dataset.status || '';
-
-                const matchQuery = cName.includes(query);
-                const matchPosyandu = posyandu === '' || cPosyandu.includes(posyandu);
-                const matchStatus = status === '' || cStatus.includes(status);
-
-                if (matchQuery && matchPosyandu && matchStatus) {
-                    card.parentElement.classList.remove('hidden');
-                    visibleCount++;
-                } else {
-                    card.parentElement.classList.add('hidden');
-                }
-            });
-
-            if (visibleCount === 0 && cards.length > 0) {
-                emptyState.classList.remove('hidden');
-                emptyState.classList.add('flex');
-            } else {
-                emptyState.classList.add('hidden');
-                emptyState.classList.remove('flex');
-            }
-        }
-
-        if(searchInput) searchInput.addEventListener('input', filterList);
-        if(posyanduFilter) posyanduFilter.addEventListener('change', filterList);
-        if(statusFilter) statusFilter.addEventListener('change', filterList);
-
-        const filterForm = document.getElementById('filterForm');
-        if(filterForm) {
-            filterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                filterList();
             });
         }
 

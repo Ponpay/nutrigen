@@ -1,20 +1,19 @@
-<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
-    <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-widest flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-slate-400">
-                <path fill-rule="evenodd" d="M2.25 13.5a8.25 8.25 0 018.25-8.25.75.75 0 01.75.75v6.75H18a.75.75 0 01.75.75 8.25 8.25 0 01-16.5 0z" clip-rule="evenodd" />
-                <path fill-rule="evenodd" d="M12.75 3a.75.75 0 01.75-.75 8.25 8.25 0 018.25 8.25.75.75 0 01-.75.75h-7.5a.75.75 0 01-.75-.75V3z" clip-rule="evenodd" />
+<div class="bg-white p-4 rounded-lg border border-slate-200 flex flex-col h-full">
+    <div class="flex items-center justify-between mb-3">
+        <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
             </svg>
-            Grafik Pertumbuhan KMS
+            Grafik KMS
         </h3>
-        <select class="text-xs border-slate-200 rounded text-slate-600 bg-slate-50 px-2 py-1 focus:ring-teal-500">
+        <select class="text-[10px] font-bold border-slate-200 rounded text-slate-600 bg-slate-50 px-2 py-0.5 focus:ring-sky-500 focus:border-sky-500 transition-colors uppercase tracking-wider outline-none">
             <option>BB/U</option>
             <option selected>TB/U</option>
             <option>BB/TB</option>
         </select>
     </div>
     
-    <div class="relative h-64 w-full bg-slate-50 border border-slate-100 rounded-xl overflow-hidden flex items-center justify-center">
+    <div class="relative h-40 w-full bg-slate-50 border border-slate-100 rounded-lg overflow-hidden flex items-center justify-center">
         <!-- SVG Dummy Curve -->
         <svg class="w-full h-full text-slate-200" viewBox="0 0 600 200" preserveAspectRatio="none">
             <!-- Zones -->
@@ -31,7 +30,7 @@
             <circle cx="600" cy="180" r="6" fill="#0ea5e9" stroke="#fff" stroke-width="2" class="animate-pulse" />
         </svg>
         <!-- Y Axis Labels -->
-        <div class="absolute left-2 top-0 bottom-0 py-4 flex flex-col justify-between text-[10px] text-slate-400 font-medium">
+        <div class="absolute left-2 top-0 bottom-0 py-3 flex flex-col justify-between text-[9px] text-slate-400 font-bold tracking-wider">
             <span>+2 SD</span>
             <span>0 SD</span>
             <span>-2 SD</span>

@@ -15,7 +15,7 @@
     @stack('styles')
 </head>
 
-<body class="bg-slate-50 text-gray-900 antialiased font-sans overflow-x-hidden">
+<body class="bg-slate-50 text-slate-800 antialiased font-sans overflow-x-hidden">
     
     <!-- Responsive App Container -->
     <div class="flex h-screen overflow-hidden">
@@ -29,8 +29,8 @@
 
             <!-- Main Content Area -->
             <!-- pt-16 to offset fixed navbar, pb-16 to offset mobile footer -->
-            <main class="flex-1 overflow-y-auto overflow-x-hidden pt-16 pb-16 lg:pb-0 w-full relative">
-                <div class="max-w-7xl mx-auto w-full lg:px-6 lg:py-4">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden pt-4 lg:pt-0 pb-16 lg:pb-0 w-full relative">
+                <div class="w-full">
                     @yield('content')
                 </div>
             </main>
@@ -41,6 +41,7 @@
         
     </div>
 
+    <x-flash-messages />
     @stack('modals')
     @stack('scripts')
 </body>

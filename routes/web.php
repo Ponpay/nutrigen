@@ -1,82 +1,113 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes — NutriGen Kader Module
+| Web Routes
 |--------------------------------------------------------------------------
-|
-| Named routes follow Laravel resource conventions so future controllers
-| can be wired with zero route changes. All route names are declared here
-| to serve as the single source of truth for the entire frontend.
-|
 */
 
-// ─── Dashboard ────────────────────────────────────────────────────────────────
+// ==========================================================================
+// PUBLIC ROUTES
+// ==========================================================================
 Route::get('/', function () {
-    return view('kader.dashboard');
-})->name('dashboard');
+    return view('welcome');
+});
 
-// ─── Manajemen Balita ──────────────────────────────────────────────────────────
-Route::view('/daftar-balita', 'kader.daftar-balita')->name('balita.index');
-Route::view('/daftar-balita-baru', 'kader.daftar-balita-baru')->name('balita.create');
+Route::get('/team', function () {
+    return view('team');
+})->name('team');
 
-// Placeholder POST route — backend: replace with BalitaController@store
-Route::post('/daftar-balita-baru', function () {
-    return redirect()->route('balita.index');
-})->name('balita.store');
-
-// Edit Balita: reuses the same view with $isEdit=true.
-// Production: replace with a controller method that fetches $balita by ID.
-Route::view('/edit-balita', 'kader.daftar-balita-baru', ['isEdit' => true])->name('balita.edit');
-
-// ─── Profil & Detail Balita ────────────────────────────────────────────────────
-// $id is passed to the view as $balitaId for backend awareness.
-// Production: replace with BalitaController@show and remove the dummy @php block.
-Route::get('/profil-balita/{id?}', function ($id = null) {
-    return view('kader.profil-balita', ['balitaId' => $id]);
-})->name('balita.show');
-
-// ─── Jadwal Posyandu ───────────────────────────────────────────────────────────
-Route::view('/jadwal', 'kader.jadwal')->name('jadwal.index');
-
-// Production: /detail-jadwal/{id} — ID should be passed by the controller.
-Route::view('/detail-jadwal', 'kader.detail-jadwal')->name('jadwal.show');
-Route::view('/tambah-jadwal', 'kader.tambah-jadwal')->name('jadwal.create');
-
-// Placeholder POST route — backend: replace with JadwalController@store
-Route::post('/tambah-jadwal', function () {
-    return redirect()->route('jadwal.index');
-})->name('jadwal.store');
-
-// ─── Laporan ───────────────────────────────────────────────────────────────────
-Route::view('/laporan', 'kader.laporan')->name('laporan.index');
-
-// ─── Profil Kader ──────────────────────────────────────────────────────────────
-Route::view('/profil-kader', 'kader.profil-kader')->name('kader.profil');
-
-// ─── Auth Placeholder ─────────────────────────────────────────────────────────
-// Production: replace with Laravel Breeze/Sanctum logout (POST /logout).
-// This GET redirect is a prototype-only convenience.
-Route::get('/logout', function () {
-    return redirect()->route('dashboard');
-})->name('logout');
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes — NutriGen Puskesmas Module (Preview)
-|--------------------------------------------------------------------------
-| Temporary routes for UI/UX preview and layout testing.
-| To be replaced by controllers in the backend phase.
-*/
-Route::prefix('puskesmas')->name('puskesmas.')->group(function () {
-    Route::view('/dashboard', 'puskesmas.dashboard')->name('dashboard');
-    Route::view('/validasi', 'puskesmas.validasi')->name('validasi');
+Route::get('/dashboard', function () {
+    $user = auth()->user();
     
-    // Future views for next steps (using dashboard temporarily to avoid 404s if clicked)
-    Route::view('/balita', 'puskesmas.balita')->name('balita');
-    Route::view('/posyandu', 'puskesmas.posyandu')->name('posyandu');
-    Route::view('/laporan', 'puskesmas.laporan')->name('laporan');
-    Route::view('/pengaturan', 'puskesmas.pengaturan')->name('pengaturan');
+    if ($user->role === 'kader') {
+        return redirect()->route('kader.dashboard');
+    } elseif ($user->role === 'puskesmas') {
+        return redirect()->route('puskesmas.dashboard');
+    } elseif ($user->role === 'ibu') {
+        return redirect()->route('portal-ibu.home');
+    }
+    
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
+
+// ==========================================================================
+// PORTAL PUSKESMAS — Standard Auth + Role Middleware
+// ==========================================================================
+use App\Http\Controllers\Puskesmas\PuskesmasController;
+
+Route::prefix('puskesmas')->name('puskesmas.')->middleware(['web', 'auth', 'prevent-back-history', 'role:puskesmas'])->group(function () {
+    Route::get('/dashboard', [PuskesmasController::class, 'dashboard'])->name('dashboard');
+    Route::get('/balita',    [PuskesmasController::class, 'balita'])->name('balita');
+    Route::get('/laporan',   [PuskesmasController::class, 'laporan'])->name('laporan');
+    
+    // Legacy mapping (to prevent UI breaking)
+    Route::get('/validasi', [PuskesmasController::class, 'validasi'])->name('validasi');
+    Route::post('/validasi/{id}/approve', [PuskesmasController::class, 'approve'])->name('validasi.approve');
+    Route::post('/validasi/{id}/reject', [PuskesmasController::class, 'reject'])->name('validasi.reject');
+    Route::get('/posyandu',  [PuskesmasController::class, 'posyandu'])->name('posyandu');
+    // Pengaturan Institusi & Petugas
+    Route::get('/pengaturan',[PuskesmasController::class, 'pengaturan'])->name('pengaturan');
+    Route::put('/pengaturan',[PuskesmasController::class, 'updatePengaturan'])->name('pengaturan.update');
+    Route::get('/pengaturan/petugas',[PuskesmasController::class, 'petugas'])->name('pengaturan.petugas');
+    Route::put('/pengaturan/petugas',[PuskesmasController::class, 'updatePetugas'])->name('pengaturan.petugas.update');
+});
+
+// ==========================================================================
+// PORTAL KADER — Standard Auth + Role Middleware
+// ==========================================================================
+use App\Http\Controllers\Kader\KaderController;
+
+Route::prefix('kader')->middleware(['web', 'auth', 'prevent-back-history', 'role:kader'])->group(function () {
+    Route::get('/dashboard', [KaderController::class, 'dashboard'])->name('kader.dashboard');
+    
+    // Balita CRUD
+    Route::get('/balita', [KaderController::class, 'daftarBalita'])->name('balita.index');
+    Route::get('/balita/baru', [KaderController::class, 'createBalita'])->name('balita.create');
+    Route::post('/balita', [KaderController::class, 'simpanBalita'])->name('balita.store');
+    Route::get('/balita/{id}', [KaderController::class, 'profilBalita'])->name('balita.show');
+    Route::get('/balita/{id}/edit', [KaderController::class, 'editBalita'])->name('balita.edit');
+    Route::put('/balita/{id}', [KaderController::class, 'updateBalita'])->name('balita.update');
+    Route::delete('/balita/{id}', [KaderController::class, 'hapusBalita'])->name('balita.destroy');
+    
+    // Pengukuran CRUD
+    Route::get('/pengukuran', [KaderController::class, 'pengukuran'])->name('pengukuran.create');
+    Route::post('/pengukuran', [KaderController::class, 'simpanPengukuran'])->name('pengukuran.store');
+    Route::put('/pengukuran/{id}', [KaderController::class, 'updatePengukuran'])->name('pengukuran.update');
+    
+    // Legacy mapping (to prevent UI breaking)
+    Route::get('/jadwal', [KaderController::class, 'jadwal'])->name('jadwal.index');
+    Route::get('/jadwal/baru', [KaderController::class, 'tambahJadwal'])->name('jadwal.create');
+    Route::post('/jadwal', function () { return redirect()->route('jadwal.index')->with('info', 'Fitur jadwal dinonaktifkan sementara.'); })->name('jadwal.store');
+    Route::get('/jadwal/{id}', [KaderController::class, 'detailJadwal'])->name('jadwal.show');
+    Route::get('/laporan', [KaderController::class, 'laporan'])->name('laporan.index');
+    Route::post('/laporan/generate', [KaderController::class, 'generatePdf'])->name('laporan.generate');
+    Route::get('/laporan/generate', [KaderController::class, 'generatePdf']); // In case accessed directly
+    Route::get('/profil', [KaderController::class, 'profilKader'])->name('kader.profil');
+    Route::get('/profil/edit', [KaderController::class, 'editProfilKader'])->name('kader.profil.edit');
+    Route::put('/profil', [KaderController::class, 'updateProfilKader'])->name('kader.profil.update');
+});
+
+// ==========================================================================
+// PORTAL IBU — Standard Auth + Role Middleware
+// ==========================================================================
+use App\Http\Controllers\PortalIbu\PortalIbuController;
+
+Route::prefix('portal-ibu')->name('portal-ibu.')->middleware(['web', 'prevent-back-history', 'signed'])->group(function () {
+    // URL mapped to user's requested routes, but Name strictly preserved for UI
+    Route::get('/dashboard', [PortalIbuController::class, 'home'])->name('home');
+    Route::get('/profil-anak', [PortalIbuController::class, 'posyandu'])->name('posyandu'); 
+    Route::get('/riwayat', [PortalIbuController::class, 'growth'])->name('growth');
+    Route::get('/grafik', [PortalIbuController::class, 'nutrition'])->name('nutrition');
 });

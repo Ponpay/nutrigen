@@ -52,11 +52,11 @@
                     @endauth
                 </div>
 
-                {{-- Mobile Hamburger --}}
+                {{-- Hamburger Menu (Mobile & Desktop) --}}
                 <button @click="mobileMenuOpen = true"
                         type="button"
                         aria-label="Buka menu navigasi"
-                        class="lg:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-200">
+                        class="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-200">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -74,7 +74,7 @@
          x-transition:leave="transition-opacity ease-linear duration-300"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[60] lg:hidden"
+         class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[60]"
          @click="mobileMenuOpen = false"
          style="display: none;"></div>
 
@@ -91,7 +91,7 @@
          role="dialog"
          aria-modal="true"
          aria-label="Menu navigasi mobile"
-         class="fixed inset-y-0 right-0 z-[70] w-[280px] max-w-[85vw] bg-white/95 backdrop-blur-2xl shadow-[0_0_40px_rgba(0,0,0,0.1)] overflow-y-auto lg:hidden flex flex-col border-l border-white/40"
+         class="fixed inset-y-0 right-0 z-[70] w-[280px] max-w-[85vw] bg-white/95 backdrop-blur-2xl shadow-[0_0_40px_rgba(0,0,0,0.1)] overflow-y-auto flex flex-col border-l border-white/40"
          style="display: none;">
 
         <div class="flex items-center justify-between px-6 py-6 border-b border-slate-100/50 sticky top-0 z-10 bg-white/50 backdrop-blur-md">

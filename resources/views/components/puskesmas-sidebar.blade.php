@@ -1,8 +1,7 @@
-<!-- Sidebar Overlay (Mobile) -->
-<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
+<!-- Sidebar Overlay (Mobile & Desktop) -->
+<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 z-[60] hidden opacity-0 transition-opacity duration-300"></div>
 
-<!-- Sidebar -->
-<aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-white z-50 transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out lg:border-r lg:border-[#E2E8F0] flex flex-col h-screen overflow-hidden">
+<aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-white z-[70] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col h-screen overflow-hidden shadow-2xl border-r border-[#E2E8F0]">
     
     <!-- Header: Logo -->
     <div class="flex items-center justify-between px-6 py-6 border-b border-[#E2E8F0] bg-white flex-shrink-0">
@@ -17,7 +16,7 @@
                 <p class="text-[9px] font-bold text-[#64748B] uppercase tracking-[0.2em] mt-1">Portal Puskesmas</p>
             </div>
         </div>
-        <button id="closeSidebar" class="p-2 -mr-2 text-[#94A3B8] hover:text-[#475569] transition-colors lg:hidden" aria-label="Tutup menu">
+        <button id="closeSidebar" class="p-2 -mr-2 text-[#94A3B8] hover:text-[#475569] transition-colors" aria-label="Tutup menu">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -69,7 +68,7 @@
     </div>
 
     <!-- Menu Utama -->
-    <div class="flex flex-col gap-1.5 px-4 py-2 overflow-y-auto flex-1 custom-scrollbar">
+    <div class="flex flex-col gap-1.5 px-4 py-2 overflow-y-auto flex-1 hide-scrollbar">
         
         <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 mt-2">Menu Utama</h3>
 

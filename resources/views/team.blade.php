@@ -119,8 +119,7 @@
                     <div class="bg-white border border-slate-200 rounded-[2rem] p-8 lg:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_rgba(16,185,129,0.12)] hover:-translate-y-1 hover:border-emerald-200 transition-all duration-400 flex flex-col flex-1">
                         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                             <div class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden relative ring-4 ring-emerald-100 shadow-lg">
-                                <img src="{{ asset('images/team/member-1.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover blur-xl scale-[2] opacity-80" aria-hidden="true">
-                                <img src="{{ asset('images/team/member-1.png') }}" alt="Muhammad Naufal Alifaturafif" class="relative z-10 w-full h-full object-contain scale-[0.88] translate-y-1 transition-transform duration-500 group-hover:scale-[0.92]" loading="lazy">
+                                <img src="{{ asset('images/team/member-1.png') }}" alt="Muhammad Naufal Alifaturafif" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" loading="lazy">
                             </div>
                             <div class="text-center sm:text-left">
                                 <h3 class="text-2xl font-bold tracking-tight text-slate-900 leading-tight mb-2">Muhammad Naufal<br>Alifaturafif</h3>
@@ -154,8 +153,7 @@
                     <div class="bg-white border border-slate-200 rounded-[2rem] p-8 lg:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_rgba(6,182,212,0.12)] hover:-translate-y-1 hover:border-sky-200 transition-all duration-400 flex flex-col flex-1">
                         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                             <div class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden relative ring-4 ring-sky-100 shadow-lg">
-                                <img src="{{ asset('images/team/member-2.jpeg') }}" alt="" class="absolute inset-0 w-full h-full object-cover blur-xl scale-[2] opacity-80" aria-hidden="true">
-                                <img src="{{ asset('images/team/member-2.jpeg') }}" alt="Bintang Naufal Fayazzi" class="relative z-10 w-full h-full object-contain scale-[0.88] translate-y-1 transition-transform duration-500 group-hover:scale-[0.92]" loading="lazy">
+                                <img src="{{ asset('images/team/member-2.jpeg') }}" alt="Bintang Naufal Fayazzi" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" loading="lazy">
                             </div>
                             <div class="text-center sm:text-left">
                                 <h3 class="text-2xl font-bold tracking-tight text-slate-900 leading-tight mb-2">Bintang Naufal<br>Fayazzi</h3>
@@ -189,8 +187,7 @@
                     <div class="bg-white border border-slate-200 rounded-[2rem] p-8 lg:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_rgba(139,92,246,0.12)] hover:-translate-y-1 hover:border-violet-200 transition-all duration-400 flex flex-col flex-1">
                         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                             <div class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden relative ring-4 ring-violet-100 shadow-lg">
-                                <img src="{{ asset('images/team/member-3.jpeg') }}" alt="" class="absolute inset-0 w-full h-full object-cover blur-xl scale-[2] opacity-80" aria-hidden="true">
-                                <img src="{{ asset('images/team/member-3.jpeg') }}" alt="Riyan Arya Syahputra" class="relative z-10 w-full h-full object-contain scale-[0.88] translate-y-1 transition-transform duration-500 group-hover:scale-[0.92]" loading="lazy">
+                                <img src="{{ asset('images/team/member-3.jpeg') }}" alt="Riyan Arya Syahputra" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" loading="lazy">
                             </div>
                             <div class="text-center sm:text-left">
                                 <h3 class="text-2xl font-bold tracking-tight text-slate-900 leading-tight mb-2">Riyan Arya<br>Syahputra</h3>
@@ -224,7 +221,7 @@
                     <div class="bg-white border border-slate-200 rounded-[2rem] p-8 lg:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_rgba(245,158,11,0.12)] hover:-translate-y-1 hover:border-amber-200 transition-all duration-400 flex flex-col flex-1">
                         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                             <div class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden relative ring-4 ring-amber-100 shadow-lg">
-                                <img src="{{ asset('images/team/member-4.jpeg') }}" alt="Risky Husnaa Mulyadi" class="w-full h-full object-cover object-[50%_15%] transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                                <img src="{{ asset('images/team/member-4.jpeg') }}" alt="Risky Husnaa Mulyadi" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" loading="lazy">
                             </div>
                             <div class="text-center sm:text-left">
                                 <h3 class="text-2xl font-bold tracking-tight text-slate-900 leading-tight mb-2">Risky Husnaa<br>Mulyadi</h3>

@@ -476,18 +476,18 @@
                     </p>
 
                     {{-- Mini Stats --}}
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="bg-white rounded-2xl p-5 border border-emerald-100 shadow-sm text-center">
-                            <div class="text-2xl font-extrabold text-emerald-600 mb-1">3</div>
-                            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Portal Pengguna</div>
+                    <div class="grid grid-cols-3 gap-2 sm:gap-4">
+                        <div class="bg-white rounded-2xl p-3 sm:p-5 border border-emerald-100 shadow-sm text-center">
+                            <div class="text-xl sm:text-2xl font-extrabold text-emerald-600 mb-1">3</div>
+                            <div class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wide">Portal Pengguna</div>
                         </div>
-                        <div class="bg-white rounded-2xl p-5 border border-blue-100 shadow-sm text-center">
-                            <div class="text-2xl font-extrabold text-blue-600 mb-1">WHO</div>
-                            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Standar 2006</div>
+                        <div class="bg-white rounded-2xl p-3 sm:p-5 border border-blue-100 shadow-sm text-center">
+                            <div class="text-xl sm:text-2xl font-extrabold text-blue-600 mb-1">WHO</div>
+                            <div class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wide">Standar 2006</div>
                         </div>
-                        <div class="bg-white rounded-2xl p-5 border border-amber-100 shadow-sm text-center">
-                            <div class="text-2xl font-extrabold text-amber-600 mb-1">100%</div>
-                            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Paperless</div>
+                        <div class="bg-white rounded-2xl p-3 sm:p-5 border border-amber-100 shadow-sm text-center">
+                            <div class="text-xl sm:text-2xl font-extrabold text-amber-600 mb-1">100%</div>
+                            <div class="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wide">Paperless</div>
                         </div>
                     </div>
                 </div>

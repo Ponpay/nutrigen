@@ -1,27 +1,55 @@
-<header class="flex-shrink-0 bg-white z-50 flex items-center justify-between px-6 lg:px-8 h-[76px] border-b border-[#E2E8F0] w-full sticky top-0 transition-all duration-300">
-    <!-- Hamburger (Mobile) -->
-    <button id="sidebarToggle" class="p-2 -ml-2 text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] rounded-xl transition-all lg:hidden" aria-label="Buka menu">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
-    </button>
-    
-    <!-- Mobile Title -->
-    <h1 class="text-[17px] font-black text-[#1E293B] tracking-tight lg:hidden">NutriGen</h1>
+<header :class="{'bg-white/80 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.02)] border-[#E2E8F0]/50': scrolled, 'bg-white border-[#E2E8F0]': !scrolled}" class="flex-shrink-0 z-50 flex items-center justify-between px-6 lg:px-8 h-[76px] border-b w-full sticky top-0 transition-all duration-300">
+    <!-- Left: Hamburger & Title -->
+    <div class="flex items-center gap-4">
+        <!-- Hamburger (Mobile & Desktop) -->
+        <button id="sidebarToggle" class="p-2 -ml-2 text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFC] rounded-xl transition-all" aria-label="Buka menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+        
+        <!-- Logo & Title -->
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
+            <div class="w-8 h-8 flex items-center justify-center flex-shrink-0">
+                <img src="{{ asset('images/logo/logo-nutrigen.png') }}" alt="NutriGen Logo" class="w-full h-full object-contain">
+            </div>
+            <div class="flex flex-col">
+                <h1 class="text-[17px] font-black text-[#1E293B] tracking-tight leading-none">NutriGen</h1>
+                <span class="text-[8px] font-extrabold text-slate-400 tracking-[0.2em] uppercase mt-0.5 hidden sm:block">Monitoring Gizi Anak</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Center: Desktop Navigation -->
+    <div class="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2 h-full">
+        <a href="{{ route('kader.dashboard') }}" class="relative flex items-center h-full px-2 text-[14px] font-bold transition-all {{ request()->routeIs('kader.dashboard') ? 'text-emerald-600' : 'text-slate-500 hover:text-emerald-600' }}">
+            Dashboard
+            @if(request()->routeIs('kader.dashboard'))
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-500 rounded-t-full"></div>
+            @endif
+        </a>
+        <a href="{{ route('balita.index') }}" class="relative flex items-center h-full px-2 text-[14px] font-bold transition-all {{ request()->routeIs('balita.*') ? 'text-emerald-600' : 'text-slate-500 hover:text-emerald-600' }}">
+            Balita
+            @if(request()->routeIs('balita.*'))
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-500 rounded-t-full"></div>
+            @endif
+        </a>
+        <a href="{{ route('jadwal.index') }}" class="relative flex items-center h-full px-2 text-[14px] font-bold transition-all {{ request()->routeIs('jadwal.*') ? 'text-emerald-600' : 'text-slate-500 hover:text-emerald-600' }}">
+            Jadwal
+            @if(request()->routeIs('jadwal.*'))
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-500 rounded-t-full"></div>
+            @endif
+        </a>
+        <a href="{{ route('laporan.index') }}" class="relative flex items-center h-full px-2 text-[14px] font-bold transition-all {{ request()->routeIs('laporan.*') ? 'text-emerald-600' : 'text-slate-500 hover:text-emerald-600' }}">
+            Laporan
+            @if(request()->routeIs('laporan.*'))
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-500 rounded-t-full"></div>
+            @endif
+        </a>
+    </div>
     
     <!-- Left: Page Title & Breadcrumbs -->
-    <div class="hidden lg:flex flex-col justify-center h-full">
-        <h1 class="text-xl font-extrabold text-[#1E293B] tracking-tight leading-none mb-1.5">@yield('page-title', 'Beranda')</h1>
-        @hasSection('page-breadcrumbs')
-            <div class="text-[11px] font-medium text-[#94A3B8] flex items-center gap-1.5">
-                Beranda
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3 text-[#CBD5E1]">
-                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-                </svg>
-                @yield('page-breadcrumbs')
-            </div>
-        @endif
-    </div>
+    <!-- Page Title & Breadcrumbs removed in favor of center navigation -->
     
     <!-- Right: Utilities -->
     <div class="flex items-center gap-4">

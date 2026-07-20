@@ -24,7 +24,7 @@
         <x-puskesmas-sidebar />
 
         <!-- Main Column -->
-        <div class="flex flex-col flex-1 w-full min-w-0 overflow-hidden">
+        <div x-data="{ scrolled: false }" class="flex flex-col flex-1 w-full min-w-0 overflow-hidden relative">
             <!-- Surface 1: Topbar -->
             <x-navbar />
 
@@ -37,20 +37,18 @@
             -->
             @if(View::hasSection('page-mode') && View::getSection('page-mode') === 'app')
                 {{-- APP MODE: Full-height, edge-to-edge, no outer wrapper --}}
-                <main class="flex-1 overflow-hidden pt-16 pb-16 lg:pb-0 w-full relative flex flex-col">
+                <main class="flex-1 overflow-hidden -mt-[76px] pt-[76px] pb-6 lg:pb-0 w-full relative flex flex-col">
                     @yield('content')
                 </main>
             @else
                 {{-- SCROLL MODE: Padded, scrollable container --}}
-                <main class="flex-1 overflow-y-auto overflow-x-hidden pt-16 pb-16 lg:pb-0 w-full relative bg-slate-50">
+                <main @scroll.passive="scrolled = ($event.target.scrollTop > 10)" class="flex-1 overflow-y-auto overflow-x-hidden -mt-[76px] pt-[76px] pb-6 lg:pb-0 w-full relative bg-slate-50">
                     <div class="max-w-7xl mx-auto w-full px-5 py-6 lg:px-8 lg:py-8">
                         @yield('content')
                     </div>
                 </main>
             @endif
 
-            <!-- Bottom Navigation (Mobile Only) -->
-            <x-puskesmas-footer />
         </div>
         
     </div>

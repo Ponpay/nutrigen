@@ -28,13 +28,14 @@ const baseSwal = Swal.mixin({
 
 const toastSwal = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: 'top',
     showConfirmButton: false,
     timer: 3500,
     timerProgressBar: true,
     customClass: {
-        popup: 'rounded-xl shadow-lg border border-[#E2E8F0] px-4 py-3 mt-4 mr-4',
-        title: 'text-sm font-bold text-[#1E293B] ml-2',
+        popup: '!rounded-2xl !shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] !border !border-slate-100 !px-3 !py-2 !mt-4 !w-auto !max-w-[90vw] !flex !items-center',
+        title: '!text-[13px] !font-bold !text-slate-700 !m-0 !pl-2',
+        icon: '!scale-[0.6] !m-0'
     },
     didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)

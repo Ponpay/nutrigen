@@ -259,7 +259,7 @@
                         <p class="text-[14px] text-emerald-800/80 font-medium md:max-w-md leading-relaxed">Seluruh rekapan telah diverifikasi. Laporan bulanan siap di-generate menjadi format PDF untuk dicetak atau dibagikan.</p>
                     </div>
 
-                    <div class="w-full md:w-auto flex-shrink-0 relative z-10 hidden md:block">
+                    <div class="w-full md:w-auto flex-shrink-0 relative z-10 mt-2 md:mt-0">
                         <form action="{{ route('laporan.generate') }}" method="POST" class="w-full">
                             @csrf
                             <input type="hidden" name="posyandu_id" value="{{ request('posyandu_id') }}">
@@ -280,22 +280,5 @@
         @endif
     </div>
 
-    <!-- Mobile Sticky CTA Area -->
-    @if(!isset($dataKosong) || !$dataKosong)
-    <div class="md:hidden sticky bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-slate-200/60 p-4 pb-safe flex flex-col shadow-[0_-4px_12px_-4px_rgba(0,0,0,0.1)] mt-auto">
-        <form action="{{ route('laporan.generate') }}" method="POST" class="w-full">
-            @csrf
-            <input type="hidden" name="posyandu_id" value="{{ request('posyandu_id') }}">
-            <input type="hidden" name="periode" value="{{ request('periode') }}">
-            <button type="submit" class="group relative w-full flex items-center justify-center gap-2.5 h-14 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white rounded-[16px] font-semibold text-[14px] shadow-[0_8px_16px_-4px_rgba(16,185,129,0.4)] focus:outline-none focus:ring-4 focus:ring-emerald-500/30 overflow-hidden transition-all active:scale-[0.98]">
-                <div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"></div>
-                <span class="relative z-10">Generate Laporan PDF</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 relative z-10">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-            </button>
-        </form>
-    </div>
-    @endif
 </div>
 @endsection

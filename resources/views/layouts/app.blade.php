@@ -24,12 +24,12 @@
         <x-sidebar />
 
         <!-- Main Wrapper -->
-        <div class="flex flex-col flex-1 w-full min-w-0 overflow-hidden">
+        <div x-data="{ scrolled: false }" class="flex flex-col flex-1 w-full min-w-0 overflow-hidden relative">
             <x-navbar />
 
             <!-- Main Content Area -->
-            <!-- pt-16 to offset fixed navbar, pb-16 to offset mobile footer -->
-            <main class="flex-1 overflow-y-auto overflow-x-hidden pt-4 lg:pt-0 pb-16 lg:pb-0 w-full relative">
+            <!-- -mt-[76px] pt-[76px] allows content to scroll under the navbar -->
+            <main @scroll.passive="scrolled = ($event.target.scrollTop > 10)" class="flex-1 overflow-y-auto overflow-x-hidden -mt-[76px] pt-[76px] pb-[80px] lg:pb-0 w-full relative">
                 <div class="w-full">
                     @yield('content')
                 </div>

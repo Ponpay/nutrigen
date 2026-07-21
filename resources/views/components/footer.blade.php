@@ -1,4 +1,4 @@
-<footer class="absolute bottom-0 inset-x-0 z-50 lg:hidden pointer-events-none w-full" style="padding-bottom: env(safe-area-inset-bottom)">
+<footer class="fixed bottom-0 inset-x-0 z-50 lg:hidden pointer-events-none w-full" style="padding-bottom: env(safe-area-inset-bottom)">
     <!-- Full-Width Minimal Container -->
     <div class="pointer-events-auto w-full pt-3 pb-3 px-2 bg-white/60 backdrop-blur-2xl border-t border-white shadow-[0_-8px_30px_rgba(0,0,0,0.08)] flex items-center justify-around">
 

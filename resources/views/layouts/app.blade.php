@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
 
     {{-- page-title is defined per-view via @section('page-title', '...') --}}
     <title>@yield('page-title', 'Beranda') — NutriGen</title>
@@ -18,7 +18,7 @@
 <body class="bg-slate-50 text-slate-800 antialiased font-sans overflow-x-hidden">
     
     <!-- Responsive App Container -->
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex h-[100dvh] overflow-hidden">
         
         <!-- Sidebar Drawer (Mobile) / Permanent (Desktop) -->
         <x-sidebar />

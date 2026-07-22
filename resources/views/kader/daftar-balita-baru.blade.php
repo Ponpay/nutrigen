@@ -8,10 +8,10 @@
     Provides strong contrast against the white workspace. 
     Eliminates the "White-on-White" eye fatigue.
 --}}
-<div class="-mt-4 lg:mt-0 min-h-screen bg-slate-50/50 pb-24 lg:pb-16 selection:bg-emerald-100 selection:text-emerald-900">
+<div class="min-h-screen bg-slate-50/50 pb-24 lg:pb-16 selection:bg-emerald-100 selection:text-emerald-900">
 
     {{-- ── 1. MOBILE: COMPACT STICKY HEADER (Glassmorphism Emerald) ── --}}
-    <div class="md:hidden bg-gradient-to-r from-emerald-600/85 to-emerald-500/85 backdrop-blur-xl sticky -top-4 z-[45] isolate shadow-[0_4px_20px_-10px_rgba(16,185,129,0.3)] border-b border-emerald-400/30 px-4 py-3 flex items-center justify-between">
+    <div class="md:hidden bg-gradient-to-r from-emerald-600/90 to-emerald-500/90 backdrop-blur-xl sticky top-0 z-[45] isolate shadow-sm border-b border-emerald-400/30 px-4 py-4 flex items-center justify-between">
         <a href="{{ !empty($isEdit) ? route('balita.show', $balitaId ?? '') : route('balita.index') }}" 
            class="p-2 -ml-2 bg-white/20 text-white hover:bg-white/30 rounded-full backdrop-blur-sm transition-colors focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">

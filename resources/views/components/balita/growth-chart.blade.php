@@ -114,16 +114,29 @@
             });
 
             // Gambar garis dan titik
+            if (points.length === 1) {
+                // If only 1 data point, draw a dashed horizontal line from the left to show the level
+                d = `M0,${points[0].y} L${points[0].x},${points[0].y}`;
+                plotPath.setAttribute('stroke-dasharray', '5,5');
+                plotPath.setAttribute('stroke-opacity', '0.4');
+            } else {
+                plotPath.removeAttribute('stroke-dasharray');
+                plotPath.removeAttribute('stroke-opacity');
+                
+                points.forEach((pt, index) => {
+                    // Construct path string dengan kurva Bezier halus (Monotone Cubic)
+                    if (index === 0) {
+                        d += `M${pt.x},${pt.y} `;
+                    } else {
+                        const prevPt = points[index - 1];
+                        const cpX = (prevPt.x + pt.x) / 2;
+                        // Format: C cp1X,cp1Y cp2X,cp2Y endX,endY
+                        d += `C${cpX},${prevPt.y} ${cpX},${pt.y} ${pt.x},${pt.y} `;
+                    }
+                });
+            }
+
             points.forEach((pt, index) => {
-                // Construct path string dengan kurva Bezier halus (Monotone Cubic)
-                if (index === 0) {
-                    d += `M${pt.x},${pt.y} `;
-                } else {
-                    const prevPt = points[index - 1];
-                    const cpX = (prevPt.x + pt.x) / 2;
-                    // Format: C cp1X,cp1Y cp2X,cp2Y endX,endY
-                    d += `C${cpX},${prevPt.y} ${cpX},${pt.y} ${pt.x},${pt.y} `;
-                }
 
                 // Create dot
                 const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');

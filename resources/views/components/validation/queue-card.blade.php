@@ -5,14 +5,14 @@
 
 @php
     $initials = collect(explode(' ', $child['name']))->map(fn($n) => substr($n, 0, 1))->take(2)->join('');
-    // Visual styles for queue card states
-    $activeStyles = 'border-sky-300 border-l-[4px] border-l-sky-500 bg-sky-50/60 shadow-sm z-10 rounded-sm -mx-px';
-    $inactiveStyles = 'border-transparent border-b-slate-100 bg-white hover:bg-slate-50 hover:border-slate-200 hover:shadow-sm border-l-[4px] border-l-transparent';
+    // Clean list-item styles (no stacked cards)
+    $activeStyles = 'bg-[#F2FBFC] border-l-[6px] border-l-[#00A9C0] z-10';
+    $inactiveStyles = 'bg-white hover:bg-slate-50 border-l-[6px] border-l-transparent';
 @endphp
 
 <button type="button" 
     data-validation-id="{{ $child['id'] }}"
-    class="validation-card-btn w-full text-left px-3 py-2 border transition-all duration-200 cursor-pointer focus:outline-none flex gap-3 relative
+    class="validation-card-btn w-full text-left px-3 py-3 border-b border-slate-100 transition-colors duration-200 cursor-pointer focus:outline-none flex gap-3 relative
     {{ $isActive ? $activeStyles : $inactiveStyles }}">
     
     <!-- Photo / Avatar -->
@@ -27,27 +27,21 @@
     </div>
 
     <!-- Content -->
-    <div class="flex-1 min-w-0 flex flex-col justify-center">
-        <!-- Top Row: Name & Priority Badge -->
-        <div class="flex items-center gap-2 mb-0.5">
-            <h4 class="font-bold truncate text-xs text-slate-900 validation-card-name max-w-[140px]">
+    <div class="flex-1 min-w-0 flex items-center justify-between">
+        <div class="flex flex-col justify-center min-w-0 pr-2">
+            <h4 class="font-bold truncate text-[13px] text-slate-800 validation-card-name mb-0.5">
                 {{ $child['name'] }}
             </h4>
-            <div class="shrink-0">
-                <x-status-badge :type="$child['statusType']" :label="$child['statusLabel']" />
+            <div class="text-[10px] text-slate-500 font-medium truncate">
+                {{ $child['age'] }} &bull; {{ $child['posyandu'] }} &bull; {{ $child['kader'] }}
             </div>
         </div>
         
-        <!-- Main Indicator -->
-        <div class="mb-0.5">
-            <span class="text-[10px] font-bold {{ $child['statusType'] === 'warning' ? 'text-amber-700' : 'text-rose-700' }}">
-                {{ $child['indicator'] }}: {{ $child['value'] }}
-            </span>
-        </div>
-
-        <!-- Meta Info -->
-        <div class="text-[9px] text-slate-500 font-medium truncate">
-            {{ $child['age'] }} &bull; {{ $child['posyandu'] }} &bull; {{ $child['kader'] }} &bull; {{ $child['time'] }}
+        <div class="flex items-center gap-2 shrink-0">
+            <x-status-badge :type="$child['statusType']" :label="$child['statusLabel']" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-slate-400">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
         </div>
     </div>
 </button>

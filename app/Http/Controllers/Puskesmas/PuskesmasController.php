@@ -445,11 +445,12 @@ class PuskesmasController extends Controller
         }
         
         // Distribution already provided by reportStats
+        $distTotal = $reportStats['normal'] + $reportStats['risiko'] + $reportStats['stunting'];
         $distribution = [
             'normal' => $reportStats['normal'],
-            'pct_normal' => round(($reportStats['normal'] / ($reportStats['normal'] + $reportStats['risiko'] + $reportStats['stunting'])) * 100),
+            'pct_normal' => $distTotal > 0 ? round(($reportStats['normal'] / $distTotal) * 100) : 0,
             'stunting' => $reportStats['risiko'] + $reportStats['stunting'], // treated as risk total
-            'pct_stunting' => round((($reportStats['risiko'] + $reportStats['stunting']) / ($reportStats['normal'] + $reportStats['risiko'] + $reportStats['stunting'])) * 100),
+            'pct_stunting' => $distTotal > 0 ? round((($reportStats['risiko'] + $reportStats['stunting']) / $distTotal) * 100) : 0,
         ];
         
         $topBerisiko = $this->dashboardService->getTopBerisiko($puskesmasId, $posyanduId, (int) $bulan, (int) $tahun);

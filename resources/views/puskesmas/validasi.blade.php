@@ -32,76 +32,70 @@
             <p class="text-xs text-slate-500 mt-1">Validasi pengukuran yang dilakukan oleh kader posyandu</p>
         </div>
         
-        <!-- KPI Row -->
-        <div class="flex flex-col lg:flex-row gap-3 items-center">
-            
-            <a href="?tab=pending" class="flex-1 bg-white border {{ $filters['tab'] === 'pending' ? 'border-sky-500 shadow-sm ring-1 ring-sky-500' : 'border-slate-200 shadow-sm' }} rounded-xl p-2.5 flex items-center gap-3 transition-all hover:border-sky-300 w-full">
-                <div class="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center text-sky-600 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
-                </div>
-                <div>
-                    <p class="text-[9px] font-bold text-sky-700 uppercase tracking-widest">Semua Pending</p>
-                    <span id="count-pending" class="text-lg font-black text-slate-800 leading-none mt-0.5 block">{{ $c_pending }}</span>
-                </div>
-            </a>
-            
-            <a href="?tab=anomali" class="flex-1 bg-white border {{ $filters['tab'] === 'anomali' ? 'border-amber-500 shadow-sm ring-1 ring-amber-500' : 'border-slate-200 shadow-sm' }} rounded-xl p-2.5 flex items-center gap-3 transition-all hover:border-amber-300 w-full">
-                <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-500 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                </div>
-                <div>
-                    <p class="text-[9px] font-bold text-amber-700 uppercase tracking-widest">Risiko Stunting</p>
-                    <span id="count-anomali" class="text-lg font-black text-slate-800 leading-none mt-0.5 block">{{ $c_anomali }}</span>
-                </div>
-            </a>
-            
-            <a href="?tab=berisiko" class="flex-1 bg-white border {{ $filters['tab'] === 'berisiko' ? 'border-rose-500 shadow-sm ring-1 ring-rose-500' : 'border-slate-200 shadow-sm' }} rounded-xl p-2.5 flex items-center gap-3 transition-all hover:border-rose-300 w-full">
-                <div class="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center text-rose-500 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                </div>
-                <div>
-                    <p class="text-[9px] font-bold text-rose-700 uppercase tracking-widest">Stunting</p>
-                    <span id="count-berisiko" class="text-lg font-black text-slate-800 leading-none mt-0.5 block">{{ $c_berisiko }}</span>
-                </div>
-            </a>
-            
-            <!-- Posyandu Filter -->
-            <form action="{{ route('puskesmas.validasi') }}" method="GET" class="w-full lg:w-56 bg-white border border-slate-200 rounded-xl p-2.5 shadow-sm shrink-0">
-                <input type="hidden" name="tab" value="{{ $filters['tab'] }}">
-                <label class="block text-[10px] font-bold text-slate-500 mb-1">Posyandu</label>
-                <div class="flex items-center gap-2">
-                    <select name="posyandu_id" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg p-1.5 focus:ring-teal-500 outline-none" onchange="this.form.submit()">
+            <!-- 3. KPI CARDS (3 Grid) -->
+            <div class="flex flex-col lg:flex-row gap-4 w-full">
+                
+                @php
+                    $kpis = [
+                        ['id' => 'pending', 'label' => 'Menunggu Validasi', 'count' => $c_pending, 'color' => 'sky', 'bg' => 'bg-sky-50', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />'],
+                        ['id' => 'anomali', 'label' => 'Risiko Stunting', 'count' => $c_anomali, 'color' => 'amber', 'bg' => 'bg-amber-50', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />'],
+                        ['id' => 'berisiko', 'label' => 'Stunting', 'count' => $c_berisiko, 'color' => 'rose', 'bg' => 'bg-rose-50', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />']
+                    ];
+                @endphp
+
+                @foreach($kpis as $kpi)
+                <a href="?tab={{ $kpi['id'] }}" class="flex-1 {{ $kpi['bg'] }} rounded-xl p-3 flex items-center gap-3 transition-all border border-transparent hover:border-{{ $kpi['color'] }}-200">
+                    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-{{ $kpi['color'] }}-500 shrink-0 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">{!! $kpi['icon'] !!}</svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs font-bold text-{{ $kpi['color'] }}-600">{{ $kpi['label'] }}</p>
+                        <p class="text-2xl font-black text-slate-800 leading-none mt-1 tracking-tight flex items-end gap-1">
+                            <span id="count-{{ $kpi['id'] }}">{{ $kpi['count'] }}</span>
+                            <span class="text-[10px] font-medium text-slate-500 mb-0.5 font-normal tracking-normal">data</span>
+                        </p>
+                    </div>
+                </a>
+                @endforeach
+                
+                <!-- Posyandu Filter -->
+                <form action="{{ route('puskesmas.validasi') }}" method="GET" class="w-full lg:w-56 bg-white border border-slate-200 rounded-xl p-3 shadow-sm shrink-0 flex flex-col justify-center">
+                    <input type="hidden" name="tab" value="{{ $filters['tab'] }}">
+                    <label class="block text-[10px] font-bold text-slate-500 mb-1.5">Posyandu</label>
+                    <select name="posyandu_id" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2 py-1.5 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors" onchange="this.form.submit()">
                         <option value="">Semua Posyandu</option>
                         @foreach($posyandus as $p)
                             <option value="{{ $p['nama'] }}" {{ $filters['posyandu_id'] == $p['nama'] ? 'selected' : '' }}>{{ $p['nama'] }}</option>
                         @endforeach
                     </select>
-                </div>
-            </form>
-            
+                </form>
+            </div>
         </div>
-    </div>
-    
-    <!-- TABS ROW UNDER KPI -->
-    <div class="px-6 bg-white border-b border-slate-200 flex overflow-x-auto hide-scrollbar gap-6 shrink-0 pt-2">
-        <a href="?tab=pending" class="px-2 pb-2 text-sm font-bold flex items-center gap-2 {{ $filters['tab'] === 'pending' ? 'text-teal-700 border-b-2 border-teal-600' : 'text-slate-500 hover:text-slate-700' }}">
-            Semua Pending
-        </a>
-        <a href="?tab=anomali" class="px-2 pb-2 text-sm font-bold flex items-center gap-2 {{ $filters['tab'] === 'anomali' ? 'text-amber-700 border-b-2 border-amber-600' : 'text-slate-500 hover:text-slate-700' }}">
-            Risiko Stunting
-        </a>
-        <a href="?tab=berisiko" class="px-2 pb-2 text-sm font-bold flex items-center gap-2 {{ $filters['tab'] === 'berisiko' ? 'text-rose-700 border-b-2 border-rose-600' : 'text-slate-500 hover:text-slate-700' }}">
-            Stunting
-        </a>
-    </div>
+        
+        <!-- Full-viewport Split View: Clinical Workspace -->
+        <div class="flex flex-col lg:flex-row flex-1 overflow-hidden p-4 lg:p-5 gap-4 lg:gap-5 bg-slate-50/50">
 
-    <!-- Full-viewport Split View: Clinical Workspace -->
-    <div class="flex flex-col lg:flex-row flex-1 overflow-hidden p-4 gap-4 bg-slate-50/50">
+        <!-- LEFT PANEL: Antrean Queue -->
+        <div class="w-full lg:w-[35%] flex flex-col bg-white rounded-2xl border border-slate-200 shrink-0 overflow-hidden relative z-10 shadow-sm">
+            
+            <!-- TABS ROW INSIDE LEFT PANEL -->
+            <div class="px-4 bg-white border-b border-slate-100 flex overflow-x-auto hide-scrollbar shrink-0 pt-3 flex-nowrap">
+                @php
+                    $tabs = [
+                        ['id' => 'pending', 'label' => 'Semua', 'count' => $c_pending],
+                        ['id' => 'normal', 'label' => 'Normal', 'count' => 6], // Placeholder from mockup
+                        ['id' => 'anomali', 'label' => 'Risiko', 'count' => $c_anomali],
+                        ['id' => 'berisiko', 'label' => 'Stunting', 'count' => $c_berisiko]
+                    ];
+                @endphp
+                @foreach($tabs as $t)
+                <a href="?tab={{ $t['id'] }}" class="px-3 pb-2.5 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap {{ $filters['tab'] === $t['id'] ? 'text-[#00A9C0] border-b-2 border-[#00A9C0]' : 'text-slate-500 hover:text-slate-700 border-b-2 border-transparent' }}">
+                    {{ $t['label'] }} <span class="text-[10px] {{ $filters['tab'] === $t['id'] ? 'text-[#00A9C0]' : 'text-slate-400' }}">({{ $t['count'] }})</span>
+                </a>
+                @endforeach
+            </div>
 
-    <!-- LEFT PANEL: Antrean Queue -->
-    <div class="w-full lg:w-[35%] flex flex-col bg-white rounded-2xl border border-slate-200 shrink-0 overflow-hidden relative z-10 shadow-sm">
-
-        <!-- List Antrean (Scrollable) -->
+            <!-- List Antrean (Scrollable) -->
         <div id="queueListContainer" class="flex-1 overflow-y-auto flex flex-col hide-scrollbar">
             @forelse($children as $index => $child)
                 <div id="card-{{ $child['id'] }}" class="queue-card-wrapper transition-all duration-300 origin-top">
@@ -149,7 +143,7 @@
         </div>
 
         @if(count($children) > 0)
-            <div id="workspacesContainer" class="flex-1 flex flex-col overflow-hidden relative bg-slate-50/30">
+            <div id="workspacesContainer" class="flex-1 flex flex-col overflow-hidden relative bg-white">
                 @foreach($children as $index => $child)
                     <!-- WORKSPACE PANEL (1 per anak) -->
                     <div id="workspace-panel-{{ $child['id'] }}" class="workspace-panel flex-1 flex flex-col h-full absolute inset-0 {{ $index === 0 ? '' : 'hidden' }} overflow-y-auto hide-scrollbar">
@@ -157,24 +151,68 @@
                         <x-validation.workspace-header :child="$child" />
                         
                         <!-- Flow Content Container: Unified group with clear typography and spacing -->
-                        <div class="p-4 lg:p-6 flex flex-col gap-6 shrink-0 pb-20 w-full">
+                        <div class="p-4 lg:p-5 flex flex-col gap-6 w-full flex-1">
                             
                             <!-- Clinical Data Flow -->
-                            <div class="flex flex-col gap-4">
-                                <h3 class="text-[13px] font-bold text-slate-800 border-b border-slate-100 pb-2">Data Klinis & Antropometri</h3>
-                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+                            <div class="flex flex-col gap-3">
+                                <h3 class="text-sm font-bold text-slate-800">Data Pengukuran</h3>
+                                <div class="w-full">
                                     <x-validation.zscore-grid :zscores="$child['zscores']" />
-                                    <x-validation.growth-chart />
                                 </div>
                             </div>
 
                             <!-- Context & History Flow -->
-                            <div class="flex flex-col gap-4">
-                                <div class="grid grid-cols-1 gap-4 items-start">
+                            <div class="grid grid-cols-1 xl:grid-cols-[1fr_350px] gap-6 items-start mt-4">
+                                <div class="flex flex-col gap-3">
+                                    <h3 class="text-sm font-bold text-slate-800">Riwayat Pengukuran (Terakhir)</h3>
                                     <x-validation.timeline :history="$child['history']" />
                                 </div>
+                                
+                                <!-- Catatan Validator -->
+                                <div class="flex flex-col gap-3">
+                                    <h3 class="text-sm font-bold text-slate-800">Catatan Validator</h3>
+                                    <div class="relative">
+                                        <textarea 
+                                            id="catatan_validator_{{ $child['id'] }}"
+                                            class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-4 py-3 pb-8 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all placeholder-slate-400 resize-none outline-none shadow-sm h-32" 
+                                            rows="4" 
+                                            placeholder="Tulis catatan hasil validasi..."></textarea>
+                                        <span class="absolute right-3 bottom-3 text-[10px] text-slate-400">0 / 200 karakter</span>
+                                    </div>
+                                </div>
                             </div>
-
+                            
+                            <!-- Grafik KMS Accordion -->
+                            <div class="mt-2 w-full">
+                                <button type="button" onclick="toggleChart('{{ $child['id'] }}')" class="w-full bg-white border border-slate-200 rounded-lg p-3 flex items-center justify-between text-cyan-600 font-bold text-sm shadow-sm hover:bg-slate-50 transition-colors">
+                                    <div class="flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                                        </svg>
+                                        Lihat Grafik KMS
+                                    </div>
+                                    <svg id="chart-icon-{{ $child['id'] }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-cyan-600 transition-transform">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </button>
+                                <div id="chart-container-{{ $child['id'] }}" class="hidden w-full bg-white border border-slate-200 border-t-0 rounded-b-lg p-4 transition-all">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h4 class="text-xs font-bold text-slate-700">Pilih Indikator:</h4>
+                                        <select id="chart-metric-{{ $child['id'] }}" onchange="updateChartMetric('{{ $child['id'] }}')" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-colors">
+                                            <option value="tb">Tinggi Badan (cm)</option>
+                                            <option value="bb">Berat Badan (kg)</option>
+                                            <option value="tbu">Z-Score TB/U</option>
+                                            <option value="bbu">Z-Score BB/U</option>
+                                        </select>
+                                    </div>
+                                    <div class="w-full h-64">
+                                        <canvas id="kms-chart-{{ $child['id'] }}"></canvas>
+                                    </div>
+                                    <script>
+                                        window['chartData_{{ $child['id'] }}'] = {!! json_encode($child['chartData']) !!};
+                                    </script>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Sticky Actions -->
@@ -345,7 +383,99 @@
 </div>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    window.kmsCharts = {};
+
+    function toggleChart(id) {
+        const container = document.getElementById('chart-container-' + id);
+        const icon = document.getElementById('chart-icon-' + id);
+        
+        if (container.classList.contains('hidden')) {
+            container.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+            renderChart(id);
+        } else {
+            container.classList.add('hidden');
+            icon.classList.remove('rotate-180');
+        }
+    }
+
+    function renderChart(id) {
+        if (window.kmsCharts[id]) return; // already rendered
+        
+        const dataObj = window['chartData_' + id];
+        if (!dataObj) return;
+
+        const ctx = document.getElementById('kms-chart-' + id).getContext('2d');
+        
+        window.kmsCharts[id] = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dataObj.labels,
+                datasets: [
+                    {
+                        label: 'Tinggi Badan (cm)',
+                        data: dataObj.tb,
+                        borderColor: '#00A9C0',
+                        backgroundColor: '#00A9C0',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#fff',
+                        pointBorderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Tinggi Badan (cm)'
+                        },
+                        grid: { color: '#f1f5f9' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    function updateChartMetric(id) {
+        const metric = document.getElementById('chart-metric-' + id).value;
+        const chart = window.kmsCharts[id];
+        const dataObj = window['chartData_' + id];
+        
+        if (!chart || !dataObj) return;
+
+        let labelText = '';
+        let dataset = [];
+
+        switch(metric) {
+            case 'tb': labelText = 'Tinggi Badan (cm)'; dataset = dataObj.tb; break;
+            case 'bb': labelText = 'Berat Badan (kg)'; dataset = dataObj.bb; break;
+            case 'tbu': labelText = 'Z-Score TB/U'; dataset = dataObj.tbu; break;
+            case 'bbu': labelText = 'Z-Score BB/U'; dataset = dataObj.bbu; break;
+        }
+
+        chart.data.datasets[0].label = labelText;
+        chart.data.datasets[0].data = dataset;
+        
+        if (chart.options.scales && chart.options.scales.y && chart.options.scales.y.title) {
+            chart.options.scales.y.title.text = labelText;
+        }
+        
+        chart.update();
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const drawer = document.getElementById('workspaceDrawer');
         const overlay = document.getElementById('drawerOverlay');
@@ -540,12 +670,14 @@
                 // If action is reject, we might want to call a reject endpoint, but for MVP let's assume it removes it from view or hits approve.
                 // The requirement is mostly about approve.
                 if (action === 'approve') {
+                    const catatan = document.getElementById('catatan_validator_' + id)?.value || '';
                     const response = await fetch(`/puskesmas/validasi/${id}/approve`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
+                        },
+                        body: JSON.stringify({ catatan_validator: catatan })
                     });
                     
                     if (!response.ok) {
@@ -569,7 +701,7 @@
                     
                     window.showSuccessModal(data.signed_url);
                 } else {
-                    const catatan = document.getElementById('catatan_validator')?.value || '';
+                    const catatan = document.getElementById('catatan_validator_' + id)?.value || '';
                     const response = await fetch(`/puskesmas/validasi/${id}/reject`, {
                         method: 'POST',
                         headers: {
@@ -587,7 +719,7 @@
                     updateStatsUI(data.stats);
                     
                     // Reset textarea
-                    const txt = document.getElementById('catatan_validator');
+                    const txt = document.getElementById('catatan_validator_' + id);
                     if (txt) txt.value = '';
                     
                     window.showRejectSuccessModal();

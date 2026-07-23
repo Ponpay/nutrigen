@@ -24,7 +24,7 @@
         <x-puskesmas-sidebar />
 
         <!-- Main Column -->
-        <div x-data="{ scrolled: false }" class="flex flex-col flex-1 w-full min-w-0 overflow-hidden relative">
+        <div x-data="{ scrolled: false }" class="flex flex-col flex-1 w-full min-w-0 overflow-hidden relative lg:ml-72">
             <!-- Surface 1: Topbar -->
             <x-navbar />
 

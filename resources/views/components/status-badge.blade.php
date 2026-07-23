@@ -39,7 +39,7 @@
     }
 @endphp
 
-<div {{ $attributes->merge(['class' => "flex items-center gap-1.5 px-2.5 py-1 rounded-full border $bgClass $textClass w-max"]) }}>
+<div {{ $attributes->merge(['class' => "flex items-center gap-1.5 font-bold $textClass w-max"]) }}>
     <div class="w-1.5 h-1.5 rounded-full {{ $dotClass }}"></div>
-    <span class="text-[10px] font-bold uppercase tracking-wide">{{ $label }}</span>
+    <span class="text-[9px] uppercase tracking-wider">{{ $label }}</span>
 </div>

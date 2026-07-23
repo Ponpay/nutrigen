@@ -125,7 +125,7 @@ class PuskesmasController extends Controller
                 ->get()
                 ->map(function ($h) {
                     return [
-                        'date' => Carbon::parse($h->tanggal_ukur)->translatedFormat('M Y'),
+                        'date' => Carbon::parse($h->tanggal_ukur)->translatedFormat('d M Y'),
                         'age' => $h->umur_bulan . ' bln',
                         'bb' => $h->berat_badan,
                         'tb' => $h->tinggi_badan,
@@ -143,7 +143,26 @@ class PuskesmasController extends Controller
             if ($zTbu < -2) {
                 $valText .= ' (Pendek)';
             }
+            $allMeasurements = Pengukuran::where('balita_id', $p->balita_id)
+                ->orderBy('tanggal_ukur', 'asc')
+                ->get();
+                
+            $chartData = [
+                'labels' => [],
+                'tb' => [],
+                'bb' => [],
+                'tbu' => [],
+                'bbu' => []
+            ];
             
+            foreach ($allMeasurements as $m) {
+                $chartData['labels'][] = $m->umur_bulan . ' bln';
+                $chartData['tb'][] = (float) $m->tinggi_badan;
+                $chartData['bb'][] = (float) $m->berat_badan;
+                $chartData['tbu'][] = (float) $m->z_score_tbu;
+                $chartData['bbu'][] = (float) $m->z_score_bbu;
+            }
+
             $children[] = [
                 'id' => $p->id,
                 'name' => $p->balita->nama,
@@ -162,12 +181,14 @@ class PuskesmasController extends Controller
                 'bb' => $p->berat_badan,
                 'tb' => $p->tinggi_badan,
                 'zscores' => [
+                    'BB (kg)' => ['val' => number_format((float)$p->berat_badan, 1), 'status' => 'Normal', 'color' => 'slate'],
+                    'TB (cm)' => ['val' => number_format((float)$p->tinggi_badan, 1), 'status' => 'Normal', 'color' => 'slate'],
                     'BB/U' => ['val' => number_format((float)$p->z_score_bbu, 2), 'status' => ((float)$p->z_score_bbu < -2 ? 'Kurang' : 'Normal'), 'color' => 'slate'],
                     'TB/U' => ['val' => number_format((float)$p->z_score_tbu, 2), 'status' => ((float)$p->z_score_tbu < -2 ? 'Pendek' : 'Normal'), 'color' => ((float)$p->z_score_tbu < -2 ? 'rose' : 'slate')],
-                    'BB/TB'=> ['val' => '+0.50', 'status' => 'Normal', 'color' => 'slate'],
-                    'IMT/U'=> ['val' => '+0.80', 'status' => 'Normal', 'color' => 'slate'],
+                    'IMT/U'=> ['val' => number_format((float)$p->z_score_bbu, 2), 'status' => 'Normal', 'color' => 'slate'], // Using BBU as fallback for IMTU if not available in DB
                 ],
                 'history' => $history,
+                'chartData' => $chartData,
             ];
         }
         
@@ -183,7 +204,7 @@ class PuskesmasController extends Controller
         ]);
     }
 
-    public function approve($id)
+    public function approve(Request $request, $id)
     {
         $puskesmasId = $this->getPuskesmasId();
         
@@ -191,7 +212,10 @@ class PuskesmasController extends Controller
             $q->where('puskesmas_id', $puskesmasId);
         })->findOrFail($id);
 
-        $pengukuran->update(['status_validasi' => 'approved']);
+        $pengukuran->update([
+            'status_validasi' => 'approved',
+            'catatan_validator' => $request->input('catatan_validator')
+        ]);
         
         // Generate signed URL for Portal Ibu (valid for 7 days to prevent permanent access)
         $signedUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute('portal-ibu.home', now()->addDays(7), ['balita' => $pengukuran->balita_id]);

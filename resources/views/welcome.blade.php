@@ -343,7 +343,7 @@
 
             <div class="relative max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="150">
                 <div class="absolute -inset-3 bg-gradient-to-br from-emerald-400/15 to-cyan-400/15 rounded-[2rem] blur-xl opacity-70 pointer-events-none"></div>
-                <div class="relative rounded-[20px] border border-slate-200 bg-white p-2 shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_16px_40px_-8px_rgba(0,0,0,0.12)] overflow-hidden group cursor-pointer">
+                <div class="relative rounded-[20px] border border-slate-200 bg-white p-2 shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_16px_40px_-8px_rgba(0,0,0,0.12)] overflow-hidden">
                     <div class="flex items-center gap-1.5 px-3 py-2.5 bg-slate-50 rounded-t-[16px] border-b border-slate-100">
                         <div class="flex gap-1.5">
                             <div class="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
@@ -352,11 +352,15 @@
                         </div>
                     </div>
                     <div class="aspect-video bg-slate-900 rounded-b-[16px] relative overflow-hidden flex items-center justify-center">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000" alt="Dashboard Preview" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out">
-                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-900/40 to-slate-900/40 group-hover:from-emerald-900/20 group-hover:to-slate-900/20 transition-colors duration-500"></div>
-                        <div class="relative z-10 w-16 h-16 bg-white/95 backdrop-blur-md rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 group-active:scale-95 transition-all duration-300">
-                            <svg class="w-6 h-6 text-emerald-600 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
+                        <iframe 
+                            class="absolute top-0 left-0 w-full h-full"
+                            src="https://www.youtube.com/embed/99Radiqy15c" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            allowfullscreen>
+                        </iframe>
                     </div>
                 </div>
             </div>

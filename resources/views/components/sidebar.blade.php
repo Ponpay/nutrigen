@@ -1,8 +1,8 @@
 <!-- Sidebar Overlay (Mobile & Desktop) -->
-<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/30 backdrop-blur-md z-[60] hidden opacity-0 transition-all duration-300" onclick="document.getElementById('sidebar').classList.add('-translate-x-full'); this.classList.add('opacity-0'); setTimeout(() => this.classList.add('hidden'), 300); document.body.style.overflow = '';"></div>
+<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/60 z-[100] hidden opacity-0 transition-opacity duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" onclick="document.getElementById('sidebar').classList.add('-translate-x-full'); this.classList.add('opacity-0'); setTimeout(() => this.classList.add('hidden'), 300); document.body.style.overflow = '';"></div>
 
 <!-- Offcanvas Wrapper -->
-<aside id="sidebar" class="fixed inset-y-0 left-0 w-[320px] z-[70] transform -translate-x-full transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] p-3 lg:p-4 flex flex-col">
+<aside id="sidebar" class="fixed inset-y-0 left-0 w-[320px] z-[110] transform -translate-x-full transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] p-3 lg:p-4 flex flex-col">
     
     <!-- Floating Drawer Container -->
     <div class="bg-white/95 backdrop-blur-3xl w-full h-full rounded-[2.5rem] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.2)] border border-white flex flex-col overflow-hidden relative flex-1">
@@ -32,18 +32,26 @@
             <h3 class="font-black text-slate-800 text-[22px] tracking-tight leading-none mb-3">{{ $kaderName ?? 'Ibu Kader' }}</h3>
             <span class="text-[13px] font-bold text-emerald-600 tracking-wide bg-emerald-50 border border-emerald-100 px-4 py-1.5 rounded-full">{{ $posyanduName ?? 'Posyandu Melati 1' }}</span>
             
-            <!-- Edit Profile Button -->
-            <a href="{{ route('kader.profil') }}" class="mt-6 flex items-center justify-center gap-2 w-full bg-slate-50 hover:bg-slate-100 border border-slate-200/60 text-slate-600 font-bold text-[14px] py-3.5 rounded-2xl transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                </svg>
-                Edit Profil
-            </a>
+            <!-- Removed duplicate Edit Profile Button -->
         </div>
 
         <!-- Menu Section -->
         <div class="flex-1 px-4 py-6 flex flex-col gap-2 overflow-y-auto hide-scrollbar">
-            <h4 class="px-2 mb-2 text-[11px] font-black text-slate-400 uppercase tracking-widest">Informasi Sistem</h4>
+            <h4 class="px-2 mb-2 text-[11px] font-black text-slate-400 uppercase tracking-widest">Menu Profil</h4>
+            
+            @if(!request()->is('puskesmas*'))
+            <a href="{{ route('kader.profil') }}" class="flex items-center gap-4 px-3 py-3 rounded-[1.5rem] text-slate-600 hover:text-emerald-700 hover:bg-emerald-50/80 font-bold text-[15px] transition-all group">
+                <div class="w-12 h-12 rounded-[1.25rem] bg-slate-50 flex items-center justify-center group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors shadow-sm border border-slate-100 group-hover:border-emerald-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                    </svg>
+                </div>
+                <span>Edit Profil</span>
+            </a>
+            @endif
+
+            <div class="h-px w-full bg-slate-100 my-2"></div>
+            <h4 class="px-2 mb-2 mt-2 text-[11px] font-black text-slate-400 uppercase tracking-widest">Informasi Sistem</h4>
             
             <a href="javascript:void(0)" onclick="window.NutriAlert.warning('Segera Hadir', 'Fitur Bantuan segera hadir.')" class="flex items-center gap-4 px-3 py-3 rounded-[1.5rem] text-slate-600 hover:text-emerald-700 hover:bg-emerald-50/80 font-bold text-[15px] transition-all group">
                 <div class="w-12 h-12 rounded-[1.25rem] bg-slate-50 flex items-center justify-center group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors shadow-sm border border-slate-100 group-hover:border-emerald-200">

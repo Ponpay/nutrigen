@@ -2,7 +2,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- Export PDF -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:border-rose-300 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:border-rose-300 transition-all duration-300 hover:-translate-y-1 hover:shadow-sm border border-slate-200/60 group">
             <div class="flex gap-4 items-start">
                 <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -10,11 +10,11 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-800">Laporan Resmi (PDF)</h3>
+                    <h3 class="font-bold tracking-tight text-slate-800">Laporan Resmi (PDF)</h3>
                     <p class="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">Unduh laporan dalam format PDF yang siap dicetak. Berisi kop surat Puskesmas, tabel rekapitulasi, dan grafik analitik.</p>
                 </div>
             </div>
-            <button onclick="window.NutriAlert.warning('Fitur Demo', 'Fitur generate PDF akan dikerjakan oleh Backend Developer.')" class="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
+            <button onclick="window.NutriAlert.warning('Fitur Demo', 'Fitur generate PDF akan dikerjakan oleh Backend Developer.')" class="w-full sm:w-auto px-3 py-2 text-sm min-h-[44px] bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
@@ -23,7 +23,7 @@
         </div>
 
         <!-- Export Excel -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:border-emerald-300 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:border-emerald-300 transition-all duration-300 hover:-translate-y-1 hover:shadow-sm border border-slate-200/60 group">
             <div class="flex gap-4 items-start">
                 <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -31,11 +31,11 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-800">Dataset Raw (Excel)</h3>
+                    <h3 class="font-bold tracking-tight text-slate-800">Dataset Raw (Excel)</h3>
                     <p class="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">Unduh data mentah lengkap per baris (balita, umur, hasil ukur) format `.xlsx` untuk diolah mandiri menggunakan Microsoft Excel.</p>
                 </div>
             </div>
-            <button onclick="window.NutriAlert.warning('Fitur Demo', 'Fitur generate Excel akan dikerjakan oleh Backend Developer menggunakan Laravel Excel.')" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
+            <button onclick="window.NutriAlert.warning('Fitur Demo', 'Fitur generate Excel akan dikerjakan oleh Backend Developer menggunakan Laravel Excel.')" class="w-full sm:w-auto px-3 py-2 text-sm min-h-[44px] bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-sm transition-colors whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>

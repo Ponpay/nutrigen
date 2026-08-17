@@ -37,7 +37,7 @@
             -->
             @if(View::hasSection('page-mode') && View::getSection('page-mode') === 'app')
                 {{-- APP MODE: Full-height, edge-to-edge, no outer wrapper --}}
-                <main class="flex-1 overflow-hidden -mt-[76px] pt-[76px] pb-6 lg:pb-0 w-full relative flex flex-col">
+                <main class="flex-1 min-h-0 overflow-hidden -mt-[76px] pt-[76px] pb-6 lg:pb-0 w-full relative flex flex-col">
                     @yield('content')
                 </main>
             @else

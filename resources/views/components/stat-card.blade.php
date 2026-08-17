@@ -41,7 +41,7 @@
     }
 @endphp
 
-<div class="{{ $bgClass }} rounded-[1.25rem] p-4 lg:p-5 flex flex-col shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow duration-300 h-full">
+<div class="{{ $bgClass }} rounded-[1.25rem] p-4 lg:p-5 flex flex-col shadow-sm relative overflow-hidden group hover:shadow-sm border border-slate-200/60 transition-shadow duration-300 h-full">
     <!-- Subtle glow overlay on hover -->
     <div class="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 

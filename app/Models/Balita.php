@@ -15,17 +15,20 @@ class Balita extends Model
         'orang_tua_id',
         'posyandu_id',
         'nik',
+        'no_bpjs',
         'nama',
         'jenis_kelamin',
         'tanggal_lahir',
         'berat_lahir',
         'panjang_lahir',
+        'lingkar_kepala_lahir',
     ];
 
     protected $casts = [
         'tanggal_lahir' => 'date',
         'berat_lahir' => 'float',
         'panjang_lahir' => 'float',
+        'lingkar_kepala_lahir' => 'float',
     ];
 
     public function orangTua(): BelongsTo

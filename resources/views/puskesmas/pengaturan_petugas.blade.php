@@ -28,7 +28,7 @@
     <x-puskesmas.settings-sidebar active="petugas" />
 
     <!-- RIGHT PANEL: Settings Canvas -->
-    <div class="flex-1 flex flex-col overflow-y-auto bg-[#F8FAFC] p-4 lg:p-8">
+    <div class="flex-1 flex flex-col overflow-y-auto bg-slate-50 p-4 lg:p-8">
         
         <div class="max-w-4xl w-full mx-auto">
             @if (session('success'))
@@ -61,9 +61,9 @@
                 @method('PUT')
 
                 <!-- SECTION: Profil Petugas -->
-                <div class="bg-white border border-[#E2E8F0] rounded-2xl shadow-sm overflow-hidden">
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
                     <!-- Header Card -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 border-b border-[#E2E8F0] bg-white">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 border-b border-slate-200 bg-white">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -71,19 +71,19 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-[#1E293B]">Profil Petugas</h3>
-                                <p class="text-sm text-[#64748B]">Informasi akun petugas yang digunakan untuk mengakses sistem NutriGen.</p>
+                                <h3 class="text-lg font-bold tracking-tight text-slate-900">Profil Petugas</h3>
+                                <p class="text-sm text-slate-500">Informasi akun petugas yang digunakan untuk mengakses sistem NutriGen.</p>
                             </div>
                         </div>
                         <div>
-                            <button type="button" x-show="!editMode" @click="editMode = true" class="px-4 py-2 text-sm font-semibold text-[#047857] bg-white hover:bg-[#F8FAFC] border border-[#047857] rounded-xl flex items-center gap-2 transition-colors">
+                            <button type="button" x-show="!editMode" @click="editMode = true" class="px-4 py-2 text-sm font-semibold text-[#047857] bg-white hover:bg-slate-50 border border-[#047857] rounded-xl flex items-center gap-2 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                                   <path d="M2.695 14.763l-1.262 3.152a.5.5 0 00.65.65l3.152-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" />
                                 </svg>
                                 Edit Profil
                             </button>
                             <div x-show="editMode" class="flex items-center gap-2" x-cloak>
-                                <button type="button" @click="editMode = false; formData.nama = '{{ addslashes($user['nama']) }}'; formData.email = '{{ addslashes($user['email']) }}'" class="px-4 py-2 text-sm font-semibold text-[#475569] bg-white hover:bg-[#F1F5F9] border border-[#E2E8F0] rounded-xl transition-colors">
+                                <button type="button" @click="editMode = false; formData.nama = '{{ addslashes($user['nama']) }}'; formData.email = '{{ addslashes($user['email']) }}'" class="px-4 py-2 text-sm font-semibold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors">
                                     Batal
                                 </button>
                                 <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-[#10B981] hover:bg-[#059669] rounded-xl shadow-sm transition-colors">
@@ -98,7 +98,7 @@
                         <div class="flex flex-col md:flex-row gap-8 lg:gap-12">
                             <!-- Left: Avatar -->
                             <div class="w-full md:w-48 shrink-0 flex flex-col items-center gap-5">
-                                <div class="w-32 h-32 rounded-full bg-[#ECFDF5] border-4 border-white shadow-md flex items-center justify-center overflow-hidden">
+                                <div class="w-32 h-32 rounded-full bg-[#ECFDF5] border-4 border-white shadow-sm border border-slate-200/60 flex items-center justify-center overflow-hidden">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 text-[#A7F3D0] mt-4">
                                         <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
                                     </svg>
@@ -115,22 +115,22 @@
                             <div class="flex-1 flex flex-col">
                                 <!-- Field: Nama Lengkap -->
                                 <div class="flex flex-col sm:flex-row py-3.5 border-b border-[#F1F5F9] items-center">
-                                    <span class="w-48 shrink-0 text-sm font-medium text-[#64748B]">Nama Lengkap</span>
+                                    <span class="w-48 shrink-0 text-sm font-medium text-slate-500">Nama Lengkap</span>
                                     <div class="flex-1 w-full">
-                                        <p x-show="!editMode" class="text-sm font-semibold text-[#1E293B]">{{ $user['nama'] }}</p>
+                                        <p x-show="!editMode" class="text-sm font-semibold text-slate-900">{{ $user['nama'] }}</p>
                                         <div x-show="editMode" x-cloak>
-                                            <input type="text" name="nama" x-model="formData.nama" class="w-full px-3 py-2 text-sm bg-white border border-[#CBD5E1] rounded-lg text-[#1E293B] focus:outline-none focus:ring-1 focus:ring-[#10B981] focus:border-[#10B981] font-medium">
+                                            <input type="text" name="nama" x-model="formData.nama" class="w-full px-3 py-2 text-sm bg-white border border-[#CBD5E1] rounded-lg text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#10B981] focus:border-[#10B981] font-medium">
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Field: Email -->
                                 <div class="flex flex-col sm:flex-row py-3.5 border-b border-[#F1F5F9] items-center">
-                                    <span class="w-48 shrink-0 text-sm font-medium text-[#64748B]">Email</span>
+                                    <span class="w-48 shrink-0 text-sm font-medium text-slate-500">Email</span>
                                     <div class="flex-1 w-full">
-                                        <p x-show="!editMode" class="text-sm font-semibold text-[#1E293B]">{{ $user['email'] }}</p>
+                                        <p x-show="!editMode" class="text-sm font-semibold text-slate-900">{{ $user['email'] }}</p>
                                         <div x-show="editMode" x-cloak>
-                                            <input type="email" name="email" x-model="formData.email" class="w-full px-3 py-2 text-sm bg-white border border-[#CBD5E1] rounded-lg text-[#1E293B] focus:outline-none focus:ring-1 focus:ring-[#10B981] focus:border-[#10B981] font-medium">
+                                            <input type="email" name="email" x-model="formData.email" class="w-full px-3 py-2 text-sm bg-white border border-[#CBD5E1] rounded-lg text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#10B981] focus:border-[#10B981] font-medium">
                                         </div>
                                     </div>
                                 </div>
@@ -139,15 +139,15 @@
 
                                 <!-- Field: Unit Kerja -->
                                 <div class="flex flex-col sm:flex-row py-3.5 border-b border-[#F1F5F9] items-center">
-                                    <span class="w-48 shrink-0 text-sm font-medium text-[#64748B]">Unit Kerja</span>
+                                    <span class="w-48 shrink-0 text-sm font-medium text-slate-500">Unit Kerja</span>
                                     <div class="flex-1 w-full">
-                                        <p class="text-sm font-semibold text-[#1E293B]">{{ $puskesmas['nama'] }}</p>
+                                        <p class="text-sm font-semibold text-slate-900">{{ $puskesmas['nama'] }}</p>
                                     </div>
                                 </div>
 
                                 <!-- Field: Peran -->
                                 <div class="flex flex-col sm:flex-row py-3.5 border-b border-[#F1F5F9] items-center">
-                                    <span class="w-48 shrink-0 text-sm font-medium text-[#64748B]">Peran</span>
+                                    <span class="w-48 shrink-0 text-sm font-medium text-slate-500">Peran</span>
                                     <div class="flex-1 w-full">
                                         <span class="text-sm font-bold text-[#10B981] capitalize">
                                             Petugas {{ $user['role'] }}
@@ -157,15 +157,15 @@
 
                                 <!-- Field: Terdaftar Sejak -->
                                 <div class="flex flex-col sm:flex-row py-3.5 border-b border-[#F1F5F9] items-center">
-                                    <span class="w-48 shrink-0 text-sm font-medium text-[#64748B]">Terdaftar Sejak</span>
+                                    <span class="w-48 shrink-0 text-sm font-medium text-slate-500">Terdaftar Sejak</span>
                                     <div class="flex-1 w-full">
-                                        <p class="text-sm font-semibold text-[#1E293B]">{{ \Carbon\Carbon::parse($user['created_at'])->translatedFormat('d F Y') }}</p>
+                                        <p class="text-sm font-semibold text-slate-900">{{ \Carbon\Carbon::parse($user['created_at'])->translatedFormat('d F Y') }}</p>
                                     </div>
                                 </div>
 
                                 <!-- Field: Status Akun -->
                                 <div class="flex flex-col sm:flex-row py-3.5 border-b border-[#F1F5F9] items-center">
-                                    <span class="w-48 shrink-0 text-sm font-medium text-[#64748B]">Status Akun</span>
+                                    <span class="w-48 shrink-0 text-sm font-medium text-slate-500">Status Akun</span>
                                     <div class="flex-1 w-full">
                                         <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-[#ECFDF5] text-[#10B981]">
                                             Aktif
@@ -178,7 +178,7 @@
                 </div>
 
                 <!-- SECTION: Keamanan & Akses Akun -->
-                <div class="bg-white border border-[#E2E8F0] rounded-2xl shadow-sm p-6 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
                     <div class="flex items-start gap-4 flex-1">
                         <div class="w-12 h-12 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center shrink-0">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -186,46 +186,46 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-base font-bold text-[#1E293B]">Keamanan & Akses Akun</h3>
-                            <p class="text-sm text-[#64748B] mt-1 line-clamp-2">Informasi terkait keamanan akun dan akses sistem Anda.</p>
+                            <h3 class="text-base font-bold tracking-tight text-slate-900">Keamanan & Akses Akun</h3>
+                            <p class="text-sm text-slate-500 mt-1 line-clamp-2">Informasi terkait keamanan akun dan akses sistem Anda.</p>
                         </div>
                     </div>
                     
-                    <div class="flex flex-col gap-4 border-l-0 md:border-l border-[#E2E8F0] pl-0 md:pl-8 shrink-0">
+                    <div class="flex flex-col gap-4 border-l-0 md:border-l border-slate-200 pl-0 md:pl-8 shrink-0">
                         <!-- Password Terakhir Diubah -->
                         <div class="flex items-center gap-3">
-                            <div class="text-[#64748B]">
+                            <div class="text-slate-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-xs text-[#64748B]">Password Terakhir Diubah</p>
-                                <p class="text-sm font-semibold text-[#1E293B]">{{ \Carbon\Carbon::parse($user['updated_at'])->translatedFormat('d M Y') }}</p>
+                                <p class="text-xs text-slate-500">Password Terakhir Diubah</p>
+                                <p class="text-sm font-semibold text-slate-900">{{ \Carbon\Carbon::parse($user['updated_at'])->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
 
                         <!-- Login Terakhir -->
                         <div class="flex items-center gap-3">
-                            <div class="text-[#64748B]">
+                            <div class="text-slate-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-xs text-[#64748B]">Login Terakhir</p>
-                                <p class="text-sm font-semibold text-[#1E293B]">{{ now()->translatedFormat('d M Y, H:i') }} WIB</p>
+                                <p class="text-xs text-slate-500">Login Terakhir</p>
+                                <p class="text-sm font-semibold text-slate-900">{{ now()->translatedFormat('d M Y, H:i') }} WIB</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- INFO BAR -->
-                <div class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-4 flex items-center gap-3">
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#10B981] shrink-0">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                     </svg>
-                    <p class="text-sm text-[#475569]">Pastikan informasi profil Anda selalu diperbarui agar sistem dapat digunakan secara optimal.</p>
+                    <p class="text-sm text-slate-600">Pastikan informasi profil Anda selalu diperbarui agar sistem dapat digunakan secara optimal.</p>
                 </div>
 
             </form>

@@ -1,6 +1,6 @@
 @props(['filters', 'posyandus' => []])
 
-<form action="{{ route('puskesmas.laporan') }}" method="GET" class="bg-gradient-to-br from-emerald-500 to-teal-600 p-4 lg:px-6 lg:py-4 border border-emerald-400/50 rounded-xl flex flex-col md:flex-row gap-4 items-center shrink-0 shadow-lg shadow-emerald-500/20 z-10 relative">
+<form action="{{ route('puskesmas.laporan') }}" method="GET" class="bg-gradient-to-br from-emerald-500 to-teal-600 p-4 lg:px-6 lg:py-4 border border-emerald-400/50 rounded-xl flex flex-col md:flex-row gap-4 items-center shrink-0 shadow-sm border border-slate-200/60 shadow-emerald-500/20 z-10 relative">
     
     <div class="flex items-center gap-2 text-sm font-bold text-white md:mr-2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-white/90">

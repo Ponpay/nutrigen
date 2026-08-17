@@ -2,61 +2,76 @@ import './bootstrap';
 
 import Alpine from 'alpinejs';
 import Swal from 'sweetalert2';
+import { animate, stagger, inView, hover } from 'framer-motion/dom';
 
+window.Motion = { animate, stagger, inView, hover };
 window.Alpine = Alpine;
 Alpine.start();
 
 /**
  * ======================================================
- * NUTRIGEN GLOBAL ALERT SERVICE (NutriAlert)
+ * NUTRIGEN GLOBAL ALERT & TOAST SYSTEM (NutriAlert)
  * ======================================================
- * Centralized service for Alerts, Confirmations, and Toasts.
- * Styled completely with Tailwind CSS to match Ocean & Mint.
+ * Unified, startup-grade notification & modal system.
+ * Standardized across all roles (Kader, Puskesmas, Ibu).
  */
 
 const baseSwal = Swal.mixin({
     customClass: {
-        popup: 'rounded-2xl shadow-xl border border-[#E2E8F0] p-6',
-        title: 'text-xl font-extrabold text-[#1E293B]',
-        htmlContainer: 'text-[14px] font-medium text-[#64748B] mt-2 mb-6',
-        confirmButton: 'px-5 py-2.5 text-sm font-bold text-white bg-[#10B981] hover:bg-[#059669] rounded-xl transition-colors shadow-sm focus:ring-4 focus:ring-[#A7F3D0]',
-        cancelButton: 'px-5 py-2.5 text-sm font-bold text-[#64748B] hover:text-[#1E293B] bg-[#F8FAFC] hover:bg-[#E2E8F0] rounded-xl transition-colors border border-[#E2E8F0] focus:ring-4 focus:ring-slate-100 mr-3',
-        actions: 'gap-3 mt-4 w-full justify-end'
+        popup: '!rounded-[24px] !shadow-[0_20px_50px_rgba(0,0,0,0.14)] !border !border-slate-100 !p-6 sm:!p-7 !max-w-md',
+        title: '!text-[18px] !font-bold !text-slate-800 !tracking-tight !mt-2',
+        htmlContainer: '!text-[14px] !font-medium !text-slate-500 !mt-2 !mb-6 !leading-relaxed',
+        actions: '!gap-3 !mt-4 !w-full !flex !justify-end !items-center',
+        confirmButton: '!px-5 !py-2.5 !text-[13px] !font-semibold !text-white !bg-teal-600 hover:!bg-teal-700 !rounded-xl !transition-all !shadow-sm focus:!ring-4 focus:!ring-teal-100',
+        cancelButton: '!px-5 !py-2.5 !text-[13px] !font-semibold !text-slate-600 hover:!text-slate-800 !bg-slate-100 hover:!bg-slate-200 !rounded-xl !transition-all !border-0 focus:!ring-4 focus:!ring-slate-100 !mr-2'
     },
     buttonsStyling: false
 });
 
 const toastSwal = Swal.mixin({
     toast: true,
-    position: 'top',
+    position: window.innerWidth >= 768 ? 'top-end' : 'top',
     showConfirmButton: false,
-    timer: 3500,
+    showCloseButton: false,
+    timer: 4000,
     timerProgressBar: true,
-    customClass: {
-        popup: '!rounded-2xl !shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] !border !border-slate-100 !px-3 !py-2 !mt-4 !w-auto !max-w-[90vw] !flex !items-center',
-        title: '!text-[13px] !font-bold !text-slate-700 !m-0 !pl-2',
-        icon: '!scale-[0.6] !m-0'
-    },
     didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
     }
 });
 
 window.NutriAlert = {
     /**
-     * Show a simple Toast Notification
+     * Show a standardized, perfectly structured Toast Notification
+     * @param {string} message - Message text
+     * @param {string} type - 'success' | 'error' | 'warning' | 'info'
+     * @param {string} title - Optional title
      */
-    toast(title, type = 'success') {
-        const icons = {
-            success: 'success',
-            error: 'error',
-            info: 'info',
-            warning: 'warning'
+    toast(message, type = 'success', title = null) {
+        const typeTitles = {
+            success: 'Berhasil',
+            error: 'Terjadi Kesalahan',
+            warning: 'Perhatian',
+            info: 'Informasi'
         };
+
+        const displayTitle = title || typeTitles[type] || 'Notifikasi';
+        const progressColor = type === 'error' ? '!bg-rose-500' : (type === 'warning' ? '!bg-amber-500' : '!bg-teal-500');
+
         toastSwal.fire({
-            icon: icons[type] || 'success',
-            title: title
+            icon: type,
+            html: `
+                <div class="flex flex-col text-left pl-1 pr-2">
+                    <span class="text-[13px] font-bold text-slate-800 leading-snug">${displayTitle}</span>
+                    <span class="text-[12px] font-medium text-slate-500 mt-0.5 leading-snug">${message}</span>
+                </div>
+            `,
+            customClass: {
+                popup: '!rounded-[18px] !shadow-[0_12px_36px_rgba(0,0,0,0.12)] !border !border-slate-200/80 !bg-white/95 !backdrop-blur-md !p-3.5 !mt-3 !w-auto !min-w-[300px] !max-w-[400px] !flex !items-center !gap-2',
+                htmlContainer: '!m-0 !p-0 !text-left',
+                timerProgressBar: `${progressColor} !h-1 !rounded-b-[18px]`
+            }
         });
     },
 
@@ -82,12 +97,11 @@ window.NutriAlert = {
             text: text,
             confirmButtonText: 'Tutup',
             customClass: {
-                popup: 'rounded-2xl shadow-xl border border-[#E2E8F0] p-6',
-                title: 'text-xl font-extrabold text-[#1E293B]',
-                htmlContainer: 'text-[14px] font-medium text-[#64748B] mt-2 mb-6',
-                cancelButton: 'px-5 py-2.5 text-sm font-bold text-[#64748B] hover:text-[#1E293B] bg-[#F8FAFC] hover:bg-[#E2E8F0] rounded-xl transition-colors border border-[#E2E8F0] focus:ring-4 focus:ring-slate-100 mr-3',
-                actions: 'gap-3 mt-4 w-full justify-end',
-                confirmButton: 'px-5 py-2.5 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors shadow-sm focus:ring-4 focus:ring-red-100'
+                popup: '!rounded-[24px] !shadow-[0_20px_50px_rgba(0,0,0,0.14)] !border !border-slate-100 !p-6 sm:!p-7 !max-w-md',
+                title: '!text-[18px] !font-bold !text-slate-800 !tracking-tight !mt-2',
+                htmlContainer: '!text-[14px] !font-medium !text-slate-500 !mt-2 !mb-6 !leading-relaxed',
+                actions: '!gap-3 !mt-4 !w-full !flex !justify-end !items-center',
+                confirmButton: '!px-5 !py-2.5 !text-[13px] !font-semibold !text-white !bg-rose-600 hover:!bg-rose-700 !rounded-xl !transition-all !shadow-sm focus:!ring-4 focus:!ring-rose-100'
             }
         });
     },
@@ -100,7 +114,14 @@ window.NutriAlert = {
             icon: 'warning',
             title: title,
             text: text,
-            confirmButtonText: 'Tutup'
+            confirmButtonText: 'Mengerti',
+            customClass: {
+                popup: '!rounded-[24px] !shadow-[0_20px_50px_rgba(0,0,0,0.14)] !border !border-slate-100 !p-6 sm:!p-7 !max-w-md',
+                title: '!text-[18px] !font-bold !text-slate-800 !tracking-tight !mt-2',
+                htmlContainer: '!text-[14px] !font-medium !text-slate-500 !mt-2 !mb-6 !leading-relaxed',
+                actions: '!gap-3 !mt-4 !w-full !flex !justify-end !items-center',
+                confirmButton: '!px-5 !py-2.5 !text-[13px] !font-semibold !text-white !bg-amber-600 hover:!bg-amber-700 !rounded-xl !transition-all !shadow-sm focus:!ring-4 focus:!ring-amber-100'
+            }
         });
     },
 
@@ -115,14 +136,14 @@ window.NutriAlert = {
             showCancelButton: true,
             confirmButtonText: confirmText,
             cancelButtonText: cancelText,
-            reverseButtons: true, // Cancel on left, Confirm on right
+            reverseButtons: true,
             customClass: {
-                popup: 'rounded-2xl shadow-xl border border-[#E2E8F0] p-6',
-                title: 'text-xl font-extrabold text-[#1E293B]',
-                htmlContainer: 'text-[14px] font-medium text-[#64748B] mt-2 mb-6',
-                cancelButton: 'px-5 py-2.5 text-sm font-bold text-[#64748B] hover:text-[#1E293B] bg-[#F8FAFC] hover:bg-[#E2E8F0] rounded-xl transition-colors border border-[#E2E8F0] focus:ring-4 focus:ring-slate-100 mr-3',
-                actions: 'gap-3 mt-4 w-full justify-end',
-                confirmButton: 'px-5 py-2.5 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors shadow-sm focus:ring-4 focus:ring-red-100'
+                popup: '!rounded-[24px] !shadow-[0_20px_50px_rgba(0,0,0,0.14)] !border !border-slate-100 !p-6 sm:!p-7 !max-w-md',
+                title: '!text-[18px] !font-bold !text-slate-800 !tracking-tight !mt-2',
+                htmlContainer: '!text-[14px] !font-medium !text-slate-500 !mt-2 !mb-6 !leading-relaxed',
+                actions: '!gap-3 !mt-4 !w-full !flex !justify-end !items-center',
+                cancelButton: '!px-5 !py-2.5 !text-[13px] !font-semibold !text-slate-600 hover:!text-slate-800 !bg-slate-100 hover:!bg-slate-200 !rounded-xl !transition-all !border-0 focus:!ring-4 focus:!ring-slate-100 !mr-2',
+                confirmButton: '!px-5 !py-2.5 !text-[13px] !font-semibold !text-white !bg-rose-600 hover:!bg-rose-700 !rounded-xl !transition-all !shadow-sm focus:!ring-4 focus:!ring-rose-100'
             }
         });
     },

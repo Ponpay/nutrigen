@@ -43,7 +43,7 @@
     <div class="flex-1 min-w-0">
         <!-- Top Row -->
         <div class="flex justify-between items-start mb-0.5">
-            <h4 class="font-bold truncate text-sm text-slate-800 balita-card-name">
+            <h4 class="font-bold tracking-tight truncate text-sm text-slate-800 balita-card-name">
                 {{ $child['nama'] }}
             </h4>
             <span class="text-[10px] {{ $child['jenis_kelamin'] == 'L' ? 'text-sky-600 bg-sky-50 border-sky-100' : 'text-rose-600 bg-rose-50 border-rose-100' }} border px-1.5 py-0.5 rounded font-bold whitespace-nowrap ml-2">

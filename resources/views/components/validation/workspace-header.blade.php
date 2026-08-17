@@ -19,7 +19,7 @@
                 {{ collect(explode(' ', $child['name']))->map(fn($n) => substr($n, 0, 1))->take(2)->join('') }}
             </div>
             <div>
-                <h1 class="text-xl font-bold text-white leading-tight mb-1">{{ $child['name'] }}</h1>
+                <h1 class="text-xl font-bold tracking-tight text-white leading-tight mb-1">{{ $child['name'] }}</h1>
                 <div class="flex items-center gap-2 text-white/90 text-xs font-medium">
                     <span>{{ $child['age'] }}</span>
                     <span>&bull;</span>

@@ -15,7 +15,7 @@
     }
 @endphp
 
-<div class="bg-gradient-to-br from-emerald-500 to-emerald-600 border border-emerald-400/50 p-6 lg:p-8 shrink-0 relative overflow-hidden rounded-[2rem] mx-4 lg:mx-auto max-w-4xl mt-4 lg:mt-8 mb-4 shadow-lg shadow-emerald-500/20 z-10">
+<div class="bg-gradient-to-br from-emerald-500 to-emerald-600 border border-emerald-400/50 p-6 lg:p-8 shrink-0 relative overflow-hidden rounded-[2rem] mx-4 lg:mx-auto max-w-4xl mt-4 lg:mt-8 mb-4 shadow-sm border border-slate-200/60 shadow-emerald-500/20 z-10">
     <!-- Abstract subtle background shape -->
     <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/20 via-white/5 to-transparent rounded-bl-full pointer-events-none opacity-80"></div>
     <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -24,7 +24,7 @@
         <div class="flex items-start gap-5">
             <!-- Avatar -->
             <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 text-white font-black text-xl flex items-center justify-center shrink-0 shadow-sm transform rotate-3">
-                <span class="-rotate-3 drop-shadow-md">{{ strtoupper($initials) }}</span>
+                <span class="-rotate-3 drop-shadow-sm border border-slate-200/60">{{ strtoupper($initials) }}</span>
             </div>
             
             <!-- Profile Info -->

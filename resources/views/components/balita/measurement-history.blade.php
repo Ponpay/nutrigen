@@ -1,7 +1,7 @@
 @props(['pengukurans'])
 
 <div class="bg-white p-5 rounded-[2rem] border border-slate-200 shadow-sm">
-    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
+    <h3 class="text-xs font-bold tracking-tight text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-slate-400">
             <path fill-rule="evenodd" d="M12 2.25v1.5a.75.75 0 01-1.5 0V2.25H9v1.5a.75.75 0 01-1.5 0V2.25H6v1.5a.75.75 0 01-1.5 0V2.25H3v19.5h18V2.25h-1.5v1.5a.75.75 0 01-1.5 0V2.25h-1.5v1.5a.75.75 0 01-1.5 0V2.25h-1.5zM7.5 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm-9 4.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" clip-rule="evenodd" />
         </svg>
@@ -19,7 +19,7 @@
                 <!-- Glowing Timeline Dot -->
                 <div class="absolute -left-[27px] top-1.5 w-3 h-3 rounded-full bg-{{ $statusColor }}-500 ring-4 ring-{{ $statusColor }}-50 shadow-sm"></div>
                 
-                <div class="bg-white border border-slate-200 rounded-[1.5rem] p-5 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+                <div class="bg-white border border-slate-200 rounded-[1.5rem] p-5 flex flex-col gap-4 shadow-sm hover:shadow-sm border border-slate-200/60 transition-shadow">
                     
                     <!-- Top Row: Date & Status -->
                     <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">

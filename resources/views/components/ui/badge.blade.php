@@ -9,8 +9,8 @@
         'peach' => 'bg-orange-50 text-orange-700 border-orange-200/50',
         'red' => 'bg-rose-50 text-rose-700 border-rose-200/50',
         'blue' => 'bg-blue-50 text-blue-700 border-blue-200/50',
-        'gray' => 'bg-gray-50 text-gray-700 border-gray-200/50',
-        default => 'bg-gray-50 text-gray-700 border-gray-200/50',
+        'gray' => 'bg-slate-50 text-slate-700 border-slate-200/50',
+        default => 'bg-slate-50 text-slate-700 border-slate-200/50',
     };
 @endphp
 

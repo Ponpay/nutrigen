@@ -74,7 +74,7 @@
          x-transition:leave="transition-opacity ease-linear duration-300"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[60]"
+         class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-40"
          @click="mobileMenuOpen = false"
          style="display: none;"></div>
 
@@ -91,7 +91,7 @@
          role="dialog"
          aria-modal="true"
          aria-label="Menu navigasi mobile"
-         class="fixed inset-y-0 right-0 z-[70] w-[280px] max-w-[85vw] bg-white/95 backdrop-blur-2xl shadow-[0_0_40px_rgba(0,0,0,0.1)] overflow-y-auto flex flex-col border-l border-white/40"
+         class="fixed inset-y-0 right-0 z-50 w-[280px] max-w-[85vw] bg-white/95 backdrop-blur-2xl shadow-[0_0_40px_rgba(0,0,0,0.1)] overflow-y-auto flex flex-col border-l border-white/40"
          style="display: none;">
 
         <div class="flex items-center justify-between px-6 py-6 border-b border-slate-100/50 sticky top-0 z-10 bg-white/50 backdrop-blur-md">
@@ -144,7 +144,7 @@
 
                 <a href="{{ route('team') }}" @click="mobileMenuOpen = false" class="flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold transition-all duration-300 group {{ $isTeamPage ? 'bg-emerald-50 text-emerald-700 shadow-sm shadow-emerald-100/50' : 'text-slate-600 hover:text-emerald-700 hover:bg-emerald-50/80' }}">
                     <span class="flex items-center gap-3">
-                        <span class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors {{ $isTeamPage ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/20' : 'bg-slate-100/80 text-slate-500 group-hover:bg-emerald-100 group-hover:text-emerald-600' }}">
+                        <span class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors {{ $isTeamPage ? 'bg-emerald-500 text-white shadow-sm border border-slate-200/60 shadow-emerald-500/20' : 'bg-slate-100/80 text-slate-500 group-hover:bg-emerald-100 group-hover:text-emerald-600' }}">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                         </span>
                         Meet Our Team

@@ -5,7 +5,7 @@
     <!-- Panel Header -->
     <div class="bg-slate-50 border-b border-slate-200 px-5 pt-5 pb-4">
         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Institution</p>
-        <h2 class="text-base font-bold text-slate-800">Pengaturan</h2>
+        <h2 class="text-base font-bold tracking-tight text-slate-800">Pengaturan</h2>
     </div>
 
     <!-- Nav Menu -->

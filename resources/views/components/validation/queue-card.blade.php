@@ -29,7 +29,7 @@
     <!-- Content -->
     <div class="flex-1 min-w-0 flex items-center justify-between">
         <div class="flex flex-col justify-center min-w-0 pr-2">
-            <h4 class="font-bold truncate text-[13px] text-slate-800 validation-card-name mb-0.5">
+            <h4 class="font-bold tracking-tight truncate text-[13px] text-slate-800 validation-card-name mb-0.5">
                 {{ $child['name'] }}
             </h4>
             <div class="text-[10px] text-slate-500 font-medium truncate">

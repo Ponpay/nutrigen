@@ -4,10 +4,31 @@
 
 @section('content')
 
+{{-- Script for Framer Motion --}}
+<script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+        if(window.Motion) {
+            const { animate, stagger, hover } = window.Motion;
+            
+            animate('.motion-card', 
+                { opacity: [0, 1], y: [20, 0] }, 
+                { delay: stagger(0.05), duration: 0.4, easing: "ease-out" }
+            );
+
+            document.querySelectorAll('.motion-hover').forEach(el => {
+                hover(el, () => {
+                    animate(el, { scale: 1.02, y: -2 }, { duration: 0.2 });
+                    return () => animate(el, { scale: 1, y: 0 }, { duration: 0.2 });
+                });
+            });
+        }
+    });
+</script>
+
 @php
-    // View-layer separation — ideally this filtering lives in the controller/scope
-    $priorityBalitas = $balitas->filter(fn($b) => in_array($b['status_type'], ['danger', 'warning']));
-    $queueBalitas    = $balitas->filter(fn($b) => !in_array($b['status_type'], ['danger', 'warning']));
+    $isFiltered = request()->filled('filter') || request()->filled('q') || request()->filled('status_gizi');
+    $priorityBalitas = $isFiltered ? collect([]) : $balitas->filter(fn($b) => in_array($b['status_type'], ['danger', 'warning']));
+    $displayBalitas  = $isFiltered ? $balitas : $balitas->filter(fn($b) => !in_array($b['status_type'], ['danger', 'warning']));
 @endphp
 
 {{--
@@ -22,15 +43,16 @@
 {{-- ═══════════════════════════════════════
     CANVAS
 ══════════════════════════════════════ --}}
-<div class="flex flex-col min-h-screen bg-[#F4F7FA] pb-32 lg:pb-12 w-full">
+<div class="flex flex-col min-h-screen bg-slate-50/50 pb-32 lg:pb-12 w-full">
 
     {{-- ── HERO CARD (Layer 2: Elevated, Branded) ─────────────────────────── --}}
     <div class="px-4 pt-5 pb-1 lg:px-0 lg:pt-6 lg:pb-0 max-w-7xl lg:mx-auto w-full">
-        <div class="bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 rounded-2xl shadow-[0_6px_24px_rgba(16,185,129,0.12),0_2px_8px_rgba(0,0,0,0.08)] relative overflow-hidden">
+        <div class="bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800 rounded-[32px] shadow-[0_8px_30px_rgb(13,148,136,0.12)] relative overflow-hidden motion-card opacity-0">
 
             {{-- Decorative glows --}}
-            <div class="absolute -right-16 -top-16 w-72 h-72 bg-teal-400 opacity-10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute left-0 bottom-0 w-40 h-40 bg-emerald-900 opacity-20 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -right-16 -top-16 w-72 h-72 bg-teal-400/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute left-0 bottom-0 w-40 h-40 bg-teal-900/40 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
 
             <div class="relative z-10 px-5 py-5 lg:px-8 lg:py-7">
 
@@ -58,17 +80,19 @@
                             $totalAnak   = ($statSelesai ?? 0) + ($statBelum ?? 0);
                             $percentage  = $totalAnak > 0 ? round(($statSelesai / $totalAnak) * 100) : 0;
                         @endphp
-                        <div class="flex items-center gap-2.5 bg-white/10 px-3.5 py-2 rounded-xl flex-shrink-0">
-                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-300 flex-shrink-0"></div>
+                        <div class="flex items-center gap-2.5 bg-white/10 px-3.5 py-2 rounded-xl flex-shrink-0 border border-white/10 shadow-sm">
+                            <div class="w-1.5 h-1.5 rounded-full bg-teal-300 flex-shrink-0"></div>
                             <div>
-                                <p class="text-[10px] text-emerald-100/70 font-medium leading-none mb-0.5">Progres</p>
+                                <p class="text-[10px] text-teal-100/80 font-medium leading-none mb-0.5">Progres</p>
                                 <p class="text-[13px] text-white leading-none">
                                     <span class="font-semibold">{{ $statSelesai ?? 0 }}/{{ $totalAnak }}</span>
-                                    <span class="text-emerald-200/90 font-medium ml-1.5">{{ $percentage }}%</span>
+                                    <span class="text-teal-200/90 font-medium ml-1.5">{{ $percentage }}%</span>
                                 </p>
                                 {{-- Visual progress bar --}}
-                                <div class="mt-1.5 w-24 h-1 bg-white/20 rounded-full overflow-hidden">
-                                    <div class="h-full bg-emerald-300 rounded-full transition-all duration-500" style="width: {{ $percentage }}%"></div>
+                                <div class="mt-2 w-full min-w-[100px] h-1.5 bg-slate-900/20 rounded-full overflow-hidden">
+                                    <div class="h-full bg-white rounded-full transition-all duration-500 relative" style="width: {{ $percentage }}%">
+                                        <div class="absolute inset-0 bg-white/40 blur-[2px]"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -78,21 +102,21 @@
                     <div class="flex items-center gap-2 w-full lg:w-auto">
                         <form action="{{ route('balita.index') }}" method="GET" class="relative flex-1 lg:w-72 group">
                             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                                <svg class="w-4 h-4 text-slate-400 group-focus-within:text-emerald-500 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <svg class="w-4 h-4 text-slate-400 group-focus-within:text-teal-600 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                 </svg>
                             </div>
                             <input type="text" name="q" value="{{ request('q') }}"
                                    placeholder="Cari nama atau NIK..."
-                                   class="w-full pl-10 pr-4 h-[40px] bg-white rounded-xl text-[13px] font-medium text-slate-900 placeholder:text-slate-400 border-none shadow-[0_2px_8px_rgba(0,0,0,0.06)] focus:outline-none focus:ring-2 focus:ring-emerald-400/40 transition-all">
+                                   class="w-full pl-10 pr-4 h-[40px] bg-white rounded-xl text-[13px] font-medium text-slate-900 placeholder:text-slate-400 border border-transparent shadow-[0_2px_8px_rgba(0,0,0,0.04)] focus:outline-none focus:border-teal-300 focus:ring-4 focus:ring-teal-500/10 transition-all">
                         </form>
 
                         <a href="{{ route('balita.create') }}"
-                           class="flex-shrink-0 flex items-center justify-center gap-1.5 h-[40px] bg-white/15 hover:bg-white/25 border border-white/20 text-white px-4 rounded-xl font-medium text-[13px] transition-all">
+                           class="motion-hover flex-shrink-0 flex items-center justify-center gap-1.5 h-[40px] bg-teal-500 hover:bg-teal-400 text-white border border-teal-400/50 px-4 rounded-xl font-bold text-[13px] shadow-[0_2px_8px_rgba(20,184,166,0.25)] transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
-                            <span class="hidden sm:block">Baru</span>
+                            <span class="hidden lg:inline">Baru</span>
                         </a>
                     </div>
 
@@ -121,80 +145,120 @@
 
         {{-- ── SECTION 1: PRIORITAS ─────────────────────────────────────────── --}}
         @if(count($priorityBalitas) > 0)
-        <section class="mb-8 lg:mb-10">
+        <section class="mb-8 lg:mb-10 motion-card opacity-0">
 
             {{-- Section surface: subtle warm tint to distinguish from queue --}}
-            <div class="bg-amber-50/50 border border-amber-100/60 rounded-2xl px-4 pt-4 pb-5 lg:px-6 lg:pt-5 lg:pb-6">
+            <div class="bg-slate-100/60 border border-slate-200/50 rounded-[32px] px-4 pt-5 pb-5 lg:px-6 lg:pt-6 lg:pb-6 shadow-sm">
 
                 {{-- Section Header --}}
                 <div class="flex items-center gap-2.5 mb-4">
-                    {{-- Emerald left accent bar on heading --}}
+                    {{-- Left accent bar on heading --}}
                     <div class="w-1 h-5 rounded-full bg-rose-400 flex-shrink-0"></div>
-                    <h2 class="text-[14px] font-semibold text-slate-800 leading-none">Prioritas Hari Ini</h2>
-                    <span class="ml-1 bg-rose-100 text-rose-700 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">{{ count($priorityBalitas) }} anak</span>
+                    <h2 class="text-[15px] font-bold text-slate-800 leading-none tracking-tight">Prioritas Hari Ini</h2>
+                    <span class="ml-auto bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">{{ count($priorityBalitas) }} anak</span>
                 </div>
 
                 {{-- Horizontal scroll cards --}}
-                <div class="flex overflow-x-auto gap-3 pb-1 snap-x hide-scrollbar -mx-1 px-1">
-                    @foreach($priorityBalitas as $balita)
-                        <div class="w-[272px] lg:w-[288px] shrink-0 snap-start">
-                            <x-child-card :balita="$balita" />
-                        </div>
-                    @endforeach
+                <div class="relative">
+                    <div class="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-slate-100 to-transparent pointer-events-none z-10 lg:hidden rounded-r-[24px]"></div>
+                    <div class="flex overflow-x-auto gap-3 pb-2 snap-x hide-scrollbar -mx-2 px-2">
+                        @foreach($priorityBalitas as $balita)
+                            <div class="w-[280px] lg:w-[300px] shrink-0 snap-start">
+                                <x-child-card :balita="$balita" />
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </section>
         @endif
 
         {{-- ── SECTION 2: ANTRIAN PENGUKURAN ───────────────────────────────── --}}
-        <section>
+        <section class="motion-card opacity-0">
 
-            {{-- Section Header --}}
-            <div class="flex items-center gap-2.5 mb-4 px-0.5">
-                <div class="w-1 h-5 rounded-full bg-slate-300 flex-shrink-0"></div>
-                <h2 class="text-[14px] font-semibold text-slate-700 leading-none">Antrian Pengukuran</h2>
-            </div>
+            <div class="bg-slate-100/60 border border-slate-200/50 rounded-[32px] px-4 pt-5 pb-5 lg:px-6 lg:pt-6 lg:pb-6 shadow-sm">
+                {{-- Section Header --}}
+                <div class="flex items-center gap-2.5 mb-5 px-0.5">
+                    <div class="w-1 h-5 rounded-full bg-slate-300 flex-shrink-0"></div>
+                    <h2 class="text-[15px] font-bold text-slate-800 leading-none tracking-tight">Antrian Pengukuran</h2>
+                </div>
 
-            {{-- Filter Chips --}}
-            <div class="flex items-center gap-2 overflow-x-auto pb-4 hide-scrollbar -mx-0.5 px-0.5">
-                @php
-                    $filters = [
-                        'belum_diukur'    => 'Belum Diukur',
-                        'absen_bulan_lalu'=> 'Absen Bulan Lalu',
-                        'bayi_6_bln'      => 'Bayi < 6 Bln',
-                        'selesai'         => 'Sudah Selesai',
-                        'ditolak'         => 'Perlu Revisi',
-                    ];
-                @endphp
-                @foreach($filters as $key => $label)
-                    @php
-                        $isActive = request('filter') === $key;
-                        $href = $isActive
-                            ? route('balita.index')
-                            : route('balita.index', ['filter' => $key]);
-                    @endphp
-                    <a href="{{ $href }}"
-                       class="shrink-0 flex items-center justify-center px-4 h-9 rounded-xl text-[12.5px] font-medium transition-all duration-200 {{ $isActive ? 'bg-slate-800 text-white shadow-sm' : 'bg-white text-slate-500 border border-slate-200/60 hover:border-slate-300 hover:text-slate-700' }}">
-                        {{ $label }}
-                    </a>
-                @endforeach
-            </div>
-
-            {{-- Grid --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
-                @forelse($queueBalitas as $balita)
-                    <x-child-card :balita="$balita" />
-                @empty
-                    <div class="col-span-full flex flex-col items-center justify-center text-center py-16 px-6 gap-3 bg-white border border-slate-200/60 rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
-                        <div class="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100/60 flex items-center justify-center mb-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-emerald-500">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <p class="text-[15px] font-semibold text-slate-700">Semua Balita Sudah Diukur!</p>
-                        <p class="text-[13px] text-slate-400">Tidak ada lagi antrian hari ini.</p>
+                {{-- Filter Chips --}}
+                <div class="relative mb-5">
+                    <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-100 to-transparent pointer-events-none z-10 lg:hidden"></div>
+                    <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar -mx-0.5 px-0.5 pb-1">
+                        @php
+                            $filters = [
+                                'belum_diukur'    => 'Belum Diukur',
+                                'absen_bulan_lalu'=> 'Absen Bulan Lalu',
+                                'bayi_6_bln'      => 'Bayi < 6 Bln',
+                                'selesai'         => 'Sudah Selesai',
+                                'ditolak'         => 'Perlu Revisi',
+                            ];
+                        @endphp
+                        @foreach($filters as $key => $label)
+                            @php
+                                $isActive = request('filter') === $key;
+                                $href = $isActive
+                                    ? route('balita.index')
+                                    : route('balita.index', ['filter' => $key]);
+                            @endphp
+                            <a href="{{ $href }}"
+                               class="shrink-0 flex items-center justify-center px-4 h-[38px] rounded-[14px] text-[12.5px] font-bold transition-all duration-200 {{ $isActive ? 'bg-slate-800 text-white shadow-md' : 'bg-white text-slate-500 border border-slate-200/80 shadow-sm hover:border-slate-300 hover:text-slate-700 hover:shadow-md' }}">
+                                {{ $label }}
+                            </a>
+                        @endforeach
                     </div>
-                @endforelse
+                </div>
+
+                {{-- Grid --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
+                    @forelse($displayBalitas as $balita)
+                        <div class="motion-card opacity-0">
+                            <x-child-card :balita="$balita" />
+                        </div>
+                    @empty
+                        @php
+                            $activeFilter = request('filter');
+                            $emptyTitle = match($activeFilter) {
+                                'ditolak', 'revisi' => 'Tidak Ada Balita Perlu Revisi',
+                                'belum_diukur' => 'Semua Balita Sudah Diukur!',
+                                'absen_bulan_lalu' => 'Tidak Ada Balita Absen',
+                                'bayi_6_bln' => 'Tidak Ada Bayi < 6 Bulan',
+                                'selesai' => 'Belum Ada Pengukuran Selesai',
+                                default => 'Tidak Ada Data Balita'
+                            };
+                            $emptySub = match($activeFilter) {
+                                'ditolak', 'revisi' => 'Semua data pengukuran telah valid atau belum ada catatan perbaikan dari Puskesmas.',
+                                'belum_diukur' => 'Seluruh balita terdaftar telah selesai diukur pada periode ini.',
+                                'absen_bulan_lalu' => 'Seluruh balita hadir pada penimbangan bulan lalu.',
+                                'bayi_6_bln' => 'Seluruh balita yang terdaftar saat ini berusia di atas 6 bulan.',
+                                'selesai' => 'Lakukan pengukuran balita untuk mencatat data penimbangan bulan ini.',
+                                default => 'Tidak ada balita yang sesuai dengan filter atau pencarian saat ini.'
+                            };
+                        @endphp
+                        <div class="col-span-full flex flex-col items-center justify-center text-center py-14 px-6 gap-2.5 bg-white border border-slate-200/60 rounded-3xl shadow-xs">
+                            <div class="w-12 h-12 rounded-2xl bg-teal-50 border border-teal-100/60 flex items-center justify-center mb-1 text-teal-600">
+                                @if(in_array($activeFilter, ['ditolak', 'revisi']))
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6 text-emerald-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6 text-teal-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                @endif
+                            </div>
+                            <p class="text-sm font-bold text-slate-800">{{ $emptyTitle }}</p>
+                            <p class="text-xs font-medium text-slate-400 max-w-sm leading-relaxed">{{ $emptySub }}</p>
+                            @if($activeFilter)
+                                <a href="{{ route('balita.index') }}" class="mt-2 text-xs font-bold text-teal-600 hover:text-teal-700 bg-teal-50 hover:bg-teal-100 px-4 py-2 rounded-xl transition-colors">
+                                    Tampilkan Semua Balita
+                                </a>
+                            @endif
+                        </div>
+                    @endforelse
+                </div>
             </div>
         </section>
 

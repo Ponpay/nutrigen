@@ -3,7 +3,7 @@
 <div class="relative flex space-x-4">
     <!-- Vertical Line -->
     @if(!$isLast)
-        <div class="absolute left-6 top-10 bottom-[-24px] w-[2px] bg-gray-100"></div>
+        <div class="absolute left-6 top-10 bottom-[-24px] w-[2px] bg-slate-100"></div>
     @endif
     
     <!-- Marker -->
@@ -14,8 +14,8 @@
     
     <!-- Content -->
     <div class="flex-1 pb-6 pt-1">
-        <h4 class="font-black text-gray-800 text-[15px] mb-0.5">{{ $date }}</h4>
-        <p class="text-[12px] font-bold text-gray-500 mb-2">{{ $age }}</p>
+        <h4 class="font-black text-slate-800 text-[15px] mb-0.5">{{ $date }}</h4>
+        <p class="text-[12px] font-bold text-slate-500 mb-2">{{ $age }}</p>
         <div class="flex space-x-3">
             <x-ui.badge color="{{ $status === 'normal' ? 'mint' : ($status === 'kuning' ? 'peach' : 'red') }}">{{ $weight }} kg</x-ui.badge>
             <x-ui.badge color="{{ $status === 'normal' ? 'mint' : ($status === 'kuning' ? 'peach' : 'red') }}">{{ $height }} cm</x-ui.badge>

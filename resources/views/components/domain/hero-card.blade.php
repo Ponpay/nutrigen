@@ -6,7 +6,7 @@
         'kuning' => 'bg-amber-500 border-amber-400 shadow-[0_12px_40px_-12px_rgba(245,158,11,0.5)]',
         'merah' => 'bg-rose-600 border-rose-500 shadow-[0_12px_40px_-12px_rgba(225,29,72,0.5)]',
         'empty' => 'bg-blue-600 border-blue-500 shadow-[0_12px_40px_-12px_rgba(37,99,235,0.5)]',
-        default => 'bg-gray-800 border-gray-700',
+        default => 'bg-slate-800 border-slate-700',
     };
 
     $textClasses = match ($state) {

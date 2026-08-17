@@ -220,19 +220,22 @@
                         <div class="flex items-start mb-4">
                             <div class="bg-blue-100 text-[#1E40AF] px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                SESUAI JADWAL KADER
+                                {{ $posyandu['countdown'] ?? 'SESUAI JADWAL KADER' }}
                             </div>
                         </div>
                         
-                        <h3 class="text-[19px] font-black text-slate-800 mb-1.5 max-w-[60%] leading-tight">{{ $posyandu['name'] ?? 'Posyandu Mawar' }}</h3>
+                        <h3 class="text-[19px] font-black text-slate-800 mb-1.5 max-w-[60%] leading-tight">{{ $posyandu['name'] ?? 'Posyandu' }}</h3>
                         
                         <div class="flex items-start gap-1.5 mb-5 text-slate-500 max-w-[60%]">
                             <svg class="w-[18px] h-[18px] shrink-0 mt-0.5 text-[#0284C7]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <p class="text-[12.5px] font-medium leading-snug">{{ $posyandu['name'] ?? 'Posyandu Mawar' }}<br>{{ $posyandu['schedule'] ?? 'Setiap awal bulan' }}</p>
+                            <p class="text-[12.5px] font-medium leading-snug">
+                                <span class="font-bold text-slate-700">{{ $posyandu['schedule'] ?? 'Sesuai Jadwal' }}</span><br>
+                                <span class="text-[11.5px] text-slate-500">{{ $posyandu['location'] ?? 'Balai Posyandu' }}</span>
+                            </p>
                         </div>
 
                         <button class="w-full bg-white text-[#0284C7] font-extrabold py-3.5 rounded-full border border-sky-100 shadow-sm transition-colors text-[14px] flex justify-center items-center gap-1.5 focus:outline-none" x-on:click="window.location.href='{!! \Illuminate\Support\Facades\URL::signedRoute('portal-ibu.posyandu', ['balita' => request('balita') ?? 0]) !!}'">
-                            Lihat Profil Anak
+                            Lihat Jadwal Posyandu
                             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
                         </button>
                     </div>

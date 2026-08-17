@@ -17,212 +17,195 @@
 |   $desa          (string)
 |   $puskesmas     (string)
 |   $kecamatan     (string)
-|
-| Backend: Logout must use POST to route('logout') per Laravel auth convention.
 --}}
 
 @section('content')
 
-<style>
-    /* Force main container to have 0 padding on mobile so header sits perfectly flush */
-    @media (max-width: 1024px) {
-        main {
-            padding-top: 0 !important;
-        }
-    }
-</style>
+{{-- Script for Framer Motion --}}
+<script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+        if(window.Motion) {
+            const { animate, stagger, hover } = window.Motion;
+            
+            animate('.motion-card', 
+                { opacity: [0, 1], y: [20, 0] }, 
+                { delay: stagger(0.1), duration: 0.5, easing: "ease-out" }
+            );
 
-<!-- Ambient Emerald Background -->
-<div class="bg-gradient-to-br from-emerald-100/50 via-emerald-50/20 to-slate-50 min-h-[calc(100vh-72px)] w-full flex flex-col selection:bg-emerald-500/30 relative">
-    
-    <!-- Profil Header (Dempet Navbar App - Glassmorphism Emerald) -->
-    <div class="sticky top-0 z-30 bg-emerald-600/80 backdrop-blur-xl transition-all w-full shadow-[0_4px_20px_-10px_rgba(16,185,129,0.3)] border-b border-emerald-500/30">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center gap-4">
-            <button onclick="history.back()" class="flex items-center justify-center w-9 h-9 rounded-full bg-emerald-700/50 text-white hover:bg-emerald-700 transition-all focus:outline-none flex-shrink-0" aria-label="Kembali">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-            </button>
-            <div class="flex flex-col">
-                <h1 class="font-extrabold text-white text-[16px] tracking-tight">Profil Kader</h1>
-                <span class="text-[11px] font-bold text-emerald-200 uppercase tracking-widest">Pusat Akun</span>
+            document.querySelectorAll('.motion-hover').forEach(el => {
+                hover(el, () => {
+                    animate(el, { scale: 1.02, y: -2 }, { duration: 0.2 });
+                    return () => animate(el, { scale: 1, y: 0 }, { duration: 0.2 });
+                });
+            });
+        }
+    });
+</script>
+
+<div class="w-full min-h-screen bg-slate-50/50 pb-20 lg:pb-12">
+    <!-- HERO SECTION (Teal Gradient) -->
+    <div class="relative bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800 pt-8 pb-20 lg:pt-12 lg:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden lg:rounded-b-[40px] shadow-sm border-b border-teal-900/10">
+        <div class="absolute -right-10 -top-10 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute left-0 bottom-0 w-40 h-40 bg-teal-900/40 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+        
+        <div class="max-w-6xl mx-auto relative z-10 motion-card opacity-0 flex flex-col sm:flex-row gap-6 sm:gap-8 items-center sm:items-start text-center sm:text-left">
+            <!-- Avatar -->
+            <div class="relative group/avatar shrink-0">
+                <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full p-1.5 bg-white/20 backdrop-blur-sm shadow-md flex items-center justify-center transition-transform duration-500 hover:scale-105 relative z-10 cursor-pointer">
+                    <div class="w-full h-full rounded-full overflow-hidden bg-white text-slate-300 relative flex items-center justify-center">
+                        @if(isset($avatarUrl))
+                            <img src="{{ $avatarUrl }}" alt="Foto Kader" class="w-full h-full object-cover">
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-14 h-14 text-slate-300">
+                                <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                            </svg>
+                        @endif
+                        <!-- Camera Overlay -->
+                        <div class="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/avatar:opacity-100 transition-opacity backdrop-blur-[2px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-white"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" /></svg>
+                        </div>
+                    </div>
+                </div>
+                <!-- Status Indicator -->
+                <div class="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 z-20">
+                    <div class="bg-emerald-400 w-5 h-5 rounded-full shadow-sm relative border-2 border-teal-700 ring-2 ring-emerald-400/30">
+                        <div class="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Info -->
+            <div class="flex flex-col flex-1 mt-2 sm:mt-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-sm leading-tight">{{ $kaderName ?? 'Ibu Siti Aminah' }}</h1>
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-[13px] font-bold text-teal-800 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" /></svg>
+                                {{ $role ?? 'Kader Posyandu' }}
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-[13px] font-bold text-teal-800 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd" /></svg>
+                                {{ $posyanduName ?? 'Posyandu Melati 1' }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 mt-2 sm:mt-0">
+                        <a href="{{ route('kader.profil.edit') }}" class="group inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-teal-800 px-5 py-2.5 rounded-xl text-[14px] font-bold shadow-md transition-all focus:outline-none focus:ring-4 focus:ring-white/30 active:scale-95">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-teal-600 group-hover:scale-110 transition-transform">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                            </svg>
+                            Edit Profil
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Workspace -->
-    <div class="flex-1 w-full flex flex-col items-center py-6 sm:py-8 px-4 sm:px-6">
+    <!-- MAIN WORKSPACE -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 lg:-mt-14 relative z-20 flex flex-col gap-6 lg:gap-8">
         
-        <!-- Big Premium White Card -->
-        <div class="w-full max-w-5xl bg-white rounded-[24px] sm:rounded-[32px] shadow-[0_12px_40px_-12px_rgba(16,185,129,0.15)] border border-emerald-100/50 flex flex-col overflow-hidden relative">
+        <!-- Stats Row -->
+        <div class="grid grid-cols-2 gap-3 lg:gap-4 motion-card opacity-0">
+            <!-- Bergabung -->
+            <div class="flex flex-col bg-white rounded-[24px] p-4 lg:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 relative overflow-hidden group">
+                <div class="absolute right-0 top-0 w-24 h-24 bg-slate-50 rounded-bl-full pointer-events-none -z-10 group-hover:scale-110 transition-transform"></div>
+                <div class="w-10 h-10 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12.75 12.75a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0zM12.75 19.5v-1.5a3 3 0 00-3-3h-4.5a3 3 0 00-3 3v1.5a.75.75 0 00.75.75h9a.75.75 0 00.75-.75zM22.5 12.75a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0zM22.5 19.5v-1.5a3 3 0 00-3-3h-4.5a3 3 0 00-3 3v1.5a.75.75 0 00.75.75h9a.75.75 0 00.75-.75z" /></svg>
+                </div>
+                <span class="text-[13px] font-semibold text-slate-500 mb-0.5">Bergabung Sejak</span>
+                <span class="text-xl font-bold text-slate-800 tracking-tight leading-none mt-0.5">Jan 2024</span>
+            </div>
             
-            <!-- Hero (Inside Card) -->
-            <div class="w-full flex flex-col items-center text-center pt-10 pb-8 px-6 bg-gradient-to-b from-emerald-50/40 to-white relative">
-                
-                <!-- Avatar -->
-                <div class="relative group">
-                    <!-- Colored Circular Ring (Garis Melingkar Berwarna) -->
-                    <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-[3px] bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center transition-transform duration-500 hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_25px_rgba(16,185,129,0.4)] relative z-10">
-                        <!-- Inner White Border & Avatar Content -->
-                        <div class="w-full h-full rounded-full border-[3px] border-white overflow-hidden relative flex items-center justify-center bg-slate-100 text-slate-300 shadow-inner">
-                            @if(isset($avatarUrl))
-                                <img src="{{ $avatarUrl }}" alt="Foto Kader" class="w-full h-full object-cover">
-                            @else
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 text-slate-300">
-                                    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                                </svg>
-                            @endif
+            <!-- Balita -->
+            <div class="flex flex-col bg-white rounded-[24px] p-4 lg:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 relative overflow-hidden group">
+                <div class="absolute right-0 top-0 w-24 h-24 bg-slate-50 rounded-bl-full pointer-events-none -z-10 group-hover:scale-110 transition-transform"></div>
+                <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" clip-rule="evenodd" /></svg>
+                </div>
+                <span class="text-[13px] font-semibold text-slate-500 mb-0.5">Balita Aktif</span>
+                <span class="text-xl font-bold text-slate-800 tracking-tight leading-none mt-0.5">32 Anak</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 motion-card opacity-0">
+            <!-- Informasi Akun -->
+            <div class="flex flex-col bg-white p-6 lg:p-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/60">
+                <h2 class="text-[15px] font-bold tracking-tight text-slate-800 flex items-center gap-2 px-1 mb-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-teal-500"><path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" /></svg>
+                    Detail Kontak
+                </h2>
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-4 bg-slate-50/50 p-3 rounded-2xl border border-slate-100/50 hover:bg-slate-50 transition-colors">
+                        <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" /><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" /></svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[13px] font-medium text-slate-500 mb-0.5">Alamat Email</span>
+                            <span class="text-[15px] font-semibold text-slate-800 tracking-tight">{{ $email ?? 'siti.aminah@posyandu.go.id' }}</span>
                         </div>
                     </div>
-                    <!-- Status Indicator -->
-                    <div class="absolute bottom-1 right-0 sm:right-1 z-20">
-                        <div class="bg-emerald-500 w-5 h-5 rounded-full shadow-sm relative border-2 border-white">
-                            <div class="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-60"></div>
+                    <div class="flex items-center gap-4 bg-slate-50/50 p-3 rounded-2xl border border-slate-100/50 hover:bg-slate-50 transition-colors">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[13px] font-medium text-slate-500 mb-0.5">Nomor WhatsApp</span>
+                            <span class="text-[15px] font-semibold text-slate-800 tracking-tight">{{ $phone ?? '0812-3456-7890' }}</span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Text Identity -->
-                <div class="mt-5 flex flex-col">
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{{ $kaderName ?? 'Ibu Siti Aminah' }}</h2>
-                    <p class="text-[14px] text-slate-500 font-medium mt-1">{{ $role ?? 'Kader Posyandu' }} • {{ $posyanduName ?? 'Posyandu Melati 1' }}</p>
-                </div>
-
-                <!-- CTA -->
-                <div class="mt-6">
-                    <a href="{{ route('kader.profil.edit') }}" class="group inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-full text-[13px] sm:text-[14px] font-bold shadow-[0_6px_16px_-4px_rgba(16,185,129,0.3)] transition-all hover:-translate-y-0.5 focus:outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-emerald-200 group-hover:text-white transition-colors">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                        </svg>
-                        Edit Profil
-                    </a>
                 </div>
             </div>
 
-            <!-- Soft Divider inside card -->
-            <div class="w-full h-px bg-slate-100"></div>
-
-            <!-- Content Area -->
-            <div class="p-6 sm:p-10 flex flex-col gap-8">
-                
-                <!-- Grid Informasi -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                    
-                    <!-- Akun -->
-                    <div class="flex flex-col gap-3">
-                        <h3 class="text-[13px] font-bold text-slate-800 px-1 border-l-4 border-emerald-500 pl-2">Informasi Akun</h3>
-                        <div class="flex flex-col mt-1">
-                            
-                            <div class="flex items-center gap-3.5 py-3.5 border-b border-slate-100/80">
-                                <div class="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col flex-1 min-w-0">
-                                    <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Email</span>
-                                    <span class="text-[14px] font-bold text-slate-800 truncate">{{ $email ?? 'siti.aminah@posyandu.go.id' }}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center gap-3.5 py-3.5 border-b border-slate-100/80">
-                                <div class="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.069-3.769-6.665-6.666l1.292-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col flex-1 min-w-0">
-                                    <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Nomor Telepon</span>
-                                    <span class="text-[14px] font-bold text-slate-800 truncate">{{ $phone ?? '0812-3456-7890' }}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center gap-3.5 py-3.5">
-                                <div class="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col flex-1 min-w-0">
-                                    <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Status Akun</span>
-                                    <span class="text-[14px] font-bold text-emerald-600 truncate">{{ $status ?? 'Aktif' }}</span>
-                                </div>
-                            </div>
-                            
+            <!-- Area Penugasan -->
+            <div class="flex flex-col bg-white p-6 lg:p-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/60">
+                <h2 class="text-[15px] font-bold tracking-tight text-slate-800 flex items-center gap-2 px-1 mb-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-slate-500"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
+                    Area Penugasan
+                </h2>
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-4 bg-slate-50/50 p-3 rounded-2xl border border-slate-100/50 hover:bg-slate-50 transition-colors">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[13px] font-medium text-slate-500 mb-0.5">Cakupan Wilayah</span>
+                            <span class="text-[15px] font-semibold text-slate-800 tracking-tight">{{ $desa ?? 'Desa Lampeuneurut' }}, Kec. {{ $kecamatan ?? 'Darul Imarah' }}</span>
                         </div>
                     </div>
-
-                    <!-- Penugasan -->
-                    <div class="flex flex-col gap-3">
-                        <h3 class="text-[13px] font-bold text-slate-800 px-1 border-l-4 border-sky-500 pl-2">Data Penugasan</h3>
-                        <div class="flex flex-col mt-1">
-                            
-                            <div class="flex items-center gap-3.5 py-3.5 border-b border-slate-100/80">
-                                <div class="w-10 h-10 rounded-full bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col flex-1 min-w-0">
-                                    <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Posyandu</span>
-                                    <span class="text-[14px] font-bold text-slate-800 truncate">{{ $posyanduName ?? 'Posyandu Melati 1' }}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center gap-3.5 py-3.5 border-b border-slate-100/80">
-                                <div class="w-10 h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col flex-1 min-w-0">
-                                    <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Wilayah Cakupan</span>
-                                    <span class="text-[14px] font-bold text-slate-800 truncate">{{ $desa ?? 'Desa Lampeuneurut' }}, Kec. {{ $kecamatan ?? 'Darul Imarah' }}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center gap-3.5 py-3.5">
-                                <div class="w-10 h-10 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col flex-1 min-w-0">
-                                    <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Fasilitas Rujukan</span>
-                                    <span class="text-[14px] font-bold text-slate-800 truncate">{{ $puskesmas ?? 'Puskesmas Darul Imarah' }}</span>
-                                </div>
-                            </div>
-
+                    <div class="flex items-center gap-4 bg-slate-50/50 p-3 rounded-2xl border border-slate-100/50 hover:bg-slate-50 transition-colors">
+                        <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm4.5 7.5a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zm3.75-1.5a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V12zm3-3a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0V9.75A.75.75 0 0114.25 9z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[13px] font-medium text-slate-500 mb-0.5">Fasilitas Rujukan Utama</span>
+                            <span class="text-[15px] font-semibold text-slate-800 tracking-tight">{{ $puskesmas ?? 'Puskesmas Darul Imarah' }}</span>
                         </div>
                     </div>
-
                 </div>
+            </div>
+        </div>
 
-                <!-- Danger Zone -->
-                <div class="mt-2 pt-6 border-t border-slate-100">
-                    <div class="bg-rose-50/50 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-rose-100/60">
-                        <div class="flex flex-col gap-1 text-center sm:text-left">
-                            <h4 class="text-[14px] font-bold text-rose-900">Keluar dari Perangkat</h4>
-                            <p class="text-[12px] sm:text-[13px] text-rose-700/70 font-medium">Akhiri sesi ini untuk mencegah akses yang tidak sah.</p>
-                        </div>
-                        
-                        <form action="{{ route('logout') }}" method="POST" onsubmit="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ event.preventDefault(); const form = this; window.NutriAlert.confirm('Keluar dari Akun?', 'Apakah Anda yakin ingin keluar dari Portal Kader?', 'Keluar', 'Batal').then((r) => { if(r.isConfirmed) form.submit(); }); return false; } return confirm('Keluar dari Portal Kader?');">
-                            @csrf
-                            <button type="submit" class="inline-flex items-center justify-center px-5 py-2.5 bg-white text-rose-600 border border-rose-200 shadow-sm hover:shadow-md hover:bg-rose-50 rounded-[14px] text-[13px] font-bold transition-all gap-2 flex-shrink-0 w-full sm:w-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                                </svg>
-                                <span>Keluar Sesi</span>
-                            </button>
-                        </form>
+        <!-- Danger Zone Card -->
+        <div class="flex flex-col bg-white p-6 lg:p-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/60 motion-card opacity-0 mb-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" /></svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-[15px] font-bold tracking-tight text-slate-800">Keamanan Sesi</h2>
+                        <span class="text-[13px] text-slate-500 font-medium">Akhiri sesi Anda sekarang untuk menjaga keamanan data Posyandu.</span>
                     </div>
                 </div>
-
-                <div class="flex justify-center opacity-40">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">NutriGen v1.0.0</p>
-                </div>
-
+                <form action="{{ route('logout') }}" method="POST" class="w-full sm:w-auto" onsubmit="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ event.preventDefault(); const form = this; window.NutriAlert.confirm('Keluar dari Akun?', 'Apakah Anda yakin ingin keluar dari Portal Kader?', 'Keluar', 'Batal').then((r) => { if(r.isConfirmed) form.submit(); }); return false; } return confirm('Keluar dari Portal Kader?');">
+                    @csrf
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-300 hover:border-rose-600 rounded-xl text-[14px] font-bold transition-all focus:outline-none focus:ring-4 focus:ring-rose-500/30 active:scale-95 flex justify-center items-center group">
+                        Keluar Perangkat
+                    </button>
+                </form>
             </div>
         </div>
     </div>

@@ -48,7 +48,7 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-[15px] font-bold text-slate-900">Perhatian Diperlukan</h3>
+                        <h3 class="text-[15px] font-bold tracking-tight text-slate-900">Perhatian Diperlukan</h3>
                         <p class="text-[13px] font-medium text-slate-600 mt-0.5">Ada <span class="font-bold text-rose-600">{{ $stats['pending'] }} antrian pengukuran</span> yang menunggu validasi.</p>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-[15px] font-bold text-slate-900">Semua Data Tervalidasi</h3>
+                        <h3 class="text-[15px] font-bold tracking-tight text-slate-900">Semua Data Tervalidasi</h3>
                         <p class="text-[13px] font-medium text-slate-600 mt-0.5">Tidak ada antrian pengukuran tertunda.</p>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
                     <div class="px-5 py-4 flex items-center justify-between border-b border-slate-50">
                         <div>
-                            <h3 class="text-[14px] font-bold text-slate-900">Aktivitas Posyandu Terbaru</h3>
+                            <h3 class="text-[14px] font-bold tracking-tight text-slate-900">Aktivitas Posyandu Terbaru</h3>
                             <p class="text-[11px] font-medium text-slate-500 mt-0.5">Pengukuran balita terbaru</p>
                         </div>
                         <a href="{{ route('puskesmas.balita') }}" class="text-[11px] font-bold text-emerald-600 hover:text-emerald-700">Lihat Semua</a>
@@ -201,7 +201,7 @@
                 <!-- Distribusi Status Gizi -->
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] p-6 flex flex-col">
                     <div class="mb-6">
-                        <h3 class="text-[14px] font-bold text-slate-900">Distribusi Status Gizi</h3>
+                        <h3 class="text-[14px] font-bold tracking-tight text-slate-900">Distribusi Status Gizi</h3>
                         <p class="text-[11px] font-medium text-slate-500 mt-0.5">Data valid bulan {{ $stats['current_month'] }}</p>
                     </div>
 
@@ -300,7 +300,7 @@
 
             <!-- TINDAKAN CEPAT -->
             <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] p-6">
-                <h3 class="text-[14px] font-bold text-slate-900 mb-5">Tindakan Cepat</h3>
+                <h3 class="text-[14px] font-bold tracking-tight text-slate-900 mb-5">Tindakan Cepat</h3>
                 
                 <div class="flex flex-col gap-3">
                     <!-- Validasi -->

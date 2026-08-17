@@ -86,14 +86,18 @@ Route::prefix('kader')->middleware(['web', 'auth', 'prevent-back-history', 'role
     Route::post('/pengukuran', [KaderController::class, 'simpanPengukuran'])->name('pengukuran.store');
     Route::put('/pengukuran/{id}', [KaderController::class, 'updatePengukuran'])->name('pengukuran.update');
     
-    // Legacy mapping (to prevent UI breaking)
+    // Jadwal CRUD
     Route::get('/jadwal', [KaderController::class, 'jadwal'])->name('jadwal.index');
     Route::get('/jadwal/baru', [KaderController::class, 'tambahJadwal'])->name('jadwal.create');
-    Route::post('/jadwal', function () { return redirect()->route('jadwal.index')->with('info', 'Fitur jadwal dinonaktifkan sementara.'); })->name('jadwal.store');
+    Route::post('/jadwal', [KaderController::class, 'simpanJadwal'])->name('jadwal.store');
     Route::get('/jadwal/{id}', [KaderController::class, 'detailJadwal'])->name('jadwal.show');
+    Route::get('/jadwal/{id}/edit', [KaderController::class, 'editJadwal'])->name('jadwal.edit');
+    Route::put('/jadwal/{id}', [KaderController::class, 'updateJadwal'])->name('jadwal.update');
+    Route::delete('/jadwal/{id}', [KaderController::class, 'hapusJadwal'])->name('jadwal.destroy');
     Route::get('/laporan', [KaderController::class, 'laporan'])->name('laporan.index');
     Route::post('/laporan/generate', [KaderController::class, 'generatePdf'])->name('laporan.generate');
     Route::get('/laporan/generate', [KaderController::class, 'generatePdf']); // In case accessed directly
+    Route::get('/laporan/export-excel', [KaderController::class, 'exportExcel'])->name('laporan.export.excel');
     Route::get('/profil', [KaderController::class, 'profilKader'])->name('kader.profil');
     Route::get('/profil/edit', [KaderController::class, 'editProfilKader'])->name('kader.profil.edit');
     Route::put('/profil', [KaderController::class, 'updateProfilKader'])->name('kader.profil.update');

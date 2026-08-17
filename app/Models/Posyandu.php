@@ -37,4 +37,9 @@ class Posyandu extends Model
     {
         return $this->hasManyThrough(Pengukuran::class, Balita::class);
     }
+
+    public function jadwals(): HasMany
+    {
+        return $this->hasMany(Jadwal::class);
+    }
 }

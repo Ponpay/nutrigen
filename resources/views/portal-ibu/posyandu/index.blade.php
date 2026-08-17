@@ -3,7 +3,7 @@
         
         <!-- HEADER -->
         <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-xl px-6 pt-10 pb-5 flex items-center justify-between">
-            <h1 class="text-[24px] font-black text-[#1E293B] tracking-tight">Posyandu</h1>
+            <h1 class="text-[24px] font-black text-slate-900 tracking-tight">Posyandu</h1>
             
             <div class="flex items-center gap-3">
                 <!-- Avatar with small chevron -->
@@ -68,7 +68,7 @@
                             <svg class="w-[18px] h-[18px] text-[#10B981] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             <div class="flex flex-col">
                                 <span class="text-[10px] text-[#059669] font-semibold mb-0.5">Hari/Tgl</span>
-                                <span class="text-[12px] font-bold text-[#1E293B] leading-tight">
+                                <span class="text-[12px] font-bold text-slate-900 leading-tight">
                                     {{ $schedule['date'] ?? '-' }}
                                 </span>
                             </div>
@@ -79,7 +79,7 @@
                             <svg class="w-[18px] h-[18px] text-[#10B981] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <div class="flex flex-col">
                                 <span class="text-[10px] text-[#059669] font-semibold mb-0.5">Jam</span>
-                                <span class="text-[12px] font-bold text-[#1E293B] leading-tight">
+                                <span class="text-[12px] font-bold text-slate-900 leading-tight">
                                     {{ $schedule['time'] ?? 'Sesuai Jadwal' }}
                                 </span>
                             </div>
@@ -90,7 +90,7 @@
                             <svg class="w-[18px] h-[18px] text-[#10B981] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             <div class="flex flex-col">
                                 <span class="text-[10px] text-[#059669] font-semibold mb-0.5">Lokasi</span>
-                                <span class="text-[12px] font-bold text-[#1E293B] leading-tight truncate w-14">
+                                <span class="text-[12px] font-bold text-slate-900 leading-tight truncate w-14">
                                     {{ $schedule['address'] ?? '-' }}
                                 </span>
                             </div>
@@ -131,7 +131,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-[11px] font-bold text-[#059669] mb-1">Kader Posyandu</span>
-                        <h3 class="text-[18px] font-black text-[#1E293B] tracking-tight leading-none mb-1.5">{{ $kader['name'] ?? 'Kader' }}</h3>
+                        <h3 class="text-[18px] font-black text-slate-900 tracking-tight leading-none mb-1.5">{{ $kader['name'] ?? 'Kader' }}</h3>
                         <div class="flex items-center gap-1.5 mb-1.5">
                             <svg class="w-3.5 h-3.5 text-[#10B981]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                             <span class="text-[11px] font-bold text-[#10B981]">{{ $kader['role'] ?? 'Kader Utama' }}</span>
@@ -168,7 +168,7 @@
                     <div class="w-[36px] h-[36px] rounded-full bg-[#F3E8FF] text-[#8B5CF6] flex items-center justify-center">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
                     </div>
-                    <h2 class="text-[18px] font-black text-[#1E293B] tracking-tight">Persiapan Sebelum Datang</h2>
+                    <h2 class="text-[18px] font-black text-slate-900 tracking-tight">Persiapan Sebelum Datang</h2>
                 </div>
 
                 <div class="space-y-4 relative z-10">
@@ -211,7 +211,7 @@
                     <div class="w-[36px] h-[36px] rounded-full bg-blue-100 text-[#3B82F6] flex items-center justify-center">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
-                    <h2 class="text-[18px] font-black text-[#1E293B] tracking-tight">Informasi Posyandu</h2>
+                    <h2 class="text-[18px] font-black text-slate-900 tracking-tight">Informasi Posyandu</h2>
                 </div>
 
                 <div class="space-y-5">
@@ -221,7 +221,7 @@
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                         </div>
                         <div class="flex-1 border-b border-blue-100/50 pb-5">
-                            <h4 class="text-[13px] font-bold text-[#1E293B] mb-1">Alamat</h4>
+                            <h4 class="text-[13px] font-bold tracking-tight text-slate-900 mb-1">Alamat</h4>
                             <p class="text-[13px] font-medium text-slate-500 leading-relaxed pr-2">{{ $schedule['address'] ?? '-' }}</p>
                         </div>
                     </div>
@@ -232,7 +232,7 @@
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <div class="flex-1 border-b border-blue-100/50 pb-5">
-                            <h4 class="text-[13px] font-bold text-[#1E293B] mb-1">Jam Buka</h4>
+                            <h4 class="text-[13px] font-bold tracking-tight text-slate-900 mb-1">Jam Buka</h4>
                             <p class="text-[13px] font-medium text-slate-500 leading-relaxed">{{ $schedule['time'] ?? '08.00 - 12.00 WIB' }}</p>
                         </div>
                     </div>
@@ -243,7 +243,7 @@
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
                         </div>
                         <div class="flex-1">
-                            <h4 class="text-[13px] font-bold text-[#1E293B] mb-1">Catatan Kader</h4>
+                            <h4 class="text-[13px] font-bold tracking-tight text-slate-900 mb-1">Catatan Kader</h4>
                             <p class="text-[13px] font-medium text-slate-500 leading-relaxed pr-2">
                                 {{ $announcement['message'] ?? 'Datang lebih awal untuk menghindari antrean, ya Bu 😊' }}
                             </p>

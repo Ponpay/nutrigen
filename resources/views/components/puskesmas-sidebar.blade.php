@@ -1,22 +1,22 @@
 <!-- Sidebar Overlay (Mobile & Desktop) -->
-<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 z-[60] hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
+<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
 
-<aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-white z-[70] transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col h-screen overflow-hidden shadow-2xl lg:shadow-none border-r border-[#E2E8F0]">
+<aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-white z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col h-screen overflow-hidden shadow-2xl lg:shadow-none border-r border-slate-200">
     
     <!-- Header: Logo -->
-    <div class="flex items-center justify-between px-6 py-6 border-b border-[#E2E8F0] bg-white flex-shrink-0">
+    <div class="flex items-center justify-between px-6 py-6 border-b border-slate-200 bg-white flex-shrink-0">
         <div class="flex items-center gap-3">
             <div class="w-14 h-14 flex items-center justify-center flex-shrink-0 -ml-2">
                 <img src="{{ asset('images/logo/logo-nutrigen.png') }}" alt="NutriGen Logo" class="w-full h-full object-contain">
             </div>
             <div class="flex flex-col justify-center">
                 <h2 class="text-[20px] font-extrabold tracking-tight leading-none">
-                    <span class="text-[#10B981]">Nutri</span><span class="text-[#1E293B]">Gen</span>
+                    <span class="text-[#10B981]">Nutri</span><span class="text-slate-900">Gen</span>
                 </h2>
-                <p class="text-[9px] font-bold text-[#64748B] uppercase tracking-[0.2em] mt-1">Portal Puskesmas</p>
+                <p class="text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] mt-1">Portal Puskesmas</p>
             </div>
         </div>
-        <button id="closeSidebar" class="p-2 -mr-2 text-[#94A3B8] hover:text-[#475569] transition-colors lg:hidden" aria-label="Tutup menu">
+        <button id="closeSidebar" class="p-2 -mr-2 text-slate-400 hover:text-slate-600 transition-colors lg:hidden" aria-label="Tutup menu">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -24,10 +24,10 @@
     </div>
 
     <!-- Identity Panel (Profil Petugas) -->
-    <div class="mx-5 mt-6 mb-4 rounded-2xl bg-gradient-to-b from-slate-50 to-slate-100/50 border border-slate-200/60 shadow-sm flex flex-col overflow-hidden group hover:shadow-md transition-shadow duration-300">
+    <div class="mx-5 mt-6 mb-4 rounded-2xl bg-gradient-to-b from-slate-50 to-slate-100/50 border border-slate-200/60 shadow-sm flex flex-col overflow-hidden group hover:shadow-sm border border-slate-200/60 transition-shadow duration-300">
         <!-- Top row: Avatar & Identity -->
         <div class="p-4 flex gap-3.5 items-start bg-transparent">
-            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white flex-shrink-0 shadow-md border-2 border-white mt-0.5 transform group-hover:scale-105 transition-transform duration-300">
+            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white flex-shrink-0 shadow-sm border border-slate-200/60 border-2 border-white mt-0.5 transform group-hover:scale-105 transition-transform duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                     <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
                 </svg>
@@ -70,7 +70,7 @@
     <!-- Menu Utama -->
     <div class="flex flex-col gap-1.5 px-4 py-2 overflow-y-auto flex-1 hide-scrollbar">
         
-        <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 mt-2">Menu Utama</h3>
+        <h3 class="px-3 text-[10px] font-bold tracking-tight text-slate-400 uppercase tracking-widest mb-1 mt-2">Menu Utama</h3>
 
         @php
             $baseClass = "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 text-sm group overflow-hidden ";
@@ -135,7 +135,7 @@
             <span class="group-hover:translate-x-1 transition-transform duration-300">Laporan</span>
         </a>
 
-        <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 mt-4">Sistem</h3>
+        <h3 class="px-3 text-[10px] font-bold tracking-tight text-slate-400 uppercase tracking-widest mb-1 mt-4">Sistem</h3>
 
         <!-- Pengaturan -->
         @php $isActive = request()->is('puskesmas/pengaturan*'); @endphp

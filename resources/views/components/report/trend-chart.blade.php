@@ -35,7 +35,7 @@
         
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
-                <h3 class="font-bold text-slate-800">Tren Status Gizi (6 Bulan Terakhir)</h3>
+                <h3 class="font-bold tracking-tight text-slate-800">Tren Status Gizi (6 Bulan Terakhir)</h3>
                 <p class="text-xs text-slate-500 mt-0.5">Pergerakan persentase balita gizi normal vs berisiko dari waktu ke waktu</p>
             </div>
             
@@ -107,7 +107,7 @@
                         <div class="absolute w-3 h-3 bg-white border-2 border-rose-500 rounded-full left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 shadow-sm transition-transform group-hover:scale-150" style="top: {{ $yBerisiko }}%;"></div>
                         
                         <!-- Tooltip -->
-                        <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none whitespace-nowrap">
+                        <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded shadow-sm border border-slate-200/60 opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none whitespace-nowrap">
                             <div class="mb-1 pb-1 border-b border-slate-600 text-center font-bold text-slate-300">{{ $t['bulan'] }}</div>
                             <span class="font-bold text-emerald-400">Normal: {{ $t['pct_normal'] }}% ({{ $t['normal'] }})</span><br>
                             <span class="font-bold text-rose-400">Berisiko: {{ $t['pct_berisiko'] }}% ({{ $t['berisiko'] }})</span>
@@ -147,7 +147,7 @@
                 </svg>
             </div>
             <div>
-                <h4 class="text-sm font-bold text-slate-800">Insight & Analisis</h4>
+                <h4 class="text-sm font-bold tracking-tight text-slate-800">Insight & Analisis</h4>
                 <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                     {!! $insight !!}
                 </p>

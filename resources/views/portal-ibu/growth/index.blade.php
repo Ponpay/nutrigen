@@ -73,7 +73,7 @@
                 <!-- 3. MEDICAL CHART PLACEHOLDER -->
                 <div class="mt-8">
                     <x-ui.section-title title="Kurva Pertumbuhan WHO" subtitle="Jejak pertumbuhan si Kecil dari waktu ke waktu." />
-                    <x-ui.card padding="p-2" class="bg-white border border-gray-100 shadow-sm mt-3 relative overflow-hidden">
+                    <x-ui.card padding="p-2" class="bg-white border border-slate-100 shadow-sm mt-3 relative overflow-hidden">
                         <div id="growthChart" class="w-full h-72 z-10 relative"></div>
                     </x-ui.card>
                 </div>
@@ -202,7 +202,7 @@
                     var chart = new ApexCharts(document.querySelector("#growthChart"), options);
                     chart.render();
                 } else {
-                    document.getElementById('growthChart').innerHTML = '<div class="h-full flex items-center justify-center text-sm text-gray-400 font-bold">Belum ada cukup data pengukuran.</div>';
+                    document.getElementById('growthChart').innerHTML = '<div class="h-full flex items-center justify-center text-sm text-slate-400 font-bold">Belum ada cukup data pengukuran.</div>';
                 }
             }
         });

@@ -28,7 +28,7 @@
         <div class="flex flex-col border-b border-slate-200/80 sticky top-0 z-20 shrink-0 bg-slate-50/90 backdrop-blur-xl">
             <div class="px-5 pt-5 pb-4">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Medical Records</p>
-                <h2 class="text-base font-bold text-slate-800">Direktori Balita</h2>
+                <h2 class="text-base font-bold tracking-tight text-slate-800">Direktori Balita</h2>
                 
                 <!-- Search & Filter Form -->
                 <form id="filterForm" action="{{ route('puskesmas.balita') }}" method="GET" class="flex flex-col gap-3 mt-4">

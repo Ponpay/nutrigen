@@ -17,10 +17,15 @@ class Pengukuran extends Model
         'umur_bulan',
         'berat_badan',
         'tinggi_badan',
+        'lingkar_kepala',
+        'asi_eksklusif',
         'z_score_bbu',
         'z_score_tbu',
         'status_gizi',
+        'status_kenaikan',
         'status_validasi',
+        'catatan_validator',
+        'catatan_kader',
     ];
 
     protected $casts = [
@@ -28,6 +33,8 @@ class Pengukuran extends Model
         'umur_bulan' => 'integer',
         'berat_badan' => 'float',
         'tinggi_badan' => 'float',
+        'lingkar_kepala' => 'float',
+        'asi_eksklusif' => 'boolean',
         'z_score_bbu' => 'float',
         'z_score_tbu' => 'float',
     ];

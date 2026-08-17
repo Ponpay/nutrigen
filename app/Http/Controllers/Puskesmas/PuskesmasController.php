@@ -180,6 +180,8 @@ class PuskesmasController extends Controller
                 'parent' => $p->balita->orangTua->nama_ibu ?? '-',
                 'bb' => $p->berat_badan,
                 'tb' => $p->tinggi_badan,
+                'catatan_kader' => $p->catatan_kader,
+                'catatan_validator' => $p->catatan_validator,
                 'zscores' => [
                     'BB (kg)' => ['val' => number_format((float)$p->berat_badan, 1), 'status' => 'Normal', 'color' => 'slate'],
                     'TB (cm)' => ['val' => number_format((float)$p->tinggi_badan, 1), 'status' => 'Normal', 'color' => 'slate'],

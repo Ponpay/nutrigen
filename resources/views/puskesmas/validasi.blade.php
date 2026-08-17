@@ -28,7 +28,7 @@
     <div class="px-6 py-4 border-b border-slate-200 shrink-0 bg-white">
         <!-- Title area -->
         <div class="mb-4">
-            <h1 class="text-xl font-bold text-slate-800">Antrean Validasi</h1>
+            <h1 class="text-xl font-bold tracking-tight text-slate-800">Antrean Validasi</h1>
             <p class="text-xs text-slate-500 mt-1">Validasi pengukuran yang dilakukan oleh kader posyandu</p>
         </div>
         
@@ -155,7 +155,7 @@
                             
                             <!-- Clinical Data Flow -->
                             <div class="flex flex-col gap-3">
-                                <h3 class="text-sm font-bold text-slate-800">Data Pengukuran</h3>
+                                <h3 class="text-sm font-bold tracking-tight text-slate-800">Data Pengukuran</h3>
                                 <div class="w-full">
                                     <x-validation.zscore-grid :zscores="$child['zscores']" />
                                 </div>
@@ -164,13 +164,28 @@
                             <!-- Context & History Flow -->
                             <div class="grid grid-cols-1 xl:grid-cols-[1fr_350px] gap-6 items-start mt-4">
                                 <div class="flex flex-col gap-3">
-                                    <h3 class="text-sm font-bold text-slate-800">Riwayat Pengukuran (Terakhir)</h3>
+                                    {{-- Catatan Kader (Jika ada) --}}
+                                    @if(!empty($child['catatan_kader']))
+                                    <div class="p-3.5 bg-teal-50/80 border border-teal-200/80 rounded-2xl text-teal-950 flex items-start gap-3 shadow-xs">
+                                        <div class="w-7 h-7 rounded-xl bg-teal-100/80 text-teal-700 flex items-center justify-center shrink-0 mt-0.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <span class="text-[11px] font-bold text-teal-800 uppercase tracking-wider block mb-0.5">Catatan dari Kader ({{ $child['kader'] }}):</span>
+                                            <p class="text-xs font-semibold text-teal-900 leading-relaxed">"{{ $child['catatan_kader'] }}"</p>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <h3 class="text-sm font-bold tracking-tight text-slate-800">Riwayat Pengukuran (Terakhir)</h3>
                                     <x-validation.timeline :history="$child['history']" />
                                 </div>
                                 
                                 <!-- Catatan Validator -->
                                 <div class="flex flex-col gap-3">
-                                    <h3 class="text-sm font-bold text-slate-800">Catatan Validator</h3>
+                                    <h3 class="text-sm font-bold tracking-tight text-slate-800">Catatan Validator</h3>
                                     <div class="relative">
                                         <textarea 
                                             id="catatan_validator_{{ $child['id'] }}"
@@ -197,7 +212,7 @@
                                 </button>
                                 <div id="chart-container-{{ $child['id'] }}" class="hidden w-full bg-white border border-slate-200 border-t-0 rounded-b-lg p-4 transition-all">
                                     <div class="flex justify-between items-center mb-4">
-                                        <h4 class="text-xs font-bold text-slate-700">Pilih Indikator:</h4>
+                                        <h4 class="text-xs font-bold tracking-tight text-slate-700">Pilih Indikator:</h4>
                                         <select id="chart-metric-{{ $child['id'] }}" onchange="updateChartMetric('{{ $child['id'] }}')" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-colors">
                                             <option value="tb">Tinggi Badan (cm)</option>
                                             <option value="bb">Berat Badan (kg)</option>
@@ -248,7 +263,7 @@
 </div><!-- end main flex col -->
 
 <!-- Confirmation Modal -->
-<div id="confirmModal" class="fixed inset-0 z-[60] hidden">
+<div id="confirmModal" class="fixed inset-0 z-40 hidden">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
     <!-- Modal Panel -->
@@ -263,16 +278,16 @@
                             </svg>
                         </div>
                         <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                            <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Validasi Data Pengukuran</h3>
+                            <h3 class="text-base font-semibold leading-6 text-slate-900" id="modal-title">Validasi Data Pengukuran</h3>
                             <div class="mt-2">
-                                <p class="text-sm text-gray-500">Data pengukuran ini akan disetujui dan Portal Ibu akan menerima pemberitahuan otomatis. Sistem juga akan membuat Secure Signed URL untuk akses Portal Ibu.</p>
+                                <p class="text-sm text-slate-500">Data pengukuran ini akan disetujui dan Portal Ibu akan menerima pemberitahuan otomatis. Sistem juga akan membuat Secure Signed URL untuk akses Portal Ibu.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div class="bg-slate-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button type="button" onclick="window.triggerApprove()" class="inline-flex w-full justify-center rounded-xl bg-teal-600 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 sm:ml-3 sm:w-auto">Ya, Validasi Data</button>
-                    <button type="button" onclick="window.closeConfirmModal()" class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Batal</button>
+                    <button type="button" onclick="window.closeConfirmModal()" class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto">Batal</button>
                 </div>
             </div>
         </div>
@@ -280,7 +295,7 @@
 </div>
 
 <!-- Success Modal -->
-<div id="successModal" class="fixed inset-0 z-[60] hidden">
+<div id="successModal" class="fixed inset-0 z-40 hidden">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
     <!-- Modal Panel -->
@@ -293,12 +308,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold leading-6 text-gray-900 mb-2">Validasi Berhasil!</h3>
-                    <p class="text-sm text-gray-500 mb-6">Data telah disetujui. Berikut adalah Secure Signed URL untuk Portal Ibu.</p>
+                    <h3 class="text-xl font-bold tracking-tight leading-6 text-slate-900 mb-2">Validasi Berhasil!</h3>
+                    <p class="text-sm text-slate-500 mb-6">Data telah disetujui. Berikut adalah Secure Signed URL untuk Portal Ibu.</p>
                     
                     <div class="flex items-center gap-2 mb-6">
-                        <input type="text" id="signedUrlInput" readonly class="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 bg-gray-50 outline-none">
-                        <button type="button" onclick="window.copySignedUrl()" class="shrink-0 rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" title="Copy Link">
+                        <input type="text" id="signedUrlInput" readonly class="block w-full rounded-xl border-0 py-2.5 px-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 bg-slate-50 outline-none">
+                        <button type="button" onclick="window.copySignedUrl()" class="shrink-0 rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50" title="Copy Link">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
                         </button>
                     </div>
@@ -311,7 +326,7 @@
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                             Bagikan via WhatsApp
                         </button>
-                        <button type="button" onclick="window.closeSuccessModal()" class="inline-flex w-full justify-center rounded-xl bg-white px-3 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 mt-1">
+                        <button type="button" onclick="window.closeSuccessModal()" class="inline-flex w-full justify-center rounded-xl bg-white px-3 py-3 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 mt-1">
                             Tutup
                         </button>
                     </div>
@@ -322,7 +337,7 @@
 </div>
 
 <!-- Reject Confirmation Modal -->
-<div id="rejectConfirmModal" class="fixed inset-0 z-[60] hidden">
+<div id="rejectConfirmModal" class="fixed inset-0 z-40 hidden">
     <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -335,21 +350,21 @@
                             </svg>
                         </div>
                         <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                            <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Tolak Data Pengukuran</h3>
+                            <h3 class="text-base font-semibold leading-6 text-slate-900" id="modal-title">Tolak Data Pengukuran</h3>
                             <div class="mt-2">
-                                <p class="text-sm text-gray-500 mb-3">Data pengukuran ini akan ditolak dan tidak akan diteruskan ke Portal Ibu sampai dilakukan pengukuran ulang atau diperbaiki oleh Kader.</p>
+                                <p class="text-sm text-slate-500 mb-3">Data pengukuran ini akan ditolak dan tidak akan diteruskan ke Portal Ibu sampai dilakukan pengukuran ulang atau diperbaiki oleh Kader.</p>
                                 
                                 <div>
-                                    <label for="catatan_validator" class="block text-sm font-semibold text-gray-700 mb-1">Catatan Validator</label>
-                                    <textarea id="catatan_validator" rows="3" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 text-sm p-3 border outline-none bg-slate-50 transition-colors" placeholder="Tuliskan alasan penolakan atau instruksi perbaikan untuk Kader..."></textarea>
+                                    <label for="catatan_validator" class="block text-sm font-semibold text-slate-700 mb-1">Catatan Validator</label>
+                                    <textarea id="catatan_validator" rows="3" class="w-full rounded-xl border-slate-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 text-sm p-3 border outline-none bg-slate-50 transition-colors" placeholder="Tuliskan alasan penolakan atau instruksi perbaikan untuk Kader..."></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div class="bg-slate-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button type="button" onclick="window.triggerReject()" class="inline-flex w-full justify-center rounded-xl bg-rose-600 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 sm:ml-3 sm:w-auto">Ya, Tolak Data</button>
-                    <button type="button" onclick="window.closeRejectConfirmModal()" class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Batal</button>
+                    <button type="button" onclick="window.closeRejectConfirmModal()" class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto">Batal</button>
                 </div>
             </div>
         </div>
@@ -357,7 +372,7 @@
 </div>
 
 <!-- Reject Success Modal -->
-<div id="rejectSuccessModal" class="fixed inset-0 z-[60] hidden">
+<div id="rejectSuccessModal" class="fixed inset-0 z-40 hidden">
     <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -368,8 +383,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold leading-6 text-gray-900 mb-2">Data Ditolak</h3>
-                    <p class="text-sm text-gray-500 mb-6">Data telah berhasil dikembalikan untuk diperbaiki oleh kader. Portal Ibu tidak dapat mengakses data ini.</p>
+                    <h3 class="text-xl font-bold tracking-tight leading-6 text-slate-900 mb-2">Data Ditolak</h3>
+                    <p class="text-sm text-slate-500 mb-6">Data telah berhasil dikembalikan untuk diperbaiki oleh kader. Portal Ibu tidak dapat mengakses data ini.</p>
                     
                     <div class="flex flex-col gap-3">
                         <button type="button" onclick="window.closeRejectSuccessModal()" class="inline-flex w-full justify-center rounded-xl bg-slate-800 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-700">
@@ -509,7 +524,7 @@
                 ? `<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />`
                 : `<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />`;
 
-            toast.className = `transform transition-all duration-300 translate-x-full opacity-0 ${bgColor} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 w-max max-w-xs`;
+            toast.className = `transform transition-all duration-300 translate-x-full opacity-0 ${bgColor} text-white px-4 py-3 rounded-xl shadow-sm border border-slate-200/60 flex items-center gap-3 w-max max-w-xs`;
             toast.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 shrink-0">${icon}</svg><span class="text-sm font-bold">${message}</span>`;
             
             container.appendChild(toast);

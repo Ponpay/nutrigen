@@ -61,15 +61,15 @@
 
                     {{-- Child Context Section --}}
                     <div class="mt-6 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-emerald-100/50">
+                        <div class="w-12 h-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-teal-100/50">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                 <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2.5">
-                                <h3 class="text-lg font-bold text-slate-800 truncate">{{ $childName }}</h3>
-                                <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">{{ $age }}</span>
+                                <h3 class="text-lg font-bold tracking-tight text-slate-800 truncate">{{ $childName }}</h3>
+                                <span class="text-xs font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md">{{ $age }}</span>
                             </div>
                             @if($lastWeight && $lastDate)
                             <div class="text-sm text-slate-400 mt-1 truncate">
@@ -101,8 +101,8 @@
                                         value="{{ old('berat_badan') }}" required
                                         placeholder="0.0"
                                         oninput="validateWeight(this.value)"
-                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-emerald-500 rounded-xl pl-4 pr-12 text-xl font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-emerald-500 transition-colors pointer-events-none">kg</span>
+                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl pl-4 pr-12 text-xl font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-teal-500 transition-colors pointer-events-none">kg</span>
                                 </div>
                                 @error('berat_badan')
                                     <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
@@ -116,10 +116,10 @@
                                 </div>
                             </div>
 
-                            {{-- ── Tinggi Badan ── --}}
+                            {{-- ── Tinggi / Panjang Badan ── --}}
                             <div class="flex flex-col gap-2">
                                 <label for="tinggi" class="text-sm font-semibold text-slate-700">
-                                    Tinggi Badan <span class="text-rose-500">*</span>
+                                    Tinggi / Panjang Badan <span class="text-rose-500">*</span>
                                 </label>
                                 <div class="relative flex items-center group">
                                     <input
@@ -127,8 +127,8 @@
                                         id="tinggi" name="tinggi_badan"
                                         value="{{ old('tinggi_badan') }}" required
                                         placeholder="0.0"
-                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-emerald-500 rounded-xl pl-4 pr-12 text-xl font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-emerald-500 transition-colors pointer-events-none">cm</span>
+                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl pl-4 pr-12 text-xl font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-teal-500 transition-colors pointer-events-none">cm</span>
                                 </div>
                                 @error('tinggi_badan')
                                     <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
@@ -137,8 +137,8 @@
 
                             {{-- ── Lingkar Kepala ── --}}
                             <div class="flex flex-col gap-2">
-                                <label for="lingkar" class="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                                    Lingkar Kepala
+                                <label for="lingkar" class="flex items-center justify-between text-sm font-semibold text-slate-700">
+                                    <span>Lingkar Kepala</span>
                                     <span class="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Opsional</span>
                                 </label>
                                 <div class="relative flex items-center group">
@@ -147,12 +147,56 @@
                                         id="lingkar" name="lingkar_kepala"
                                         value="{{ old('lingkar_kepala') }}"
                                         placeholder="0.0"
-                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-emerald-500 rounded-xl pl-4 pr-12 text-xl font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-emerald-500 transition-colors pointer-events-none">cm</span>
+                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl pl-4 pr-12 text-lg font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-teal-500 transition-colors pointer-events-none">cm</span>
                                 </div>
                                 @error('lingkar_kepala')
                                     <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
                                 @enderror
+                            </div>
+
+                            {{-- ── Status Kenaikan BB (Standar KMS) ── --}}
+                            <div class="flex flex-col gap-2">
+                                <label for="status_kenaikan" class="flex items-center justify-between text-sm font-semibold text-slate-700">
+                                    <span>Status Kenaikan BB (KMS)</span>
+                                    <span class="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Opsional</span>
+                                </label>
+                                <div class="relative flex items-center">
+                                    <select
+                                        id="status_kenaikan" name="status_kenaikan"
+                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl pl-4 pr-10 text-sm font-medium text-slate-800 transition-all outline-none appearance-none cursor-pointer">
+                                        <option value="" {{ old('status_kenaikan') == '' ? 'selected' : '' }}>-- Pilih Status Kenaikan KMS --</option>
+                                        <option value="N" {{ old('status_kenaikan') == 'N' ? 'selected' : '' }}>N (Naik sesuai garis pertumbuhan)</option>
+                                        <option value="T" {{ old('status_kenaikan') == 'T' ? 'selected' : '' }}>T (Tidak naik / Berat tetap / Turun)</option>
+                                        <option value="B" {{ old('status_kenaikan') == 'B' ? 'selected' : '' }}>B (Baru / Belum ada data bulan lalu)</option>
+                                    </select>
+                                    <div class="absolute right-4 pointer-events-none text-slate-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                    </div>
+                                </div>
+                                @error('status_kenaikan')
+                                    <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            {{-- ── Status ASI Eksklusif ── --}}
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-semibold text-slate-700">
+                                    Pemberian ASI Eksklusif
+                                </label>
+                                <div class="grid grid-cols-2 gap-3 h-14">
+                                    <label class="relative flex items-center justify-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-teal-500 has-[:checked]:bg-teal-50/50 has-[:checked]:text-teal-700 font-semibold text-sm text-slate-600">
+                                        <input type="radio" name="asi_eksklusif" value="1" {{ old('asi_eksklusif', '1') == '1' ? 'checked' : '' }} class="sr-only">
+                                        <span class="flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
+                                            Ya (ASI Saja)
+                                        </span>
+                                    </label>
+                                    <label class="relative flex items-center justify-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-slate-400 has-[:checked]:bg-slate-100 has-[:checked]:text-slate-800 font-semibold text-sm text-slate-600">
+                                        <input type="radio" name="asi_eksklusif" value="0" {{ old('asi_eksklusif') === '0' ? 'checked' : '' }} class="sr-only">
+                                        <span>Tidak</span>
+                                    </label>
+                                </div>
                             </div>
 
                             {{-- ── Tanggal Pengukuran ── --}}
@@ -164,25 +208,25 @@
                                     type="date"
                                     id="tanggal" name="tanggal_ukur"
                                     value="{{ old('tanggal_ukur', now()->format('Y-m-d')) }}" required
-                                    class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-emerald-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                    class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
                                 @error('tanggal_ukur')
                                     <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            {{-- ── Catatan ── --}}
+                            {{-- ── Catatan Kader ── --}}
                             <div class="flex flex-col gap-2 sm:col-span-2">
-                                <label for="catatan" class="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                                    Catatan
+                                <label for="catatan_kader" class="flex items-center justify-between text-sm font-semibold text-slate-700">
+                                    <span>Catatan Tambahan Kader</span>
                                     <span class="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Opsional</span>
                                 </label>
                                 <textarea
-                                    id="catatan" name="catatan"
+                                    id="catatan_kader" name="catatan_kader"
                                     rows="2"
-                                    placeholder="Tambahkan catatan khusus..."
-                                    class="w-full bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-emerald-500 rounded-xl px-4 py-3.5 text-sm text-slate-800 placeholder:text-slate-400 transition-all outline-none resize-none"
-                                >{{ old('catatan') }}</textarea>
-                                @error('catatan')
+                                    placeholder="Contoh: Balita aktif, nafsu makan baik, catatan khusus untuk Puskesmas."
+                                    class="w-full bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl px-4 py-3.5 text-sm text-slate-800 placeholder:text-slate-400 transition-all outline-none resize-none"
+                                >{{ old('catatan_kader') }}</textarea>
+                                @error('catatan_kader')
                                     <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -199,7 +243,7 @@
                     </button>
                     <button
                         type="submit" form="measurementForm" id="btn-submit"
-                        class="w-full sm:w-auto px-8 h-12 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all focus:outline-none focus:ring-4 focus:ring-emerald-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                        class="w-full sm:w-auto px-8 h-12 bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white rounded-xl font-semibold text-sm shadow-sm hover:shadow-sm border border-slate-200/60 transition-all focus:outline-none focus:ring-4 focus:ring-teal-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                         <span id="btn-text">Simpan Pengukuran</span>
                         <svg id="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />

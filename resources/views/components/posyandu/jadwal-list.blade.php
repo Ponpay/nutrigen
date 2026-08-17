@@ -14,7 +14,7 @@
     <div class="flex-1 overflow-y-auto hide-scrollbar pb-2">
         <div class="flex flex-col gap-3">
             @forelse($jadwals as $jadwal)
-                <div class="bg-white rounded-[1.25rem] p-4 shadow-sm border border-slate-100 hover:shadow-md hover:border-blue-100/50 transition-all group relative overflow-hidden flex flex-col gap-3">
+                <div class="bg-white rounded-[1.25rem] p-4 shadow-sm border border-slate-100 hover:shadow-sm border border-slate-200/60 hover:border-blue-100/50 transition-all group relative overflow-hidden flex flex-col gap-3">
                     <!-- Decorator -->
                     <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 to-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     

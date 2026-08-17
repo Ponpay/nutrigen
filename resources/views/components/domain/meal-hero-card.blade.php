@@ -2,11 +2,11 @@
 
 <div class="relative w-full rounded-[32px] overflow-hidden shadow-card group">
     <!-- Image -->
-    <div class="h-72 w-full bg-gray-200 relative">
+    <div class="h-72 w-full bg-slate-200 relative">
         @if($image)
             <img src="{{ $image }}" alt="{{ $title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
         @else
-            <div class="w-full h-full flex items-center justify-center bg-gray-100 text-5xl">🍲</div>
+            <div class="w-full h-full flex items-center justify-center bg-slate-100 text-5xl">🍲</div>
         @endif
         
         <!-- Gradient Overlay -->

@@ -6,25 +6,25 @@
             <div class="space-y-6">
                 <!-- Header Skeleton -->
                 <div class="mb-8 space-y-2 animate-pulse mt-4">
-                    <div class="h-4 bg-gray-200 rounded-full w-32"></div>
-                    <div class="h-6 bg-gray-200 rounded-full w-48"></div>
+                    <div class="h-4 bg-slate-200 rounded-full w-32"></div>
+                    <div class="h-6 bg-slate-200 rounded-full w-48"></div>
                 </div>
                 <!-- Card Skeleton 1 -->
                 <x-ui.card padding="p-4" class="flex items-center space-x-4 animate-pulse">
-                    <div class="w-[60px] h-[60px] bg-gray-200 rounded-full flex-shrink-0"></div>
+                    <div class="w-[60px] h-[60px] bg-slate-200 rounded-full flex-shrink-0"></div>
                     <div class="flex-1 space-y-2">
-                        <div class="h-5 bg-gray-200 rounded-full w-3/4"></div>
-                        <div class="h-3 bg-gray-200 rounded-full w-1/2"></div>
-                        <div class="h-3 bg-gray-200 rounded-full w-1/3"></div>
+                        <div class="h-5 bg-slate-200 rounded-full w-3/4"></div>
+                        <div class="h-3 bg-slate-200 rounded-full w-1/2"></div>
+                        <div class="h-3 bg-slate-200 rounded-full w-1/3"></div>
                     </div>
                 </x-ui.card>
                 <!-- Card Skeleton 2 -->
                 <x-ui.card padding="p-4" class="flex items-center space-x-4 animate-pulse">
-                    <div class="w-[60px] h-[60px] bg-gray-200 rounded-full flex-shrink-0"></div>
+                    <div class="w-[60px] h-[60px] bg-slate-200 rounded-full flex-shrink-0"></div>
                     <div class="flex-1 space-y-2">
-                        <div class="h-5 bg-gray-200 rounded-full w-3/4"></div>
-                        <div class="h-3 bg-gray-200 rounded-full w-1/2"></div>
-                        <div class="h-3 bg-gray-200 rounded-full w-1/3"></div>
+                        <div class="h-5 bg-slate-200 rounded-full w-3/4"></div>
+                        <div class="h-3 bg-slate-200 rounded-full w-1/2"></div>
+                        <div class="h-3 bg-slate-200 rounded-full w-1/3"></div>
                     </div>
                 </x-ui.card>
             </div>
@@ -60,8 +60,8 @@
             
             <!-- HEADER -->
             <div class="mb-6 mt-2 px-1">
-                <p class="text-[13px] text-gray-500 font-extrabold mb-0.5 tracking-wide">{{ $greeting ?? 'Selamat pagi, Ibunda' }}</p>
-                <h1 class="text-gray-900 font-black text-[22px] leading-tight">
+                <p class="text-[13px] text-slate-500 font-extrabold mb-0.5 tracking-wide">{{ $greeting ?? 'Selamat pagi, Ibunda' }}</p>
+                <h1 class="text-slate-900 font-black text-[22px] leading-tight">
                     Mari pilih profil si kecil
                 </h1>
             </div>
@@ -76,15 +76,15 @@
                             <x-ui.avatar src="{{ $child['avatar'] ?? null }}" initials="{{ $child['initials'] ?? 'A' }}" size="w-[60px] h-[60px]" class="mr-4" />
                             
                             <div class="flex-1 min-w-0 pr-2">
-                                <h3 class="font-black text-[17px] text-gray-800 leading-tight mb-0.5 truncate">{{ $child['name'] ?? 'Nama Anak' }}</h3>
-                                <p class="text-[13px] text-gray-500 font-bold mb-1 truncate">{{ $child['age'] ?? 'Umur Anak' }}</p>
+                                <h3 class="font-black text-[17px] text-slate-800 leading-tight mb-0.5 truncate">{{ $child['name'] ?? 'Nama Anak' }}</h3>
+                                <p class="text-[13px] text-slate-500 font-bold mb-1 truncate">{{ $child['age'] ?? 'Umur Anak' }}</p>
                                 
                                 @if(isset($child['status']))
                                     <p class="text-[11px] font-black text-brand tracking-wide truncate">{{ $child['status'] }}</p>
                                 @endif
                             </div>
 
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 group-hover:text-brand transition-colors bg-gray-50 group-hover:bg-mint-50">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 group-hover:text-brand transition-colors bg-slate-50 group-hover:bg-mint-50">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
                             </div>
 
@@ -96,11 +96,11 @@
                         <x-ui.card padding="p-4" class="flex items-center group-hover:border-mint-200 transition-colors">
                             <x-ui.avatar initials="A" size="w-[60px] h-[60px]" class="mr-4" />
                             <div class="flex-1 min-w-0 pr-2">
-                                <h3 class="font-black text-[17px] text-gray-800 leading-tight mb-0.5 truncate">Aisyah Putri</h3>
-                                <p class="text-[13px] text-gray-500 font-bold mb-1 truncate">2 Tahun 4 Bulan</p>
+                                <h3 class="font-black text-[17px] text-slate-800 leading-tight mb-0.5 truncate">Aisyah Putri</h3>
+                                <p class="text-[13px] text-slate-500 font-bold mb-1 truncate">2 Tahun 4 Bulan</p>
                                 <p class="text-[11px] font-black text-brand tracking-wide truncate">Perlu Pantauan</p>
                             </div>
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 group-hover:text-brand transition-colors bg-gray-50 group-hover:bg-mint-50">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 group-hover:text-brand transition-colors bg-slate-50 group-hover:bg-mint-50">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
                             </div>
                         </x-ui.card>
@@ -110,7 +110,7 @@
 
             <!-- FOOTER HELP -->
             <div class="mt-8 mb-6 text-center">
-                <p class="text-[12px] font-bold text-gray-400 mb-1">Ada profil anak yang belum terdaftar?</p>
+                <p class="text-[12px] font-bold text-slate-400 mb-1">Ada profil anak yang belum terdaftar?</p>
                 <button class="text-[12px] font-black text-brand hover:text-emerald-700 underline focus:outline-none">
                     Minta bantuan Kader Posyandu
                 </button>

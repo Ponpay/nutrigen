@@ -4,11 +4,11 @@
         <!-- HEADER -->
         <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-xl px-5 pt-8 pb-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <button class="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center text-slate-700 active:scale-95 transition-transform focus:outline-none" onclick="history.back()">
+                <button class="w-10 h-10 rounded-full bg-white border border-slate-100 shadow-sm flex items-center justify-center text-slate-700 active:scale-95 transition-transform focus:outline-none" onclick="history.back()">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 </button>
                 <div>
-                    <h2 class="text-[13px] font-bold text-teal-500 leading-none mb-1">Edukasi</h2>
+                    <h2 class="text-[13px] font-bold tracking-tight text-teal-500 leading-none mb-1">Edukasi</h2>
                     <h1 class="text-[19px] font-black text-slate-800 leading-none tracking-tight">Gizi & Menu</h1>
                 </div>
             </div>
@@ -18,7 +18,7 @@
                     {{ $user['initials'] ?? 'A' }}
                 </div>
                 <div class="relative">
-                    <button class="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center text-slate-700 active:scale-95 transition-transform focus:outline-none">
+                    <button class="w-10 h-10 rounded-full bg-white border border-slate-100 shadow-sm flex items-center justify-center text-slate-700 active:scale-95 transition-transform focus:outline-none">
                         <svg class="w-[20px] h-[20px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     </button>
                     <!-- Red Dot -->
@@ -79,15 +79,15 @@
 
                 @if(!empty($heroMeal))
                     <!-- Render dynamic recipe card if available from backend -->
-                    <div class="relative w-full rounded-[32px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-gray-100 group cursor-pointer active:scale-[0.98] transition-transform" x-on:click="openRecipe = true">
-                        <div class="h-56 w-full bg-gray-100 relative">
+                    <div class="relative w-full rounded-[32px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-slate-100 group cursor-pointer active:scale-[0.98] transition-transform" x-on:click="openRecipe = true">
+                        <div class="h-56 w-full bg-slate-100 relative">
                             <img src="{{ asset('images/menu/' . ($heroMeal['image'] ?? 'placeholder.jpg')) }}" 
                                  alt="{{ $heroMeal['title'] ?? 'Menu Utama' }}" 
                                  class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-95"></div>
                         </div>
                         <div class="absolute bottom-0 left-0 w-full p-6 text-white flex flex-col justify-end">
-                            <h3 class="text-[22px] font-black leading-tight tracking-tight mb-4 drop-shadow-md">{{ $heroMeal['title'] ?? 'Menu Hari Ini' }}</h3>
+                            <h3 class="text-[22px] font-black leading-tight tracking-tight mb-4 drop-shadow-sm border border-slate-200/60">{{ $heroMeal['title'] ?? 'Menu Hari Ini' }}</h3>
                             <button class="w-full bg-emerald-500 text-white font-extrabold py-3.5 rounded-full text-[14px] flex justify-center items-center">
                                 Lihat Resep
                             </button>
@@ -95,7 +95,7 @@
                     </div>
                 @else
                     <!-- EMPTY STATE: Tips Nutrisi Si Kecil (Purple Card) -->
-                    <div class="bg-white border border-gray-100 rounded-[32px] p-6 text-center flex flex-col items-center shadow-[0_8px_30px_rgba(0,0,0,0.02)] relative overflow-hidden">
+                    <div class="bg-white border border-slate-100 rounded-[32px] p-6 text-center flex flex-col items-center shadow-[0_8px_30px_rgba(0,0,0,0.02)] relative overflow-hidden">
                         <!-- Soft purple glow at the top -->
                         <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#F3E8FF] to-transparent opacity-40 pointer-events-none"></div>
                         
@@ -132,7 +132,7 @@
                 <div class="flex flex-col gap-3">
                     @forelse($alternatives ?? [] as $meal)
                         <!-- Dynamic Item Ready for Future Realtime Data -->
-                        <button class="bg-white border border-gray-100 rounded-[24px] p-4 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.02)] active:scale-[0.98] transition-transform text-left">
+                        <button class="bg-white border border-slate-100 rounded-[24px] p-4 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.02)] active:scale-[0.98] transition-transform text-left">
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
                                     <img src="{{ asset('images/menu/' . ($meal['image'] ?? 'placeholder.jpg')) }}" class="w-8 h-8 rounded-full object-cover">

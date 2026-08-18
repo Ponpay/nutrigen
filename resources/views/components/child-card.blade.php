@@ -54,68 +54,46 @@
     ];
 @endphp
 
-{{-- Child Card: White surface + left accent strip. Clean, scannable, premium. --}}
-<div class="group relative flex flex-col justify-between bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:border-slate-300/60 transition-all duration-200 ease-out">
+{{-- Child Card: White surface + left accent strip. Clean, scannable, uniform height. --}}
+<div class="group relative flex flex-col justify-between bg-white border border-slate-200/70 rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.03),0_4px_16px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.07)] hover:border-slate-300 transition-all duration-200 ease-out h-full w-full">
 
     {{-- Status Accent Strip (left edge) — 4px, standard Tailwind w-1 --}}
     <div class="absolute left-0 top-0 bottom-0 w-1 {{ $colors['accent'] }}"></div>
 
     {{-- Card Body --}}
-    <div class="p-3 lg:p-4 pl-4 lg:pl-5">
+    <div class="p-3.5 lg:p-4 pl-4 lg:pl-5 flex flex-col justify-between h-full">
 
-        {{-- Top: Avatar + Info --}}
-        <div class="flex items-center gap-3 mb-3 lg:mb-4">
-            {{-- Avatar --}}
-            <div class="w-10 h-10 rounded-full bg-slate-50 ring-2 {{ $colors['avatar_ring'] }} flex-shrink-0 flex items-center justify-center {{ $colors['avatar_text'] }}">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 opacity-70">
-                    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                </svg>
-            </div>
+        {{-- Top Section: Avatar + Info --}}
+        <div>
+            <div class="flex items-center gap-3">
+                {{-- Avatar --}}
+                <div class="w-10 h-10 rounded-full bg-slate-50 ring-2 {{ $colors['avatar_ring'] }} flex-shrink-0 flex items-center justify-center {{ $colors['avatar_text'] }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 opacity-70">
+                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                    </svg>
+                </div>
 
-            {{-- Name + Meta --}}
-            <div class="flex-1 min-w-0">
-                <p class="font-semibold text-slate-800 text-[13.5px] leading-snug truncate">{{ Str::title($balita['name']) }}</p>
-                <div class="flex items-center gap-1.5 mt-0.5">
-                    <span class="text-[11.5px] font-medium text-slate-500">{{ $balita['age'] }}</span>
-                    <span class="w-0.5 h-0.5 rounded-full bg-slate-300 flex-shrink-0"></span>
-                    <span class="text-[11.5px] text-slate-400 truncate">{{ Str::title($balita['mother']) }}</span>
+                {{-- Name + Meta --}}
+                <div class="flex-1 min-w-0">
+                    <p class="font-bold text-slate-800 text-[13.5px] leading-snug truncate group-hover:text-teal-700 transition-colors">{{ Str::title($balita['name']) }}</p>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-[11.5px] font-semibold text-slate-500">{{ $balita['age'] }}</span>
+                        <span class="w-0.5 h-0.5 rounded-full bg-slate-300 flex-shrink-0"></span>
+                        <span class="text-[11.5px] text-slate-400 truncate">{{ Str::title($balita['mother']) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        {{-- Context Tag (Catatan Revisi Puskesmas / Tag) --}}
-        @if(isset($balita['context_tag']) && $balita['context_tag'])
-            @php
-                $isRevision = str_contains(strtolower($balita['context_tag']), 'revisi') || str_contains(strtolower($balita['context_tag']), 'ditolak');
-            @endphp
-            <div class="mb-3">
-                @if($isRevision)
-                    <div class="p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 flex items-start gap-2 shadow-xs">
-                        <svg class="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
-                        </svg>
-                        <span class="text-[11px] font-bold leading-tight line-clamp-2">{{ $balita['context_tag'] }}</span>
-                    </div>
-                @else
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200/70 text-slate-600 text-[11px] font-medium">
-                        {{ $balita['context_tag'] }}
-                    </span>
-                @endif
-            </div>
-        @endif
-
-        {{-- Divider --}}
-        <div class="w-full h-px bg-slate-100 mb-3.5"></div>
-
-        {{-- Bottom: Status + Actions --}}
-        <div class="flex flex-col gap-3">
+        {{-- Bottom Section: Divider + Badges + Actions --}}
+        <div class="mt-3.5 pt-3 border-t border-slate-100 flex flex-col gap-2.5">
 
             {{-- Status Badges --}}
-            <div class="flex flex-wrap items-center gap-1.5">
+            <div class="flex flex-wrap items-center gap-1.5 min-h-[24px]">
                 {{-- Status Gizi Badge --}}
-                <div class="flex items-center gap-1.5 {{ $colors['badge_bg'] }} {{ $colors['badge_text'] }} px-3 py-1 rounded-full">
+                <div class="flex items-center gap-1.5 {{ $colors['badge_bg'] }} {{ $colors['badge_text'] }} px-2.5 py-0.5 rounded-full">
                     <span class="w-1.5 h-1.5 rounded-full {{ $colors['badge_dot'] }} flex-shrink-0"></span>
-                    <span class="text-[11px] font-semibold tracking-wide">{{ $balita['status'] }}</span>
+                    <span class="text-[10.5px] font-extrabold tracking-wide">{{ $balita['status'] }}</span>
                 </div>
                 
                 {{-- Status Validasi Badge --}}
@@ -134,23 +112,23 @@
                             default => ''
                         };
                     @endphp
-                    <div class="inline-flex items-center gap-1 {{ $valColors }} px-2.5 py-0.5 rounded-full border shadow-sm">
+                    <div class="inline-flex items-center gap-1 {{ $valColors }} px-2 py-0.5 rounded-full border shadow-2xs">
                         {!! $valIcon !!}
-                        <span class="text-[10px] font-bold uppercase tracking-wide">{{ $balita['status_validasi'] }}</span>
+                        <span class="text-[9.5px] font-extrabold uppercase tracking-wider">{{ $balita['status_validasi'] }}</span>
                     </div>
                 @endif
             </div>
 
             {{-- Actions --}}
-            <div class="flex items-center justify-end gap-1.5 mt-1 lg:mt-1.5">
+            <div class="flex items-center justify-end gap-1.5 mt-0.5">
                 {{-- Outline: Detail --}}
                 <a href="{{ route('balita.show', $balita['id'] ?? '') }}"
-                   class="h-[36px] px-3 flex items-center justify-center text-[12px] font-bold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 rounded-[10px] shadow-sm transition-all duration-150 cursor-pointer">
+                   class="h-[34px] px-3 flex items-center justify-center text-[12px] font-bold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 rounded-xl shadow-xs transition-all duration-150 cursor-pointer">
                     Detail
                 </a>
                 {{-- Primary: Ukur --}}
                 <a href="{{ route('balita.show', ['id' => $balita['id'] ?? '', 'action' => 'ukur']) }}"
-                   class="h-[36px] px-4 flex items-center justify-center bg-teal-600 hover:bg-teal-500 text-white text-[12px] font-bold rounded-[10px] shadow-[0_1px_3px_rgba(13,148,136,0.25)] hover:shadow-[0_2px_8px_rgba(13,148,136,0.35)] transition-all duration-150 cursor-pointer">
+                   class="h-[34px] px-3.5 flex items-center justify-center bg-teal-600 hover:bg-teal-500 text-white text-[12px] font-bold rounded-xl shadow-[0_1px_3px_rgba(13,148,136,0.2)] hover:shadow-[0_2px_8px_rgba(13,148,136,0.3)] transition-all duration-150 cursor-pointer">
                     Ukur
                 </a>
             </div>

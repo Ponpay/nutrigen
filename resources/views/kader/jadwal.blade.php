@@ -253,259 +253,260 @@
                     Buat Jadwal Pertama
             </div>
         @endif
-
-    </div>
-
-</div>
-
-{{-- ── 1. MODAL FORM: EDIT & TAMBAH JADWAL (Clean, Spacious & Responsive) ── --}}
+        {{-- ── 1. MODAL FORM: EDIT & TAMBAH JADWAL (Clean, Spacious & Responsive) ── --}}
 <div id="modal-jadwal-wrapper" 
-     class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs transition-all duration-200 opacity-0 pointer-events-none"
-     onclick="handleBackdropClick(event)">
+     class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-200">
     
-    <div id="modal-jadwal-box" 
-         class="bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl border border-slate-200/90 w-full max-w-xl max-h-[88dvh] sm:max-h-[90vh] flex flex-col transform transition-all scale-95 duration-200 overflow-hidden pointer-events-auto"
-         onclick="event.stopPropagation()">
-        
-        {{-- Mobile Drag Handle --}}
-        <div class="w-full pt-3 pb-1 flex justify-center sm:hidden bg-slate-50/80 shrink-0">
-            <div class="w-10 h-1 bg-slate-300 rounded-full"></div>
-        </div>
+    {{-- Backdrop --}}
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeJadwalModal()"></div>
 
-        {{-- Sticky Header --}}
-        <div class="px-5 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
-            <div>
-                <h2 id="modal-title" class="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-tight">
-                    Edit Jadwal Posyandu
-                </h2>
-                <p class="text-xs text-slate-500 font-medium mt-0.5 hidden sm:block">
-                    Kelola agenda kegiatan pemeriksaan posyandu.
-                </p>
+    {{-- Modal Box Container --}}
+    <div class="fixed inset-0 z-10 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 pointer-events-none">
+        <div id="modal-jadwal-box" 
+             class="bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl border border-slate-200/90 w-full max-w-xl max-h-[88dvh] sm:max-h-[90vh] flex flex-col transform transition-all scale-95 duration-200 overflow-hidden pointer-events-auto"
+             onclick="event.stopPropagation()">
+            
+            {{-- Mobile Drag Handle --}}
+            <div class="w-full pt-3 pb-1 flex justify-center sm:hidden bg-slate-50/80 shrink-0">
+                <div class="w-10 h-1 bg-slate-300 rounded-full"></div>
             </div>
 
-            <button type="button" 
-                    onclick="closeJadwalModal()"
-                    class="w-9 h-9 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer shrink-0"
-                    aria-label="Tutup popup">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-
-        {{-- Scrollable Form Body with Generous Spacing --}}
-        <form id="form-jadwal-modal" action="" method="POST" class="p-5 sm:p-8 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-4 sm:space-y-5 text-xs">
-            @csrf
-            <input type="hidden" id="form-method" name="_method" value="POST">
-
-            {{-- Posyandu Info Strip --}}
-            <div class="flex items-center gap-3 p-3 bg-teal-50/50 rounded-2xl border border-teal-100">
-                <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-2xs font-bold text-sm">
-                    P
-                </div>
-                <div class="flex-1 min-w-0">
-                    <span class="text-[10px] text-teal-800 font-bold uppercase tracking-wider block">Posyandu Penyelenggara</span>
-                    <span class="text-xs sm:text-[13px] font-extrabold text-slate-900 truncate block mt-0.5">{{ $posyanduName ?? 'Posyandu Kader' }}</span>
-                </div>
-            </div>
-
-            {{-- Judul Kegiatan --}}
-            <div class="flex flex-col gap-1.5">
-                <label for="modal-input-judul" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                    Nama / Judul Kegiatan <span class="text-rose-500">*</span>
-                </label>
-                <input type="text" id="modal-input-judul" name="judul" required
-                       placeholder="Contoh: Layanan Penimbangan Rutin Balita & Imunisasi"
-                       class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none">
-            </div>
-
-            {{-- Lokasi / Tempat --}}
-            <div class="flex flex-col gap-1.5">
-                <label for="modal-input-lokasi" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                    Tempat / Lokasi Pelaksanaan <span class="text-rose-500">*</span>
-                </label>
-                <input type="text" id="modal-input-lokasi" name="lokasi" required
-                       placeholder="Contoh: Balai Posyandu RW 01, Jl. Melati"
-                       class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none">
-            </div>
-
-            {{-- Tanggal & Waktu Grid --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {{-- Tanggal --}}
-                <div class="flex flex-col gap-1.5">
-                    <label for="modal-input-tanggal" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                        Tanggal Kegiatan <span class="text-rose-500">*</span>
-                    </label>
-                    <input type="date" id="modal-input-tanggal" name="tanggal" required
-                           class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer">
+            {{-- Sticky Header --}}
+            <div class="px-5 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
+                <div>
+                    <h2 id="modal-title" class="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-tight">
+                        Edit Jadwal Posyandu
+                    </h2>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5 hidden sm:block">
+                        Kelola agenda kegiatan pemeriksaan posyandu.
+                    </p>
                 </div>
 
-                {{-- Jam Mulai & Selesai --}}
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                        Rentang Waktu <span class="text-rose-500">*</span>
-                    </label>
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <input type="time" id="modal-input-mulai" name="waktu_mulai" required
-                               class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-3 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer"
-                               title="Jam Mulai">
-                        <input type="time" id="modal-input-selesai" name="waktu_selesai" required
-                               class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-3 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer"
-                               title="Jam Selesai">
+                <button type="button" 
+                        onclick="closeJadwalModal()"
+                        class="w-9 h-9 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                        aria-label="Tutup popup">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            {{-- Scrollable Form Body with Generous Spacing --}}
+            <form id="form-jadwal-modal" action="" method="POST" class="p-5 sm:p-8 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-4 sm:space-y-5 text-xs">
+                @csrf
+                <input type="hidden" id="form-method" name="_method" value="POST">
+
+                {{-- Posyandu Info Strip --}}
+                <div class="flex items-center gap-3 p-3 bg-teal-50/50 rounded-2xl border border-teal-100">
+                    <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-2xs font-bold text-sm">
+                        P
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <span class="text-[10px] text-teal-800 font-bold uppercase tracking-wider block">Posyandu Penyelenggara</span>
+                        <span class="text-xs sm:text-[13px] font-extrabold text-slate-900 truncate block mt-0.5">{{ $posyanduName ?? 'Posyandu Kader' }}</span>
                     </div>
                 </div>
+
+                {{-- Judul Kegiatan --}}
+                <div class="flex flex-col gap-1.5">
+                    <label for="modal-input-judul" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        Nama / Judul Kegiatan <span class="text-rose-500">*</span>
+                    </label>
+                    <input type="text" id="modal-input-judul" name="judul" required
+                           placeholder="Contoh: Layanan Penimbangan Rutin Balita & Imunisasi"
+                           class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none">
+                </div>
+
+                {{-- Lokasi / Tempat --}}
+                <div class="flex flex-col gap-1.5">
+                    <label for="modal-input-lokasi" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        Tempat / Lokasi Pelaksanaan <span class="text-rose-500">*</span>
+                    </label>
+                    <input type="text" id="modal-input-lokasi" name="lokasi" required
+                           placeholder="Contoh: Balai Posyandu RW 01, Jl. Melati"
+                           class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none">
+                </div>
+
+                {{-- Tanggal & Waktu Grid --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {{-- Tanggal --}}
+                    <div class="flex flex-col gap-1.5">
+                        <label for="modal-input-tanggal" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                            Tanggal Kegiatan <span class="text-rose-500">*</span>
+                        </label>
+                        <input type="date" id="modal-input-tanggal" name="tanggal" required
+                               class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer">
+                    </div>
+
+                    {{-- Jam Mulai & Selesai --}}
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                            Rentang Waktu <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <input type="time" id="modal-input-mulai" name="waktu_mulai" required
+                                   class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-3 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer"
+                                   title="Jam Mulai">
+                            <input type="time" id="modal-input-selesai" name="waktu_selesai" required
+                                   class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-3 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer"
+                                   title="Jam Selesai">
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Catatan Tambahan --}}
+                <div class="flex flex-col gap-1.5">
+                    <label for="modal-input-catatan" class="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        <span>Catatan untuk Ibu Balita</span>
+                        <span class="text-[10px] font-semibold text-slate-400 normal-case tracking-normal">Opsional</span>
+                    </label>
+                    <textarea id="modal-input-catatan" name="catatan" rows="2"
+                              placeholder="Contoh: Harap membawa Buku KIA dan kartu identitas anak."
+                              class="w-full bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 transition-all outline-none resize-none"></textarea>
+                </div>
+            </form>
+
+            {{-- Sticky Footer --}}
+            <div class="px-5 sm:px-8 py-3.5 sm:py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-white/95 backdrop-blur-md shrink-0">
+                <button type="button" 
+                        onclick="closeJadwalModal()"
+                        class="h-11 sm:h-12 px-5 sm:px-6 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                    Batal
+                </button>
+                <button type="button" 
+                        onclick="document.getElementById('form-jadwal-modal').submit()"
+                        class="flex-1 sm:flex-initial h-11 sm:h-12 px-6 sm:px-8 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-700 hover:from-teal-500 hover:to-emerald-600 active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    <span id="modal-btn-submit-text">Simpan Perubahan</span>
+                </button>
             </div>
 
-            {{-- Catatan Tambahan --}}
-            <div class="flex flex-col gap-1.5">
-                <label for="modal-input-catatan" class="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider">
-                    <span>Catatan untuk Ibu Balita</span>
-                    <span class="text-[10px] font-semibold text-slate-400 normal-case tracking-normal">Opsional</span>
-                </label>
-                <textarea id="modal-input-catatan" name="catatan" rows="2"
-                          placeholder="Contoh: Harap membawa Buku KIA dan kartu identitas anak."
-                          class="w-full bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 transition-all outline-none resize-none"></textarea>
-            </div>
-        </form>
-
-        {{-- Sticky Footer --}}
-        <div class="px-5 sm:px-8 py-3.5 sm:py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-white/95 backdrop-blur-md shrink-0">
-            <button type="button" 
-                    onclick="closeJadwalModal()"
-                    class="h-11 sm:h-12 px-5 sm:px-6 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
-                Batal
-            </button>
-            <button type="button" 
-                    onclick="document.getElementById('form-jadwal-modal').submit()"
-                    class="flex-1 sm:flex-initial h-11 sm:h-12 px-6 sm:px-8 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-700 hover:from-teal-500 hover:to-emerald-600 active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
-                <span id="modal-btn-submit-text">Simpan Perubahan</span>
-            </button>
         </div>
-
     </div>
 </div>
 
 {{-- ── 2. MODAL DETAIL JADWAL (Spacious & Clean Popup) ── --}}
 <div id="modal-detail-wrapper" 
-     class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs transition-all duration-200 opacity-0 pointer-events-none"
-     onclick="handleDetailBackdropClick(event)">
+     class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-200">
     
-    <div id="modal-detail-box" 
-         class="bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl border border-slate-200/90 w-full max-w-lg max-h-[88dvh] sm:max-h-[90vh] flex flex-col transform transition-all scale-95 duration-200 overflow-hidden pointer-events-auto"
-         onclick="event.stopPropagation()">
-        
-        {{-- Mobile Drag Handle --}}
-        <div class="w-full pt-3 pb-1 flex justify-center sm:hidden bg-slate-50/80 shrink-0">
-            <div class="w-10 h-1 bg-slate-300 rounded-full"></div>
-        </div>
+    {{-- Backdrop --}}
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeDetailModal()"></div>
 
-        {{-- Sticky Detail Header --}}
-        <div class="px-5 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
-            <div class="flex items-center gap-2">
-                <span id="detail-badge-status" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10.5px] font-extrabold uppercase tracking-wider border">
-                    Akan Datang
-                </span>
-                <span id="detail-countdown" class="text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-200/70 px-2.5 py-0.5 rounded-md hidden">
-                    Besok
-                </span>
+    {{-- Modal Box Container --}}
+    <div class="fixed inset-0 z-10 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 pointer-events-none">
+        <div id="modal-detail-box" 
+             class="bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl border border-slate-200/90 w-full max-w-lg max-h-[88dvh] sm:max-h-[90vh] flex flex-col transform transition-all scale-95 duration-200 overflow-hidden pointer-events-auto"
+             onclick="event.stopPropagation()">
+            
+            {{-- Mobile Drag Handle --}}
+            <div class="w-full pt-3 pb-1 flex justify-center sm:hidden bg-slate-50/80 shrink-0">
+                <div class="w-10 h-1 bg-slate-300 rounded-full"></div>
             </div>
 
-            <button type="button" 
-                    onclick="closeDetailModal()"
-                    class="w-9 h-9 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer shrink-0"
-                    aria-label="Tutup detail">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
+            {{-- Sticky Detail Header --}}
+            <div class="px-5 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
+                <div class="flex items-center gap-2">
+                    <span id="detail-badge-status" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10.5px] font-extrabold uppercase tracking-wider border">
+                        Akan Datang
+                    </span>
+                    <span id="detail-countdown" class="text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-200/70 px-2.5 py-0.5 rounded-md hidden">
+                        Besok
+                    </span>
+                </div>
 
-        {{-- Detail Content Body with flex-1 min-h-0 for proper scrolling --}}
-        <div class="p-5 sm:p-8 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-4 sm:space-y-5 text-xs">
-            {{-- Title --}}
-            <div>
-                <span class="text-[10.5px] font-bold text-teal-700 uppercase tracking-widest block mb-1">Agenda Posyandu</span>
-                <h3 id="detail-judul" class="text-lg sm:text-xl font-black text-slate-900 leading-snug">
-                    Layanan Penimbangan & Imunisasi Balita
-                </h3>
+                <button type="button" 
+                        onclick="closeDetailModal()"
+                        class="w-9 h-9 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                        aria-label="Tutup detail">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
-            {{-- 2-Column Info Grid --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                {{-- Tanggal --}}
-                <div class="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 border border-teal-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                        </svg>
+            {{-- Detail Content Body with flex-1 min-h-0 for proper scrolling --}}
+            <div class="p-5 sm:p-8 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-4 sm:space-y-5 text-xs">
+                {{-- Title --}}
+                <div>
+                    <span class="text-[10.5px] font-bold text-teal-700 uppercase tracking-widest block mb-1">Agenda Posyandu</span>
+                    <h3 id="detail-judul" class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
+                        Layanan Posyandu
+                    </h3>
+                </div>
+
+                <div class="border-t border-slate-100"></div>
+
+                {{-- Key Facts Grid --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    {{-- Tanggal --}}
+                    <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-100 flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-teal-100/80 text-teal-700 flex items-center justify-center shrink-0 shadow-2xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Hari & Tanggal</span>
+                            <span id="detail-tanggal" class="text-xs sm:text-sm font-bold text-slate-800 block mt-0.5">-</span>
+                        </div>
                     </div>
-                    <div class="min-w-0">
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Tanggal</span>
-                        <span id="detail-tanggal" class="text-xs sm:text-[13px] font-bold text-slate-800 truncate block mt-0.5">-</span>
+
+                    {{-- Waktu --}}
+                    <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-100 flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-amber-100/80 text-amber-700 flex items-center justify-center shrink-0 shadow-2xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Waktu Operasional</span>
+                            <span id="detail-waktu" class="text-xs sm:text-sm font-bold text-slate-800 block mt-0.5">-</span>
+                        </div>
                     </div>
                 </div>
 
-                {{-- Waktu --}}
-                <div class="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 border border-teal-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div class="min-w-0">
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Waktu Sesi</span>
-                        <span id="detail-waktu" class="text-xs sm:text-[13px] font-bold text-slate-800 truncate block mt-0.5">-</span>
-                    </div>
-                </div>
-
-                {{-- Lokasi --}}
-                <div class="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex items-start gap-3 sm:col-span-2">
-                    <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 border border-teal-100 mt-0.5">
+                {{-- Lokasi Full Width --}}
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-100 flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-100/80 text-emerald-700 flex items-center justify-center shrink-0 shadow-2xs">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                         </svg>
                     </div>
-                    <div class="min-w-0">
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Tempat / Lokasi</span>
-                        <span id="detail-lokasi" class="text-xs sm:text-[13px] font-bold text-slate-800 leading-snug block mt-0.5">-</span>
+                    <div class="flex-1 min-w-0">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Lokasi Pelaksanaan</span>
+                        <span id="detail-lokasi" class="text-xs sm:text-sm font-bold text-slate-800 block mt-0.5">-</span>
                     </div>
+                </div>
+
+                {{-- Catatan --}}
+                <div id="detail-catatan-container" class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 hidden">
+                    <span class="text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Catatan Tambahan:</span>
+                    <p id="detail-catatan" class="text-xs text-slate-700 font-medium leading-relaxed"></p>
                 </div>
             </div>
 
-            {{-- Catatan (If Available) --}}
-            <div id="detail-catatan-container" class="p-4 bg-amber-50/80 rounded-2xl border border-amber-200/80 text-amber-900 hidden">
-                <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1.5 mb-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-600">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+            {{-- Sticky Detail Actions Footer --}}
+            <div class="px-5 sm:px-8 py-3.5 sm:py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-white/95 backdrop-blur-md shrink-0">
+                <button type="button" 
+                        onclick="closeDetailModal()"
+                        class="h-11 sm:h-12 px-5 sm:px-6 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                    Tutup
+                </button>
+                <button type="button" 
+                        id="detail-btn-edit"
+                        class="flex-1 sm:flex-initial h-11 sm:h-12 px-6 sm:px-8 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-700 hover:from-teal-500 hover:to-emerald-600 active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125" />
                     </svg>
-                    Catatan untuk Ibu Balita
-                </span>
-                <p id="detail-catatan" class="text-xs sm:text-[12.5px] font-medium leading-relaxed"></p>
+                    <span>Edit Jadwal Ini</span>
+                </button>
             </div>
-        </div>
 
-        {{-- Sticky Detail Footer --}}
-        <div class="px-5 sm:px-8 py-3.5 sm:py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-white/95 backdrop-blur-md shrink-0">
-            <button type="button" 
-                    onclick="closeDetailModal()"
-                    class="h-11 sm:h-12 px-5 sm:px-6 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
-                Tutup
-            </button>
-            <button type="button" 
-                    id="detail-btn-edit"
-                    onclick=""
-                    class="flex-1 sm:flex-initial h-11 sm:h-12 px-6 sm:px-8 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-700 hover:from-teal-500 hover:to-emerald-600 active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125" />
-                </svg>
-                <span>Edit Jadwal Ini</span>
-            </button>
         </div>
-
     </div>
 </div>
 
@@ -581,8 +582,7 @@
     function showFormModal() {
         modalWrapper.classList.remove('hidden');
         setTimeout(() => {
-            modalWrapper.classList.remove('opacity-0', 'pointer-events-none');
-            modalWrapper.classList.add('opacity-100', 'pointer-events-auto');
+            modalWrapper.classList.remove('opacity-0');
             modalBox.classList.remove('scale-95');
             modalBox.classList.add('scale-100');
         }, 10);
@@ -590,20 +590,13 @@
     }
 
     function closeJadwalModal() {
-        modalWrapper.classList.remove('opacity-100', 'pointer-events-auto');
-        modalWrapper.classList.add('opacity-0', 'pointer-events-none');
+        modalWrapper.classList.add('opacity-0');
         modalBox.classList.remove('scale-100');
         modalBox.classList.add('scale-95');
         setTimeout(() => {
             modalWrapper.classList.add('hidden');
+            document.body.style.overflow = '';
         }, 200);
-        document.body.style.overflow = '';
-    }
-
-    function handleBackdropClick(e) {
-        if (e.target === modalWrapper) {
-            closeJadwalModal();
-        }
     }
 
     // Open Detail Modal
@@ -652,8 +645,7 @@
     function showDetailModal() {
         detailWrapper.classList.remove('hidden');
         setTimeout(() => {
-            detailWrapper.classList.remove('opacity-0', 'pointer-events-none');
-            detailWrapper.classList.add('opacity-100', 'pointer-events-auto');
+            detailWrapper.classList.remove('opacity-0');
             detailBox.classList.remove('scale-95');
             detailBox.classList.add('scale-100');
         }, 10);
@@ -661,27 +653,20 @@
     }
 
     function closeDetailModal() {
-        detailWrapper.classList.remove('opacity-100', 'pointer-events-auto');
-        detailWrapper.classList.add('opacity-0', 'pointer-events-none');
+        detailWrapper.classList.add('opacity-0');
         detailBox.classList.remove('scale-100');
         detailBox.classList.add('scale-95');
         setTimeout(() => {
             detailWrapper.classList.add('hidden');
+            document.body.style.overflow = '';
         }, 200);
-        document.body.style.overflow = '';
-    }
-
-    function handleDetailBackdropClick(e) {
-        if (e.target === detailWrapper) {
-            closeDetailModal();
-        }
     }
 
     // Global Keydown Handler
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (!modalWrapper.classList.contains('pointer-events-none')) closeJadwalModal();
-            if (!detailWrapper.classList.contains('pointer-events-none')) closeDetailModal();
+            if (!modalWrapper.classList.contains('hidden')) closeJadwalModal();
+            if (!detailWrapper.classList.contains('hidden')) closeDetailModal();
         }
     });
 </script>

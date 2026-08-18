@@ -67,123 +67,144 @@
 
     <div class="max-w-7xl mx-auto px-4 lg:px-8 space-y-6 lg:space-y-8">
         
-        <!-- TOP PROFILE CARD -->
-        <div class="bg-white rounded-[24px] p-4 lg:p-6 shadow-sm border border-slate-100 flex flex-col lg:flex-row items-center lg:items-start lg:justify-between gap-6 lg:gap-10">
+        <!-- TOP PROFILE HERO CARD -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 lg:p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/80 relative overflow-hidden flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-8">
             
-            <!-- Left & Center: Avatar and Info -->
-            <div class="flex flex-col lg:flex-row items-center lg:items-start gap-5 lg:gap-8 w-full lg:w-auto">
-                <!-- Avatar -->
-                <div class="relative shrink-0 mt-2 lg:mt-0">
-                    <div class="w-[72px] h-[72px] lg:w-32 lg:h-32 rounded-full overflow-hidden bg-slate-100 border-[3px] border-slate-200 flex items-center justify-center text-slate-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 lg:w-16 lg:h-16">
-                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="absolute bottom-0 right-0 w-7 h-7 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-200/60 text-emerald-600 translate-x-1 lg:translate-x-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 lg:w-5 lg:h-5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-                        </svg>
-                    </div>
-                </div>
+            <!-- Ambient Decorative Gradient (Desktop only) -->
+            <div class="hidden lg:block absolute -right-16 -top-16 w-80 h-80 rounded-full bg-gradient-to-bl from-teal-100/40 via-emerald-50/20 to-transparent pointer-events-none"></div>
+
+            <!-- Left: Avatar + Details & Info Grid -->
+            <div class="flex flex-col gap-4.5 flex-1 min-w-0 z-10">
                 
-                <!-- Info -->
-                <div class="flex flex-col items-center lg:items-start gap-3 lg:gap-4 w-full">
-                    <!-- Name & Age -->
-                    <div class="flex flex-col items-center lg:items-start gap-1 w-full">
-                        <h1 class="text-[20px] lg:text-[26px] font-bold text-slate-800 tracking-tight text-center lg:text-left">{{ $childName }}</h1>
-                        <div class="flex items-center gap-1.5 px-3 py-0.5 bg-slate-50 text-slate-600 rounded-full mt-0.5 border border-slate-200/60">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="text-[12px] font-semibold">{{ $age }}</span>
-                        </div>
-                    </div>
+                <!-- Row 1: Avatar & Identity -->
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-center sm:text-left">
                     
-                    <!-- Badges -->
-                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 w-full">
-                        <div class="flex items-center gap-1.5 {{ $badgeClasses }} px-3 py-1 lg:px-3.5 lg:py-1 rounded-full">
-                            {!! $badgeIcon !!}
-                            <span class="text-[10.5px] lg:text-[11px] font-semibold uppercase tracking-wider">{{ $status }}</span>
+                    <!-- Avatar with Camera Badge -->
+                    <div class="relative shrink-0">
+                        <div class="w-[76px] h-[76px] sm:w-[88px] sm:h-[88px] rounded-2xl bg-gradient-to-tr from-teal-100 via-emerald-50 to-teal-50 border-2 border-white shadow-[0_4px_16px_rgba(13,148,136,0.12)] ring-1 ring-slate-200/80 flex items-center justify-center text-teal-700 font-black text-2xl sm:text-3xl select-none">
+                            {{ strtoupper(substr($childName, 0, 1)) }}
                         </div>
-                        @if(!empty($latestMeasure['status_validasi']))
-                            @php
-                                $valColors = match($latestMeasure['status_validasi']) {
-                                    'pending' => 'bg-slate-50 text-slate-600 border border-slate-200/80',
-                                    'approved' => 'bg-emerald-50 text-emerald-700 border border-emerald-200/80',
-                                    'rejected' => 'bg-rose-50 text-rose-700 border border-rose-200/80',
-                                    default => 'bg-slate-50 text-slate-600 border border-slate-200/80'
-                                };
-                                $valIcon = match($latestMeasure['status_validasi']) {
-                                    'pending' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400"><path stroke-linecap="round" stroke-linejoin="round" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" /></svg>',
-                                    'approved' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 text-emerald-600"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>',
-                                    'rejected' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-rose-600"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>',
-                                    default => ''
-                                };
-                            @endphp
-                            <div class="flex items-center gap-1.5 {{ $valColors }} px-3 py-1 lg:px-3.5 lg:py-1 rounded-full shadow-2xs">
-                                {!! $valIcon !!}
-                                <span class="text-[10.5px] lg:text-[11px] font-semibold uppercase tracking-wider">{{ $latestMeasure['status_validasi'] }}</span>
-                            </div>
-                        @endif
+                        <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-xl flex items-center justify-center shadow-xs border border-slate-200 text-teal-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                            </svg>
+                        </div>
                     </div>
 
-                    {{-- Unified Info Card --}}
-                    <div class="bg-slate-50/70 rounded-2xl border border-slate-200/80 p-3 w-full lg:w-auto flex flex-col gap-2">
-                        <!-- Ibu -->
-                        <div class="flex items-center gap-3 px-3 py-2 bg-white rounded-xl border border-slate-200/60">
-                            <div class="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
-                            </div>
-                            <div class="flex flex-col overflow-hidden">
-                                <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-tight">Ibu</span>
-                                <span class="text-[12.5px] font-bold text-slate-800 truncate">{{ $motherName }}</span>
-                            </div>
+                    <!-- Name & Status Badges -->
+                    <div class="flex flex-col items-center sm:items-start min-w-0 flex-1">
+                        <div class="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+                            <h1 class="text-[21px] sm:text-[24px] lg:text-[26px] font-black text-slate-900 tracking-tight leading-tight truncate max-w-full">{{ $childName }}</h1>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10.5px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700 border border-sky-200/60' : 'bg-pink-50 text-pink-700 border border-pink-200/60' }}">
+                                {{ $gender === 'L' ? 'Laki-laki' : 'Perempuan' }}
+                            </span>
                         </div>
                         
-                        <!-- NIK -->
-                        <div class="flex items-center justify-between gap-3 px-3 py-2 bg-white rounded-xl border border-slate-200/60">
-                            <div class="flex items-center gap-3 overflow-hidden">
-                                <div class="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
-                                </div>
-                                <div class="flex flex-col overflow-hidden">
-                                    <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-tight">NIK</span>
-                                    <span class="text-[12.5px] font-bold text-slate-800 font-mono tracking-wider truncate">{{ $nik }}</span>
-                                </div>
-                            </div>
-                            <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="text-slate-400 hover:text-slate-600 shrink-0 hidden sm:block cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
-                            </button>
-                        </div>
-                        <div class="border-t border-slate-100"></div>
-                        <!-- Posyandu -->
-                        <div class="flex items-center gap-3 px-3 py-3 bg-amber-50 rounded-[12px]">
-                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shrink-0 shadow-sm border border-slate-100/50">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
-                            </div>
-                            <div class="flex flex-col overflow-hidden">
-                                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Posyandu</span>
-                                <span class="text-[13px] font-bold text-slate-800 truncate">{{ $posyanduName }}</span>
-                            </div>
+                        <!-- Badges Ribbon -->
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
+                            <!-- Age Pill -->
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-100 text-slate-700 rounded-lg text-[11px] font-bold border border-slate-200/60">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>{{ $age }}</span>
+                            </span>
+
+                            <!-- Status Gizi Badge -->
+                            <span class="inline-flex items-center gap-1.5 {{ $badgeClasses }} px-2.5 py-0.5 rounded-lg text-[11px] font-bold">
+                                {!! $badgeIcon !!}
+                                <span>{{ $status }}</span>
+                            </span>
+
+                            <!-- Status Validasi Badge -->
+                            @if(!empty($latestMeasure['status_validasi']))
+                                @php
+                                    $valColors = match($latestMeasure['status_validasi']) {
+                                        'pending' => 'bg-amber-50 text-amber-800 border-amber-200/70',
+                                        'approved' => 'bg-emerald-50 text-emerald-800 border-emerald-200/70',
+                                        'rejected' => 'bg-rose-50 text-rose-800 border-rose-200/70',
+                                        default => 'bg-slate-50 text-slate-700 border-slate-200/70'
+                                    };
+                                    $valIcon = match($latestMeasure['status_validasi']) {
+                                        'pending' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-amber-600"><path stroke-linecap="round" stroke-linejoin="round" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" /></svg>',
+                                        'approved' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 text-emerald-600"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>',
+                                        'rejected' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-rose-600"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>',
+                                        default => ''
+                                    };
+                                @endphp
+                                <span class="inline-flex items-center gap-1.5 {{ $valColors }} px-2.5 py-0.5 rounded-lg text-[11px] font-bold border">
+                                    {!! $valIcon !!}
+                                    <span class="capitalize">{{ $latestMeasure['status_validasi'] }}</span>
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
+
+                <!-- Row 2: 3-Card Rich Info Grid (Ibu, NIK, Posyandu) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full pt-1">
+                    
+                    <!-- Card 1: Ibu / Orang Tua -->
+                    <div class="bg-slate-50/80 hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-3 flex items-center gap-3 transition-all hover:shadow-2xs">
+                        <div class="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-100 flex items-center justify-center text-teal-600 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4.5 h-4.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-none">Ibu / Wali</span>
+                            <span class="text-[13px] font-bold text-slate-800 truncate leading-tight mt-1">{{ $motherName }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: NIK Balita -->
+                    <div class="bg-slate-50/80 hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-3 flex items-center justify-between gap-2 transition-all hover:shadow-2xs">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-100 flex items-center justify-center text-sky-600 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4.5 h-4.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-none">NIK Balita</span>
+                                <span class="text-[12.5px] font-bold text-slate-800 font-mono tracking-wider truncate leading-tight mt-1">{{ $nik }}</span>
+                            </div>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-all shrink-0 cursor-pointer" title="Salin NIK">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
+                        </button>
+                    </div>
+
+                    <!-- Card 3: Posyandu -->
+                    <div class="bg-slate-50/80 hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-3 flex items-center gap-3 transition-all hover:shadow-2xs">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4.5 h-4.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-none">Posyandu</span>
+                            <span class="text-[13px] font-bold text-slate-800 truncate leading-tight mt-1">{{ $posyanduName }}</span>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
-            <!-- Right: Aksi Cepat (Mobile: full width button at bottom) -->
-            <div class="w-full lg:w-[280px] shrink-0 bg-teal-50 rounded-[20px] p-4 lg:p-6 flex flex-col border border-teal-100 mt-4 lg:mt-0">
-                <div class="hidden lg:flex items-center gap-2 mb-4">
-                    <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+            <!-- Right: Aksi Cepat Card -->
+            <div class="w-full lg:w-[260px] shrink-0 bg-gradient-to-br from-teal-500/[0.08] via-emerald-500/[0.04] to-teal-500/[0.02] rounded-2xl p-4.5 flex flex-col justify-between border border-teal-200/80 shadow-2xs relative z-10">
+                <div>
+                    <div class="flex items-center gap-2 mb-1.5">
+                        <div class="w-7 h-7 rounded-lg bg-teal-500/15 text-teal-700 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                        </div>
+                        <span class="text-[14px] font-bold text-teal-900">Aksi Cepat</span>
                     </div>
-                    <span class="text-[15px] font-bold text-teal-800">Aksi Cepat</span>
+                    <p class="text-[12px] text-teal-700/80 leading-relaxed mb-4">Input data pengukuran dan pemantauan gizi anak bulan ini.</p>
                 </div>
-                <p class="text-[13px] text-teal-600 mt-2 mb-4">Aksi cepat untuk mengukur tumbuh kembang anak.</p>
-                <button onclick="openMeasurementModal()" class="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm min-h-[44px] bg-teal-600 hover:bg-teal-700 text-white font-bold text-[15px] rounded-xl shadow-[0_4px_12px_-2px_rgba(13,148,136,0.5)] transition-all active:scale-[0.98]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> Ukur Sekarang
+                
+                <button onclick="openMeasurementModal()" class="w-full py-3 px-4 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_14px_-2px_rgba(13,148,136,0.4)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
+                    <span>Ukur Sekarang</span>
                 </button>
             </div>
+
         </div>
     </div>
 

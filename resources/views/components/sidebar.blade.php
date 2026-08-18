@@ -68,89 +68,68 @@
         </div>
     </div>
 
-    <!-- 2. Drawer Body (Scrollable Menu Items) -->
+    <!-- 2. Drawer Body (Only Exclusive Account, Settings & Help Items) -->
     <div class="flex-1 overflow-y-auto hide-scrollbar p-3.5 sm:p-4 flex flex-col gap-5">
         
-        <!-- Navigation Group -->
-        <div class="flex flex-col gap-1">
-            <span class="px-2.5 text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Menu Utama</span>
+        <!-- Account & Management Group -->
+        <div class="flex flex-col gap-1.5">
+            <span class="px-2.5 text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Pengaturan Akun</span>
 
             @if(request()->is('puskesmas*'))
-                {{-- Puskesmas Links --}}
-                <a href="{{ route('puskesmas.dashboard') }}" 
-                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('puskesmas.dashboard') ? 'bg-sky-50 text-sky-700 font-extrabold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                {{-- Puskesmas Account & System Settings --}}
+                <a href="{{ route('puskesmas.pengaturan') }}" 
+                   class="flex items-center justify-between px-3 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('puskesmas.pengaturan') ? 'bg-sky-50 text-sky-800 font-extrabold shadow-2xs' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900' }}">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('puskesmas.dashboard') ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-500' }}">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('puskesmas.pengaturan') ? 'bg-sky-500 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" /></svg>
                         </div>
-                        <span>Dashboard</span>
+                        <div class="flex flex-col">
+                            <span>Profil Institusi</span>
+                            <span class="text-[10.5px] text-slate-400 font-medium">Data Faskes & Wilayah</span>
+                        </div>
                     </div>
                     <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                 </a>
 
-                <a href="{{ route('puskesmas.balita') }}" 
-                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('puskesmas.balita') ? 'bg-sky-50 text-sky-700 font-extrabold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                <a href="{{ route('puskesmas.pengaturan.petugas') }}" 
+                   class="flex items-center justify-between px-3 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('puskesmas.pengaturan.petugas*') ? 'bg-sky-50 text-sky-800 font-extrabold shadow-2xs' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900' }}">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('puskesmas.balita') ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-500' }}">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('puskesmas.pengaturan.petugas*') ? 'bg-sky-500 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                         </div>
-                        <span>Data Balita</span>
-                    </div>
-                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                </a>
-
-                <a href="{{ route('puskesmas.validasi') }}" 
-                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('puskesmas.validasi*') ? 'bg-sky-50 text-sky-700 font-extrabold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('puskesmas.validasi*') ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-500' }}">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                        <div class="flex flex-col">
+                            <span>Profil Petugas</span>
+                            <span class="text-[10.5px] text-slate-400 font-medium">Informasi Akun Petugas</span>
                         </div>
-                        <span>Validasi Data</span>
                     </div>
                     <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                 </a>
             @else
-                {{-- Kader Links --}}
-                <a href="{{ route('kader.dashboard') }}" 
-                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('kader.dashboard') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                {{-- Kader Account Settings (Non-Navbar items) --}}
+                <a href="{{ route('kader.profil') }}" 
+                   class="flex items-center justify-between px-3 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('kader.profil') && !request()->routeIs('kader.profil.edit') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900' }}">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('kader.dashboard') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('kader.profil') && !request()->routeIs('kader.profil.edit') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                         </div>
-                        <span>Dashboard</span>
+                        <div class="flex flex-col">
+                            <span>Profil Kader</span>
+                            <span class="text-[10.5px] text-slate-400 font-medium">Ringkasan data & posyandu</span>
+                        </div>
                     </div>
                     <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                 </a>
 
-                <a href="{{ route('balita.index') }}" 
-                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('balita.*') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                <a href="{{ route('kader.profil.edit') }}" 
+                   class="flex items-center justify-between px-3 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('kader.profil.edit') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900' }}">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('balita.*') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('kader.profil.edit') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
                         </div>
-                        <span>Daftar Balita</span>
-                    </div>
-                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                </a>
-
-                <a href="{{ route('jadwal.index') }}" 
-                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('jadwal.*') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('jadwal.*') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>
+                        <div class="flex flex-col">
+                            <span>Edit Biodata</span>
+                            <span class="text-[10.5px] text-slate-400 font-medium">Ubah nama, kontak, foto</span>
                         </div>
-                        <span>Jadwal Posyandu</span>
-                    </div>
-                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                </a>
-
-                <a href="{{ route('laporan.index') }}" 
-                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('laporan.*') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('laporan.*') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
-                        </div>
-                        <span>Pusat Laporan</span>
                     </div>
                     <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                 </a>
@@ -159,43 +138,36 @@
 
         <div class="h-px bg-slate-100 -mx-1"></div>
 
-        <!-- Account & System Group -->
-        <div class="flex flex-col gap-1">
-            <span class="px-2.5 text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Akun & Bantuan</span>
-
-            @if(!request()->is('puskesmas*'))
-            <a href="{{ route('kader.profil') }}" 
-               class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('kader.profil*') ? 'bg-teal-50 text-teal-800 font-extrabold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 text-slate-500">
-                        <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" /></svg>
-                    </div>
-                    <span>Profil Saya</span>
-                </div>
-                <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-            </a>
-            @endif
+        <!-- Help & Info Group -->
+        <div class="flex flex-col gap-1.5">
+            <span class="px-2.5 text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Bantuan & Info</span>
 
             <a href="javascript:void(0)" 
-               onclick="window.NutriAlert.toast('Fitur Bantuan segera hadir.', 'info', 'Pusat Bantuan')"
-               class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+               onclick="window.NutriAlert.toast('Fitur Bantuan & Panduan segera hadir.', 'info', 'Pusat Bantuan')"
+               class="flex items-center justify-between px-3 py-3 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 text-slate-500">
                         <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 10-1-1zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
                     </div>
-                    <span>Pusat Bantuan</span>
+                    <div class="flex flex-col">
+                        <span>Pusat Bantuan</span>
+                        <span class="text-[10.5px] text-slate-400 font-medium">Panduan operasional sistem</span>
+                    </div>
                 </div>
                 <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">FAQ</span>
             </a>
 
             <a href="javascript:void(0)" 
-               onclick="window.NutriAlert.toast('Sistem NutriGen v1.0.0 (Latest)', 'success', 'Versi Aplikasi')"
-               class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+               onclick="window.NutriAlert.toast('NutriGen v1.0.0 — Sistem Monitoring Gizi & Pertumbuhan Anak', 'success', 'Versi Aplikasi')"
+               class="flex items-center justify-between px-3 py-3 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 text-slate-500">
                         <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
                     </div>
-                    <span>Tentang Aplikasi</span>
+                    <div class="flex flex-col">
+                        <span>Tentang Aplikasi</span>
+                        <span class="text-[10.5px] text-slate-400 font-medium">Status & lisensi aplikasi</span>
+                    </div>
                 </div>
                 <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100">v1.0</span>
             </a>

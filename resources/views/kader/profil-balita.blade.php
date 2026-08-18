@@ -157,41 +157,37 @@
 
             </div>
 
-            <!-- Fluid Meta Strip with Rich Colorful Badges -->
-            <div class="mt-5 pt-4 border-t border-slate-100/90 flex flex-wrap items-center gap-y-2.5 gap-x-6 text-[13px] relative z-10">
+            <!-- Bulletproof Responsive Meta Strip (1-col on Mobile, 3-col on Desktop) -->
+            <div class="mt-4.5 pt-3.5 border-t border-slate-100/90 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 text-[13px] relative z-10">
                 
                 <!-- Ibu -->
                 <div class="flex items-center gap-2 min-w-0">
-                    <div class="w-6.5 h-6.5 rounded-lg bg-teal-50 border border-teal-100 text-teal-600 flex items-center justify-center shrink-0">
+                    <div class="w-6 h-6 rounded-md bg-teal-50 border border-teal-100/80 text-teal-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                     </div>
-                    <span class="text-slate-400 font-medium">Ibu:</span>
-                    <strong class="font-bold text-slate-800 truncate">{{ $motherName }}</strong>
+                    <span class="text-slate-400 font-medium text-xs shrink-0">Ibu:</span>
+                    <strong class="font-bold text-slate-800 text-xs sm:text-[13px] truncate">{{ $motherName }}</strong>
                 </div>
-
-                <span class="hidden sm:inline text-slate-200">•</span>
 
                 <!-- NIK -->
                 <div class="flex items-center gap-2 min-w-0">
-                    <div class="w-6.5 h-6.5 rounded-lg bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center shrink-0">
+                    <div class="w-6 h-6 rounded-md bg-sky-50 border border-sky-100/80 text-sky-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
                     </div>
-                    <span class="text-slate-400 font-medium">NIK:</span>
-                    <strong class="font-bold text-slate-800 font-mono tracking-wider">{{ $nik }}</strong>
-                    <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors cursor-pointer" title="Salin NIK">
+                    <span class="text-slate-400 font-medium text-xs shrink-0">NIK:</span>
+                    <strong class="font-bold text-slate-800 font-mono text-xs sm:text-[13px] tracking-wider truncate">{{ $nik }}</strong>
+                    <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors cursor-pointer shrink-0" title="Salin NIK">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
                     </button>
                 </div>
 
-                <span class="hidden sm:inline text-slate-200">•</span>
-
                 <!-- Posyandu -->
                 <div class="flex items-center gap-2 min-w-0">
-                    <div class="w-6.5 h-6.5 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                    <div class="w-6 h-6 rounded-md bg-indigo-50 border border-indigo-100/80 text-indigo-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
                     </div>
-                    <span class="text-slate-400 font-medium">Posyandu:</span>
-                    <strong class="font-bold text-slate-800 truncate">{{ $posyanduName }}</strong>
+                    <span class="text-slate-400 font-medium text-xs shrink-0">Posyandu:</span>
+                    <strong class="font-bold text-slate-800 text-xs sm:text-[13px] truncate">{{ $posyanduName }}</strong>
                 </div>
 
             </div>
@@ -220,16 +216,16 @@
                         ? 'bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-amber-500/25' 
                         : 'bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-emerald-500/25');
             @endphp
-            <div class="flex items-start gap-4 p-4.5 sm:p-5 {{ $alertBg }} rounded-2xl border">
-                <div class="w-9 h-9 rounded-xl {{ $alertBadge }} flex items-center justify-center shrink-0 shadow-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>
+            <div class="flex items-start gap-3.5 sm:gap-4 p-4 sm:p-5 {{ $alertBg }} rounded-2xl border">
+                <div class="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-xl {{ $alertBadge }} flex items-center justify-center shrink-0 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4.5 h-4.5 sm:w-5 sm:h-5 shrink-0"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>
                 </div>
-                <div class="flex flex-col text-[13.5px] leading-relaxed">
+                <div class="flex flex-col text-[13px] sm:text-[13.5px] leading-relaxed min-w-0 flex-1">
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="font-bold text-slate-800">Hasil Skrining Antropometri:</span>
                         <span class="font-extrabold">{{ $latestMeasure['status'] ?? 'Belum Diukur' }}</span>
                     </div>
-                    <p class="text-slate-600 mt-0.5 text-[13px]">{{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang anak.' }}</p>
+                    <p class="text-slate-600 mt-0.5 text-[12.5px] sm:text-[13px] leading-normal">{{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang anak.' }}</p>
                 </div>
             </div>
         </div>

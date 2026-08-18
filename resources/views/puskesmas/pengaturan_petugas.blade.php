@@ -159,7 +159,7 @@
                                 <div class="flex flex-col sm:flex-row py-3.5 border-b border-[#F1F5F9] items-center">
                                     <span class="w-48 shrink-0 text-sm font-medium text-slate-500">Terdaftar Sejak</span>
                                     <div class="flex-1 w-full">
-                                        <p class="text-sm font-semibold text-slate-900">{{ \Carbon\Carbon::parse($user['created_at'])->translatedFormat('d F Y') }}</p>
+                                        <p class="text-sm font-semibold text-slate-900">{{ $user['created_at'] }}</p>
                                     </div>
                                 </div>
 
@@ -201,7 +201,7 @@
                             </div>
                             <div>
                                 <p class="text-xs text-slate-500">Password Terakhir Diubah</p>
-                                <p class="text-sm font-semibold text-slate-900">{{ \Carbon\Carbon::parse($user['updated_at'])->translatedFormat('d M Y') }}</p>
+                                <p class="text-sm font-semibold text-slate-900">{{ $user['updated_at'] }}</p>
                             </div>
                         </div>
 

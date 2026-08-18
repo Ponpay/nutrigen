@@ -44,7 +44,7 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
                 {{ $child['statusLabel'] }}
             </span>
-            <span class="text-xs text-white/90 font-medium">{{ \Carbon\Carbon::parse($child['date'])->format('d M Y') }} &bull; {{ $child['time'] }}</span>
+            <span class="text-xs text-white/90 font-medium">{{ $child['date'] }} &bull; {{ $child['time'] ?? '09:00 WIB' }}</span>
         </div>
     </div>
 </div>

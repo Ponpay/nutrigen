@@ -574,10 +574,10 @@ class KaderController extends Controller
         $alamatData = json_decode($alamatRaw, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($alamatData)) {
             $desa = $alamatData['desa'] ?? '';
-            $kecamatan = $alamatData['kecamatan'] ?? '';
+            $kecamatan = $alamatData['kecamatan'] ?? ($b->orangTua->kecamatan ?? '');
         } else {
             $desa = $alamatRaw;
-            $kecamatan = '';
+            $kecamatan = $b->orangTua->kecamatan ?? '';
         }
 
         $data = [

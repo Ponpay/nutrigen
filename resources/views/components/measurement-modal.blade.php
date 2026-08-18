@@ -8,7 +8,7 @@
 
 {{--
 |--------------------------------------------------------------------------
-| x-measurement-modal (Premium Startup Polish)
+| x-measurement-modal (Clean & Spacious Startup ProMax Edition)
 |--------------------------------------------------------------------------
 | Backend bindings — NEVER MODIFY:
 |   Props   : childName, age, lastWeight, lastHeight, lastDate
@@ -27,71 +27,86 @@
 |             validateWeight(v), previousWeight = {{ $lastWeight ?? 0 }}
 --}}
 
-<div id="measurementModal" class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-300">
+<div id="measurementModal" class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-200" role="dialog" aria-modal="true" aria-labelledby="modal-title">
 
     {{-- ── BACKDROP ────────────────────────────────────────────────────── --}}
-    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeMeasurementModal()"></div>
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity" onclick="closeMeasurementModal()"></div>
 
     {{-- ── POSITIONING WRAPPER ─────────────────────────────────────────── --}}
     <div class="absolute inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 pointer-events-none">
 
         {{-- ── UNIFIED MODAL SURFACE ───────────────────────────────────── --}}
-        {{-- Increased to max-w-3xl for optimal desktop 2-column breathing room --}}
-        <div class="w-full max-w-3xl bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl flex flex-col max-h-[96vh] sm:max-h-[90vh] overflow-hidden pointer-events-auto">
+        <div class="w-full max-w-2xl bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl flex flex-col max-h-[88dvh] sm:max-h-[90vh] overflow-hidden pointer-events-auto border border-slate-200/90">
 
             {{-- ════════════════════════════════════════════════════════════
                  STATE 1: INPUT FORM
             ═══════════════════════════════════════════════════════════════ --}}
-            <div id="modal-input-state" class="flex flex-col flex-1 min-h-0">
+            <div id="modal-input-state" class="flex flex-col flex-1 min-h-0 overflow-hidden">
 
-                {{-- ── Header & Context (One continuous flow, no borders) ── --}}
-                <div class="flex-shrink-0 px-6 pt-6 pb-2 sm:px-10 sm:pt-10 sm:pb-4">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h2 class="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">Input Pengukuran</h2>
-                            <p class="text-sm text-slate-500 mt-1">Catat data pertumbuhan bulanan untuk dipantau oleh sistem.</p>
+                {{-- ── Mobile Drag Handle ── --}}
+                <div class="w-full pt-3 pb-1 flex justify-center sm:hidden bg-slate-50/70 shrink-0">
+                    <div class="w-10 h-1 bg-slate-300 rounded-full"></div>
+                </div>
+
+                {{-- ── Clean Header & Patient Info ── --}}
+                <div class="flex-shrink-0 px-5 pt-4 pb-4 sm:px-8 sm:pt-6 sm:pb-5 border-b border-slate-100 bg-slate-50/70">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="min-w-0">
+                            <h2 id="modal-title" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight">
+                                Input Pengukuran
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                                Catat data pertumbuhan bulanan untuk dipantau oleh sistem.
+                            </p>
                         </div>
-                        {{-- onclick="closeMeasurementModal()" PRESERVED --}}
-                        <button type="button" onclick="closeMeasurementModal()" class="p-2 -mr-2 -mt-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors focus:outline-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+
+                        <button type="button" 
+                                onclick="closeMeasurementModal()" 
+                                class="w-9 h-9 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-colors focus:outline-none cursor-pointer shrink-0"
+                                aria-label="Tutup popup pengukuran">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
 
-                    {{-- Child Context Section --}}
-                    <div class="mt-6 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 shadow-sm ring-1 ring-teal-100/50">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2.5">
-                                <h3 class="text-lg font-bold tracking-tight text-slate-800 truncate">{{ $childName }}</h3>
-                                <span class="text-xs font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md">{{ $age }}</span>
+                    {{-- Child Quick Context Strip --}}
+                    <div class="mt-3.5 flex items-center justify-between p-3 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-black text-base shrink-0 border border-teal-100">
+                                {{ strtoupper(substr($childName ?? 'B', 0, 1)) }}
                             </div>
-                            @if($lastWeight && $lastDate)
-                            <div class="text-sm text-slate-400 mt-1 truncate">
-                                Terakhir diukur: <span class="font-medium text-slate-600">{{ $lastWeight }}kg, {{ $lastHeight }}cm</span> pada {{ $lastDate }}
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <h3 class="text-sm sm:text-base font-bold tracking-tight text-slate-900 truncate">{{ $childName }}</h3>
+                                    <span class="text-[10px] font-extrabold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200/70 shrink-0">{{ $age }}</span>
+                                </div>
+                                @if($lastWeight && $lastDate)
+                                <div class="text-xs text-slate-500 font-medium mt-0.5 truncate flex items-center gap-1.5">
+                                    <span>Terakhir:</span>
+                                    <span class="font-bold text-slate-700">{{ $lastWeight }} kg</span>
+                                    <span class="text-slate-300">•</span>
+                                    <span class="font-bold text-slate-700">{{ $lastHeight }} cm</span>
+                                    <span class="text-slate-400 hidden sm:inline">pada {{ $lastDate }}</span>
+                                </div>
+                                @endif
                             </div>
-                            @endif
                         </div>
                     </div>
                 </div>
 
-                {{-- ── Scrollable Form Area ── --}}
-                <div class="flex-1 overflow-y-auto px-6 sm:px-10 pb-6 sm:pb-2">
+                {{-- ── Scrollable Form Area with Generous Spacing ── --}}
+                <div class="flex-1 min-h-0 overflow-y-auto overscroll-contain px-5 sm:px-8 py-5 sm:py-6">
                     <form id="measurementForm" action="{{ route('pengukuran.store') }}" method="POST" onsubmit="setTimeout(() => setLoadingState(true), 10);">
                         @csrf
                         <input type="hidden" name="balita_id" value="{{ $balitaId }}">
 
-                        {{-- Beautiful, spacious 2-column grid --}}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mt-2">
+                        {{-- Spacious 2-Column Responsive Grid --}}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
 
-                            {{-- ── Berat Badan ── --}}
-                            <div class="flex flex-col gap-2">
-                                <label for="berat" class="text-sm font-semibold text-slate-700">
+                            {{-- ── 1. Berat Badan ── --}}
+                            <div class="flex flex-col gap-1.5">
+                                <label for="berat" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
                                     Berat Badan <span class="text-rose-500">*</span>
                                 </label>
                                 <div class="relative flex items-center group">
@@ -101,24 +116,24 @@
                                         value="{{ old('berat_badan') }}" required
                                         placeholder="0.0"
                                         oninput="validateWeight(this.value)"
-                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl pl-4 pr-12 text-xl font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-teal-500 transition-colors pointer-events-none">kg</span>
+                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base sm:text-lg font-black text-slate-900 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-xs sm:text-sm font-extrabold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">kg</span>
                                 </div>
                                 @error('berat_badan')
-                                    <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
+                                    <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
                                 @enderror
 
-                                <div id="weight-warning" class="hidden mt-2 bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex items-start gap-2.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5">
+                                <div id="weight-warning" class="hidden mt-1.5 bg-amber-50 border border-amber-200/80 rounded-xl p-3 flex items-start gap-2.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5">
                                         <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
                                     </svg>
-                                    <span class="text-xs font-medium text-amber-700 leading-relaxed">Perhatian: Berat turun signifikan. Pastikan angka timbangan sudah benar.</span>
+                                    <span class="text-xs font-semibold text-amber-900 leading-tight">Perhatian: Berat badan turun > 0.5kg dari bulan lalu. Periksa kembali timbangan.</span>
                                 </div>
                             </div>
 
-                            {{-- ── Tinggi / Panjang Badan ── --}}
-                            <div class="flex flex-col gap-2">
-                                <label for="tinggi" class="text-sm font-semibold text-slate-700">
+                            {{-- ── 2. Tinggi / Panjang Badan ── --}}
+                            <div class="flex flex-col gap-1.5">
+                                <label for="tinggi" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
                                     Tinggi / Panjang Badan <span class="text-rose-500">*</span>
                                 </label>
                                 <div class="relative flex items-center group">
@@ -127,19 +142,19 @@
                                         id="tinggi" name="tinggi_badan"
                                         value="{{ old('tinggi_badan') }}" required
                                         placeholder="0.0"
-                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl pl-4 pr-12 text-xl font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-teal-500 transition-colors pointer-events-none">cm</span>
+                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base sm:text-lg font-black text-slate-900 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-xs sm:text-sm font-extrabold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">cm</span>
                                 </div>
                                 @error('tinggi_badan')
-                                    <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
+                                    <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            {{-- ── Lingkar Kepala ── --}}
-                            <div class="flex flex-col gap-2">
-                                <label for="lingkar" class="flex items-center justify-between text-sm font-semibold text-slate-700">
+                            {{-- ── 3. Lingkar Kepala ── --}}
+                            <div class="flex flex-col gap-1.5">
+                                <label for="lingkar" class="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider">
                                     <span>Lingkar Kepala</span>
-                                    <span class="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Opsional</span>
+                                    <span class="text-[10px] font-semibold text-slate-400 normal-case tracking-normal">Opsional</span>
                                 </label>
                                 <div class="relative flex items-center group">
                                     <input
@@ -147,87 +162,87 @@
                                         id="lingkar" name="lingkar_kepala"
                                         value="{{ old('lingkar_kepala') }}"
                                         placeholder="0.0"
-                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl pl-4 pr-12 text-lg font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-sm font-semibold text-slate-400 group-focus-within:text-teal-500 transition-colors pointer-events-none">cm</span>
+                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base sm:text-lg font-black text-slate-900 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-xs sm:text-sm font-extrabold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">cm</span>
                                 </div>
                                 @error('lingkar_kepala')
-                                    <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
+                                    <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            {{-- ── Status Kenaikan BB (Standar KMS) ── --}}
-                            <div class="flex flex-col gap-2">
-                                <label for="status_kenaikan" class="flex items-center justify-between text-sm font-semibold text-slate-700">
+                            {{-- ── 4. Status Kenaikan KMS ── --}}
+                            <div class="flex flex-col gap-1.5">
+                                <label for="status_kenaikan" class="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider">
                                     <span>Status Kenaikan BB (KMS)</span>
-                                    <span class="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Opsional</span>
+                                    <span class="text-[10px] font-semibold text-slate-400 normal-case tracking-normal">Opsional</span>
                                 </label>
                                 <div class="relative flex items-center">
                                     <select
                                         id="status_kenaikan" name="status_kenaikan"
-                                        class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl pl-4 pr-10 text-sm font-medium text-slate-800 transition-all outline-none appearance-none cursor-pointer">
-                                        <option value="" {{ old('status_kenaikan') == '' ? 'selected' : '' }}>-- Pilih Status Kenaikan KMS --</option>
-                                        <option value="N" {{ old('status_kenaikan') == 'N' ? 'selected' : '' }}>N (Naik sesuai garis pertumbuhan)</option>
-                                        <option value="T" {{ old('status_kenaikan') == 'T' ? 'selected' : '' }}>T (Tidak naik / Berat tetap / Turun)</option>
-                                        <option value="B" {{ old('status_kenaikan') == 'B' ? 'selected' : '' }}>B (Baru / Belum ada data bulan lalu)</option>
+                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-10 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none appearance-none cursor-pointer">
+                                        <option value="" {{ old('status_kenaikan') == '' ? 'selected' : '' }}>-- Pilih Status KMS --</option>
+                                        <option value="N" {{ old('status_kenaikan') == 'N' ? 'selected' : '' }}>N — Naik sesuai garis kurva</option>
+                                        <option value="T" {{ old('status_kenaikan') == 'T' ? 'selected' : '' }}>T — Tidak naik / Tetap / Turun</option>
+                                        <option value="B" {{ old('status_kenaikan') == 'B' ? 'selected' : '' }}>B — Baru / Belum ada data lalu</option>
                                     </select>
                                     <div class="absolute right-4 pointer-events-none text-slate-400">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
                                     </div>
                                 </div>
                                 @error('status_kenaikan')
-                                    <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
+                                    <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            {{-- ── Status ASI Eksklusif ── --}}
-                            <div class="flex flex-col gap-2">
-                                <label class="text-sm font-semibold text-slate-700">
+                            {{-- ── 5. Pemberian ASI Eksklusif ── --}}
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
                                     Pemberian ASI Eksklusif
                                 </label>
-                                <div class="grid grid-cols-2 gap-3 h-14">
-                                    <label class="relative flex items-center justify-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-teal-500 has-[:checked]:bg-teal-50/50 has-[:checked]:text-teal-700 font-semibold text-sm text-slate-600">
+                                <div class="grid grid-cols-2 gap-2.5 h-12 sm:h-13">
+                                    <label class="relative flex items-center justify-center px-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-all has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 has-[:checked]:text-teal-900 font-bold text-xs sm:text-sm text-slate-600 shadow-2xs">
                                         <input type="radio" name="asi_eksklusif" value="1" {{ old('asi_eksklusif', '1') == '1' ? 'checked' : '' }} class="sr-only">
-                                        <span class="flex items-center gap-2">
+                                        <span class="flex items-center gap-1.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
                                             Ya (ASI Saja)
                                         </span>
                                     </label>
-                                    <label class="relative flex items-center justify-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-slate-400 has-[:checked]:bg-slate-100 has-[:checked]:text-slate-800 font-semibold text-sm text-slate-600">
+                                    <label class="relative flex items-center justify-center px-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-all has-[:checked]:border-slate-500 has-[:checked]:bg-slate-100 has-[:checked]:text-slate-900 font-bold text-xs sm:text-sm text-slate-600 shadow-2xs">
                                         <input type="radio" name="asi_eksklusif" value="0" {{ old('asi_eksklusif') === '0' ? 'checked' : '' }} class="sr-only">
                                         <span>Tidak</span>
                                     </label>
                                 </div>
                             </div>
 
-                            {{-- ── Tanggal Pengukuran ── --}}
-                            <div class="flex flex-col gap-2">
-                                <label for="tanggal" class="text-sm font-semibold text-slate-700">
+                            {{-- ── 6. Tanggal Pengukuran ── --}}
+                            <div class="flex flex-col gap-1.5">
+                                <label for="tanggal" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
                                     Tanggal Pengukuran <span class="text-rose-500">*</span>
                                 </label>
                                 <input
                                     type="date"
                                     id="tanggal" name="tanggal_ukur"
                                     value="{{ old('tanggal_ukur', now()->format('Y-m-d')) }}" required
-                                    class="w-full h-14 bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                    class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer">
                                 @error('tanggal_ukur')
-                                    <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
+                                    <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            {{-- ── Catatan Kader ── --}}
-                            <div class="flex flex-col gap-2 sm:col-span-2">
-                                <label for="catatan_kader" class="flex items-center justify-between text-sm font-semibold text-slate-700">
+                            {{-- ── 7. Catatan Tambahan Kader ── --}}
+                            <div class="flex flex-col gap-1.5 sm:col-span-2">
+                                <label for="catatan_kader" class="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider">
                                     <span>Catatan Tambahan Kader</span>
-                                    <span class="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Opsional</span>
+                                    <span class="text-[10px] font-semibold text-slate-400 normal-case tracking-normal">Opsional</span>
                                 </label>
                                 <textarea
                                     id="catatan_kader" name="catatan_kader"
                                     rows="2"
-                                    placeholder="Contoh: Balita aktif, nafsu makan baik, catatan khusus untuk Puskesmas."
-                                    class="w-full bg-white shadow-sm ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-teal-500 rounded-xl px-4 py-3.5 text-sm text-slate-800 placeholder:text-slate-400 transition-all outline-none resize-none"
+                                    placeholder="Contoh: Balita aktif, nafsu makan baik, catatan imunisasi anak."
+                                    class="w-full bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 transition-all outline-none resize-none"
                                 >{{ old('catatan_kader') }}</textarea>
                                 @error('catatan_kader')
-                                    <p class="text-xs text-rose-500 font-medium mt-1">{{ $message }}</p>
+                                    <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -235,15 +250,16 @@
                     </form>
                 </div>
 
-                {{-- ── CTA Footer ── --}}
-                {{-- Completely integrated on desktop. Sticky with subtle shadow on mobile. --}}
-                <div class="flex-shrink-0 bg-white sticky bottom-0 border-t border-slate-100 sm:border-t-0 p-6 sm:px-10 sm:pt-6 sm:pb-10 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 sm:gap-4 rounded-b-[28px] sm:rounded-b-3xl">
-                    <button type="button" onclick="closeMeasurementModal()" class="w-full sm:w-auto px-6 h-12 text-sm font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors focus:outline-none">
+                {{-- ── Clean & Spacious Sticky CTA Footer ── --}}
+                <div class="flex-shrink-0 bg-white/95 backdrop-blur-md border-t border-slate-100 px-5 py-3.5 sm:px-8 sm:py-4 flex items-center justify-end gap-3 rounded-b-[28px] sm:rounded-b-3xl">
+                    <button type="button" 
+                            onclick="closeMeasurementModal()" 
+                            class="h-11 sm:h-12 px-5 sm:px-6 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs sm:text-sm transition-colors focus:outline-none cursor-pointer">
                         Batal
                     </button>
                     <button
                         type="submit" form="measurementForm" id="btn-submit"
-                        class="w-full sm:w-auto px-8 h-12 bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white rounded-xl font-semibold text-sm shadow-sm hover:shadow-sm border border-slate-200/60 transition-all focus:outline-none focus:ring-4 focus:ring-teal-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                        class="flex-1 sm:flex-initial h-11 sm:h-12 px-6 sm:px-8 bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-700 hover:from-teal-500 hover:to-emerald-600 active:scale-[0.99] text-white rounded-2xl font-black text-xs sm:text-sm shadow-sm hover:shadow transition-all focus:outline-none focus:ring-4 focus:ring-teal-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer">
                         <span id="btn-text">Simpan Pengukuran</span>
                         <svg id="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -260,34 +276,34 @@
             {{-- ════════════════════════════════════════════════════════════
                  STATE 2: RESULT & DIAGNOSIS
             ═══════════════════════════════════════════════════════════════ --}}
-            <div id="modal-result-state" class="hidden flex-col items-center justify-center text-center p-8 sm:p-12">
-                <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mb-6 ring-8 ring-emerald-50/50">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-emerald-500">
+            <div id="modal-result-state" class="hidden flex-col items-center justify-center text-center p-6 sm:p-10">
+                <div class="w-14 h-14 bg-emerald-50 rounded-full flex items-center justify-center mb-5 ring-8 ring-emerald-50/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-7 h-7 text-emerald-600">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
                 </div>
 
-                <h2 class="text-2xl font-bold text-slate-800 mb-2 tracking-tight">Data Tersimpan</h2>
-                <p class="text-sm text-slate-500 mb-10 max-w-sm mx-auto leading-relaxed">
-                    Pengukuran <span class="font-semibold text-slate-700">{{ $childName }}</span> berhasil dicatat ke sistem.
+                <h2 class="text-xl font-black text-slate-900 mb-1.5 tracking-tight">Data Berhasil Tersimpan</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mb-6 max-w-sm mx-auto leading-relaxed">
+                    Pengukuran <span class="font-bold text-slate-800">{{ $childName }}</span> telah terhubung dengan perhitungan Z-Score WHO 2006.
                 </p>
 
-                <div class="bg-slate-50/50 ring-1 ring-inset ring-slate-100 rounded-2xl p-6 w-full max-w-sm flex flex-col items-center gap-4">
-                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Diagnosa WHO</p>
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 w-full max-w-sm flex flex-col items-center gap-3">
+                    <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Status Gizi (Z-Score)</p>
 
-                    <div class="bg-white shadow-sm ring-1 ring-inset ring-emerald-100 text-emerald-700 px-4 py-2 rounded-xl flex items-center gap-2">
+                    <div class="bg-white shadow-2xs border border-emerald-200 text-emerald-800 px-4 py-1.5 rounded-xl flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span id="diagnosis-label" class="text-sm font-semibold tracking-wide">Gizi Baik (Normal)</span>
+                        <span id="diagnosis-label" class="text-xs sm:text-sm font-extrabold tracking-wide">Gizi Baik (Normal)</span>
                     </div>
 
-                    <p id="diagnosis-text" class="text-sm text-slate-600 font-medium text-center leading-relaxed">
-                        Anak tumbuh selaras. Berat badan naik sesuai kurva pertumbuhan WHO. Lanjutkan pola makan saat ini.
+                    <p id="diagnosis-text" class="text-xs text-slate-600 font-medium text-center leading-relaxed">
+                        Pertumbuhan anak berada dalam kurva normal WHO 2006. Lanjutkan pola makan gizi seimbang.
                     </p>
                 </div>
 
                 <button type="button" onclick="closeMeasurementModal(true)"
-                    class="mt-10 w-full max-w-sm h-12 flex items-center justify-center bg-white shadow-sm ring-1 ring-inset ring-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-semibold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-slate-100">
-                    Kembali ke Profil
+                    class="mt-6 w-full max-w-sm h-11 sm:h-12 flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-bold text-xs sm:text-sm shadow-xs transition-all focus:outline-none cursor-pointer">
+                    Kembali ke Profil Balita
                 </button>
             </div>{{-- end #modal-result-state --}}
 
@@ -333,7 +349,7 @@
             } else {
                 resetModalState();
             }
-        }, 300);
+        }, 200);
     }
 
     function resetModalState() {

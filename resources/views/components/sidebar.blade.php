@@ -1,119 +1,252 @@
-<!-- Sidebar Overlay (Mobile & Desktop) -->
-<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/60 z-[100] hidden opacity-0 transition-opacity duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" onclick="document.getElementById('sidebar').classList.add('-translate-x-full'); this.classList.add('opacity-0'); setTimeout(() => this.classList.add('hidden'), 300); document.body.style.overflow = '';"></div>
+<!-- Sidebar Backdrop Overlay -->
+<div id="sidebarOverlay" 
+     class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-[100] hidden opacity-0 transition-opacity duration-300 ease-out" 
+     onclick="closeSidebarAction()"></div>
 
-<!-- Offcanvas Wrapper -->
-<aside id="sidebar" class="fixed inset-y-0 left-0 w-[320px] z-[110] transform -translate-x-full transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] p-3 lg:p-4 flex flex-col">
+<!-- Slide-Over Drawer -->
+<aside id="sidebar" 
+       class="fixed inset-y-0 left-0 w-[300px] sm:w-[340px] max-w-[85vw] bg-white z-[110] transform -translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col shadow-2xl border-r border-slate-200/80 overflow-hidden">
     
-    <!-- Floating Drawer Container -->
-    <div class="bg-white/95 backdrop-blur-3xl w-full h-full rounded-[2.5rem] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.2)] border border-white flex flex-col overflow-hidden relative flex-1">
-        
-        <!-- Abstract Top Glow -->
-        <div class="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-emerald-50 to-transparent pointer-events-none"></div>
+    <!-- 1. Drawer Header (Profile Hero) -->
+    <div class="relative bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800 p-5 sm:p-6 text-white overflow-hidden shrink-0">
+        {{-- Decorative ambient glow --}}
+        <div class="absolute -right-8 -top-8 w-32 h-32 bg-teal-400/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute left-0 bottom-0 w-24 h-24 bg-teal-900/40 rounded-full blur-xl pointer-events-none"></div>
 
-        <!-- Close Button -->
-        <button id="closeSidebar" onclick="document.getElementById('sidebar').classList.add('-translate-x-full'); document.getElementById('sidebarOverlay').classList.add('opacity-0'); setTimeout(() => document.getElementById('sidebarOverlay').classList.add('hidden'), 300); document.body.style.overflow = '';" class="absolute top-5 right-5 w-10 h-10 bg-white hover:bg-slate-50 rounded-full shadow-sm flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all z-20 border border-slate-100" aria-label="Tutup menu">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-
-        <!-- Profile Section -->
-        <div class="pt-12 pb-8 px-6 flex flex-col items-center text-center relative z-10 border-b border-slate-100">
-            <!-- Avatar -->
-            <div class="w-24 h-24 rounded-full p-1 bg-gradient-to-br from-emerald-400 to-teal-500 shadow-xl shadow-emerald-500/20 mb-5 relative">
-                <div class="w-full h-full bg-white rounded-full flex items-center justify-center text-emerald-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
-                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                    </svg>
+        {{-- Top Bar: Logo & Close Button --}}
+        <div class="flex items-center justify-between relative z-10 mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center p-1">
+                    <img src="{{ asset('images/logo/logo-nutrigen.png') }}" alt="NutriGen" class="w-full h-full object-contain brightness-0 invert">
                 </div>
+                <span class="font-extrabold text-[15px] tracking-tight text-white">NutriGen</span>
             </div>
 
-            <!-- Identity -->
-            <h3 class="font-black text-slate-800 text-[22px] tracking-tight leading-none mb-3">{{ $kaderName ?? 'Ibu Kader' }}</h3>
-            <span class="text-[13px] font-bold text-emerald-600 tracking-wide bg-emerald-50 border border-emerald-100 px-4 py-1.5 rounded-full">{{ $posyanduName ?? 'Posyandu Melati 1' }}</span>
-            
-            <!-- Removed duplicate Edit Profile Button -->
+            <button id="closeSidebar" 
+                    onclick="closeSidebarAction()" 
+                    class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 active:bg-white/30 text-white flex items-center justify-center transition-all cursor-pointer border border-white/20 shadow-xs" 
+                    aria-label="Tutup menu">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
 
-        <!-- Menu Section -->
-        <div class="flex-1 px-4 py-6 flex flex-col gap-2 overflow-y-auto hide-scrollbar">
-            <h4 class="px-2 mb-2 text-[11px] font-black text-slate-400 uppercase tracking-widest">Menu Profil</h4>
-            
-            @if(!request()->is('puskesmas*'))
-            <a href="{{ route('kader.profil') }}" class="flex items-center gap-4 px-3 py-3 rounded-[1.5rem] text-slate-600 hover:text-emerald-700 hover:bg-emerald-50/80 font-bold text-[15px] transition-all group">
-                <div class="w-12 h-12 rounded-[1.25rem] bg-slate-50 flex items-center justify-center group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors shadow-sm border border-slate-100 group-hover:border-emerald-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                    </svg>
+        {{-- User Identity Card --}}
+        <div class="flex items-center gap-3.5 relative z-10">
+            <div class="relative shrink-0">
+                <div class="w-13 h-13 rounded-2xl bg-white/20 backdrop-blur-md p-0.5 border border-white/30 shadow-md flex items-center justify-center">
+                    <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center text-teal-700 font-bold overflow-hidden shadow-xs">
+                        @if(Auth::user()?->role === 'puskesmas')
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-sky-600">
+                                <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                            </svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-teal-600">
+                                <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                            </svg>
+                        @endif
+                    </div>
                 </div>
-                <span>Edit Profil</span>
+                {{-- Active status dot --}}
+                <div class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-teal-800"></div>
+            </div>
+
+            <div class="flex flex-col min-w-0">
+                <span class="font-bold text-[15px] text-white tracking-tight leading-tight truncate">
+                    {{ Auth::user()->name ?? 'Ibu Kader' }}
+                </span>
+                <span class="text-[11.5px] text-teal-100/90 font-medium truncate mt-0.5">
+                    {{ Auth::user()->email ?? 'kader@nutrigen.com' }}
+                </span>
+                <div class="mt-1.5 flex items-center">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-xs text-[10.5px] font-bold text-white tracking-wide border border-white/20">
+                        {{ Auth::user()->role === 'puskesmas' ? (Auth::user()->puskesmas->nama ?? 'Puskesmas') : (Auth::user()->kader->posyandu->nama ?? 'Posyandu Melati 1') }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Drawer Body (Scrollable Menu Items) -->
+    <div class="flex-1 overflow-y-auto hide-scrollbar p-3.5 sm:p-4 flex flex-col gap-5">
+        
+        <!-- Navigation Group -->
+        <div class="flex flex-col gap-1">
+            <span class="px-2.5 text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Menu Utama</span>
+
+            @if(request()->is('puskesmas*'))
+                {{-- Puskesmas Links --}}
+                <a href="{{ route('puskesmas.dashboard') }}" 
+                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('puskesmas.dashboard') ? 'bg-sky-50 text-sky-700 font-extrabold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('puskesmas.dashboard') ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                        </div>
+                        <span>Dashboard</span>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </a>
+
+                <a href="{{ route('puskesmas.balita') }}" 
+                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('puskesmas.balita') ? 'bg-sky-50 text-sky-700 font-extrabold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('puskesmas.balita') ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                        </div>
+                        <span>Data Balita</span>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </a>
+
+                <a href="{{ route('puskesmas.validasi') }}" 
+                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('puskesmas.validasi*') ? 'bg-sky-50 text-sky-700 font-extrabold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('puskesmas.validasi*') ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <span>Validasi Data</span>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </a>
+            @else
+                {{-- Kader Links --}}
+                <a href="{{ route('kader.dashboard') }}" 
+                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('kader.dashboard') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('kader.dashboard') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                        </div>
+                        <span>Dashboard</span>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </a>
+
+                <a href="{{ route('balita.index') }}" 
+                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('balita.*') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('balita.*') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                        </div>
+                        <span>Daftar Balita</span>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </a>
+
+                <a href="{{ route('jadwal.index') }}" 
+                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('jadwal.*') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('jadwal.*') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <span>Jadwal Posyandu</span>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </a>
+
+                <a href="{{ route('laporan.index') }}" 
+                   class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('laporan.*') ? 'bg-teal-50 text-teal-800 font-extrabold shadow-2xs' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('laporan.*') ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-500' }}">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <span>Pusat Laporan</span>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </a>
+            @endif
+        </div>
+
+        <div class="h-px bg-slate-100 -mx-1"></div>
+
+        <!-- Account & System Group -->
+        <div class="flex flex-col gap-1">
+            <span class="px-2.5 text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Akun & Bantuan</span>
+
+            @if(!request()->is('puskesmas*'))
+            <a href="{{ route('kader.profil') }}" 
+               class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('kader.profil*') ? 'bg-teal-50 text-teal-800 font-extrabold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 text-slate-500">
+                        <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <span>Profil Saya</span>
+                </div>
+                <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
             </a>
             @endif
 
-            <div class="h-px w-full bg-slate-100 my-2"></div>
-            <h4 class="px-2 mb-2 mt-2 text-[11px] font-black text-slate-400 uppercase tracking-widest">Informasi Sistem</h4>
-            
-            <a href="javascript:void(0)" onclick="window.NutriAlert.warning('Segera Hadir', 'Fitur Bantuan segera hadir.')" class="flex items-center gap-4 px-3 py-3 rounded-[1.5rem] text-slate-600 hover:text-emerald-700 hover:bg-emerald-50/80 font-bold text-[15px] transition-all group">
-                <div class="w-12 h-12 rounded-[1.25rem] bg-slate-50 flex items-center justify-center group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors shadow-sm border border-slate-100 group-hover:border-emerald-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                    </svg>
+            <a href="javascript:void(0)" 
+               onclick="window.NutriAlert.toast('Fitur Bantuan segera hadir.', 'info', 'Pusat Bantuan')"
+               class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 text-slate-500">
+                        <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 10-1-1zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <span>Pusat Bantuan</span>
                 </div>
-                <span>Pusat Bantuan</span>
+                <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">FAQ</span>
             </a>
 
-            <a href="javascript:void(0)" onclick="window.NutriAlert.success('Versi Sistem', 'NutriGen v1.0.0')" class="flex items-center gap-4 px-3 py-3 rounded-[1.5rem] text-slate-600 hover:text-emerald-700 hover:bg-emerald-50/80 font-bold text-[15px] transition-all group">
-                <div class="w-12 h-12 rounded-[1.25rem] bg-slate-50 flex items-center justify-center group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors shadow-sm border border-slate-100 group-hover:border-emerald-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                    </svg>
+            <a href="javascript:void(0)" 
+               onclick="window.NutriAlert.toast('Sistem NutriGen v1.0.0 (Latest)', 'success', 'Versi Aplikasi')"
+               class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 text-slate-500">
+                        <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <span>Tentang Aplikasi</span>
                 </div>
-                <span>Tentang Aplikasi</span>
+                <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100">v1.0</span>
             </a>
         </div>
+    </div>
 
-        <!-- Logout Section -->
-        <div class="p-5 mt-auto">
-            <form action="{{ route('logout') }}" method="POST" onsubmit="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ event.preventDefault(); const form = this; window.NutriAlert.confirm('Keluar dari Aplikasi?', 'Anda harus login kembali untuk mengakses data.', 'Keluar', 'Batal').then((r) => { if(r.isConfirmed) form.submit(); }); return false; } return confirm('Keluar dari Aplikasi?');">
-                @csrf
-                <button type="submit" class="flex items-center justify-center gap-2 w-full py-4 rounded-[1.25rem] text-rose-600 bg-rose-50 border border-rose-100 hover:bg-rose-100 hover:border-rose-200 font-black text-[15px] transition-all group shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 group-hover:-translate-x-1 transition-transform">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                    </svg>
-                    Keluar Aplikasi
-                </button>
-            </form>
-        </div>
-
+    <!-- 3. Drawer Footer (Clean Logout Action) -->
+    <div class="p-4 border-t border-slate-100 bg-slate-50/70 shrink-0">
+        <form action="{{ route('logout') }}" method="POST" onsubmit="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ event.preventDefault(); const form = this; window.NutriAlert.confirm('Keluar dari Aplikasi?', 'Anda harus login kembali untuk mengakses data.', 'Keluar', 'Batal').then((r) => { if(r.isConfirmed) form.submit(); }); return false; } return confirm('Keluar dari Aplikasi?');">
+            @csrf
+            <button type="submit" 
+                    class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-rose-700 bg-rose-50/80 hover:bg-rose-100 border border-rose-200/80 font-bold text-xs transition-all shadow-2xs hover:shadow-xs cursor-pointer active:scale-[0.99] group">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4 text-rose-500 group-hover:-translate-x-0.5 transition-transform">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                </svg>
+                <span>Keluar Akun</span>
+            </button>
+        </form>
     </div>
 </aside>
 
-
 <script>
+    function openSidebarAction() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (!sidebar || !overlay) return;
+        
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebarAction() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (!sidebar || !overlay) return;
+
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('opacity-0');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+        document.body.style.overflow = '';
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const toggleBtn = document.getElementById('sidebarToggle');
         const closeBtn = document.getElementById('closeSidebar');
-        const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
 
-        function openSidebar() {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
-            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeSidebarAction() {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('opacity-0');
-            setTimeout(() => overlay.classList.add('hidden'), 300);
-            document.body.style.overflow = '';
-        }
-
-        if (toggleBtn) toggleBtn.addEventListener('click', openSidebar);
+        if (toggleBtn) toggleBtn.addEventListener('click', openSidebarAction);
         if (closeBtn) closeBtn.addEventListener('click', closeSidebarAction);
         if (overlay) overlay.addEventListener('click', closeSidebarAction);
-
-        // Logout is now handled by an inline onclick attribute for foolproof execution.
     });
 </script>

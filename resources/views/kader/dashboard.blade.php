@@ -123,7 +123,7 @@
                 </a>
                 
                 <!-- Sudah Diukur -->
-                <a href="{{ route('balita.index') }}" class="motion-hover flex flex-col bg-emerald-50/40 rounded-[24px] p-4 lg:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-emerald-100/50 hover:border-emerald-200 transition-colors relative overflow-hidden group">
+                <a href="{{ route('balita.index', ['filter' => 'selesai']) }}" class="motion-hover flex flex-col bg-emerald-50/40 rounded-[24px] p-4 lg:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-emerald-100/50 hover:border-emerald-200 transition-colors relative overflow-hidden group">
                     <div class="absolute right-0 top-0 w-24 h-24 bg-white rounded-bl-full pointer-events-none -z-10 group-hover:scale-110 transition-transform"></div>
                     <div class="w-10 h-10 rounded-2xl bg-white text-emerald-600 flex items-center justify-center border border-emerald-100 mb-3 group-hover:bg-emerald-600 group-hover:text-white transition-colors shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" /></svg>
@@ -133,7 +133,7 @@
                 </a>
                 
                 <!-- Belum Diukur -->
-                <a href="{{ route('balita.index') }}" class="motion-hover flex flex-col bg-amber-50/40 rounded-[24px] p-4 lg:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-amber-100/50 hover:border-amber-200 transition-colors relative overflow-hidden group">
+                <a href="{{ route('balita.index', ['filter' => 'belum_diukur']) }}" class="motion-hover flex flex-col bg-amber-50/40 rounded-[24px] p-4 lg:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-amber-100/50 hover:border-amber-200 transition-colors relative overflow-hidden group">
                     <div class="absolute right-0 top-0 w-24 h-24 bg-white rounded-bl-full pointer-events-none -z-10 group-hover:scale-110 transition-transform"></div>
                     <div class="w-10 h-10 rounded-2xl bg-white text-amber-600 flex items-center justify-center border border-amber-100 mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg>
@@ -143,7 +143,7 @@
                 </a>
                 
                 <!-- Perlu Perhatian -->
-                <a href="{{ route('balita.index') }}" class="motion-hover flex flex-col bg-rose-50/40 rounded-[24px] p-4 lg:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-rose-100/50 hover:border-rose-200 transition-colors relative overflow-hidden group">
+                <a href="{{ route('balita.index', ['filter' => 'ditolak']) }}" class="motion-hover flex flex-col bg-rose-50/40 rounded-[24px] p-4 lg:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-rose-100/50 hover:border-rose-200 transition-colors relative overflow-hidden group">
                     <div class="absolute right-0 top-0 w-24 h-24 bg-white rounded-bl-full pointer-events-none -z-10 group-hover:scale-110 transition-transform"></div>
                     <div class="w-10 h-10 rounded-2xl bg-white text-rose-600 flex items-center justify-center border border-rose-100 mb-3 group-hover:bg-rose-600 group-hover:text-white transition-colors shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>

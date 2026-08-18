@@ -8,8 +8,8 @@
     <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-white border-b border-slate-100">
         <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center flex flex-col items-center">
 
-            {{-- Understated Top Kicker (No Flashy Pill, No Pulsing Dot) --}}
-            <p id="hero-kicker" class="text-xs font-semibold uppercase tracking-widest text-emerald-800 mb-6">
+            {{-- Understated Top Kicker (Meaningful Teal Accent) --}}
+            <p id="hero-kicker" class="text-xs font-bold uppercase tracking-widest text-emerald-700 mb-6">
                 Platform Digital Pencegahan Stunting
             </p>
 
@@ -24,9 +24,9 @@
                 Ekosistem terpadu yang menghubungkan Ibu, Kader Posyandu, dan Puskesmas untuk pemantauan kurva pertumbuhan balita berbasis standar baku WHO 2006.
             </p>
 
-            {{-- CTAs (1 Focal Emerald, 1 Clean Neutral) --}}
+            {{-- CTAs (1 Solid Emerald Focal Action, 1 Clean Neutral) --}}
             <div id="hero-ctas" class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
-                <a href="{{ route('login') }}" class="w-full sm:w-auto px-7 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm rounded-xl transition-colors shadow-sm inline-flex items-center justify-center gap-2">
+                <a href="{{ route('login') }}" class="w-full sm:w-auto px-7 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow-[0_4px_16px_rgba(16,185,129,0.22)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.32)] transition-all hover:-translate-y-0.5 inline-flex items-center justify-center gap-2">
                     <span>Masuk ke Sistem</span>
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </a>
@@ -35,26 +35,26 @@
                 </a>
             </div>
 
-            {{-- Understated Trust Metadata Line (No flashy icons) --}}
-            <div id="hero-meta" class="mt-12 pt-8 border-t border-slate-100 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs text-slate-400 font-medium">
-                <span>Standar Antropometri WHO 2006</span>
+            {{-- Understated Trust Metadata Line --}}
+            <div id="hero-meta" class="mt-12 pt-8 border-t border-slate-100 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs text-slate-500 font-medium">
+                <span class="text-slate-600 font-semibold">Standar Antropometri WHO 2006</span>
                 <span class="hidden sm:inline text-slate-300">&bull;</span>
-                <span>Pencatatan Digital Posyandu</span>
+                <span class="text-slate-600 font-semibold">Pencatatan Digital Posyandu</span>
                 <span class="hidden sm:inline text-slate-300">&bull;</span>
-                <span>Rujukan Terintegrasi Puskesmas</span>
+                <span class="text-slate-600 font-semibold">Rujukan Terintegrasi Puskesmas</span>
             </div>
 
         </div>
     </section>
 
-    {{-- 2 & 3. Permasalahan & Statistik (Alternating Background: slate-50, Calm, Solid Cards, Grounded Tone) --}}
+    {{-- 2 & 3. Permasalahan & Statistik (Alternating Background: slate-50, Meaningful Accents) --}}
     <section id="problem" class="py-20 lg:py-28 bg-slate-50 border-b border-slate-200/70">
         <div class="max-w-6xl mx-auto px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
                 {{-- Left: Problem Narrative & 3 Points --}}
                 <div class="lg:col-span-7" id="problem-text-container">
-                    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">
+                    <p class="text-xs font-bold uppercase tracking-widest text-emerald-700 mb-3">
                         Tantangan di Lapangan
                     </p>
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-snug mb-4">
@@ -64,11 +64,11 @@
                         Pencatatan konvensional pada buku KIA sering menghadapi kendala rekapitulasi data dan keterbatasan orang tua dalam memahami kurva Z-score secara mandiri.
                     </p>
 
-                    {{-- 3 Points: Clean Editorial Layout with Subtle Numbering (Zero clutter, Zero heavy icons) --}}
+                    {{-- 3 Points: Clean Editorial Layout with Teal Numbering (01, 02, 03) --}}
                     <div class="space-y-4" id="problem-cards-container">
-                        <div class="problem-card bg-white border border-slate-200/70 p-5 rounded-xl transition-colors">
+                        <div class="problem-card bg-white border border-slate-200/80 p-5 rounded-xl hover:border-emerald-300 hover:shadow-sm transition-all">
                             <div class="flex items-baseline gap-3 mb-1.5">
-                                <span class="text-xs font-bold text-slate-400 font-mono">01</span>
+                                <span class="text-xs font-bold text-emerald-700 font-mono tracking-wider">01</span>
                                 <h3 class="text-sm sm:text-base font-bold text-slate-900">Keterlambatan Rekapitulasi Data</h3>
                             </div>
                             <p class="text-xs sm:text-sm text-slate-500 leading-relaxed pl-7">
@@ -76,9 +76,9 @@
                             </p>
                         </div>
 
-                        <div class="problem-card bg-white border border-slate-200/70 p-5 rounded-xl transition-colors">
+                        <div class="problem-card bg-white border border-slate-200/80 p-5 rounded-xl hover:border-emerald-300 hover:shadow-sm transition-all">
                             <div class="flex items-baseline gap-3 mb-1.5">
-                                <span class="text-xs font-bold text-slate-400 font-mono">02</span>
+                                <span class="text-xs font-bold text-emerald-700 font-mono tracking-wider">02</span>
                                 <h3 class="text-sm sm:text-base font-bold text-slate-900">Kurva Pertumbuhan Sulit Dipahami</h3>
                             </div>
                             <p class="text-xs sm:text-sm text-slate-500 leading-relaxed pl-7">
@@ -86,9 +86,9 @@
                             </p>
                         </div>
 
-                        <div class="problem-card bg-white border border-slate-200/70 p-5 rounded-xl transition-colors">
+                        <div class="problem-card bg-white border border-slate-200/80 p-5 rounded-xl hover:border-emerald-300 hover:shadow-sm transition-all">
                             <div class="flex items-baseline gap-3 mb-1.5">
-                                <span class="text-xs font-bold text-slate-400 font-mono">03</span>
+                                <span class="text-xs font-bold text-emerald-700 font-mono tracking-wider">03</span>
                                 <h3 class="text-sm sm:text-base font-bold text-slate-900">Potensi Galat Hitung Manual</h3>
                             </div>
                             <p class="text-xs sm:text-sm text-slate-500 leading-relaxed pl-7">
@@ -98,17 +98,17 @@
                     </div>
                 </div>
 
-                {{-- Right: National Stats Card (Clean, Understated, Highly Credible) --}}
+                {{-- Right: National Stats Card (Meaningful Color Highlighting) --}}
                 <div class="lg:col-span-5" id="problem-stat-container">
-                    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/70 shadow-sm">
-                        <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">
                             Konteks Nasional &bull; Data SKI
                         </p>
 
-                        {{-- Big Counter Number --}}
+                        {{-- Big Counter Number with Urgent Rose Color --}}
                         <div class="flex items-baseline mb-2">
-                            <span id="stat-stunting-counter" class="text-5xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-none">0.0</span>
-                            <span class="text-3xl sm:text-4xl font-bold text-slate-400 ml-1">%</span>
+                            <span id="stat-stunting-counter" class="text-5xl sm:text-6xl font-black text-rose-600 tracking-tight leading-none">0.0</span>
+                            <span class="text-3xl sm:text-4xl font-extrabold text-rose-500 ml-1">%</span>
                         </div>
 
                         <h3 class="text-base font-bold text-slate-900 mb-2">Prevalensi Stunting Nasional</h3>
@@ -116,34 +116,34 @@
                             Menjadi fokus percepatan penurunan gizi balita menuju target nasional 14% melalui penguatan deteksi dini di tingkat Posyandu.
                         </p>
 
-                        {{-- Clean Minimal Comparison Indicators --}}
-                        <div class="space-y-3 pt-5 border-t border-slate-100 text-xs">
+                        {{-- Meaningful Comparison Indicators (Rose, Amber, Emerald) --}}
+                        <div class="space-y-3.5 pt-5 border-t border-slate-100 text-xs">
                             <div>
-                                <div class="flex justify-between font-medium text-slate-600 mb-1">
-                                    <span>Nasional (Terkini)</span>
-                                    <span class="font-bold text-slate-900">21.5%</span>
+                                <div class="flex justify-between font-medium mb-1">
+                                    <span class="text-slate-700 font-semibold">Nasional (Terkini)</span>
+                                    <span class="font-extrabold text-rose-600">21.5%</span>
                                 </div>
-                                <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div id="stat-bar-current" class="h-full bg-slate-900 rounded-full transition-all duration-1000" style="width: 0%;"></div>
+                                <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div id="stat-bar-current" class="h-full bg-rose-500 rounded-full transition-all duration-1000" style="width: 0%;"></div>
                                 </div>
                             </div>
 
                             <div>
-                                <div class="flex justify-between font-medium text-slate-500 mb-1">
-                                    <span>Batas Toleransi WHO</span>
-                                    <span>20.0%</span>
+                                <div class="flex justify-between font-medium mb-1">
+                                    <span class="text-slate-600">Batas Toleransi WHO</span>
+                                    <span class="font-bold text-amber-700">20.0%</span>
                                 </div>
-                                <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-slate-300 rounded-full" style="width: 66%;"></div>
+                                <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-amber-400 rounded-full" style="width: 66%;"></div>
                                 </div>
                             </div>
 
                             <div>
-                                <div class="flex justify-between font-medium text-slate-500 mb-1">
-                                    <span>Target Intervensi</span>
-                                    <span class="font-bold text-emerald-700">14.0%</span>
+                                <div class="flex justify-between font-medium mb-1">
+                                    <span class="text-slate-700 font-semibold">Target Intervensi Nasional</span>
+                                    <span class="font-extrabold text-emerald-700">14.0%</span>
                                 </div>
-                                <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                                     <div class="h-full bg-emerald-600 rounded-full" style="width: 46%;"></div>
                                 </div>
                             </div>

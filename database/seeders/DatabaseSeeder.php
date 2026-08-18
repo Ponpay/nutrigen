@@ -19,7 +19,8 @@ use App\Services\GrowthCalculationService;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database with ultra-realistic clinical and administrative data.
+     * Seed the application with 80 realistic balitas (~27 per posyandu),
+     * comprehensive multi-month KMS history, and diverse clinical states.
      */
     public function run(): void
     {
@@ -27,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $now = Carbon::now();
 
         // -------------------------------------------------------------
-        // 1. PUSKESMAS & PETUGAS GIZI (AHLI GIZI)
+        // 1. PUSKESMAS & PETUGAS GIZI
         // -------------------------------------------------------------
         $userPuskesmas = User::create([
             'name' => 'dr. Cut Nyak Sarah, S.Gz',
@@ -44,7 +45,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // -------------------------------------------------------------
-        // 2. POSYANDU DI WILAYAH KERJA PUSKESMAS
+        // 2. POSYANDU (3 POSYANDU)
         // -------------------------------------------------------------
         $posyandu1 = Posyandu::create([
             'puskesmas_id' => $puskesmas->id,
@@ -111,540 +112,275 @@ class DatabaseSeeder extends Seeder
         }
 
         // -------------------------------------------------------------
-        // 4. DATA ORANG TUA (16 KELUARGA REALISTIS)
+        // 4. DATA ORANG TUA REALISTIS (45 KELUARGA)
         // -------------------------------------------------------------
-        $parentsData = [
-            [
-                'nama_ibu' => 'Cut Annisa Zahra',
-                'nama_ayah' => 'Teuku Farhan Maulana',
-                'email' => 'ibu.annisa@nutrigen.com',
-                'nik_ibu' => '1171015504950001',
-                'no_hp' => '081269112233',
-                'alamat' => 'Gampong Lampulo, RT 02/RW 01, Kec. Kuta Alam, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Rina Agustina',
-                'nama_ayah' => 'Muhammad Rizky Pratama',
-                'email' => 'ibu.rina@nutrigen.com',
-                'nik_ibu' => '1171016208940002',
-                'no_hp' => '081370223344',
-                'alamat' => 'Gampong Lampulo, Lr. Cakalang No. 14, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Nurhaliza, S.E.',
-                'nama_ayah' => 'Dedi Syahputra',
-                'email' => 'ibu.nurhaliza@nutrigen.com',
-                'nik_ibu' => '1171014811960003',
-                'no_hp' => '085260334455',
-                'alamat' => 'Gampong Peunayong, Jl. T. Hasan Dek No. 5B, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Sri Wahyuni',
-                'nama_ayah' => 'Bambang Haryanto',
-                'email' => 'ibu.sri@nutrigen.com',
-                'nik_ibu' => '1171015002930004',
-                'no_hp' => '081269445566',
-                'alamat' => 'Gampong Bandar Baru, Kompleks TVRI No. 8, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Maisarah, S.Pd',
-                'nama_ayah' => 'Zulfikar Arifin',
-                'email' => 'ibu.maisarah@nutrigen.com',
-                'nik_ibu' => '1171016507970005',
-                'no_hp' => '081377556677',
-                'alamat' => 'Gampong Lampulo, Lr. Pukat Trawl No. 22, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Fitri Handayani',
-                'nama_ayah' => 'Hendri Saputra',
-                'email' => 'ibu.fitri@nutrigen.com',
-                'nik_ibu' => '1171015809950006',
-                'no_hp' => '085361667788',
-                'alamat' => 'Gampong Peunayong, Lr. Khadijah No. 17, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Dewi Sartika',
-                'nama_ayah' => 'Ahmad Fauzi',
-                'email' => 'ibu.dewi@nutrigen.com',
-                'nik_ibu' => '1171014301980007',
-                'no_hp' => '081269778899',
-                'alamat' => 'Gampong Bandar Baru, Jl. T. Nyak Arief No. 34, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Lestari Ningsih',
-                'nama_ayah' => 'Irfan Hakim',
-                'email' => 'ibu.lestari@nutrigen.com',
-                'nik_ibu' => '1171016912940008',
-                'no_hp' => '081370889900',
-                'alamat' => 'Gampong Lampulo, RT 04/RW 02, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Eka Putri Rahayu',
-                'nama_ayah' => 'Rahmat Hidayat',
-                'email' => 'ibu.eka@nutrigen.com',
-                'nik_ibu' => '1171015206960009',
-                'no_hp' => '085260990011',
-                'alamat' => 'Gampong Peunayong, Jl. Ahmad Yani No. 89, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Nurhasanah',
-                'nama_ayah' => 'Faisal Tanjung',
-                'email' => 'ibu.nurhasanah@nutrigen.com',
-                'nik_ibu' => '1171014703950010',
-                'no_hp' => '081269001122',
-                'alamat' => 'Gampong Bandar Baru, Lr. Jeumpa No. 3, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Tia Rahmawati',
-                'nama_ayah' => 'Agus Setiawan',
-                'email' => 'ibu.tia@nutrigen.com',
-                'nik_ibu' => '1171016105970011',
-                'no_hp' => '081377112233',
-                'alamat' => 'Gampong Lampulo, Lr. PPI Lampulo No. 5, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Rini Kusuma Wardani',
-                'nama_ayah' => 'Dian Permana',
-                'email' => 'ibu.rini@nutrigen.com',
-                'nik_ibu' => '1171015408930012',
-                'no_hp' => '085361223344',
-                'alamat' => 'Gampong Peunayong, Jl. KH Ahmad Dahlan No. 12, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Cut Putri Mayang Sari',
-                'nama_ayah' => 'M. Danial Syah',
-                'email' => 'ibu.mayang@nutrigen.com',
-                'nik_ibu' => '1171014910980013',
-                'no_hp' => '081269334455',
-                'alamat' => 'Gampong Bandar Baru, Kompleks Unsyiah Blok D-4, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Indah Permatasari',
-                'nama_ayah' => 'Yusuf Pratama',
-                'email' => 'ibu.indah@nutrigen.com',
-                'nik_ibu' => '1171016604960014',
-                'no_hp' => '081370445566',
-                'alamat' => 'Gampong Lampulo, Lr. Samudra No. 9, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Siti Aminah',
-                'nama_ayah' => 'Rizal Pahlevi',
-                'email' => 'ibu.aminah@nutrigen.com',
-                'nik_ibu' => '1171015109940015',
-                'no_hp' => '085260556677',
-                'alamat' => 'Gampong Peunayong, Jl. Kartini No. 27, Banda Aceh',
-            ],
-            [
-                'nama_ibu' => 'Zahratul Ula',
-                'nama_ayah' => 'M. Iqbal Ramadhan',
-                'email' => 'ibu.zahra@nutrigen.com',
-                'nik_ibu' => '1171016307990016',
-                'no_hp' => '081269667788',
-                'alamat' => 'Gampong Bandar Baru, Jl. Tgk Chik Ditiro No. 101, Banda Aceh',
-            ],
+        $parentNames = [
+            ['Cut Annisa Zahra', 'Teuku Farhan Maulana', 'Gampong Lampulo, RT 02/RW 01'],
+            ['Rina Agustina', 'Muhammad Rizky Pratama', 'Gampong Lampulo, Lr. Cakalang No. 14'],
+            ['Nurhaliza, S.E.', 'Dedi Syahputra', 'Gampong Peunayong, Jl. T. Hasan Dek No. 5B'],
+            ['Sri Wahyuni', 'Bambang Haryanto', 'Gampong Bandar Baru, Kompleks TVRI No. 8'],
+            ['Maisarah, S.Pd', 'Zulfikar Arifin', 'Gampong Lampulo, Lr. Pukat Trawl No. 22'],
+            ['Fitri Handayani', 'Hendri Saputra', 'Gampong Peunayong, Lr. Khadijah No. 17'],
+            ['Dewi Sartika', 'Ahmad Fauzi', 'Gampong Bandar Baru, Jl. T. Nyak Arief No. 34'],
+            ['Lestari Ningsih', 'Irfan Hakim', 'Gampong Lampulo, RT 04/RW 02'],
+            ['Eka Putri Rahayu', 'Rahmat Hidayat', 'Gampong Peunayong, Jl. Ahmad Yani No. 89'],
+            ['Nurhasanah', 'Faisal Tanjung', 'Gampong Bandar Baru, Lr. Jeumpa No. 3'],
+            ['Tia Rahmawati', 'Agus Setiawan', 'Gampong Lampulo, Lr. PPI Lampulo No. 5'],
+            ['Rini Kusuma Wardani', 'Dian Permana', 'Gampong Peunayong, Jl. KH Ahmad Dahlan No. 12'],
+            ['Cut Putri Mayang Sari', 'M. Danial Syah', 'Gampong Bandar Baru, Kompleks Unsyiah Blok D-4'],
+            ['Indah Permatasari', 'Yusuf Pratama', 'Gampong Lampulo, Lr. Samudra No. 9'],
+            ['Siti Aminah', 'Rizal Pahlevi', 'Gampong Peunayong, Jl. Kartini No. 27'],
+            ['Zahratul Ula', 'M. Iqbal Ramadhan', 'Gampong Bandar Baru, Jl. Tgk Chik Ditiro No. 101'],
+            ['Marlina, S.Kep', 'Teuku Zulkarnain', 'Gampong Lampulo, Lr. Nelayan No. 3'],
+            ['Yuliana Safitri', 'Fahmi Idris', 'Gampong Peunayong, Jl. Peunayong Lama No. 18'],
+            ['Hasanah Putri', 'T. Fachrul Razi', 'Gampong Bandar Baru, Lr. Meulu No. 7'],
+            ['Cut Mutia Rahmi', 'Munawar Khalil', 'Gampong Lampulo, Jl. Tanggul Samudra No. 41'],
+            ['Desi Ratnasari', 'Andi Nugraha', 'Gampong Peunayong, Lr. Merak No. 11'],
+            ['Wardah Hayati', 'Iskandar Muda', 'Gampong Bandar Baru, Kompleks BPD Blok C'],
+            ['Syelifa Nanda', 'Rizwan Maulana', 'Gampong Lampulo, RT 01/RW 03'],
+            ['Khadijah Marwan', 'Aulia Rahman', 'Gampong Peunayong, Jl. Perdagangan No. 55'],
+            ['Cut Riska Amalia', 'Fikri Syahrial', 'Gampong Bandar Baru, Lr. Kuta Alam No. 9'],
+            ['Nurlailawati', 'Safrizal', 'Gampong Lampulo, Lr. Ikan Kembung No. 2'],
+            ['Rahmi Novita', 'Herman Syah', 'Gampong Peunayong, Jl. WR Supratman No. 64'],
+            ['Putri Balqis', 'T. Reza Pahlevi', 'Gampong Bandar Baru, Jl. T. Iskandar No. 88'],
+            ['Harnum Melati', 'Zainal Abidin', 'Gampong Lampulo, RT 03/RW 01'],
+            ['Anita Zahara', 'Bahrul Ulum', 'Gampong Peunayong, Lr. Sentosa No. 15'],
+            ['Cut Syarifah', 'Mahmud Syah', 'Gampong Bandar Baru, Kompleks PU No. 23'],
+            ['Maulida Sari', 'Syamsul Bahri', 'Gampong Lampulo, Lr. Muara No. 10'],
+            ['Fatimah Az-Zahra', 'Teuku M. Yusuf', 'Gampong Peunayong, Jl. Diponegoro No. 33'],
+            ['Raudhatul Jannah', 'Rudi Hartono', 'Gampong Bandar Baru, Lr. Mawar Putih No. 14'],
+            ['Nurul Afifah', 'Ilham Wahyudi', 'Gampong Lampulo, Lr. Bahari No. 8'],
+            ['Husna Mufida', 'Zulkifli', 'Gampong Peunayong, Lr. Cempaka No. 20'],
+            ['Cut Dara Meutia', 'T. Syahrul', 'Gampong Bandar Baru, Jl. Seulanga No. 19'],
+            ['Suryani', 'Darmawan', 'Gampong Lampulo, Lr. Perikanan No. 16'],
+            ['Ratna Juwita', 'Budi Santoso', 'Gampong Peunayong, Jl. Cut Meutia No. 4'],
+            ['Hayatun Nufus', 'Khairul Anwar', 'Gampong Bandar Baru, Lr. Flamboyan No. 2'],
+            ['Zubairah', 'Teuku Alamsyah', 'Gampong Lampulo, RT 05/RW 02'],
+            ['Rosdiana', 'Mansyur', 'Gampong Peunayong, Lr. Kenanga No. 12'],
+            ['Safura', 'M. Nasir', 'Gampong Bandar Baru, Jl. T. Hasan Dek No. 90'],
+            ['Cut Nurul Huda', 'Teuku Firdaus', 'Gampong Lampulo, Lr. Samudra No. 33'],
+            ['Aisyah Humairah', 'Ikhwanul Muslimin', 'Gampong Peunayong, Jl. WR Monginsidi No. 7'],
         ];
 
         $orangTuas = [];
-        foreach ($parentsData as $pd) {
+        foreach ($parentNames as $idx => $p) {
             $userIbu = User::create([
-                'name' => $pd['nama_ibu'],
-                'email' => $pd['email'],
+                'name' => $p[0],
+                'email' => 'ibu' . ($idx + 1) . '@nutrigen.com',
                 'password' => Hash::make('password'),
                 'role' => 'ibu',
             ]);
 
             $orangTuas[] = OrangTua::create([
                 'user_id' => $userIbu->id,
-                'nik_ibu' => $pd['nik_ibu'],
-                'nama_ibu' => $pd['nama_ibu'],
-                'nama_ayah' => $pd['nama_ayah'],
-                'no_hp_whatsapp' => $pd['no_hp'],
-                'alamat' => $pd['alamat'],
+                'nik_ibu' => '117101' . str_pad($idx + 1, 2, '0', STR_PAD_LEFT) . '95000' . ($idx % 9 + 1),
+                'nama_ibu' => $p[0],
+                'nama_ayah' => $p[1],
+                'no_hp_whatsapp' => '081269' . str_pad($idx + 10, 6, '0', STR_PAD_LEFT),
+                'alamat' => $p[2] . ', Kec. Kuta Alam, Banda Aceh',
             ]);
         }
 
         // -------------------------------------------------------------
-        // 5. DATA BALITA & RIWAYAT PENGUKURAN KMS LENGKAP (20 BALITA)
+        // 5. MASTER DATA 80 BALITA REALISTIS
         // -------------------------------------------------------------
-        $balitaProfiles = [
-            // 1. Muhammad Al-Fatih Pratama (Normal, Sehat, Tumbuh Baik)
-            [
-                'nama' => 'Muhammad Al-Fatih Pratama',
-                'jk' => 'L',
-                'umur_bulan' => 14,
-                'parent_idx' => 0,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 3.2,
-                'panjang_lahir' => 50.0,
-                'lk_lahir' => 34.0,
-                'history' => [
-                    ['m' => 3, 'bb' => 9.2, 'tb' => 76.0, 'lk' => 45.0, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Nafsu makan baik, motorik aktif.', 'cat_val' => 'Pertumbuhan normal sesuai usia.'],
-                    ['m' => 2, 'bb' => 9.6, 'tb' => 77.5, 'lk' => 45.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Sudah bisa berdiri mandiri.', 'cat_val' => 'Bagus, pertahankan gizi seimbang.'],
-                    ['m' => 1, 'bb' => 9.9, 'tb' => 78.8, 'lk' => 46.0, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Makan lahap 3x sehari + MPASI.', 'cat_val' => 'Status gizi baik.'],
-                    ['m' => 0, 'bb' => 10.3, 'tb' => 80.2, 'lk' => 46.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Balita sangat sehat dan aktif.', 'cat_val' => 'Validasi lengkap, status gizi optimal.'],
-                ],
-            ],
-            // 2. Aisyah Humaira Syahputra (Normal, Sehat, Bayi 8 Bulan)
-            [
-                'nama' => 'Aisyah Humaira Syahputra',
-                'jk' => 'P',
-                'umur_bulan' => 8,
-                'parent_idx' => 1,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 3.0,
-                'panjang_lahir' => 49.0,
-                'lk_lahir' => 33.5,
-                'history' => [
-                    ['m' => 2, 'bb' => 7.2, 'tb' => 66.0, 'lk' => 42.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Mulai MPASI 6 bulan tekstur lumat.', 'cat_val' => 'Respon MPASI baik.'],
-                    ['m' => 1, 'bb' => 7.7, 'tb' => 67.8, 'lk' => 43.0, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'ASI lanjut + bubur tim saring.', 'cat_val' => 'Kenaikan BB adekuat.'],
-                    ['m' => 0, 'bb' => 8.1, 'tb' => 69.5, 'lk' => 43.8, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Ibu aktif bertanya menu prohe.', 'cat_val' => 'Pertumbuhan ideal.'],
-                ],
-            ],
-            // 3. Teuku Rayyan Al-Ghifari (Risiko Stunting / T - Tidak Naik 2 Bulan)
-            [
-                'nama' => 'Teuku Rayyan Al-Ghifari',
-                'jk' => 'L',
-                'umur_bulan' => 22,
-                'parent_idx' => 2,
-                'posyandu_idx' => 1,
-                'kader_idx' => 1,
-                'berat_lahir' => 2.8,
-                'panjang_lahir' => 48.0,
-                'lk_lahir' => 33.0,
-                'history' => [
-                    ['m' => 3, 'bb' => 10.4, 'tb' => 81.5, 'lk' => 46.5, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Pernah demam dan batuk 4 hari.', 'cat_val' => 'Perlu monitoring pasca sakit.'],
-                    ['m' => 2, 'bb' => 10.4, 'tb' => 82.0, 'lk' => 46.5, 'asi' => false, 'naik' => 'T', 'val' => 'approved', 'cat_kader' => 'BB tetap / tidak naik (GTM).', 'cat_val' => 'Edukasi variasi MPASI tinggi kalori.'],
-                    ['m' => 1, 'bb' => 10.5, 'tb' => 82.3, 'lk' => 46.8, 'asi' => false, 'naik' => 'T', 'val' => 'approved', 'cat_kader' => 'Kenaikan BB di bawah KBM (<200g).', 'cat_val' => 'Konseling PMT Pemulihan Posyandu.'],
-                    ['m' => 0, 'bb' => 10.7, 'tb' => 82.8, 'lk' => 47.0, 'asi' => false, 'naik' => 'N', 'val' => 'pending', 'cat_kader' => 'Mulai ada kenaikan setelah diberi telur & ikan.', 'cat_val' => null],
-                ],
-            ],
-            // 4. Cut Nayla Khairunnisa (Bayi 5 Bulan - ASI Eksklusif)
-            [
-                'nama' => 'Cut Nayla Khairunnisa',
-                'jk' => 'P',
-                'umur_bulan' => 5,
-                'parent_idx' => 3,
-                'posyandu_idx' => 2,
-                'kader_idx' => 2,
-                'berat_lahir' => 3.1,
-                'panjang_lahir' => 49.5,
-                'lk_lahir' => 34.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 5.8, 'tb' => 60.5, 'lk' => 40.0, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Full ASI eksklusif tanpa sufor.', 'cat_val' => 'Lanjutkan ASI eksklusif.'],
-                    ['m' => 1, 'bb' => 6.4, 'tb' => 62.5, 'lk' => 41.0, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Bayi aktif, menyusu teratur.', 'cat_val' => 'Kenaikan BB sangat baik.'],
-                    ['m' => 0, 'bb' => 6.9, 'tb' => 64.2, 'lk' => 41.8, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Persiapan edukasi MPASI 6 bulan.', 'cat_val' => 'Status gizi normal optimal.'],
-                ],
-            ],
-            // 5. Khadijah Azzahra (Stunting / Pendek - Intervensi Puskesmas)
-            [
-                'nama' => 'Khadijah Azzahra',
-                'jk' => 'P',
-                'umur_bulan' => 18,
-                'parent_idx' => 4,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 2.5,
-                'panjang_lahir' => 46.5,
-                'lk_lahir' => 32.0,
-                'history' => [
-                    ['m' => 3, 'bb' => 7.8, 'tb' => 73.0, 'lk' => 44.0, 'asi' => false, 'naik' => 'T', 'val' => 'approved', 'cat_kader' => 'Nafsu makan kurang, riwayat BBLR.', 'cat_val' => 'Diberikan paket PMT biskuit & susu.'],
-                    ['m' => 2, 'bb' => 8.0, 'tb' => 73.8, 'lk' => 44.2, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Kunjungan rumah kader dilakukan.', 'cat_val' => 'TB/U masih di bawah -2 SD (Stunting).'],
-                    ['m' => 1, 'bb' => 8.3, 'tb' => 74.5, 'lk' => 44.6, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'PMT rutin dikonsumsi harian.', 'cat_val' => 'Ada tren perbaikan tinggi badan.'],
-                    ['m' => 0, 'bb' => 8.6, 'tb' => 75.4, 'lk' => 45.0, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Ibu rajin kontrol dan konsultasi.', 'cat_val' => 'Respon terapi nutrisi positif.'],
-                ],
-            ],
-            // 6. Arkana Zikri Hidayat (Normal, Gizi Baik, 11 Bulan)
-            [
-                'nama' => 'Arkana Zikri Hidayat',
-                'jk' => 'L',
-                'umur_bulan' => 11,
-                'parent_idx' => 5,
-                'posyandu_idx' => 1,
-                'kader_idx' => 1,
-                'berat_lahir' => 3.3,
-                'panjang_lahir' => 50.5,
-                'lk_lahir' => 34.5,
-                'history' => [
-                    ['m' => 2, 'bb' => 8.7, 'tb' => 72.5, 'lk' => 44.8, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Makan MPASI 3x + selingan buah.', 'cat_val' => 'Gizi seimbang terpenuhi.'],
-                    ['m' => 1, 'bb' => 9.1, 'tb' => 74.0, 'lk' => 45.2, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Merangkak cepat dan aktif.', 'cat_val' => 'Kenaikan BB di atas KBM.'],
-                    ['m' => 0, 'bb' => 9.5, 'tb' => 75.8, 'lk' => 45.8, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Imunisasi lengkap sesuai jadwal.', 'cat_val' => 'Status gizi normal.'],
-                ],
-            ],
-            // 7. Bilal Ramadhan Fauzi (Normal, Batita 28 Bulan)
-            [
-                'nama' => 'Bilal Ramadhan Fauzi',
-                'jk' => 'L',
-                'umur_bulan' => 28,
-                'parent_idx' => 6,
-                'posyandu_idx' => 2,
-                'kader_idx' => 2,
-                'berat_lahir' => 3.4,
-                'panjang_lahir' => 51.0,
-                'lk_lahir' => 35.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 12.2, 'tb' => 89.0, 'lk' => 48.0, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Makan menu keluarga lancar.', 'cat_val' => 'Pertumbuhan ideal.'],
-                    ['m' => 1, 'bb' => 12.6, 'tb' => 90.2, 'lk' => 48.3, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Aktif berlari dan bicara.', 'cat_val' => 'Status gizi baik.'],
-                    ['m' => 0, 'bb' => 13.0, 'tb' => 91.5, 'lk' => 48.6, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Tinggi dan berat proporsional.', 'cat_val' => 'Bebas risiko stunting.'],
-                ],
-            ],
-            // 8. Safiyya Salsabila Hakim (Gizi Kurang / Underweight - Pemantauan Khusus)
-            [
-                'nama' => 'Safiyya Salsabila Hakim',
-                'jk' => 'P',
-                'umur_bulan' => 15,
-                'parent_idx' => 7,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 2.7,
-                'panjang_lahir' => 48.0,
-                'lk_lahir' => 33.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 7.4, 'tb' => 74.0, 'lk' => 43.5, 'asi' => false, 'naik' => 'T', 'val' => 'approved', 'cat_kader' => 'Sering pilih-pilih makanan (picky eater).', 'cat_val' => 'Konseling feeding rules bagi ibu.'],
-                    ['m' => 1, 'bb' => 7.6, 'tb' => 75.0, 'lk' => 43.8, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Diberikan suplemen vitamin & zinc.', 'cat_val' => 'BB/U masih rendah (-2.1 SD).'],
-                    ['m' => 0, 'bb' => 7.9, 'tb' => 76.2, 'lk' => 44.2, 'asi' => false, 'naik' => 'N', 'val' => 'pending', 'cat_kader' => 'Kenaikan BB 300g bulan ini, membaik.', 'cat_val' => null],
-                ],
-            ],
-            // 9. Kenzo Arshaka Tanjung (Normal, 9 Bulan)
-            [
-                'nama' => 'Kenzo Arshaka Tanjung',
-                'jk' => 'L',
-                'umur_bulan' => 9,
-                'parent_idx' => 8,
-                'posyandu_idx' => 1,
-                'kader_idx' => 1,
-                'berat_lahir' => 3.2,
-                'panjang_lahir' => 50.0,
-                'lk_lahir' => 34.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 8.2, 'tb' => 69.0, 'lk' => 43.8, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Sudah tumbuh gigi seri bawah.', 'cat_val' => 'Pertumbuhan normal.'],
-                    ['m' => 1, 'bb' => 8.6, 'tb' => 70.8, 'lk' => 44.3, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'MPASI tekstur cincang halus.', 'cat_val' => 'Adekuat.'],
-                    ['m' => 0, 'bb' => 9.0, 'tb' => 72.5, 'lk' => 44.9, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Sehat dan ceria saat penimbangan.', 'cat_val' => 'Status gizi normal.'],
-                ],
-            ],
-            // 10. Ameera Dzahin Setiawan (Bayi 4 Bulan - ASI Eksklusif)
-            [
-                'nama' => 'Ameera Dzahin Setiawan',
-                'jk' => 'P',
-                'umur_bulan' => 4,
-                'parent_idx' => 9,
-                'posyandu_idx' => 2,
-                'kader_idx' => 2,
-                'berat_lahir' => 3.0,
-                'panjang_lahir' => 49.0,
-                'lk_lahir' => 33.5,
-                'history' => [
-                    ['m' => 2, 'bb' => 5.1, 'tb' => 57.0, 'lk' => 38.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Imunisasi DPT 1 lancar.', 'cat_val' => 'ASI on demand teratur.'],
-                    ['m' => 1, 'bb' => 5.8, 'tb' => 59.5, 'lk' => 39.8, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Kenaikan 700g, sangat bagus.', 'cat_val' => 'Bagus, pertahankan.'],
-                    ['m' => 0, 'bb' => 6.4, 'tb' => 61.8, 'lk' => 40.8, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Full ASI eksklusif.', 'cat_val' => 'Pertumbuhan ideal bayi 4 bulan.'],
-                ],
-            ],
-            // 11. Ziyad Atharizz Permana (Normal, Batita 30 Bulan)
-            [
-                'nama' => 'Ziyad Atharizz Permana',
-                'jk' => 'L',
-                'umur_bulan' => 30,
-                'parent_idx' => 10,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 3.5,
-                'panjang_lahir' => 51.5,
-                'lk_lahir' => 35.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 12.8, 'tb' => 91.0, 'lk' => 48.5, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Makan banyak sayur dan protein.', 'cat_val' => 'Pertumbuhan sangat baik.'],
-                    ['m' => 1, 'bb' => 13.2, 'tb' => 92.4, 'lk' => 48.8, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Tumbuh kembang motorik halus baik.', 'cat_val' => 'Status gizi baik.'],
-                    ['m' => 0, 'bb' => 13.6, 'tb' => 93.8, 'lk' => 49.1, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Balita cerdas dan lincah.', 'cat_val' => 'Pertumbuhan optimal.'],
-                ],
-            ],
-            // 12. Cut Kayla Putri Danial (Stunting Berat / Sangat Pendek)
-            [
-                'nama' => 'Cut Kayla Putri Danial',
-                'jk' => 'P',
-                'umur_bulan' => 19,
-                'parent_idx' => 11,
-                'posyandu_idx' => 1,
-                'kader_idx' => 1,
-                'berat_lahir' => 2.4,
-                'panjang_lahir' => 45.0,
-                'lk_lahir' => 31.5,
-                'history' => [
-                    ['m' => 3, 'bb' => 7.2, 'tb' => 70.5, 'lk' => 43.0, 'asi' => false, 'naik' => 'T', 'val' => 'approved', 'cat_kader' => 'Riwayat diare berulang.', 'cat_val' => 'Rujukan ke Poli Gizi Puskesmas.'],
-                    ['m' => 2, 'bb' => 7.4, 'tb' => 71.2, 'lk' => 43.2, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Mendapat F-100 & taburia.', 'cat_val' => 'Z-Score TB/U -2.8 SD (Sangat Pendek).'],
-                    ['m' => 1, 'bb' => 7.7, 'tb' => 72.0, 'lk' => 43.6, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Ibu rutin masak formula padat gizi.', 'cat_val' => 'Kenaikan BB terpantau naik.'],
-                    ['m' => 0, 'bb' => 8.0, 'tb' => 72.9, 'lk' => 44.0, 'asi' => false, 'naik' => 'N', 'val' => 'pending', 'cat_kader' => 'Perkembangan tinggi badan mulai terkejar.', 'cat_val' => null],
-                ],
-            ],
-            // 13. Fathir Ahmad Pratama (Normal, 7 Bulan)
-            [
-                'nama' => 'Fathir Ahmad Pratama',
-                'jk' => 'L',
-                'umur_bulan' => 7,
-                'parent_idx' => 12,
-                'posyandu_idx' => 2,
-                'kader_idx' => 2,
-                'berat_lahir' => 3.1,
-                'panjang_lahir' => 49.5,
-                'lk_lahir' => 34.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 7.4, 'tb' => 65.5, 'lk' => 42.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Mulai MPASI 6 bulan.', 'cat_val' => 'Tekstur saring halus.'],
-                    ['m' => 1, 'bb' => 7.9, 'tb' => 67.2, 'lk' => 43.2, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Makan prohe hati ayam & telur.', 'cat_val' => 'Kenaikan adekuat.'],
-                    ['m' => 0, 'bb' => 8.3, 'tb' => 68.8, 'lk' => 43.9, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Bayi montok dan ceria.', 'cat_val' => 'Status gizi normal.'],
-                ],
-            ],
-            // 14. Shafira Nurul Izzah (Normal, 24 Bulan / 2 Tahun)
-            [
-                'nama' => 'Shafira Nurul Izzah',
-                'jk' => 'P',
-                'umur_bulan' => 24,
-                'parent_idx' => 13,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 3.2,
-                'panjang_lahir' => 50.0,
-                'lk_lahir' => 34.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 11.0, 'tb' => 84.5, 'lk' => 46.8, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Lulus ASI 2 tahun.', 'cat_val' => 'Transisi makanan padat lancar.'],
-                    ['m' => 1, 'bb' => 11.4, 'tb' => 85.8, 'lk' => 47.1, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Makan mandiri pakai sendok.', 'cat_val' => 'Pertumbuhan baik.'],
-                    ['m' => 0, 'bb' => 11.8, 'tb' => 87.0, 'lk' => 47.5, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Balita tumbuh sesuai kurva baku.', 'cat_val' => 'Status gizi normal.'],
-                ],
-            ],
-            // 15. Ibrahim Malik Syah (Bayi 3 Bulan - Baru Terdaftar)
-            [
-                'nama' => 'Ibrahim Malik Syah',
-                'jk' => 'L',
-                'umur_bulan' => 3,
-                'parent_idx' => 14,
-                'posyandu_idx' => 1,
-                'kader_idx' => 1,
-                'berat_lahir' => 3.3,
-                'panjang_lahir' => 50.0,
-                'lk_lahir' => 34.5,
-                'history' => [
-                    ['m' => 1, 'bb' => 5.2, 'tb' => 56.5, 'lk' => 38.0, 'asi' => true, 'naik' => 'B', 'val' => 'approved', 'cat_kader' => 'Pendaftaran pertama balita baru.', 'cat_val' => 'Registrasi KMS baru berhasil.'],
-                    ['m' => 0, 'bb' => 6.0, 'tb' => 59.2, 'lk' => 39.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Full ASI eksklusif, kenaikan 800g.', 'cat_val' => 'Status gizi baik.'],
-                ],
-            ],
-            // 16. Zea Khalisa Farhan (Risiko Stunting / T - Butuh Pendampingan)
-            [
-                'nama' => 'Zea Khalisa Farhan',
-                'jk' => 'P',
-                'umur_bulan' => 13,
-                'parent_idx' => 0,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 2.8,
-                'panjang_lahir' => 47.5,
-                'lk_lahir' => 33.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 8.2, 'tb' => 71.5, 'lk' => 44.0, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Tumbuh gigi, sedikit rewel makan.', 'cat_val' => 'Beri porsi kecil tapi sering.'],
-                    ['m' => 1, 'bb' => 8.2, 'tb' => 72.0, 'lk' => 44.2, 'asi' => true, 'naik' => 'T', 'val' => 'approved', 'cat_kader' => 'BB tidak naik bulan ini.', 'cat_val' => 'Periksa sanitasi & kebiasaan makan.'],
-                    ['m' => 0, 'bb' => 8.4, 'tb' => 72.8, 'lk' => 44.5, 'asi' => true, 'naik' => 'N', 'val' => 'pending', 'cat_kader' => 'Mulai naik 200g setelah konseling.', 'cat_val' => null],
-                ],
-            ],
-            // 17. Arsenio Daffa Pratama (Normal, 20 Bulan)
-            [
-                'nama' => 'Arsenio Daffa Pratama',
-                'jk' => 'L',
-                'umur_bulan' => 20,
-                'parent_idx' => 1,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 3.4,
-                'panjang_lahir' => 51.0,
-                'lk_lahir' => 35.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 11.2, 'tb' => 83.5, 'lk' => 47.0, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Makan lahap, suka ikan kembung.', 'cat_val' => 'Gizi seimbang.'],
-                    ['m' => 1, 'bb' => 11.6, 'tb' => 84.8, 'lk' => 47.4, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Motorik kasar sangat aktif.', 'cat_val' => 'Pertumbuhan normal.'],
-                    ['m' => 0, 'bb' => 12.0, 'tb' => 86.2, 'lk' => 47.8, 'asi' => false, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Balita sehat & ceria.', 'cat_val' => 'Status gizi normal.'],
-                ],
-            ],
-            // 18. Mikayla Almahyra Syahputra (Normal, 16 Bulan)
-            [
-                'nama' => 'Mikayla Almahyra Syahputra',
-                'jk' => 'P',
-                'umur_bulan' => 16,
-                'parent_idx' => 2,
-                'posyandu_idx' => 1,
-                'kader_idx' => 1,
-                'berat_lahir' => 3.1,
-                'panjang_lahir' => 49.0,
-                'lk_lahir' => 33.8,
-                'history' => [
-                    ['m' => 2, 'bb' => 9.4, 'tb' => 77.0, 'lk' => 45.0, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Nafsu makan bagus.', 'cat_val' => 'Pertumbuhan normal.'],
-                    ['m' => 1, 'bb' => 9.8, 'tb' => 78.5, 'lk' => 45.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Aktif berjalan lancar.', 'cat_val' => 'Kenaikan BB adekuat.'],
-                    ['m' => 0, 'bb' => 10.1, 'tb' => 79.8, 'lk' => 46.0, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Balita sehat dan bugar.', 'cat_val' => 'Status gizi baik.'],
-                ],
-            ],
-            // 19. Dzakiandra Rafisqy (Pengukuran Re-check / Ditolak validator untuk revisi)
-            [
-                'nama' => 'Dzakiandra Rafisqy',
-                'jk' => 'L',
-                'umur_bulan' => 10,
-                'parent_idx' => 3,
-                'posyandu_idx' => 2,
-                'kader_idx' => 2,
-                'berat_lahir' => 3.2,
-                'panjang_lahir' => 50.0,
-                'lk_lahir' => 34.0,
-                'history' => [
-                    ['m' => 2, 'bb' => 8.5, 'tb' => 70.0, 'lk' => 44.2, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Bayi sehat.', 'cat_val' => 'Normal.'],
-                    ['m' => 1, 'bb' => 8.9, 'tb' => 71.5, 'lk' => 44.8, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Kenaikan teratur.', 'cat_val' => 'Normal.'],
-                    ['m' => 0, 'bb' => 12.5, 'tb' => 72.8, 'lk' => 45.2, 'asi' => true, 'naik' => 'N', 'val' => 'rejected', 'cat_kader' => 'Timbangan terbaca 12.5kg (typo penulisan).', 'cat_val' => 'Anomali kenaikan 3.6kg dalam 1 bulan. Mohon timbang ulang balita.'],
-                ],
-            ],
-            // 20. Nadzira Shaqueena (Bayi 6 Bulan - Baru Mulai MPASI)
-            [
-                'nama' => 'Nadzira Shaqueena',
-                'jk' => 'P',
-                'umur_bulan' => 6,
-                'parent_idx' => 4,
-                'posyandu_idx' => 0,
-                'kader_idx' => 0,
-                'berat_lahir' => 3.0,
-                'panjang_lahir' => 48.5,
-                'lk_lahir' => 33.5,
-                'history' => [
-                    ['m' => 2, 'bb' => 6.2, 'tb' => 61.5, 'lk' => 40.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'ASI eksklusif 4 bulan.', 'cat_val' => 'Kenaikan baik.'],
-                    ['m' => 1, 'bb' => 6.8, 'tb' => 63.5, 'lk' => 41.5, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'ASI eksklusif 5 bulan.', 'cat_val' => 'Lulus ASI eksklusif.'],
-                    ['m' => 0, 'bb' => 7.3, 'tb' => 65.2, 'lk' => 42.2, 'asi' => true, 'naik' => 'N', 'val' => 'approved', 'cat_kader' => 'Edukasi MPASI pertama hari ini di Posyandu.', 'cat_val' => 'Tumbuh kembang sangat baik.'],
-                ],
-            ],
+        $rawBalitas = [
+            // --- POSYANDU 1: GAMPONG LAMPULO (28 Balita) ---
+            ['Muhammad Al-Fatih Pratama', 'L', 14, 3.2, 50.0, 34.0, 'Normal'],
+            ['Aisyah Humaira Syahputra', 'P', 8, 3.0, 49.0, 33.5, 'Normal'],
+            ['Khadijah Azzahra', 'P', 18, 2.5, 46.5, 32.0, 'Stunting'],
+            ['Safiyya Salsabila Hakim', 'P', 15, 2.7, 48.0, 33.0, 'Risiko'],
+            ['Ziyad Atharizz Permana', 'L', 30, 3.5, 51.5, 35.0, 'Normal'],
+            ['Shafira Nurul Izzah', 'P', 24, 3.2, 50.0, 34.0, 'Normal'],
+            ['Zea Khalisa Farhan', 'P', 13, 2.8, 47.5, 33.0, 'Risiko'],
+            ['Arsenio Daffa Pratama', 'L', 20, 3.4, 51.0, 35.0, 'Normal'],
+            ['Nadzira Shaqueena', 'P', 6, 3.0, 48.5, 33.5, 'Normal'],
+            ['Muhammad Hanif Al-Ghazi', 'L', 4, 3.3, 50.0, 34.0, 'Normal'], // Bayi < 6 bln
+            ['Cut Alesha Maryam', 'P', 5, 2.9, 48.0, 33.0, 'Normal'],      // Bayi < 6 bln
+            ['Teuku Bilal Arkan', 'L', 11, 3.1, 49.5, 34.0, 'Normal'],
+            ['Raffa Danendra Pratama', 'L', 9, 3.0, 49.0, 33.5, 'Normal'],
+            ['Nabila Syakira Farhan', 'P', 22, 2.6, 46.0, 32.0, 'Stunting'],
+            ['Ibrahim Rasyid Maulana', 'L', 16, 3.2, 50.0, 34.2, 'Normal'],
+            ['Adiba Khanza Az-Zahra', 'P', 7, 3.0, 48.5, 33.0, 'Normal'],
+            ['Althaf Fathan Syah', 'L', 28, 3.4, 51.0, 35.0, 'Normal'],
+            ['Cut Syakilla Ramadhani', 'P', 12, 2.7, 47.0, 32.5, 'Risiko'],
+            ['Kenzo Abimanyu', 'L', 17, 3.3, 50.5, 34.5, 'Normal'],
+            ['Zoya Almahyra', 'P', 3, 3.1, 49.0, 34.0, 'Normal'],           // Bayi < 6 bln
+            ['Teuku Gibran Al-Farizi', 'L', 26, 3.5, 51.5, 35.2, 'Normal'],
+            ['Inara Shaqueena Zulfikar', 'P', 19, 2.5, 45.5, 31.5, 'Stunting'],
+            ['Dzaky Asadel Putra', 'L', 10, 3.2, 49.5, 34.0, 'Normal'],
+            ['Mikhaela Putri Safitri', 'P', 21, 3.1, 50.0, 34.0, 'Normal'],
+            ['Raffasya Zayn Harun', 'L', 15, 2.8, 47.5, 33.0, 'Risiko'],
+            ['Cut Nahla Khadijah', 'P', 32, 3.4, 51.0, 35.0, 'Normal'],
+            ['Fatih Ar-Rayyan', 'L', 36, 3.3, 50.5, 34.8, 'Normal'],
+            ['Azkia Medina Putri', 'P', 2, 3.0, 48.5, 33.5, 'Normal'],      // Bayi < 6 bln
+
+            // --- POSYANDU 2: GAMPONG PEUNAYONG (26 Balita) ---
+            ['Teuku Rayyan Al-Ghifari', 'L', 22, 2.8, 48.0, 33.0, 'Risiko'],
+            ['Arkana Zikri Hidayat', 'L', 11, 3.3, 50.5, 34.5, 'Normal'],
+            ['Kenzo Arshaka Tanjung', 'L', 9, 3.2, 50.0, 34.0, 'Normal'],
+            ['Cut Kayla Putri Danial', 'P', 19, 2.4, 45.0, 31.5, 'Stunting'],
+            ['Ibrahim Malik Syah', 'L', 3, 3.3, 50.0, 34.5, 'Normal'],       // Bayi < 6 bln
+            ['Mikayla Almahyra Syahputra', 'P', 16, 3.1, 49.0, 33.8, 'Normal'],
+            ['Farzan Ahza Dedi', 'L', 13, 3.0, 49.0, 33.5, 'Normal'],
+            ['Ayra Mysha Hendri', 'P', 8, 2.9, 48.5, 33.0, 'Normal'],
+            ['Muhammad Daffa Rahmat', 'L', 25, 3.4, 51.0, 35.0, 'Normal'],
+            ['Kezia Aqeela Dian', 'P', 14, 2.6, 46.5, 32.0, 'Risiko'],
+            ['Teuku Arka Faisal', 'L', 29, 3.5, 51.5, 35.5, 'Normal'],
+            ['Shanum Azkadina Rizal', 'P', 7, 3.0, 49.0, 33.5, 'Normal'],
+            ['Ghaisan Ahmad Fauzan', 'L', 5, 3.2, 50.0, 34.0, 'Normal'],    // Bayi < 6 bln
+            ['Kanaya Tabitha Hendri', 'P', 17, 2.5, 45.8, 31.8, 'Stunting'],
+            ['Haidar Zhafran Dedi', 'L', 21, 3.2, 50.0, 34.2, 'Normal'],
+            ['Cut Syifa Maulida', 'P', 10, 3.1, 49.5, 33.8, 'Normal'],
+            ['Atharizz Calief Rahmat', 'L', 27, 3.3, 50.5, 34.8, 'Normal'],
+            ['Zalfa Naura Dian', 'P', 4, 2.9, 48.0, 33.0, 'Normal'],        // Bayi < 6 bln
+            ['Rayyan Ghibran Pahlevi', 'L', 12, 2.8, 47.5, 33.0, 'Risiko'],
+            ['Khalisa Salsabila Hendri', 'P', 23, 3.1, 50.0, 34.0, 'Normal'],
+            ['Malik Al-Jabbar Dedi', 'L', 31, 3.4, 51.0, 35.0, 'Normal'],
+            ['Zahra Callista Syahputra', 'P', 18, 2.6, 46.0, 32.0, 'Stunting'],
+            ['Naufal Zikri Rahmat', 'L', 8, 3.2, 49.5, 34.0, 'Normal'],
+            ['Aqila Humairah Dian', 'P', 15, 3.0, 49.0, 33.5, 'Normal'],
+            ['Teuku Kenzie Al-Ayyubi', 'L', 34, 3.5, 52.0, 35.5, 'Normal'],
+            ['Cut Zahra Amira', 'P', 1, 3.1, 49.0, 34.0, 'Normal'],         // Bayi < 6 bln
+
+            // --- POSYANDU 3: GAMPONG BANDAR BARU (26 Balita) ---
+            ['Cut Nayla Khairunnisa', 'P', 5, 3.1, 49.5, 34.0, 'Normal'],    // Bayi < 6 bln
+            ['Bilal Ramadhan Fauzi', 'L', 28, 3.4, 51.0, 35.0, 'Normal'],
+            ['Ameera Dzahin Setiawan', 'P', 4, 3.0, 49.0, 33.5, 'Normal'],   // Bayi < 6 bln
+            ['Fathir Ahmad Pratama', 'L', 7, 3.1, 49.5, 34.0, 'Normal'],
+            ['Dzakiandra Rafisqy', 'L', 10, 3.2, 50.0, 34.0, 'Normal'],
+            ['Muhammad Zaidan Fauzi', 'L', 15, 3.2, 50.0, 34.2, 'Normal'],
+            ['Cut Alesha Putri Bambang', 'P', 20, 3.0, 49.0, 33.5, 'Normal'],
+            ['Rasyid Al-Ghifari Tanjung', 'L', 12, 2.7, 47.0, 32.5, 'Risiko'],
+            ['Nadine Azkadina Danial', 'P', 25, 3.3, 50.5, 34.8, 'Normal'],
+            ['Teuku Arfan Iqbal', 'L', 16, 3.1, 49.5, 34.0, 'Normal'],
+            ['Syakira Humairah Bambang', 'P', 22, 2.5, 45.5, 31.5, 'Stunting'],
+            ['Alvaro Gavriel Fauzi', 'L', 9, 3.2, 50.0, 34.0, 'Normal'],
+            ['Cut Misha Azzahra Danial', 'P', 6, 2.9, 48.5, 33.0, 'Normal'],
+            ['Daffa Ibnu Tanjung', 'L', 18, 3.4, 51.0, 35.0, 'Normal'],
+            ['Siti Khansa Iqbal', 'P', 14, 2.8, 47.5, 33.0, 'Risiko'],
+            ['Teuku Barra Danial', 'L', 30, 3.5, 51.5, 35.5, 'Normal'],
+            ['Cut Queenira Bambang', 'P', 11, 3.0, 49.0, 33.5, 'Normal'],
+            ['Muhammad Azzam Fauzi', 'L', 3, 3.2, 49.5, 34.0, 'Normal'],    // Bayi < 6 bln
+            ['Raline Shahia Tanjung', 'P', 27, 3.3, 50.5, 34.5, 'Normal'],
+            ['Fathan Al-Farisi Iqbal', 'L', 21, 2.6, 46.2, 32.0, 'Stunting'],
+            ['Cut Kiara Danial', 'P', 13, 3.1, 49.5, 34.0, 'Normal'],
+            ['Zhafran Khalid Bambang', 'L', 8, 3.2, 50.0, 34.2, 'Normal'],
+            ['Azkadina Naura Fauzi', 'P', 19, 3.0, 49.0, 33.5, 'Normal'],
+            ['Teuku Reynard Tanjung', 'L', 24, 3.4, 51.0, 35.0, 'Normal'],
+            ['Cut Nadia Humairah', 'P', 5, 3.0, 49.0, 33.5, 'Normal'],       // Bayi < 6 bln
+            ['Rayyan Zhafar Iqbal', 'L', 35, 3.5, 52.0, 35.5, 'Normal'],
         ];
 
-        foreach ($balitaProfiles as $bIdx => $bp) {
-            $ibu = $orangTuas[$bp['parent_idx']];
-            $posyandu = $posyandus[$bp['posyandu_idx']];
-            $kader = $kaders[$bp['kader_idx']];
+        $totalBalitas = count($rawBalitas);
 
-            $tglLahir = $now->copy()->subMonths($bp['umur_bulan'])->subDays(rand(1, 20));
-            $nikBalita = '117101' . $tglLahir->format('dmy') . str_pad($bIdx + 1, 4, '0', STR_PAD_LEFT);
+        foreach ($rawBalitas as $idx => $b) {
+            // Posyandu allocation:
+            // idx 0..27 (28 balitas) -> Posyandu 1 (Lampulo)
+            // idx 28..53 (26 balitas) -> Posyandu 2 (Peunayong)
+            // idx 54..79 (26 balitas) -> Posyandu 3 (Bandar Baru)
+            if ($idx < 28) {
+                $posyandu = $posyandu1;
+                $kader = $kaders[0];
+            } elseif ($idx < 54) {
+                $posyandu = $posyandu2;
+                $kader = $kaders[1];
+            } else {
+                $posyandu = $posyandu3;
+                $kader = $kaders[2];
+            }
+
+            $parent = $orangTuas[$idx % count($orangTuas)];
+
+            $nama = $b[0];
+            $jk = $b[1];
+            $umurBulan = $b[2];
+            $beratLahir = $b[3];
+            $panjangLahir = $b[4];
+            $lkLahir = $b[5];
+            $targetStatus = $b[6];
+
+            $tglLahir = $now->copy()->subMonths($umurBulan)->subDays(rand(1, 20));
+            $nikBalita = '117101' . $tglLahir->format('dmy') . str_pad($idx + 1, 4, '0', STR_PAD_LEFT);
             $bpjsBalita = '000' . rand(1000000000, 9999999999);
 
             $balita = Balita::create([
-                'orang_tua_id' => $ibu->id,
+                'orang_tua_id' => $parent->id,
                 'posyandu_id' => $posyandu->id,
                 'nik' => $nikBalita,
                 'no_bpjs' => $bpjsBalita,
-                'nama' => $bp['nama'],
-                'jenis_kelamin' => $bp['jk'],
+                'nama' => $nama,
+                'jenis_kelamin' => $jk,
                 'tanggal_lahir' => $tglLahir->format('Y-m-d'),
-                'berat_lahir' => $bp['berat_lahir'],
-                'panjang_lahir' => $bp['panjang_lahir'],
-                'lingkar_kepala_lahir' => $bp['lk_lahir'],
+                'berat_lahir' => $beratLahir,
+                'panjang_lahir' => $panjangLahir,
+                'lingkar_kepala_lahir' => $lkLahir,
             ]);
 
-            // Riwayat Pengukuran
-            foreach ($bp['history'] as $h) {
-                $tglUkur = $now->copy()->subMonths($h['m'])->startOfMonth()->addDays(rand(3, 18));
-                
-                // Hitung Z-Score WHO Realistis
+            // Tentukan berapa bulan riwayat pengukuran (1 s/d 4 bulan)
+            $historyMonths = min(4, max(1, $umurBulan));
+
+            // Tentukan apakah balita ini SUDAH diukur di bulan berjalan (Agustus 2026 / m=0)
+            // Sekitar 70% sudah diukur, 30% belum diukur (untuk variasi filter dashboard)
+            $isMeasuredThisMonth = ($idx % 10) < 7;
+            $startMonth = $isMeasuredThisMonth ? 0 : 1;
+
+            // Apakah balita ini absen bulan lalu (m=1)?
+            $isAbsentLastMonth = ($idx % 15 === 0);
+
+            // Simulasikan parameter dasar pertumbuhan
+            for ($m = $historyMonths - 1; $m >= $startMonth; $m--) {
+                if ($m === 1 && $isAbsentLastMonth) {
+                    continue; // Lewatkan bulan lalu untuk membuat data 'absen_bulan_lalu'
+                }
+
+                $tglUkur = $now->copy()->subMonths($m)->startOfMonth()->addDays(rand(3, 20));
+                $curAge = $umurBulan - $m;
+                if ($curAge < 0) $curAge = 0;
+
+                // Base values calculated from age and target status
+                if ($targetStatus === 'Stunting') {
+                    $tbVal = 48.0 + ($curAge * 1.5); // Pertumbuhan tinggi terhambat (< -2 SD)
+                    $bbVal = 3.0 + ($curAge * 0.28);
+                    $lkVal = 33.0 + ($curAge * 0.35);
+                    $naikStatus = ($m === $startMonth) ? 'T' : 'N';
+                    $valStatus = ($m === 0 && $idx % 4 === 0) ? 'pending' : 'approved';
+                    $catKader = 'Nafsu makan kurang, riwayat BBLR / sakit.';
+                    $catVal = 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.';
+                } elseif ($targetStatus === 'Risiko') {
+                    $tbVal = 49.0 + ($curAge * 1.8);
+                    $bbVal = 3.2 + ($curAge * 0.32);
+                    $lkVal = 33.5 + ($curAge * 0.4);
+                    $naikStatus = 'T'; // Tidak naik
+                    $valStatus = ($m === 0 && $idx % 3 === 0) ? 'pending' : 'approved';
+                    $catKader = 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.';
+                    $catVal = 'Konseling pemberian makanan kaya protein hewani.';
+                } else {
+                    $tbVal = 50.0 + ($curAge * 2.1); // Normal ideal
+                    $bbVal = 3.3 + ($curAge * 0.48);
+                    $lkVal = 34.0 + ($curAge * 0.45);
+                    $naikStatus = ($m === $historyMonths - 1) ? 'B' : 'N';
+                    $valStatus = ($m === 0 && $idx % 5 === 0) ? 'pending' : 'approved';
+                    $catKader = 'Balita sehat, nafsu makan baik dan aktif.';
+                    $catVal = 'Pertumbuhan normal sesuai usia.';
+                }
+
+                // Cek simulasi revisi / reject khusus untuk 2 balita testing
+                if ($m === 0 && ($idx === 4 || $idx === 32)) {
+                    $valStatus = 'rejected';
+                    $bbVal += 3.5; // Typo ekstrem untuk memicu anomali validasi
+                    $catKader = 'Timbangan terbaca melonjak (kemungkinan salah catat).';
+                    $catVal = 'Anomali kenaikan ekstrem dalam 1 bulan. Mohon timbang ulang balita.';
+                }
+
+                $asiStatus = ($curAge <= 6);
+
                 $calcResult = $calculator->calculate(
                     $balita->tanggal_lahir,
                     $tglUkur,
                     $balita->jenis_kelamin,
-                    $h['bb'],
-                    $h['tb']
+                    $bbVal,
+                    $tbVal
                 );
 
                 Pengukuran::create([
@@ -652,23 +388,23 @@ class DatabaseSeeder extends Seeder
                     'kader_id' => $kader->id,
                     'tanggal_ukur' => $tglUkur,
                     'umur_bulan' => $calcResult['umur_bulan'],
-                    'berat_badan' => $h['bb'],
-                    'tinggi_badan' => $h['tb'],
-                    'lingkar_kepala' => $h['lk'],
-                    'asi_eksklusif' => $h['asi'],
+                    'berat_badan' => round($bbVal, 2),
+                    'tinggi_badan' => round($tbVal, 1),
+                    'lingkar_kepala' => round($lkVal, 1),
+                    'asi_eksklusif' => $asiStatus,
                     'z_score_bbu' => $calcResult['z_score_bbu'],
                     'z_score_tbu' => $calcResult['z_score_tbu'],
                     'status_gizi' => $calcResult['status_gizi'],
-                    'status_kenaikan' => $h['naik'],
-                    'status_validasi' => $h['val'],
-                    'catatan_validator' => $h['cat_val'],
-                    'catatan_kader' => $h['cat_kader'],
+                    'status_kenaikan' => $naikStatus,
+                    'status_validasi' => $valStatus,
+                    'catatan_validator' => $catVal,
+                    'catatan_kader' => $catKader,
                 ]);
             }
         }
 
         // -------------------------------------------------------------
-        // 6. JADWAL POSYANDU REALISTIS (5 JADWAL)
+        // 6. JADWAL POSYANDU REALISTIS (6 JADWAL)
         // -------------------------------------------------------------
         $jadwalData = [
             [
@@ -706,6 +442,15 @@ class DatabaseSeeder extends Seeder
                 'waktu_mulai' => '09:00',
                 'waktu_selesai' => '12:00',
                 'catatan' => 'Kunjungan rumah bagi balita yang absen pada hari H Posyandu.',
+            ],
+            [
+                'posyandu_id' => $posyandu2->id,
+                'judul' => 'Edukasi MPASI Kaya Protein Hewani',
+                'lokasi' => 'Kompleks Rukun Warga Peunayong',
+                'tanggal' => $now->copy()->addDays(28)->format('Y-m-d'),
+                'waktu_mulai' => '09:00',
+                'waktu_selesai' => '11:30',
+                'catatan' => 'Demo masak MPASI berbahan ikan lokal dan telur bersama Kader & Tenaga Gizi.',
             ],
             [
                 'posyandu_id' => $posyandu1->id,

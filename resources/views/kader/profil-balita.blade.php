@@ -43,23 +43,23 @@
     
     <!-- Top Header Actions -->
     <div class="max-w-7xl mx-auto px-4 lg:px-8 pt-6 pb-4 flex items-center justify-between">
-        <a href="{{ route('balita.index') }}" class="flex items-center gap-3 text-slate-500 hover:text-slate-800 transition-colors font-medium text-[14px]">
-            <div class="w-9 h-9 rounded-full border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 transition-colors shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>
-            </div>
+        <a href="{{ route('balita.index') }}" class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-slate-200/80 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-all font-semibold text-[13.5px] shadow-xs">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-slate-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
             Daftar Balita
         </a>
-        <div class="flex items-center gap-2 lg:gap-3">
-            <a href="{{ route('balita.edit', $balitaId) }}" class="flex items-center gap-2 px-4 py-2 lg:px-5 lg:py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-[13px] shadow-sm transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg> Edit <span class="hidden sm:inline">Data</span>
+        <div class="flex items-center gap-2 sm:gap-3">
+            <a href="{{ route('balita.edit', $balitaId) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2 rounded-xl border border-slate-200/80 bg-white hover:bg-slate-50 text-slate-700 font-bold text-[13px] shadow-xs transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-500"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg> 
+                <span>Edit</span>
             </a>
             <form id="delete-balita-{{ $balitaId }}" action="{{ route('balita.destroy', $balitaId) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="button" onclick="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ window.NutriAlert.confirm('Hapus Balita?', 'Data yang dihapus tidak dapat dikembalikan!', 'Hapus', 'Batal').then((r) => { if(r.isConfirmed) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }); } else { if(confirm('Hapus balita ini?')) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }" class="flex items-center gap-2 px-4 py-2 lg:px-5 lg:py-2.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 font-bold text-[13px] shadow-sm transition-all cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg> Hapus
+                <button type="button" onclick="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ window.NutriAlert.confirm('Hapus Balita?', 'Data yang dihapus tidak dapat dikembalikan!', 'Hapus', 'Batal').then((r) => { if(r.isConfirmed) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }); } else { if(confirm('Hapus balita ini?')) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }" class="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2 rounded-xl border border-rose-200/80 bg-rose-50/50 hover:bg-rose-50 text-rose-600 font-bold text-[13px] shadow-xs transition-all cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg> 
+                    <span>Hapus</span>
                 </button>
             </form>
         </div>
@@ -67,22 +67,22 @@
 
     <div class="max-w-7xl mx-auto px-4 lg:px-8 space-y-6">
         
-        <!-- TOP PROFILE HERO CARD (UI/UX ProMax Design) -->
-        <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-[0_12px_40px_-10px_rgba(13,148,136,0.08),0_2px_12px_rgba(0,0,0,0.03)] border border-slate-100/90 relative overflow-hidden motion-card opacity-0">
+        <!-- MASTER CHILD PROFILE & HEALTH INSIGHT CARD -->
+        <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-[0_12px_35px_-8px_rgba(13,148,136,0.07),0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100 relative overflow-hidden motion-card opacity-0">
             
-            <!-- Ambient Decorative Gradient (Soft Top Right Aura) -->
-            <div class="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-gradient-to-bl from-teal-100/50 via-emerald-50/30 to-transparent blur-2xl pointer-events-none"></div>
+            <!-- Soft Ambient Glow Aura -->
+            <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-gradient-to-bl from-teal-100/60 via-emerald-50/30 to-transparent blur-2xl pointer-events-none"></div>
 
-            <!-- Top Row: Identity & CTA -->
+            <!-- Top Identity & Actions Row -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
                 
-                <!-- Avatar & Identity -->
+                <!-- Avatar & Identity Details -->
                 <div class="flex items-center gap-4 sm:gap-5 min-w-0 flex-1">
                     
-                    <!-- Avatar with Glowing Gradient Ring -->
+                    <!-- Avatar with Glowing Soft Gradient Ring -->
                     <div class="relative shrink-0">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-teal-600 via-emerald-500 to-teal-400 p-[2.5px] shadow-[0_6px_20px_-4px_rgba(13,148,136,0.35)]">
-                            <div class="w-full h-full rounded-[13.5px] bg-gradient-to-br from-white via-teal-50/50 to-emerald-50/80 flex items-center justify-center">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-teal-500 via-emerald-400 to-teal-400 p-[2.5px] shadow-[0_6px_18px_-3px_rgba(13,148,136,0.3)]">
+                            <div class="w-full h-full rounded-[13.5px] bg-gradient-to-br from-white via-teal-50/60 to-emerald-50/80 flex items-center justify-center">
                                 <span class="text-2xl sm:text-3xl font-black bg-gradient-to-br from-teal-700 to-emerald-600 bg-clip-text text-transparent select-none">
                                     {{ strtoupper(substr($childName, 0, 1)) }}
                                 </span>
@@ -96,60 +96,30 @@
                         </div>
                     </div>
 
-                    <!-- Name & Status Badges -->
+                    <!-- Name, Gender & Age -->
                     <div class="flex flex-col min-w-0 flex-1">
                         <div class="flex items-center gap-2.5 flex-wrap">
-                            <h1 class="text-[20px] sm:text-[24px] font-black text-slate-900 tracking-tight leading-tight truncate">{{ $childName }}</h1>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700 border border-sky-200/80 shadow-2xs' : 'bg-pink-50 text-pink-700 border border-pink-200/80 shadow-2xs' }}">
+                            <h1 class="text-[20px] sm:text-[24px] font-bold text-slate-800 tracking-tight leading-tight truncate">{{ $childName }}</h1>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700 border border-sky-200/80' : 'bg-pink-50 text-pink-700 border border-pink-200/80' }}">
                                 {{ $gender === 'L' ? 'Laki-laki' : 'Perempuan' }}
                             </span>
                         </div>
 
-                        <!-- Status Badges Row -->
-                        <div class="flex flex-wrap items-center gap-2 mt-2">
-                            <!-- Age Badge -->
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100/90 text-slate-700 rounded-full text-[11.5px] font-bold border border-slate-200/70 shadow-2xs">
+                        <div class="flex items-center gap-2 mt-1.5">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100/90 text-slate-700 rounded-full text-[11.5px] font-semibold border border-slate-200/60">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <span>{{ $age }}</span>
                             </span>
-
-                            <!-- Status Gizi Badge -->
-                            <span class="inline-flex items-center gap-1.5 {{ $badgeClasses }} px-3 py-1 rounded-full text-[11.5px] font-bold shadow-2xs">
-                                {!! $badgeIcon !!}
-                                <span>{{ $status }}</span>
-                            </span>
-
-                            <!-- Status Validasi Badge -->
-                            @if(!empty($latestMeasure['status_validasi']))
-                                @php
-                                    $valColors = match($latestMeasure['status_validasi']) {
-                                        'pending' => 'bg-amber-50 text-amber-800 border-amber-200/80',
-                                        'approved' => 'bg-emerald-50 text-emerald-800 border-emerald-200/80',
-                                        'rejected' => 'bg-rose-50 text-rose-800 border-rose-200/80',
-                                        default => 'bg-slate-50 text-slate-700 border-slate-200/80'
-                                    };
-                                    $valIcon = match($latestMeasure['status_validasi']) {
-                                        'pending' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-amber-600"><path stroke-linecap="round" stroke-linejoin="round" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" /></svg>',
-                                        'approved' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 text-emerald-600"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>',
-                                        'rejected' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-rose-600"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>',
-                                        default => ''
-                                    };
-                                @endphp
-                                <span class="inline-flex items-center gap-1.5 {{ $valColors }} px-3 py-1 rounded-full text-[11.5px] font-bold border shadow-2xs">
-                                    {!! $valIcon !!}
-                                    <span class="capitalize">{{ $latestMeasure['status_validasi'] }}</span>
-                                </span>
-                            @endif
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Desktop Action Button -->
+                <!-- Desktop CTA Button -->
                 <div class="hidden sm:flex items-center shrink-0">
-                    <button onclick="openMeasurementModal()" class="px-5 py-2.5 bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_16px_-2px_rgba(13,148,136,0.45)] hover:shadow-[0_6px_20px_-2px_rgba(13,148,136,0.55)] active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer">
+                    <button onclick="openMeasurementModal()" class="px-5 py-2.5 bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_16px_-2px_rgba(13,148,136,0.4)] hover:shadow-[0_6px_20px_-2px_rgba(13,148,136,0.5)] active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
                         <span>Ukur Sekarang</span>
                     </button>
@@ -157,22 +127,57 @@
 
             </div>
 
-            <!-- Bulletproof Responsive Meta Strip (1-col on Mobile, 3-col on Desktop) -->
+            <!-- Integrated Growth Status & Screening Banner -->
+            @php
+                $statusBannerBg = $status_type == 'danger' 
+                    ? 'bg-rose-50/80 border-rose-200/80 text-rose-900' 
+                    : ($status_type == 'warning' 
+                        ? 'bg-amber-50/80 border-amber-200/80 text-amber-900' 
+                        : 'bg-emerald-50/80 border-emerald-200/80 text-emerald-900');
+                $statusDot = $status_type == 'danger' ? 'bg-rose-500' : ($status_type == 'warning' ? 'bg-amber-500' : 'bg-emerald-500');
+                $valBadgeStyle = match($latestMeasure['status_validasi'] ?? '') {
+                    'pending' => 'bg-amber-100/80 text-amber-800 border-amber-200',
+                    'approved' => 'bg-emerald-100/80 text-emerald-800 border-emerald-200',
+                    'rejected' => 'bg-rose-100/80 text-rose-800 border-rose-200',
+                    default => 'bg-slate-100 text-slate-700 border-slate-200'
+                };
+            @endphp
+            <div class="mt-4 p-3.5 sm:p-4 rounded-2xl {{ $statusBannerBg }} border flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+                <div class="flex items-start sm:items-center gap-3 min-w-0">
+                    <span class="w-3 h-3 rounded-full {{ $statusDot }} shrink-0 mt-1 sm:mt-0 shadow-xs animate-pulse"></span>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2.5">
+                        <span class="font-bold text-[13.5px]">Status Gizi: {{ $status }}</span>
+                        <span class="hidden sm:inline text-slate-400">•</span>
+                        <span class="text-xs text-slate-600 font-medium leading-relaxed">{{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang anak.' }}</span>
+                    </div>
+                </div>
+
+                @if(!empty($latestMeasure['status_validasi']))
+                    <div class="shrink-0 flex items-center">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border {{ $valBadgeStyle }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>{{ $latestMeasure['status_validasi'] === 'approved' ? 'Terverifikasi Puskesmas' : ($latestMeasure['status_validasi'] === 'rejected' ? 'Ditolak Puskesmas' : 'Menunggu Validasi') }}</span>
+                        </span>
+                    </div>
+                @endif
+            </div>
+
+            <!-- Key Bio Information Strip -->
             <div class="mt-4.5 pt-3.5 border-t border-slate-100/90 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 text-[13px] relative z-10">
                 
                 <!-- Ibu -->
-                <div class="flex items-center gap-2 min-w-0">
-                    <div class="w-6 h-6 rounded-md bg-teal-50 border border-teal-100/80 text-teal-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-7 h-7 rounded-lg bg-teal-50 border border-teal-100/80 text-teal-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                     </div>
                     <span class="text-slate-400 font-medium text-xs shrink-0">Ibu:</span>
                     <strong class="font-bold text-slate-800 text-xs sm:text-[13px] truncate">{{ $motherName }}</strong>
                 </div>
 
                 <!-- NIK -->
-                <div class="flex items-center gap-2 min-w-0">
-                    <div class="w-6 h-6 rounded-md bg-sky-50 border border-sky-100/80 text-sky-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-7 h-7 rounded-lg bg-sky-50 border border-sky-100/80 text-sky-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
                     </div>
                     <span class="text-slate-400 font-medium text-xs shrink-0">NIK:</span>
                     <strong class="font-bold text-slate-800 font-mono text-xs sm:text-[13px] tracking-wider truncate">{{ $nik }}</strong>
@@ -182,9 +187,9 @@
                 </div>
 
                 <!-- Posyandu -->
-                <div class="flex items-center gap-2 min-w-0">
-                    <div class="w-6 h-6 rounded-md bg-indigo-50 border border-indigo-100/80 text-indigo-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100/80 text-indigo-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
                     </div>
                     <span class="text-slate-400 font-medium text-xs shrink-0">Posyandu:</span>
                     <strong class="font-bold text-slate-800 text-xs sm:text-[13px] truncate">{{ $posyanduName }}</strong>
@@ -194,7 +199,7 @@
 
             <!-- Mobile Action Button (Full Width at Bottom) -->
             <div class="mt-4 sm:hidden">
-                <button onclick="openMeasurementModal()" class="w-full py-3 bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[14px] rounded-xl shadow-[0_4px_16px_-2px_rgba(13,148,136,0.45)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <button onclick="openMeasurementModal()" class="w-full py-3 bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[14px] rounded-xl shadow-[0_4px_16px_-2px_rgba(13,148,136,0.4)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
                     <span>Ukur Sekarang</span>
                 </button>
@@ -202,48 +207,21 @@
 
         </div>
 
-        <!-- Alert Skrining (Spaced & Elevated) -->
-        <div class="motion-card opacity-0">
-            @php
-                $alertBg = $status_type == 'danger' 
-                    ? 'bg-gradient-to-r from-rose-50/90 via-rose-50/40 to-white border-rose-200/80 text-rose-900 shadow-[0_4px_20px_-4px_rgba(244,63,94,0.12)]' 
-                    : ($status_type == 'warning' 
-                        ? 'bg-gradient-to-r from-amber-50/90 via-amber-50/40 to-white border-amber-200/80 text-amber-900 shadow-[0_4px_20px_-4px_rgba(245,158,11,0.12)]' 
-                        : 'bg-gradient-to-r from-emerald-50/90 via-emerald-50/40 to-white border-emerald-200/80 text-emerald-900 shadow-[0_4px_20px_-4px_rgba(16,185,129,0.12)]');
-                $alertBadge = $status_type == 'danger' 
-                    ? 'bg-gradient-to-br from-rose-400 to-rose-500 text-white shadow-rose-500/25' 
-                    : ($status_type == 'warning' 
-                        ? 'bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-amber-500/25' 
-                        : 'bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-emerald-500/25');
-            @endphp
-            <div class="flex items-start gap-3.5 sm:gap-4 p-4 sm:p-5 {{ $alertBg }} rounded-2xl border">
-                <div class="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-xl {{ $alertBadge }} flex items-center justify-center shrink-0 shadow-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4.5 h-4.5 sm:w-5 sm:h-5 shrink-0"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>
-                </div>
-                <div class="flex flex-col text-[13px] sm:text-[13.5px] leading-relaxed min-w-0 flex-1">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="font-bold text-slate-800">Hasil Skrining Antropometri:</span>
-                        <span class="font-extrabold">{{ $latestMeasure['status'] ?? 'Belum Diukur' }}</span>
-                    </div>
-                    <p class="text-slate-600 mt-0.5 text-[12.5px] sm:text-[13px] leading-normal">{{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang anak.' }}</p>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- Tabs -->
-    <div class="max-w-7xl mx-auto px-4 lg:px-8 border-b border-slate-200 mb-6 lg:mb-8 motion-card opacity-0" id="profile-tabs">
-        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-3">
-            <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="px-4 py-2 rounded-full bg-teal-600 text-white font-bold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer shadow-xs">
+    <!-- Segmented Tab Navigation -->
+    <div class="max-w-7xl mx-auto px-4 lg:px-8 mt-6 mb-6 lg:mb-8 motion-card opacity-0" id="profile-tabs">
+        <div class="bg-slate-200/60 p-1.5 rounded-2xl flex gap-1.5 overflow-x-auto hide-scrollbar">
+            <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="px-4.5 py-2.5 rounded-xl bg-white text-teal-800 font-bold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer shadow-xs">
                 Ringkasan
             </button>
-            <button onclick="switchTab('detail')" id="tab-detail" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-bold text-[13px] sm:text-[14px] hover:bg-slate-200 transition-all whitespace-nowrap cursor-pointer">
+            <button onclick="switchTab('detail')" id="tab-detail" class="px-4.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-semibold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer">
                 Detail Informasi
             </button>
-            <button onclick="switchTab('riwayat')" id="tab-riwayat" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-bold text-[13px] sm:text-[14px] hover:bg-slate-200 transition-all whitespace-nowrap cursor-pointer">
+            <button onclick="switchTab('riwayat')" id="tab-riwayat" class="px-4.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-semibold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer">
                 Riwayat Pengukuran
             </button>
-            <button onclick="switchTab('grafik')" id="tab-grafik" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-bold text-[13px] sm:text-[14px] hover:bg-slate-200 transition-all whitespace-nowrap cursor-pointer">
+            <button onclick="switchTab('grafik')" id="tab-grafik" class="px-4.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-semibold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer">
                 Grafik Pertumbuhan
             </button>
         </div>
@@ -682,8 +660,8 @@
             el.classList.add('hidden');
         });
         
-        const activeClasses = ['bg-teal-600', 'text-white'];
-        const inactiveClasses = ['bg-slate-100', 'text-slate-600', 'hover:bg-slate-200'];
+        const activeClasses = ['bg-white', 'text-teal-800', 'font-bold', 'shadow-xs'];
+        const inactiveClasses = ['text-slate-600', 'hover:text-slate-900', 'font-semibold'];
         
         ['ringkasan', 'detail', 'riwayat', 'grafik'].forEach(id => {
             const btn = document.getElementById('tab-' + id);

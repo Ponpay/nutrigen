@@ -13,15 +13,15 @@
     $colorClass = $colorMap[$status_type] ?? 'slate';
 
     $statusBadgeClasses = [
-        'success' => 'bg-emerald-500 text-white shadow-sm border-0',
-        'warning' => 'bg-amber-500 text-white shadow-sm border-0',
-        'danger'  => 'bg-rose-500 text-white shadow-sm border-0',
+        'success' => 'bg-emerald-50 text-emerald-800 border border-emerald-200/80',
+        'warning' => 'bg-amber-50 text-amber-800 border border-amber-200/80',
+        'danger'  => 'bg-rose-50 text-rose-800 border border-rose-200/80',
     ];
-    $badgeClasses = $statusBadgeClasses[$status_type] ?? 'bg-slate-500 text-white shadow-sm border-0';
+    $badgeClasses = $statusBadgeClasses[$status_type] ?? 'bg-slate-50 text-slate-700 border border-slate-200/80';
     $badgeIcon = match($status_type) {
-        'danger' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2.25m0 2.625h.008v.008H12v-.008zM12 3a9 9 0 100 18 9 9 0 000-18z" /></svg>',
-        'warning' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2.25m0 2.625h.008v.008H12v-.008zM12 3a9 9 0 100 18 9 9 0 000-18z" /></svg>',
-        default => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+        'danger' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-rose-600"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2.25m0 2.625h.008v.008H12v-.008zM12 3a9 9 0 100 18 9 9 0 000-18z" /></svg>',
+        'warning' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-amber-600"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2.25m0 2.625h.008v.008H12v-.008zM12 3a9 9 0 100 18 9 9 0 000-18z" /></svg>',
+        default => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-emerald-600"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
     };
 @endphp
 
@@ -58,15 +58,16 @@
             <form id="delete-balita-{{ $balitaId }}" action="{{ route('balita.destroy', $balitaId) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="button" onclick="window.NutriAlert.confirm('Hapus Data Balita?', 'Hapus permanen data balita beserta seluruh riwayat pengukurannya?', 'Ya, Hapus', 'Batal').then((result) => { if(result.isConfirmed) document.getElementById('delete-balita-{{ $balitaId }}').submit(); })" class="flex items-center gap-2 px-4 py-2 lg:px-5 lg:py-2.5 rounded-xl border border-rose-100 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-[13px] shadow-sm transition-all">
+                <button type="button" onclick="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ window.NutriAlert.confirm('Hapus Balita?', 'Data yang dihapus tidak dapat dikembalikan!', 'Hapus', 'Batal').then((r) => { if(r.isConfirmed) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }); } else { if(confirm('Hapus balita ini?')) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }" class="flex items-center gap-2 px-4 py-2 lg:px-5 lg:py-2.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 font-bold text-[13px] shadow-sm transition-all cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg> Hapus
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Hero Card -->
-    <div class="max-w-7xl mx-auto px-4 lg:px-8 mb-6 motion-card opacity-0">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8 space-y-6 lg:space-y-8">
+        
+        <!-- TOP PROFILE CARD -->
         <div class="bg-white rounded-[24px] p-4 lg:p-6 shadow-sm border border-slate-100 flex flex-col lg:flex-row items-center lg:items-start lg:justify-between gap-6 lg:gap-10">
             
             <!-- Left & Center: Avatar and Info -->
@@ -78,7 +79,7 @@
                             <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <div class="absolute bottom-0 right-0 w-7 h-7 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-200/60 border border-emerald-100 text-emerald-600 translate-x-1 lg:translate-x-0">
+                    <div class="absolute bottom-0 right-0 w-7 h-7 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-200/60 text-emerald-600 translate-x-1 lg:translate-x-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 lg:w-5 lg:h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                           <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
@@ -90,68 +91,68 @@
                 <div class="flex flex-col items-center lg:items-start gap-3 lg:gap-4 w-full">
                     <!-- Name & Age -->
                     <div class="flex flex-col items-center lg:items-start gap-1 w-full">
-                        <h1 class="text-[20px] lg:text-[28px] font-black text-slate-900 tracking-tight text-center lg:text-left">{{ $childName }}</h1>
-                        <div class="flex items-center gap-1.5 px-3 py-1 bg-slate-50 text-slate-700 rounded-full mt-1 border border-slate-100/50">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+                        <h1 class="text-[20px] lg:text-[26px] font-bold text-slate-800 tracking-tight text-center lg:text-left">{{ $childName }}</h1>
+                        <div class="flex items-center gap-1.5 px-3 py-0.5 bg-slate-50 text-slate-600 rounded-full mt-0.5 border border-slate-200/60">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span class="text-[12px] font-bold">{{ $age }}</span>
+                            <span class="text-[12px] font-semibold">{{ $age }}</span>
                         </div>
                     </div>
                     
                     <!-- Badges -->
                     <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 w-full">
-                        <div class="flex items-center gap-1.5 {{ $badgeClasses }} px-3 py-1 lg:px-3.5 lg:py-1.5 rounded-full">
+                        <div class="flex items-center gap-1.5 {{ $badgeClasses }} px-3 py-1 lg:px-3.5 lg:py-1 rounded-full">
                             {!! $badgeIcon !!}
-                            <span class="text-[10px] lg:text-[11px] font-extrabold uppercase tracking-wider">{{ $status }}</span>
+                            <span class="text-[10.5px] lg:text-[11px] font-semibold uppercase tracking-wider">{{ $status }}</span>
                         </div>
                         @if(!empty($latestMeasure['status_validasi']))
                             @php
                                 $valColors = match($latestMeasure['status_validasi']) {
-                                    'pending' => 'bg-amber-400 text-white',
-                                    'approved' => 'bg-emerald-500 text-white',
-                                    'rejected' => 'bg-rose-500 text-white',
-                                    default => 'bg-slate-500 text-white'
+                                    'pending' => 'bg-slate-50 text-slate-600 border border-slate-200/80',
+                                    'approved' => 'bg-emerald-50 text-emerald-700 border border-emerald-200/80',
+                                    'rejected' => 'bg-rose-50 text-rose-700 border border-rose-200/80',
+                                    default => 'bg-slate-50 text-slate-600 border border-slate-200/80'
                                 };
                                 $valIcon = match($latestMeasure['status_validasi']) {
-                                    'pending' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>',
-                                    'approved' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>',
-                                    'rejected' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>',
+                                    'pending' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400"><path stroke-linecap="round" stroke-linejoin="round" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" /></svg>',
+                                    'approved' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 text-emerald-600"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>',
+                                    'rejected' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-rose-600"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>',
                                     default => ''
                                 };
                             @endphp
-                            <div class="flex items-center gap-1.5 {{ $valColors }} px-3 py-1 lg:px-3.5 lg:py-1.5 rounded-full shadow-sm border-0">
+                            <div class="flex items-center gap-1.5 {{ $valColors }} px-3 py-1 lg:px-3.5 lg:py-1 rounded-full shadow-2xs">
                                 {!! $valIcon !!}
-                                <span class="text-[10px] lg:text-[11px] font-extrabold uppercase tracking-wider">{{ $latestMeasure['status_validasi'] }}</span>
+                                <span class="text-[10.5px] lg:text-[11px] font-semibold uppercase tracking-wider">{{ $latestMeasure['status_validasi'] }}</span>
                             </div>
                         @endif
                     </div>
 
                     {{-- Unified Info Card --}}
-                    <div class="bg-slate-50 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200 p-4 w-full lg:w-auto">
+                    <div class="bg-slate-50/70 rounded-2xl border border-slate-200/80 p-3 w-full lg:w-auto flex flex-col gap-2">
                         <!-- Ibu -->
-                        <div class="flex items-center gap-3 px-3 py-3 bg-teal-50 rounded-[12px]">
-                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shrink-0 shadow-sm border border-slate-100/50">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                        <div class="flex items-center gap-3 px-3 py-2 bg-white rounded-xl border border-slate-200/60">
+                            <div class="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                             </div>
                             <div class="flex flex-col overflow-hidden">
-                                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Ibu</span>
-                                <span class="text-[13px] font-bold text-slate-800 truncate">{{ $motherName }}</span>
+                                <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-tight">Ibu</span>
+                                <span class="text-[12.5px] font-bold text-slate-800 truncate">{{ $motherName }}</span>
                             </div>
                         </div>
-                        <div class="border-t border-slate-100"></div>
+                        
                         <!-- NIK -->
-                        <div class="flex items-center justify-between gap-3 px-3 py-3 bg-emerald-50 rounded-[12px]">
+                        <div class="flex items-center justify-between gap-3 px-3 py-2 bg-white rounded-xl border border-slate-200/60">
                             <div class="flex items-center gap-3 overflow-hidden">
-                                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shrink-0 shadow-sm border border-slate-100/50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                                <div class="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
                                 </div>
                                 <div class="flex flex-col overflow-hidden">
-                                    <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">NIK</span>
-                                    <span class="text-[13px] font-bold text-slate-800 font-mono tracking-wider truncate">{{ $nik }}</span>
+                                    <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-tight">NIK</span>
+                                    <span class="text-[12.5px] font-bold text-slate-800 font-mono tracking-wider truncate">{{ $nik }}</span>
                                 </div>
                             </div>
-                            <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="text-slate-400 hover:text-slate-600 shrink-0 hidden sm:block">
+                            <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="text-slate-400 hover:text-slate-600 shrink-0 hidden sm:block cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
                             </button>
                         </div>

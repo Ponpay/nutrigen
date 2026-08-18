@@ -25,44 +25,44 @@
 @php
     $colorMap = [
         'success' => [
-            'ring'   => 'border-emerald-500 text-emerald-500',
+            'ring'   => 'border-emerald-300 text-emerald-600',
             'dot'    => 'bg-emerald-500',
-            'badge'  => 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+            'badge'  => 'bg-emerald-50/80 text-emerald-800 border-emerald-200/70',
         ],
         'warning' => [
-            'ring'   => 'border-amber-500 text-amber-500',
+            'ring'   => 'border-amber-300 text-amber-600',
             'dot'    => 'bg-amber-500',
-            'badge'  => 'bg-amber-50 text-amber-700 border-amber-200/60',
+            'badge'  => 'bg-amber-50/80 text-amber-800 border-amber-200/70',
         ],
         'danger'  => [
-            'ring'   => 'border-rose-500 text-rose-500',
+            'ring'   => 'border-rose-300 text-rose-600',
             'dot'    => 'bg-rose-500',
-            'badge'  => 'bg-rose-50 text-rose-700 border-rose-200/60',
+            'badge'  => 'bg-rose-50/80 text-rose-800 border-rose-200/70',
         ],
     ];
 
     $colors = $colorMap[$measurement['status_type']] ?? [
-        'ring'  => 'border-slate-400 text-slate-400',
+        'ring'  => 'border-slate-300 text-slate-500',
         'dot'   => 'bg-slate-400',
-        'badge' => 'bg-slate-50 text-slate-600 border-slate-200',
+        'badge' => 'bg-slate-50 text-slate-700 border-slate-200/80',
     ];
 
     $statusValidasi = $measurement['status_validasi'] ?? 'pending';
     $valConfig = match($statusValidasi) {
         'approved' => [
-            'badge' => 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+            'badge' => 'bg-emerald-50/70 text-emerald-700 border-emerald-200/60',
             'label' => 'Terverifikasi Puskesmas',
             'icon'  => '<svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>'
         ],
         'rejected' => [
-            'badge' => 'bg-rose-50 text-rose-700 border-rose-200/60',
+            'badge' => 'bg-rose-50/70 text-rose-700 border-rose-200/60',
             'label' => 'Perlu Revisi',
             'icon'  => '<svg class="w-3.5 h-3.5 text-rose-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" /></svg>'
         ],
         default => [
-            'badge' => 'bg-amber-50 text-amber-700 border-amber-200/60',
+            'badge' => 'bg-slate-50 text-slate-600 border-slate-200/80',
             'label' => 'Menunggu Validasi',
-            'icon'  => '<svg class="w-3.5 h-3.5 text-amber-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>'
+            'icon'  => '<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>'
         ]
     };
 @endphp
@@ -70,42 +70,42 @@
 <div x-data="{ open: false }" class="relative pl-8 sm:pl-10 pb-4 group">
     <!-- Timeline Track Line -->
     @unless($isLast)
-        <div class="absolute left-[13px] sm:left-[15px] top-6 bottom-0 w-[2px] bg-slate-200 group-hover:bg-teal-200 transition-colors"></div>
+        <div class="absolute left-[13px] sm:left-[15px] top-6 bottom-0 w-[2px] bg-slate-200/80 group-hover:bg-teal-200/80 transition-colors"></div>
     @endunless
     
-    <!-- Timeline Node Indicator -->
-    <div class="absolute left-0 top-2.5 w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] rounded-full bg-white border-2 {{ $colors['ring'] }} shadow-sm flex items-center justify-center transition-all group-hover:scale-110">
+    <!-- Timeline Node Indicator (Refined Minimalist) -->
+    <div class="absolute left-0 top-3 w-[26px] h-[26px] sm:w-[30px] sm:h-[30px] rounded-full bg-white border {{ $colors['ring'] }} shadow-2xs flex items-center justify-center transition-all group-hover:scale-105">
         <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full {{ $colors['dot'] }}"></div>
     </div>
     
     <!-- Collapsible Card Container -->
-    <div class="bg-white border {{ $isLatest ? 'border-teal-300 shadow-[0_4px_16px_rgba(13,148,136,0.06)]' : 'border-slate-200/80 shadow-[0_2px_10px_rgb(0,0,0,0.03)]' }} rounded-[20px] transition-all duration-200 overflow-hidden">
+    <div class="bg-white border {{ $isLatest ? 'border-teal-200/90 shadow-[0_4px_16px_rgba(13,148,136,0.05)]' : 'border-slate-200/70 shadow-2xs' }} rounded-2xl transition-all duration-200 overflow-hidden hover:border-slate-300/80">
         
         <!-- Summary Header Bar (Always Visible & Clickable) -->
-        <button type="button" @click="open = !open" class="w-full text-left p-3.5 sm:p-4.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 hover:bg-slate-50/80 transition-colors cursor-pointer select-none">
+        <button type="button" @click="open = !open" class="w-full text-left p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 hover:bg-slate-50/60 transition-colors cursor-pointer select-none">
             
             <!-- Left Side: Date, Age, Badges & Quick Metric Preview -->
             <div class="flex items-center flex-wrap gap-2 sm:gap-2.5">
-                <span class="text-[14px] sm:text-[15px] font-extrabold text-slate-800 tracking-tight">{{ $measurement['date'] }}</span>
+                <span class="text-[13.5px] sm:text-[14px] font-bold text-slate-700 tracking-tight">{{ $measurement['date'] }}</span>
                 
                 @if(isset($measurement['age_at_measure']))
-                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[10.5px] sm:text-[11px] font-bold">
+                    <span class="px-2 py-0.5 bg-slate-100/70 text-slate-600 rounded-md text-[10.5px] sm:text-[11px] font-medium border border-slate-200/40">
                         Usia {{ $measurement['age_at_measure'] }}
                     </span>
                 @endif
 
                 @if($isLatest)
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[10.5px] font-extrabold bg-teal-50 text-teal-700 border border-teal-200/70">
-                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-teal-50 text-teal-700 border border-teal-200/60">
+                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
                         Terbaru
                     </span>
                 @endif
 
-                <!-- Quick Inline Summary (BB & TB) - visible & styled on all screen sizes -->
-                <div class="flex items-center gap-1.5 px-2 py-0.5 bg-slate-100/80 border border-slate-200/50 rounded-lg text-[11px] font-medium text-slate-600">
-                    <span>BB: <strong class="text-slate-900 font-bold">{{ $measurement['weight'] }} kg</strong></span>
+                <!-- Quick Inline Summary (BB & TB) -->
+                <div class="flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-200/60 rounded-md text-[11px] text-slate-500 font-normal">
+                    <span>BB: <strong class="text-slate-700 font-semibold">{{ $measurement['weight'] }} kg</strong></span>
                     <span class="text-slate-300">•</span>
-                    <span>TB: <strong class="text-slate-900 font-bold">{{ $measurement['height'] }} cm</strong></span>
+                    <span>TB: <strong class="text-slate-700 font-semibold">{{ $measurement['height'] }} cm</strong></span>
                 </div>
             </div>
             
@@ -113,20 +113,20 @@
             <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto pt-1 sm:pt-0 border-t border-slate-100 sm:border-0">
                 <div class="flex items-center flex-wrap gap-1.5">
                     <!-- Status Gizi Badge -->
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold border {{ $colors['badge'] }}">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border {{ $colors['badge'] }}">
                         {{ $measurement['status'] }}
                     </span>
                     
                     <!-- Status Validasi Badge -->
-                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold border {{ $valConfig['badge'] }}">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border {{ $valConfig['badge'] }}">
                         {!! $valConfig['icon'] !!}
                         <span>{{ $valConfig['label'] }}</span>
                     </span>
                 </div>
 
                 <!-- Animated Chevron -->
-                <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 ml-1 transition-all duration-200" :class="{ 'rotate-180 bg-teal-50 text-teal-700': open }">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                <div class="w-6.5 h-6.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 ml-1 transition-all duration-200 border border-slate-200/50" :class="{ 'rotate-180 bg-teal-50 text-teal-700 border-teal-200/60': open }">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
                 </div>
             </div>
         </button>

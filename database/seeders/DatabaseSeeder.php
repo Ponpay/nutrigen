@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
         $userPuskesmas = User::create([
             'name' => 'dr. Cut Nyak Sarah, S.Gz',
             'email' => 'puskesmas@nutrigen.com',
+            'email_verified_at' => $now,
             'password' => Hash::make('password'),
             'role' => 'puskesmas',
         ]);
@@ -111,6 +112,7 @@ class DatabaseSeeder extends Seeder
             $userKader = User::create([
                 'name' => $k['name'],
                 'email' => $k['email'],
+                'email_verified_at' => $now,
                 'password' => Hash::make('password'),
                 'role' => 'kader',
             ]);
@@ -150,18 +152,18 @@ class DatabaseSeeder extends Seeder
             ['Desi Ratnasari', 'Andi Nugraha', 'Gampong Peunayong, Lr. Merak No. 11'],
             ['Wardah Hayati', 'Iskandar Muda', 'Gampong Bandar Baru, Kompleks BPD Blok C'],
             ['Syelifa Nanda', 'Rizwan Maulana', 'Gampong Lampulo, RT 01/RW 03'],
-            ['Khadijah Marwan', 'Aulia Rahman', 'Gampong Peunayong, Jl. Perdagangan No. 55'],
-            ['Cut Riska Amalia', 'Fikri Syahrial', 'Gampong Bandar Baru, Lr. Kuta Alam No. 9'],
-            ['Nurlailawati', 'Safrizal', 'Gampong Lampulo, Lr. Ikan Kembung No. 2'],
-            ['Rahmi Novita', 'Herman Syah', 'Gampong Peunayong, Jl. WR Supratman No. 64'],
-            ['Putri Balqis', 'T. Reza Pahlevi', 'Gampong Bandar Baru, Jl. T. Iskandar No. 88'],
+            ['Khadijah Marwan', 'Aulia Rahman', 'Gampong Peunayong, Jl. Panglima Polem No. 88'],
+            ['Cut Riska Amalia', 'Fikri Syahrial', 'Gampong Bandar Baru, Lr. Bungong Jeumpa No. 15'],
+            ['Nurlailawati', 'Safrizal', 'Gampong Lampulo, Lr. Pasi No. 2'],
+            ['Rahmi Novita', 'Herman Syah', 'Gampong Peunayong, Jl. Jendral Sudirman No. 40'],
+            ['Putri Balqis', 'T. Reza Pahlevi', 'Gampong Bandar Baru, Kompleks Baperis Blok A-2'],
             ['Harnum Melati', 'Zainal Abidin', 'Gampong Lampulo, RT 03/RW 01'],
-            ['Anita Zahara', 'Bahrul Ulum', 'Gampong Peunayong, Lr. Sentosa No. 15'],
-            ['Cut Syarifah', 'Mahmud Syah', 'Gampong Bandar Baru, Kompleks PU No. 23'],
-            ['Maulida Sari', 'Syamsul Bahri', 'Gampong Lampulo, Lr. Muara No. 10'],
-            ['Fatimah Az-Zahra', 'Teuku M. Yusuf', 'Gampong Peunayong, Jl. Diponegoro No. 33'],
-            ['Raudhatul Jannah', 'Rudi Hartono', 'Gampong Bandar Baru, Lr. Mawar Putih No. 14'],
-            ['Nurul Afifah', 'Ilham Wahyudi', 'Gampong Lampulo, Lr. Bahari No. 8'],
+            ['Anita Zahara', 'Bahrul Ulum', 'Gampong Peunayong, Jl. Tentara Pelajar No. 6'],
+            ['Cut Syarifah', 'Mahmud Syah', 'Gampong Bandar Baru, Jl. Teuku Umar No. 55'],
+            ['Maulida Sari', 'Syamsul Bahri', 'Gampong Lampulo, Lr. Samudra Indah No. 18'],
+            ['Fatimah Az-Zahra', 'Teuku M. Yusuf', 'Gampong Peunayong, Jl. Cut Nyak Dien No. 22'],
+            ['Raudhatul Jannah', 'Rudi Hartono', 'Gampong Bandar Baru, Kompleks PU No. 14'],
+            ['Nurul Afifah', 'Ilham Wahyudi', 'Gampong Lampulo, Lr. Bunga Mawar No. 7'],
             ['Husna Mufida', 'Zulkifli', 'Gampong Peunayong, Lr. Cempaka No. 20'],
             ['Cut Dara Meutia', 'T. Syahrul', 'Gampong Bandar Baru, Jl. Seulanga No. 19'],
             ['Suryani', 'Darmawan', 'Gampong Lampulo, Lr. Perikanan No. 16'],
@@ -188,6 +190,7 @@ class DatabaseSeeder extends Seeder
             $userIbu = User::create([
                 'name' => $p[0],
                 'email' => 'ibu' . ($idx + 1) . '@nutrigen.com',
+                'email_verified_at' => $now,
                 'password' => Hash::make('password'),
                 'role' => 'ibu',
             ]);
@@ -496,6 +499,8 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($jadwalData as $jd) {
+            $kaderForPosyandu = Kader::where('posyandu_id', $jd['posyandu_id'])->first();
+            $jd['kader_id'] = $kaderForPosyandu ? $kaderForPosyandu->id : $kaders[0]->id;
             Jadwal::create($jd);
         }
     }

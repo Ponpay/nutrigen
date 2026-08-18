@@ -1,19 +1,19 @@
-<!-- Sidebar Backdrop Overlay -->
+<!-- Sidebar Backdrop Overlay (Blurs entire page content behind drawer) -->
 <div id="sidebarOverlay" 
-     class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-[100] hidden opacity-0 transition-opacity duration-300 ease-out" 
+     class="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-[100] hidden opacity-0 transition-all duration-300 ease-out" 
      onclick="closeSidebarAction()"></div>
 
-<!-- Slide-Over Drawer -->
+<!-- Slide-Over Glassmorphic Drawer -->
 <aside id="sidebar" 
-       class="fixed inset-y-0 left-0 w-[310px] sm:w-[340px] max-w-[88vw] bg-[#F8FAFC] z-[110] transform -translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col shadow-2xl border-r border-slate-200/80 overflow-hidden">
+       class="fixed inset-y-0 left-0 w-[310px] sm:w-[340px] max-w-[88vw] bg-white/75 backdrop-blur-2xl z-[110] transform -translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border-r border-white/60 overflow-hidden">
     
-    <!-- 1. Drawer Header: Profile Hero Card -->
+    <!-- 1. Drawer Header: Glass Profile Hero Card -->
     <div class="p-3.5 sm:p-4 pb-0 shrink-0">
-        <div class="relative bg-gradient-to-br from-teal-800 via-teal-700 to-teal-900 rounded-3xl p-5 text-white shadow-[0_8px_24px_rgba(13,148,136,0.18)] overflow-hidden">
+        <div class="relative bg-gradient-to-br from-teal-800/90 via-teal-700/85 to-teal-900/90 backdrop-blur-xl rounded-3xl p-5 text-white shadow-[0_8px_32px_rgba(13,148,136,0.25)] border border-white/20 overflow-hidden">
             {{-- Ambient radial background lights --}}
-            <div class="absolute -right-8 -top-8 w-32 h-32 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none"></div>
-            <div class="absolute left-0 bottom-0 w-28 h-28 bg-teal-950/50 rounded-full blur-xl pointer-events-none"></div>
-            <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 14px 14px;"></div>
+            <div class="absolute -right-8 -top-8 w-32 h-32 bg-emerald-400/25 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute left-0 bottom-0 w-28 h-28 bg-teal-950/60 rounded-full blur-xl pointer-events-none"></div>
+            <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 14px 14px;"></div>
 
             {{-- Top Row: Brand pill + Close button --}}
             <div class="flex items-center justify-between relative z-10 mb-4">
@@ -68,20 +68,20 @@
         </div>
     </div>
 
-    <!-- 2. Drawer Body: Grouped Inset Cards -->
+    <!-- 2. Drawer Body: Frosted Grouped Inset Cards -->
     <div class="flex-1 overflow-y-auto hide-scrollbar p-3.5 sm:p-4 flex flex-col gap-4">
         
         <!-- Group 1: Profil & Akun -->
         <div class="flex flex-col gap-1.5">
             <span class="px-2 text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">Akun & Data</span>
 
-            <div class="bg-white rounded-2xl border border-slate-200/70 shadow-2xs overflow-hidden">
+            <div class="bg-white/80 backdrop-blur-md rounded-2xl border border-white/90 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] overflow-hidden">
                 @if(request()->is('puskesmas*'))
                     {{-- Puskesmas Settings --}}
                     <a href="{{ route('puskesmas.pengaturan') }}" 
-                       class="flex items-center justify-between p-3 hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                       class="flex items-center justify-between p-3 hover:bg-white/90 active:bg-white transition-colors group">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 border border-sky-100 group-hover:scale-105 transition-transform">
+                            <div class="w-9 h-9 rounded-xl bg-sky-50/90 text-sky-600 flex items-center justify-center shrink-0 border border-sky-100/80 group-hover:scale-105 transition-transform">
                                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col min-w-0">
@@ -92,12 +92,12 @@
                         <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                     </a>
 
-                    <div class="h-px bg-slate-100 ml-15"></div>
+                    <div class="h-px bg-slate-100/80 ml-15"></div>
 
                     <a href="{{ route('puskesmas.pengaturan.petugas') }}" 
-                       class="flex items-center justify-between p-3 hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                       class="flex items-center justify-between p-3 hover:bg-white/90 active:bg-white transition-colors group">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-100 group-hover:scale-105 transition-transform">
+                            <div class="w-9 h-9 rounded-xl bg-indigo-50/90 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-100/80 group-hover:scale-105 transition-transform">
                                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col min-w-0">
@@ -110,9 +110,9 @@
                 @else
                     {{-- Kader Settings --}}
                     <a href="{{ route('kader.profil') }}" 
-                       class="flex items-center justify-between p-3 hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                       class="flex items-center justify-between p-3 hover:bg-white/90 active:bg-white transition-colors group">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 border border-teal-100 group-hover:scale-105 transition-transform">
+                            <div class="w-9 h-9 rounded-xl bg-teal-50/90 text-teal-700 flex items-center justify-center shrink-0 border border-teal-100/80 group-hover:scale-105 transition-transform">
                                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col min-w-0">
@@ -123,12 +123,12 @@
                         <svg class="w-4 h-4 text-slate-300 group-hover:text-teal-600 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                     </a>
 
-                    <div class="h-px bg-slate-100 ml-15"></div>
+                    <div class="h-px bg-slate-100/80 ml-15"></div>
 
                     <a href="{{ route('kader.profil.edit') }}" 
-                       class="flex items-center justify-between p-3 hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                       class="flex items-center justify-between p-3 hover:bg-white/90 active:bg-white transition-colors group">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100 group-hover:scale-105 transition-transform">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-50/90 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100/80 group-hover:scale-105 transition-transform">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
                             </div>
                             <div class="flex flex-col min-w-0">
@@ -146,12 +146,12 @@
         <div class="flex flex-col gap-1.5">
             <span class="px-2 text-[10.5px] font-bold text-slate-400 uppercase tracking-widest">Bantuan & Info</span>
 
-            <div class="bg-white rounded-2xl border border-slate-200/70 shadow-2xs overflow-hidden">
+            <div class="bg-white/80 backdrop-blur-md rounded-2xl border border-white/90 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] overflow-hidden">
                 <a href="javascript:void(0)" 
                    onclick="window.NutriAlert.toast('Fitur Bantuan & Panduan segera hadir.', 'info', 'Pusat Bantuan')"
-                   class="flex items-center justify-between p-3 hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                   class="flex items-center justify-between p-3 hover:bg-white/90 active:bg-white transition-colors group">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100 group-hover:scale-105 transition-transform">
+                        <div class="w-9 h-9 rounded-xl bg-amber-50/90 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100/80 group-hover:scale-105 transition-transform">
                             <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 10-1-1zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
                         </div>
                         <div class="flex flex-col min-w-0">
@@ -162,11 +162,11 @@
                     <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">FAQ</span>
                 </a>
 
-                <div class="h-px bg-slate-100 ml-15"></div>
+                <div class="h-px bg-slate-100/80 ml-15"></div>
 
                 <a href="javascript:void(0)" 
                    onclick="window.NutriAlert.toast('NutriGen v1.0.0 — Sistem Monitoring Gizi & Pertumbuhan Anak', 'success', 'Versi Aplikasi')"
-                   class="flex items-center justify-between p-3 hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                   class="flex items-center justify-between p-3 hover:bg-white/90 active:bg-white transition-colors group">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-xl bg-slate-50 text-slate-600 flex items-center justify-center shrink-0 border border-slate-150 group-hover:scale-105 transition-transform">
                             <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
@@ -182,12 +182,12 @@
         </div>
     </div>
 
-    <!-- 3. Drawer Footer: Refined Logout Button -->
-    <div class="p-3.5 sm:p-4 border-t border-slate-200/60 bg-white shrink-0">
+    <!-- 3. Drawer Footer: Refined Frosted Logout Button -->
+    <div class="p-3.5 sm:p-4 border-t border-white/50 bg-white/50 backdrop-blur-md shrink-0">
         <form action="{{ route('logout') }}" method="POST" onsubmit="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ event.preventDefault(); const form = this; window.NutriAlert.confirm('Keluar dari Aplikasi?', 'Anda harus login kembali untuk mengakses data.', 'Keluar', 'Batal').then((r) => { if(r.isConfirmed) form.submit(); }); return false; } return confirm('Keluar dari Aplikasi?');">
             @csrf
             <button type="submit" 
-                    class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl text-rose-600 bg-rose-50/70 hover:bg-rose-100/90 active:bg-rose-200/70 border border-rose-200/70 font-bold text-[13px] transition-all shadow-2xs hover:shadow-xs cursor-pointer active:scale-[0.98] group">
+                    class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl text-rose-600 bg-rose-50/80 hover:bg-rose-100/90 active:bg-rose-200/80 border border-rose-200/70 backdrop-blur-xs font-bold text-[13px] transition-all shadow-2xs hover:shadow-xs cursor-pointer active:scale-[0.98] group">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4 text-rose-500 group-hover:-translate-x-0.5 transition-transform">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                 </svg>

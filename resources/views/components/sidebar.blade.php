@@ -20,9 +20,9 @@
             
             <button id="closeSidebar" 
                     onclick="closeSidebarAction()" 
-                    class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-400 hover:text-slate-600 flex items-center justify-center transition-all cursor-pointer" 
+                    class="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-teal-500/15 via-emerald-500/10 to-teal-400/20 hover:from-teal-600 hover:to-emerald-500 text-teal-700 hover:text-white border border-teal-200/60 hover:border-transparent flex items-center justify-center transition-all duration-200 shadow-2xs hover:shadow-sm cursor-pointer active:scale-95 group" 
                     aria-label="Tutup menu">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 group-hover:-translate-x-0.5 transition-transform">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
             </button>

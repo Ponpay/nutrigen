@@ -162,9 +162,9 @@
                 {{-- Horizontal scroll cards --}}
                 <div class="relative">
                     <div class="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-slate-100 to-transparent pointer-events-none z-10 lg:hidden rounded-r-[24px]"></div>
-                    <div class="flex overflow-x-auto gap-3 pb-2 snap-x hide-scrollbar -mx-2 px-2">
+                    <div class="flex overflow-x-auto gap-3 pb-2.5 snap-x hide-scrollbar -mx-2 px-2 items-stretch">
                         @foreach($priorityBalitas as $balita)
-                            <div class="w-[280px] lg:w-[300px] shrink-0 snap-start">
+                            <div class="w-[280px] lg:w-[300px] shrink-0 snap-start flex">
                                 <x-child-card :balita="$balita" />
                             </div>
                         @endforeach
@@ -213,9 +213,9 @@
                 </div>
 
                 {{-- Grid --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5 items-stretch">
                     @forelse($displayBalitas as $balita)
-                        <div class="motion-card opacity-0">
+                        <div class="motion-card opacity-0 h-full flex">
                             <x-child-card :balita="$balita" />
                         </div>
                     @empty

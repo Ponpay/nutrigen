@@ -81,6 +81,18 @@ class DatabaseSeeder extends Seeder
                 'no_hp' => '081269001234',
             ],
             [
+                'name' => 'Cut Malahayati (Kader 1)',
+                'email' => 'kader1@gmail.com',
+                'posyandu' => $posyandu1,
+                'no_hp' => '081269001235',
+            ],
+            [
+                'name' => 'Cut Malahayati (Kader 1 Nutrigen)',
+                'email' => 'kader1@nutrigen.com',
+                'posyandu' => $posyandu1,
+                'no_hp' => '081269001236',
+            ],
+            [
                 'name' => 'Siti Rahmah, S.Pd',
                 'email' => 'kader2@nutrigen.com',
                 'posyandu' => $posyandu2,

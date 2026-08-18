@@ -1,35 +1,21 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               8.0.30 - MySQL Community Server - GPL
--- Server OS:                    Win64
--- HeidiSQL Version:             12.1.0.6537
--- --------------------------------------------------------
+-- Nutrigen Clean Database Export
+-- Generated on 2026-08-19 00:59:11
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET FOREIGN_KEY_CHECKS=0;
 
-
--- Dumping database structure for laravel
-CREATE DATABASE IF NOT EXISTS `laravel` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `laravel`;
-
--- Dumping structure for table laravel.balitas
-CREATE TABLE IF NOT EXISTS `balitas` (
+DROP TABLE IF EXISTS `balitas`;
+CREATE TABLE `balitas` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `orang_tua_id` bigint unsigned NOT NULL,
   `posyandu_id` bigint unsigned NOT NULL,
   `nik` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `no_bpjs` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nama` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_lahir` date NOT NULL,
   `berat_lahir` decimal(5,2) DEFAULT NULL,
   `panjang_lahir` decimal(5,2) DEFAULT NULL,
+  `lingkar_kepala_lahir` decimal(5,2) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -38,36 +24,92 @@ CREATE TABLE IF NOT EXISTS `balitas` (
   KEY `balitas_posyandu_id_foreign` (`posyandu_id`),
   CONSTRAINT `balitas_orang_tua_id_foreign` FOREIGN KEY (`orang_tua_id`) REFERENCES `orang_tuas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `balitas_posyandu_id_foreign` FOREIGN KEY (`posyandu_id`) REFERENCES `posyandus` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.balitas: ~23 rows (approximately)
-INSERT INTO `balitas` (`id`, `orang_tua_id`, `posyandu_id`, `nik`, `nama`, `jenis_kelamin`, `tanggal_lahir`, `berat_lahir`, `panjang_lahir`, `created_at`, `updated_at`) VALUES
-	(1, 1, 1, '3201010000000000', 'Anak Ibu Budi 1 Gaming', 'L', '2026-07-10', NULL, NULL, '2026-07-16 09:20:20', '2026-07-17 02:18:35'),
-	(2, 2, 2, '3201010000000001', 'Anak Ibu Budi 2', 'P', '2025-06-10', 3.10, 50.50, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(3, 3, 1, '3201010000000002', 'Anak Ibu Budi 3', 'L', '2025-05-13', 3.20, 51.00, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(4, 4, 2, '3201010000000003', 'Anak Ibu Budi 4', 'P', '2025-04-03', 3.30, 51.50, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(5, 5, 1, '3201010000000004', 'Anak Ibu Budi 5', 'L', '2025-03-06', NULL, NULL, '2026-07-16 09:20:20', '2026-07-17 08:42:44'),
-	(6, 6, 2, '3201010000000005', 'Anak Ibu Budi 6', 'P', '2025-02-13', 3.50, 52.50, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(7, 7, 1, '3201010000000006', 'Anak Ibu Budi 7', 'L', '2025-01-11', 3.60, 53.00, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(8, 8, 2, '3201010000000007', 'Anak Ibu Budi 8', 'P', '2024-12-12', 3.70, 53.50, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(9, 9, 1, '3201010000000008', 'Anak Ibu Budi 9', 'L', '2024-11-04', NULL, NULL, '2026-07-16 09:20:20', '2026-07-17 07:43:16'),
-	(10, 10, 2, '3201010000000009', 'Anak Ibu Budi 10', 'P', '2024-10-08', 3.90, 54.50, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(11, 1, 1, '3201010000000010', 'Anak Ibu Budi 134', 'L', '2024-09-03', NULL, NULL, '2026-07-16 09:20:21', '2026-07-17 10:14:15'),
-	(12, 2, 2, '3201010000000011', 'Anak Ibu Budi 2', 'P', '2024-07-21', 4.10, 55.50, '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(13, 3, 1, '3201010000000012', 'Anak Ibu Budi 3', 'L', '2025-07-13', 4.20, 56.00, '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(14, 4, 2, '3201010000000013', 'Anak Ibu Budi 4', 'P', '2025-05-31', 4.30, 56.50, '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(15, 5, 1, '3201010000000014', 'Anak Ibu Budi 5', 'L', '2025-05-04', 4.40, 57.00, '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(16, 11, 1, '1234567765432', 'Nama  Test UAT 1', 'L', '2026-06-05', NULL, NULL, '2026-07-17 00:51:14', '2026-07-17 00:51:14'),
-	(17, 12, 1, '12345678987666', 'Naufal', 'L', '2024-09-23', NULL, NULL, '2026-07-17 01:29:06', '2026-07-17 02:56:49'),
-	(18, 13, 1, '0987645678876567', 'syifa', 'P', '2026-06-12', NULL, NULL, '2026-07-17 02:04:02', '2026-07-17 02:04:02'),
-	(20, 15, 1, '117145567679', 'Riyan Arya', 'L', '2026-04-02', NULL, NULL, '2026-07-17 07:17:01', '2026-07-17 07:17:01'),
-	(21, 16, 1, '66752369078678', 'Imam Alkhalish', 'L', '2026-04-10', NULL, NULL, '2026-07-17 07:30:40', '2026-07-17 07:30:40'),
-	(22, 17, 1, '1172178179818719', 'pasha', 'L', '2024-03-07', NULL, NULL, '2026-07-17 08:05:13', '2026-07-17 08:05:13'),
-	(24, 12, 1, '1171985234664130', 'Rajul akhyar', 'L', '2025-11-07', NULL, NULL, '2026-07-19 12:46:11', '2026-07-19 12:46:11'),
-	(25, 19, 1, '11712345678', 'almuttaqin', 'L', '2024-12-21', NULL, NULL, '2026-07-19 13:54:54', '2026-07-19 13:54:54');
+INSERT INTO `balitas` VALUES
+('1', '1', '1', '1171011106250001', '0008807202855', 'Muhammad Al-Fatih Pratama', 'L', '2025-06-11', '3.20', '50.00', '34.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('2', '2', '1', '1171010112250002', '0004581511268', 'Aisyah Humaira Syahputra', 'P', '2025-12-01', '3.00', '49.00', '33.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('3', '3', '1', '1171011602250003', '0003376307815', 'Khadijah Azzahra', 'P', '2025-02-16', '2.50', '46.50', '32.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('4', '4', '1', '1171011705250004', '0005282175169', 'Safiyya Salsabila Hakim', 'P', '2025-05-17', '2.70', '48.00', '33.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('5', '5', '1', '1171011002240005', '0005600726288', 'Ziyad Atharizz Permana', 'L', '2024-02-10', '3.50', '51.50', '35.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('6', '6', '1', '1171010308240006', '0004135179140', 'Shafira Nurul Izzah', 'P', '2024-08-03', '3.20', '50.00', '34.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('7', '7', '1', '1171010607250007', '0006570035319', 'Zea Khalisa Farhan', 'P', '2025-07-06', '2.80', '47.50', '33.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('8', '8', '1', '1171010312240008', '0004936221149', 'Arsenio Daffa Pratama', 'L', '2024-12-03', '3.40', '51.00', '35.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('9', '9', '1', '1171010202260009', '0007434113645', 'Nadzira Shaqueena', 'P', '2026-02-02', '3.00', '48.50', '33.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('10', '10', '1', '1171011604260010', '0001495388753', 'Muhammad Hanif Al-Ghazi', 'L', '2026-04-16', '3.30', '50.00', '34.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('11', '11', '1', '1171010203260011', '0007514525727', 'Cut Alesha Maryam', 'P', '2026-03-02', '2.90', '48.00', '33.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('12', '12', '1', '1171011409250012', '0008944104519', 'Teuku Bilal Arkan', 'L', '2025-09-14', '3.10', '49.50', '34.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('13', '13', '1', '1171011111250013', '0005052161245', 'Raffa Danendra Pratama', 'L', '2025-11-11', '3.00', '49.00', '33.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('14', '14', '1', '1171010710240014', '0008379137123', 'Nabila Syakira Farhan', 'P', '2024-10-07', '2.60', '46.00', '32.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('15', '15', '1', '1171011804250015', '0003574673588', 'Ibrahim Rasyid Maulana', 'L', '2025-04-18', '3.20', '50.00', '34.20', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('16', '16', '1', '1171011101260016', '0008523249404', 'Adiba Khanza Az-Zahra', 'P', '2026-01-11', '3.00', '48.50', '33.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('17', '17', '1', '1171013103240017', '0008945137333', 'Althaf Fathan Syah', 'L', '2024-03-31', '3.40', '51.00', '35.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('18', '18', '1', '1171010908250018', '0007557349231', 'Cut Syakilla Ramadhani', 'P', '2025-08-09', '2.70', '47.00', '32.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('19', '19', '1', '1171012702250019', '0004950384081', 'Kenzo Abimanyu', 'L', '2025-02-27', '3.30', '50.50', '34.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('20', '20', '1', '1171011305260020', '0007381288085', 'Zoya Almahyra', 'P', '2026-05-13', '3.10', '49.00', '34.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('21', '21', '1', '1171010206240021', '0006696163550', 'Teuku Gibran Al-Farizi', 'L', '2024-06-02', '3.50', '51.50', '35.20', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('22', '22', '1', '1171011201250022', '0004698471823', 'Inara Shaqueena Zulfikar', 'P', '2025-01-12', '2.50', '45.50', '31.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('23', '23', '1', '1171010910250023', '0007896308141', 'Dzaky Asadel Putra', 'L', '2025-10-09', '3.20', '49.50', '34.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('24', '24', '1', '1171010511240024', '0003579905537', 'Mikhaela Putri Safitri', 'P', '2024-11-05', '3.10', '50.00', '34.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('25', '25', '1', '1171011805250025', '0008714817708', 'Raffasya Zayn Harun', 'L', '2025-05-18', '2.80', '47.50', '33.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('26', '26', '1', '1171010512230026', '0001100194702', 'Cut Nahla Khadijah', 'P', '2023-12-05', '3.40', '51.00', '35.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('27', '27', '1', '1171010408230027', '0007348736934', 'Fatih Ar-Rayyan', 'L', '2023-08-04', '3.30', '50.50', '34.80', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('28', '28', '1', '1171011406260028', '0006231922188', 'Azkia Medina Putri', 'P', '2026-06-14', '3.00', '48.50', '33.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('29', '29', '2', '1171011310240029', '0006295667056', 'Teuku Rayyan Al-Ghifari', 'L', '2024-10-13', '2.80', '48.00', '33.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('30', '30', '2', '1171011109250030', '0002544624922', 'Arkana Zikri Hidayat', 'L', '2025-09-11', '3.30', '50.50', '34.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('31', '31', '2', '1171010411250031', '0002616417209', 'Kenzo Arshaka Tanjung', 'L', '2025-11-04', '3.20', '50.00', '34.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('32', '32', '2', '1171011501250032', '0001021826184', 'Cut Kayla Putri Danial', 'P', '2025-01-15', '2.40', '45.00', '31.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('33', '33', '2', '1171011005260033', '0005263498127', 'Ibrahim Malik Syah', 'L', '2026-05-10', '3.30', '50.00', '34.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('34', '34', '2', '1171010804250034', '0003127455304', 'Mikayla Almahyra Syahputra', 'P', '2025-04-08', '3.10', '49.00', '33.80', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('35', '35', '2', '1171011807250035', '0009750442399', 'Farzan Ahza Dedi', 'L', '2025-07-18', '3.00', '49.00', '33.50', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('36', '36', '2', '1171010612250036', '0004265393276', 'Ayra Mysha Hendri', 'P', '2025-12-06', '2.90', '48.50', '33.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('37', '37', '2', '1171010407240037', '0007514718212', 'Muhammad Daffa Rahmat', 'L', '2024-07-04', '3.40', '51.00', '35.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('38', '38', '2', '1171010106250038', '0006623436122', 'Kezia Aqeela Dian', 'P', '2025-06-01', '2.60', '46.50', '32.00', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('39', '39', '2', '1171010403240039', '0004346767869', 'Teuku Arka Faisal', 'L', '2024-03-04', '3.50', '51.50', '35.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('40', '40', '2', '1171010501260040', '0007086263878', 'Shanum Azkadina Rizal', 'P', '2026-01-05', '3.00', '49.00', '33.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('41', '41', '2', '1171011603260041', '0009407576924', 'Ghaisan Ahmad Fauzan', 'L', '2026-03-16', '3.20', '50.00', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('42', '42', '2', '1171010203250042', '0009153648884', 'Kanaya Tabitha Hendri', 'P', '2025-03-02', '2.50', '45.80', '31.80', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('43', '43', '2', '1171010711240043', '0003058140949', 'Haidar Zhafran Dedi', 'L', '2024-11-07', '3.20', '50.00', '34.20', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('44', '44', '2', '1171010510250044', '0009737924051', 'Cut Syifa Maulida', 'P', '2025-10-05', '3.10', '49.50', '33.80', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('45', '45', '2', '1171012904240045', '0004062208465', 'Atharizz Calief Rahmat', 'L', '2024-04-29', '3.30', '50.50', '34.80', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('46', '1', '2', '1171013103260046', '0003020665131', 'Zalfa Naura Dian', 'P', '2026-03-31', '2.90', '48.00', '33.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('47', '2', '2', '1171010208250047', '0007211502055', 'Rayyan Ghibran Pahlevi', 'L', '2025-08-02', '2.80', '47.50', '33.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('48', '3', '2', '1171011309240048', '0003931004479', 'Khalisa Salsabila Hendri', 'P', '2024-09-13', '3.10', '50.00', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('49', '4', '2', '1171010601240049', '0004817437119', 'Malik Al-Jabbar Dedi', 'L', '2024-01-06', '3.40', '51.00', '35.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('50', '5', '2', '1171010802250050', '0008288890601', 'Zahra Callista Syahputra', 'P', '2025-02-08', '2.60', '46.00', '32.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('51', '6', '2', '1171013011250051', '0006946632011', 'Naufal Zikri Rahmat', 'L', '2025-11-30', '3.20', '49.50', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('52', '7', '2', '1171010305250052', '0003713742457', 'Aqila Humairah Dian', 'P', '2025-05-03', '3.00', '49.00', '33.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('53', '8', '2', '1171013009230053', '0005889452185', 'Teuku Kenzie Al-Ayyubi', 'L', '2023-09-30', '3.50', '52.00', '35.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('54', '9', '2', '1171012906260054', '0005312571388', 'Cut Zahra Amira', 'P', '2026-06-29', '3.10', '49.00', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('55', '10', '3', '1171011103260055', '0002797192503', 'Cut Nayla Khairunnisa', 'P', '2026-03-11', '3.10', '49.50', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('56', '11', '3', '1171011404240056', '0007028889534', 'Bilal Ramadhan Fauzi', 'L', '2024-04-14', '3.40', '51.00', '35.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('57', '12', '3', '1171010904260057', '0005516945056', 'Ameera Dzahin Setiawan', 'P', '2026-04-09', '3.00', '49.00', '33.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('58', '13', '3', '1171011101260058', '0001467312465', 'Fathir Ahmad Pratama', 'L', '2026-01-11', '3.10', '49.50', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('59', '14', '3', '1171013009250059', '0009683740435', 'Dzakiandra Rafisqy', 'L', '2025-09-30', '3.20', '50.00', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('60', '15', '3', '1171011305250060', '0009572987706', 'Muhammad Zaidan Fauzi', 'L', '2025-05-13', '3.20', '50.00', '34.20', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('61', '16', '3', '1171010412240061', '0006177672049', 'Cut Alesha Putri Bambang', 'P', '2024-12-04', '3.00', '49.00', '33.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('62', '17', '3', '1171010608250062', '0008543261827', 'Rasyid Al-Ghifari Tanjung', 'L', '2025-08-06', '2.70', '47.00', '32.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('63', '18', '3', '1171011607240063', '0009796209418', 'Nadine Azkadina Danial', 'P', '2024-07-16', '3.30', '50.50', '34.80', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('64', '19', '3', '1171011504250064', '0001594543614', 'Teuku Arfan Iqbal', 'L', '2025-04-15', '3.10', '49.50', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('65', '20', '3', '1171010310240065', '0004583139833', 'Syakira Humairah Bambang', 'P', '2024-10-03', '2.50', '45.50', '31.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('66', '21', '3', '1171011311250066', '0007765014880', 'Alvaro Gavriel Fauzi', 'L', '2025-11-13', '3.20', '50.00', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('67', '22', '3', '1171010102260067', '0009768847186', 'Cut Misha Azzahra Danial', 'P', '2026-02-01', '2.90', '48.50', '33.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('68', '23', '3', '1171013001250068', '0002552637688', 'Daffa Ibnu Tanjung', 'L', '2025-01-30', '3.40', '51.00', '35.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('69', '24', '3', '1171011406250069', '0005557198486', 'Siti Khansa Iqbal', 'P', '2025-06-14', '2.80', '47.50', '33.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('70', '25', '3', '1171010202240070', '0007710368223', 'Teuku Barra Danial', 'L', '2024-02-02', '3.50', '51.50', '35.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('71', '26', '3', '1171011809250071', '0001209707082', 'Cut Queenira Bambang', 'P', '2025-09-18', '3.00', '49.00', '33.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('72', '27', '3', '1171011805260072', '0004355160252', 'Muhammad Azzam Fauzi', 'L', '2026-05-18', '3.20', '49.50', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('73', '28', '3', '1171010305240073', '0004604867730', 'Raline Shahia Tanjung', 'P', '2024-05-03', '3.30', '50.50', '34.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('74', '29', '3', '1171010611240074', '0006864811558', 'Fathan Al-Farisi Iqbal', 'L', '2024-11-06', '2.60', '46.20', '32.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('75', '30', '3', '1171011107250075', '0007887462719', 'Cut Kiara Danial', 'P', '2025-07-11', '3.10', '49.50', '34.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('76', '31', '3', '1171010412250076', '0001300747286', 'Zhafran Khalid Bambang', 'L', '2025-12-04', '3.20', '50.00', '34.20', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('77', '32', '3', '1171010401250077', '0009033676787', 'Azkadina Naura Fauzi', 'P', '2025-01-04', '3.00', '49.00', '33.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('78', '33', '3', '1171010608240078', '0007728142608', 'Teuku Reynard Tanjung', 'L', '2024-08-06', '3.40', '51.00', '35.00', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('79', '34', '3', '1171010803260079', '0003418201554', 'Cut Nadia Humairah', 'P', '2026-03-08', '3.00', '49.00', '33.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('80', '35', '3', '1171011109230080', '0004487785844', 'Rayyan Zhafar Iqbal', 'L', '2023-09-11', '3.50', '52.00', '35.50', '2026-08-19 00:58:35', '2026-08-19 00:58:35');
 
--- Dumping structure for table laravel.failed_jobs
-CREATE TABLE IF NOT EXISTS `failed_jobs` (
+DROP TABLE IF EXISTS `failed_jobs`;
+CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -79,10 +121,37 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.failed_jobs: ~0 rows (approximately)
+DROP TABLE IF EXISTS `jadwals`;
+CREATE TABLE `jadwals` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `posyandu_id` bigint unsigned NOT NULL,
+  `kader_id` bigint unsigned DEFAULT NULL,
+  `judul` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Layanan Posyandu & Penimbangan Balita',
+  `lokasi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tanggal` date NOT NULL,
+  `waktu_mulai` time NOT NULL,
+  `waktu_selesai` time NOT NULL,
+  `catatan` text COLLATE utf8mb4_unicode_ci,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'akan_datang',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `jadwals_posyandu_id_foreign` (`posyandu_id`),
+  KEY `jadwals_kader_id_foreign` (`kader_id`),
+  CONSTRAINT `jadwals_kader_id_foreign` FOREIGN KEY (`kader_id`) REFERENCES `kaders` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `jadwals_posyandu_id_foreign` FOREIGN KEY (`posyandu_id`) REFERENCES `posyandus` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping structure for table laravel.kaders
-CREATE TABLE IF NOT EXISTS `kaders` (
+INSERT INTO `jadwals` VALUES
+('1', '1', NULL, 'Layanan Penimbangan & Imunisasi Balita Agustus 2026', 'Balai Pertemuan Warga Gampong Lampulo', '2026-08-23', '08:30:00', '11:30:00', 'Membawa buku KIA & kartu BPJS anak. Tersedia PMT Bubur Kacang Hijau + Telur Puyuh.', 'akan_datang', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('2', '2', NULL, 'Pemberian Vitamin A & Obat Cacing Balita', 'Kompleks Rukun Warga Peunayong', '2026-08-29', '09:00:00', '12:00:00', 'Bulan kapsul Vitamin A (Biru untuk 6-11 bulan, Merah untuk 12-59 bulan).', 'akan_datang', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('3', '3', NULL, 'Konseling Gizi Balita & PMT Berkelanjutan', 'Balai Desa Bandar Baru', '2026-09-06', '08:30:00', '11:30:00', 'Didampingi oleh Ahli Gizi Puskesmas Kuta Alam untuk balita berat badan kurang.', 'akan_datang', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('4', '1', NULL, 'Sweeping Penimbangan Balita Rentan Stunting', 'Wilayah RT 03 & 04 Gampong Lampulo', '2026-09-13', '09:00:00', '12:00:00', 'Kunjungan rumah bagi balita yang absen pada hari H Posyandu.', 'akan_datang', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('5', '2', NULL, 'Edukasi MPASI Kaya Protein Hewani', 'Kompleks Rukun Warga Peunayong', '2026-09-16', '09:00:00', '11:30:00', 'Demo masak MPASI berbahan ikan lokal dan telur bersama Kader & Tenaga Gizi.', 'akan_datang', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('6', '1', NULL, 'Penimbangan Rutin & Imunisasi Balita Juli 2026', 'Balai Pertemuan Warga Gampong Lampulo', '2026-07-22', '08:30:00', '11:30:00', 'Kegiatan selesai dilaksanakan. Kehadiran 94% dari total sasaran balita.', 'akan_datang', '2026-08-19 00:58:35', '2026-08-19 00:58:35');
+
+DROP TABLE IF EXISTS `kaders`;
+CREATE TABLE `kaders` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned NOT NULL,
   `posyandu_id` bigint unsigned NOT NULL,
@@ -95,45 +164,55 @@ CREATE TABLE IF NOT EXISTS `kaders` (
   KEY `kaders_posyandu_id_foreign` (`posyandu_id`),
   CONSTRAINT `kaders_posyandu_id_foreign` FOREIGN KEY (`posyandu_id`) REFERENCES `posyandus` (`id`) ON DELETE CASCADE,
   CONSTRAINT `kaders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.kaders: ~3 rows (approximately)
-INSERT INTO `kaders` (`id`, `user_id`, `posyandu_id`, `nama`, `no_hp`, `created_at`, `updated_at`) VALUES
-	(1, 2, 1, 'Naufal Alif', '81234567890', '2026-07-16 09:20:16', '2026-07-18 04:49:57'),
-	(2, 3, 1, 'Kader Mawar 2', '081234567891', '2026-07-16 09:20:17', '2026-07-16 09:20:17'),
-	(3, 4, 2, 'Kader Melati 1', '081234567892', '2026-07-16 09:20:17', '2026-07-16 09:20:17');
+INSERT INTO `kaders` VALUES
+('1', '2', '1', 'Cut Malahayati, A.Md.Keb', '081269001234', '2026-08-19 00:58:17', '2026-08-19 00:58:17'),
+('2', '3', '1', 'Cut Malahayati (Kader 1)', '081269001235', '2026-08-19 00:58:17', '2026-08-19 00:58:17'),
+('3', '4', '1', 'Cut Malahayati (Kader 1 Nutrigen)', '081269001236', '2026-08-19 00:58:17', '2026-08-19 00:58:17'),
+('4', '5', '2', 'Siti Rahmah, S.Pd', '081377889901', '2026-08-19 00:58:18', '2026-08-19 00:58:18'),
+('5', '6', '3', 'Nurul Fauziah', '085260112233', '2026-08-19 00:58:18', '2026-08-19 00:58:18');
 
--- Dumping structure for table laravel.migrations
-CREATE TABLE IF NOT EXISTS `migrations` (
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.migrations: ~13 rows (approximately)
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-	(1, '2014_10_12_000000_create_users_table', 1),
-	(2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
-	(3, '2019_08_19_000000_create_failed_jobs_table', 1),
-	(4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-	(5, '2026_07_16_000001_create_puskesmas_table', 1),
-	(6, '2026_07_16_000002_create_posyandus_table', 1),
-	(7, '2026_07_16_000003_create_kaders_table', 1),
-	(8, '2026_07_16_000004_create_orang_tuas_table', 1),
-	(9, '2026_07_16_000005_create_balitas_table', 1),
-	(10, '2026_07_16_000006_create_pengukurans_table', 1),
-	(11, '2026_07_17_000000_add_nik_ibu_to_orang_tuas_table', 2),
-	(12, '2026_07_17_000001_add_kecamatan_to_orang_tuas_table', 3),
-	(13, '2026_07_19_000000_add_status_validasi_to_pengukurans_table', 3);
+INSERT INTO `migrations` VALUES
+('1', '2014_10_12_000000_create_users_table', '1'),
+('2', '2014_10_12_100000_create_password_reset_tokens_table', '1'),
+('3', '2019_08_19_000000_create_failed_jobs_table', '1'),
+('4', '2019_12_14_000001_create_personal_access_tokens_table', '1'),
+('5', '2026_07_16_000001_create_puskesmas_table', '1'),
+('6', '2026_07_16_000002_create_posyandus_table', '1'),
+('7', '2026_07_16_000003_create_kaders_table', '1'),
+('8', '2026_07_16_000004_create_orang_tuas_table', '1'),
+('9', '2026_07_16_000005_create_balitas_table', '1'),
+('10', '2026_07_16_000006_create_pengukurans_table', '1'),
+('11', '2026_07_17_000000_add_nik_ibu_to_orang_tuas_table', '1'),
+('12', '2026_07_17_000001_add_kecamatan_to_orang_tuas_table', '1'),
+('13', '2026_07_19_000000_add_status_validasi_to_pengukurans_table', '1'),
+('14', '2026_07_19_000001_add_catatan_validator_to_pengukurans', '1'),
+('15', '2026_07_20_000000_add_indexes_to_pengukurans_table', '1'),
+('16', '2026_07_22_090205_create_sessions_table', '1'),
+('17', '2026_08_17_000001_add_full_kms_fields_to_tables', '1'),
+('18', '2026_08_18_000001_create_jadwals_table', '1'),
+('19', '2026_08_18_000002_add_catatan_kader_to_pengukurans_table', '1');
 
--- Dumping structure for table laravel.orang_tuas
-CREATE TABLE IF NOT EXISTS `orang_tuas` (
+DROP TABLE IF EXISTS `orang_tuas`;
+CREATE TABLE `orang_tuas` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned DEFAULT NULL,
+  `no_kk` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nik_ayah` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nama_ibu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nik_ibu` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nama_ayah` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pekerjaan_ayah` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pekerjaan_ibu` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `no_hp_whatsapp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alamat` text COLLATE utf8mb4_unicode_ci,
   `kecamatan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -143,40 +222,65 @@ CREATE TABLE IF NOT EXISTS `orang_tuas` (
   UNIQUE KEY `orang_tuas_no_hp_whatsapp_unique` (`no_hp_whatsapp`),
   KEY `orang_tuas_user_id_foreign` (`user_id`),
   CONSTRAINT `orang_tuas_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.orang_tuas: ~17 rows (approximately)
-INSERT INTO `orang_tuas` (`id`, `user_id`, `nama_ibu`, `nik_ibu`, `nama_ayah`, `no_hp_whatsapp`, `alamat`, `kecamatan`, `created_at`, `updated_at`) VALUES
-	(1, 5, 'Ibu Budi 1 Gaming', NULL, 'Bapak Budi 1', '081100000001', '{"desa":"Jl. Perumahan No. 12","kecamatan":null}', NULL, '2026-07-16 09:20:17', '2026-07-18 02:10:46'),
-	(2, 6, 'Ibu Budi 2', NULL, 'Bapak Budi 2', '081100000002', 'Jl. Perumahan No. 2', NULL, '2026-07-16 09:20:18', '2026-07-16 09:20:18'),
-	(3, 7, 'Ibu Budi 3', NULL, 'Bapak Budi 3', '081100000003', 'Jl. Perumahan No. 3', NULL, '2026-07-16 09:20:18', '2026-07-16 09:20:18'),
-	(4, 8, 'Ibu Budi 4', NULL, 'Bapak Budi 4', '081100000004', 'Jl. Perumahan No. 4', NULL, '2026-07-16 09:20:18', '2026-07-16 09:20:18'),
-	(5, 9, 'Ibu Budi 5', NULL, 'Bapak Budi 5', '081100000005', '{"desa":"Jl. Perumahan No. 512","kecamatan":null}', NULL, '2026-07-16 09:20:19', '2026-07-17 08:42:44'),
-	(6, 10, 'Ibu Budi 6', NULL, 'Bapak Budi 6', '081100000006', 'Jl. Perumahan No. 6', NULL, '2026-07-16 09:20:19', '2026-07-16 09:20:19'),
-	(7, 11, 'Ibu Budi 7', NULL, 'Bapak Budi 7', '081100000007', 'Jl. Perumahan No. 7', NULL, '2026-07-16 09:20:19', '2026-07-16 09:20:19'),
-	(8, 12, 'Ibu Budi 8', NULL, 'Bapak Budi 8', '081100000008', 'Jl. Perumahan No. 8', NULL, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(9, 13, 'Ibu Budi 9', NULL, 'Bapak Budi 9', '0811000000010', 'Jl. Perumahan No. 10', NULL, '2026-07-16 09:20:20', '2026-07-17 07:43:49'),
-	(10, 14, 'Ibu Budi 10', NULL, 'Bapak Budi 10', '081100000010', 'Jl. Perumahan No. 10', NULL, '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(11, 15, 'nurhasanah', NULL, '-', '085234664133', '-', NULL, '2026-07-17 00:51:14', '2026-07-17 00:51:14'),
-	(12, 16, 'Ellana', '12345678910', '-', '085234664130', 'keuramat', NULL, '2026-07-17 01:29:06', '2026-07-17 03:02:45'),
-	(13, 17, 'masyitah', NULL, '-', '09292827262725', '-', NULL, '2026-07-17 02:04:02', '2026-07-17 02:04:02'),
-	(15, 19, 'Azzahra', '1171242637638', '-', '098765345678', 'lhoong', NULL, '2026-07-17 07:17:01', '2026-07-17 07:17:01'),
-	(16, 20, 'musdhalifah', '8868689678776', '-', '09897875626756376', 'matang', NULL, '2026-07-17 07:30:40', '2026-07-17 07:30:40'),
-	(17, 21, 'mariana', '11877181728178', '-', '987977898678', '{"desa":"mulia","kecamatan":"kuta jaya"}', NULL, '2026-07-17 08:05:13', '2026-07-17 08:05:13'),
-	(19, 23, 'nulaila', '117209875628342', '-', '09876789286', '{"desa":"lhongg","kecamatan":"matang"}', NULL, '2026-07-19 13:54:54', '2026-07-19 13:54:54');
+INSERT INTO `orang_tuas` VALUES
+('1', '7', '1171011506000001', '1171011208000001', 'Cut Annisa Zahra', '1171015504000001', 'Teuku Farhan Maulana', 'Wiraswasta', 'Ibu Rumah Tangga', '081269000010', 'Gampong Lampulo, RT 02/RW 01, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:19', '2026-08-19 00:58:19'),
+('2', '8', '1171011506000002', '1171011208000002', 'Rina Agustina', '1171015504000002', 'Muhammad Rizky Pratama', 'PNS Pemko Banda Aceh', 'Guru PNS', '081269000011', 'Gampong Lampulo, Lr. Cakalang No. 14, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:19', '2026-08-19 00:58:19'),
+('3', '9', '1171011506000003', '1171011208000003', 'Nurhaliza, S.E.', '1171015504000003', 'Dedi Syahputra', 'Nelayan', 'Wiraswasta', '081269000012', 'Gampong Peunayong, Jl. T. Hasan Dek No. 5B, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:19', '2026-08-19 00:58:19'),
+('4', '10', '1171011506000004', '1171011208000004', 'Sri Wahyuni', '1171015504000004', 'Bambang Haryanto', 'Pedagang', 'Bidan', '081269000013', 'Gampong Bandar Baru, Kompleks TVRI No. 8, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:20', '2026-08-19 00:58:20'),
+('5', '11', '1171011506000005', '1171011208000005', 'Maisarah, S.Pd', '1171015504000005', 'Zulfikar Arifin', 'Karyawan BUMN', 'Perawat', '081269000014', 'Gampong Lampulo, Lr. Pukat Trawl No. 22, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:20', '2026-08-19 00:58:20'),
+('6', '12', '1171011506000006', '1171011208000006', 'Fitri Handayani', '1171015504000006', 'Hendri Saputra', 'Guru SMA', 'Pegawai Swasta', '081269000015', 'Gampong Peunayong, Lr. Khadijah No. 17, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:20', '2026-08-19 00:58:20'),
+('7', '13', '1171011506000007', '1171011208000007', 'Dewi Sartika', '1171015504000007', 'Ahmad Fauzi', 'Arsitek', 'Dosen', '081269000016', 'Gampong Bandar Baru, Jl. T. Nyak Arief No. 34, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:21', '2026-08-19 00:58:21'),
+('8', '14', '1171011506000008', '1171011208000008', 'Lestari Ningsih', '1171015504000008', 'Irfan Hakim', 'Tenaga Medis', 'PNS Dinas Kesehatan', '081269000017', 'Gampong Lampulo, RT 04/RW 02, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:21', '2026-08-19 00:58:21'),
+('9', '15', '1171011506000009', '1171011208000009', 'Eka Putri Rahayu', '1171015504000009', 'Rahmat Hidayat', 'Mekanik', 'Pedagang', '081269000018', 'Gampong Peunayong, Jl. Ahmad Yani No. 89, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:22', '2026-08-19 00:58:22'),
+('10', '16', '1171011506000010', '1171011208000010', 'Nurhasanah', '1171015504000010', 'Faisal Tanjung', 'Karyawan Swasta', 'Apoteker', '081269000019', 'Gampong Bandar Baru, Lr. Jeumpa No. 3, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:22', '2026-08-19 00:58:22'),
+('11', '17', '1171011506000011', '1171011208000011', 'Tia Rahmawati', '1171015504000011', 'Agus Setiawan', 'Dosen', 'Ibu Rumah Tangga', '081269000020', 'Gampong Lampulo, Lr. PPI Lampulo No. 5, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:22', '2026-08-19 00:58:22'),
+('12', '18', '1171011506000012', '1171011208000012', 'Rini Kusuma Wardani', '1171015504000012', 'Dian Permana', 'Wiraswasta', 'Guru PNS', '081269000021', 'Gampong Peunayong, Jl. KH Ahmad Dahlan No. 12, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:23', '2026-08-19 00:58:23'),
+('13', '19', '1171011506000013', '1171011208000013', 'Cut Putri Mayang Sari', '1171015504000013', 'M. Danial Syah', 'PNS Pemko Banda Aceh', 'Wiraswasta', '081269000022', 'Gampong Bandar Baru, Kompleks Unsyiah Blok D-4, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:23', '2026-08-19 00:58:23'),
+('14', '20', '1171011506000014', '1171011208000014', 'Indah Permatasari', '1171015504000014', 'Yusuf Pratama', 'Nelayan', 'Bidan', '081269000023', 'Gampong Lampulo, Lr. Samudra No. 9, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:23', '2026-08-19 00:58:23'),
+('15', '21', '1171011506000015', '1171011208000015', 'Siti Aminah', '1171015504000015', 'Rizal Pahlevi', 'Pedagang', 'Perawat', '081269000024', 'Gampong Peunayong, Jl. Kartini No. 27, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:24', '2026-08-19 00:58:24'),
+('16', '22', '1171011506000016', '1171011208000016', 'Zahratul Ula', '1171015504000016', 'M. Iqbal Ramadhan', 'Karyawan BUMN', 'Pegawai Swasta', '081269000025', 'Gampong Bandar Baru, Jl. Tgk Chik Ditiro No. 101, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:24', '2026-08-19 00:58:24'),
+('17', '23', '1171011506000017', '1171011208000017', 'Marlina, S.Kep', '1171015504000017', 'Teuku Zulkarnain', 'Guru SMA', 'Dosen', '081269000026', 'Gampong Lampulo, Lr. Nelayan No. 3, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:24', '2026-08-19 00:58:24'),
+('18', '24', '1171011506000018', '1171011208000018', 'Yuliana Safitri', '1171015504000018', 'Fahmi Idris', 'Arsitek', 'PNS Dinas Kesehatan', '081269000027', 'Gampong Peunayong, Jl. Peunayong Lama No. 18, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:25', '2026-08-19 00:58:25'),
+('19', '25', '1171011506000019', '1171011208000019', 'Hasanah Putri', '1171015504000019', 'T. Fachrul Razi', 'Tenaga Medis', 'Pedagang', '081269000028', 'Gampong Bandar Baru, Lr. Meulu No. 7, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:25', '2026-08-19 00:58:25'),
+('20', '26', '1171011506000020', '1171011208000020', 'Cut Mutia Rahmi', '1171015504000020', 'Munawar Khalil', 'Mekanik', 'Apoteker', '081269000029', 'Gampong Lampulo, Jl. Tanggul Samudra No. 41, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:25', '2026-08-19 00:58:25'),
+('21', '27', '1171011506000021', '1171011208000021', 'Desi Ratnasari', '1171015504000021', 'Andi Nugraha', 'Karyawan Swasta', 'Ibu Rumah Tangga', '081269000030', 'Gampong Peunayong, Lr. Merak No. 11, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:26', '2026-08-19 00:58:26'),
+('22', '28', '1171011506000022', '1171011208000022', 'Wardah Hayati', '1171015504000022', 'Iskandar Muda', 'Dosen', 'Guru PNS', '081269000031', 'Gampong Bandar Baru, Kompleks BPD Blok C, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:26', '2026-08-19 00:58:26'),
+('23', '29', '1171011506000023', '1171011208000023', 'Syelifa Nanda', '1171015504000023', 'Rizwan Maulana', 'Wiraswasta', 'Wiraswasta', '081269000032', 'Gampong Lampulo, RT 01/RW 03, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:26', '2026-08-19 00:58:26'),
+('24', '30', '1171011506000024', '1171011208000024', 'Khadijah Marwan', '1171015504000024', 'Aulia Rahman', 'PNS Pemko Banda Aceh', 'Bidan', '081269000033', 'Gampong Peunayong, Jl. Perdagangan No. 55, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:27', '2026-08-19 00:58:27'),
+('25', '31', '1171011506000025', '1171011208000025', 'Cut Riska Amalia', '1171015504000025', 'Fikri Syahrial', 'Nelayan', 'Perawat', '081269000034', 'Gampong Bandar Baru, Lr. Kuta Alam No. 9, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:27', '2026-08-19 00:58:27'),
+('26', '32', '1171011506000026', '1171011208000026', 'Nurlailawati', '1171015504000026', 'Safrizal', 'Pedagang', 'Pegawai Swasta', '081269000035', 'Gampong Lampulo, Lr. Ikan Kembung No. 2, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:27', '2026-08-19 00:58:27'),
+('27', '33', '1171011506000027', '1171011208000027', 'Rahmi Novita', '1171015504000027', 'Herman Syah', 'Karyawan BUMN', 'Dosen', '081269000036', 'Gampong Peunayong, Jl. WR Supratman No. 64, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:28', '2026-08-19 00:58:28'),
+('28', '34', '1171011506000028', '1171011208000028', 'Putri Balqis', '1171015504000028', 'T. Reza Pahlevi', 'Guru SMA', 'PNS Dinas Kesehatan', '081269000037', 'Gampong Bandar Baru, Jl. T. Iskandar No. 88, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:28', '2026-08-19 00:58:28'),
+('29', '35', '1171011506000029', '1171011208000029', 'Harnum Melati', '1171015504000029', 'Zainal Abidin', 'Arsitek', 'Pedagang', '081269000038', 'Gampong Lampulo, RT 03/RW 01, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:28', '2026-08-19 00:58:28'),
+('30', '36', '1171011506000030', '1171011208000030', 'Anita Zahara', '1171015504000030', 'Bahrul Ulum', 'Tenaga Medis', 'Apoteker', '081269000039', 'Gampong Peunayong, Lr. Sentosa No. 15, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:29', '2026-08-19 00:58:29'),
+('31', '37', '1171011506000031', '1171011208000031', 'Cut Syarifah', '1171015504000031', 'Mahmud Syah', 'Mekanik', 'Ibu Rumah Tangga', '081269000040', 'Gampong Bandar Baru, Kompleks PU No. 23, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:29', '2026-08-19 00:58:29'),
+('32', '38', '1171011506000032', '1171011208000032', 'Maulida Sari', '1171015504000032', 'Syamsul Bahri', 'Karyawan Swasta', 'Guru PNS', '081269000041', 'Gampong Lampulo, Lr. Muara No. 10, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:29', '2026-08-19 00:58:29'),
+('33', '39', '1171011506000033', '1171011208000033', 'Fatimah Az-Zahra', '1171015504000033', 'Teuku M. Yusuf', 'Dosen', 'Wiraswasta', '081269000042', 'Gampong Peunayong, Jl. Diponegoro No. 33, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:30', '2026-08-19 00:58:30'),
+('34', '40', '1171011506000034', '1171011208000034', 'Raudhatul Jannah', '1171015504000034', 'Rudi Hartono', 'Wiraswasta', 'Bidan', '081269000043', 'Gampong Bandar Baru, Lr. Mawar Putih No. 14, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:30', '2026-08-19 00:58:30'),
+('35', '41', '1171011506000035', '1171011208000035', 'Nurul Afifah', '1171015504000035', 'Ilham Wahyudi', 'PNS Pemko Banda Aceh', 'Perawat', '081269000044', 'Gampong Lampulo, Lr. Bahari No. 8, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:30', '2026-08-19 00:58:30'),
+('36', '42', '1171011506000036', '1171011208000036', 'Husna Mufida', '1171015504000036', 'Zulkifli', 'Nelayan', 'Pegawai Swasta', '081269000045', 'Gampong Peunayong, Lr. Cempaka No. 20, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:31', '2026-08-19 00:58:31'),
+('37', '43', '1171011506000037', '1171011208000037', 'Cut Dara Meutia', '1171015504000037', 'T. Syahrul', 'Pedagang', 'Dosen', '081269000046', 'Gampong Bandar Baru, Jl. Seulanga No. 19, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:31', '2026-08-19 00:58:31'),
+('38', '44', '1171011506000038', '1171011208000038', 'Suryani', '1171015504000038', 'Darmawan', 'Karyawan BUMN', 'PNS Dinas Kesehatan', '081269000047', 'Gampong Lampulo, Lr. Perikanan No. 16, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:31', '2026-08-19 00:58:31'),
+('39', '45', '1171011506000039', '1171011208000039', 'Ratna Juwita', '1171015504000039', 'Budi Santoso', 'Guru SMA', 'Pedagang', '081269000048', 'Gampong Peunayong, Jl. Cut Meutia No. 4, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:32', '2026-08-19 00:58:32'),
+('40', '46', '1171011506000040', '1171011208000040', 'Hayatun Nufus', '1171015504000040', 'Khairul Anwar', 'Arsitek', 'Apoteker', '081269000049', 'Gampong Bandar Baru, Lr. Flamboyan No. 2, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:32', '2026-08-19 00:58:32'),
+('41', '47', '1171011506000041', '1171011208000041', 'Zubairah', '1171015504000041', 'Teuku Alamsyah', 'Tenaga Medis', 'Ibu Rumah Tangga', '081269000050', 'Gampong Lampulo, RT 05/RW 02, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:32', '2026-08-19 00:58:32'),
+('42', '48', '1171011506000042', '1171011208000042', 'Rosdiana', '1171015504000042', 'Mansyur', 'Mekanik', 'Guru PNS', '081269000051', 'Gampong Peunayong, Lr. Kenanga No. 12, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:33', '2026-08-19 00:58:33'),
+('43', '49', '1171011506000043', '1171011208000043', 'Safura', '1171015504000043', 'M. Nasir', 'Karyawan Swasta', 'Wiraswasta', '081269000052', 'Gampong Bandar Baru, Jl. T. Hasan Dek No. 90, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:33', '2026-08-19 00:58:33'),
+('44', '50', '1171011506000044', '1171011208000044', 'Cut Nurul Huda', '1171015504000044', 'Teuku Firdaus', 'Dosen', 'Bidan', '081269000053', 'Gampong Lampulo, Lr. Samudra No. 33, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:33', '2026-08-19 00:58:33'),
+('45', '51', '1171011506000045', '1171011208000045', 'Aisyah Humairah', '1171015504000045', 'Ikhwanul Muslimin', 'Wiraswasta', 'Perawat', '081269000054', 'Gampong Peunayong, Jl. WR Monginsidi No. 7, Banda Aceh', 'Kuta Alam', '2026-08-19 00:58:34', '2026-08-19 00:58:34');
 
--- Dumping structure for table laravel.password_reset_tokens
-CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
+DROP TABLE IF EXISTS `password_reset_tokens`;
+CREATE TABLE `password_reset_tokens` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.password_reset_tokens: ~0 rows (approximately)
-
--- Dumping structure for table laravel.pengukurans
-CREATE TABLE IF NOT EXISTS `pengukurans` (
+DROP TABLE IF EXISTS `pengukurans`;
+CREATE TABLE `pengukurans` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `balita_id` bigint unsigned NOT NULL,
   `kader_id` bigint unsigned NOT NULL,
@@ -184,84 +288,312 @@ CREATE TABLE IF NOT EXISTS `pengukurans` (
   `umur_bulan` int NOT NULL,
   `berat_badan` decimal(5,2) NOT NULL,
   `tinggi_badan` decimal(5,2) NOT NULL,
+  `lingkar_kepala` decimal(5,2) DEFAULT NULL,
+  `asi_eksklusif` tinyint(1) NOT NULL DEFAULT '0',
   `z_score_bbu` decimal(5,2) DEFAULT NULL,
   `z_score_tbu` decimal(5,2) DEFAULT NULL,
   `status_gizi` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_kenaikan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status_validasi` enum('pending','approved','rejected') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `catatan_validator` text COLLATE utf8mb4_unicode_ci,
+  `catatan_kader` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `pengukurans_balita_id_foreign` (`balita_id`),
   KEY `pengukurans_kader_id_foreign` (`kader_id`),
+  KEY `pengukurans_status_validasi_index` (`status_validasi`),
+  KEY `pengukurans_tanggal_ukur_index` (`tanggal_ukur`),
   CONSTRAINT `pengukurans_balita_id_foreign` FOREIGN KEY (`balita_id`) REFERENCES `balitas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `pengukurans_kader_id_foreign` FOREIGN KEY (`kader_id`) REFERENCES `kaders` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.pengukurans: ~60 rows (approximately)
-INSERT INTO `pengukurans` (`id`, `balita_id`, `kader_id`, `tanggal_ukur`, `umur_bulan`, `berat_badan`, `tinggi_badan`, `z_score_bbu`, `z_score_tbu`, `status_gizi`, `status_validasi`, `created_at`, `updated_at`) VALUES
-	(1, 1, 1, '2026-05-02', 10, 9.50, 75.00, -0.40, -0.50, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(2, 1, 1, '2026-06-05', 11, 9.68, 75.90, -0.40, -0.50, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(3, 1, 1, '2026-07-02', 12, 9.86, 76.80, -0.40, -0.50, 'Normal', 'approved', '2026-07-16 09:20:20', '2026-07-19 11:30:16'),
-	(4, 2, 2, '2026-05-02', 11, 10.00, 76.50, 0.30, 0.20, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(5, 2, 2, '2026-06-04', 12, 10.18, 77.40, 0.30, 0.20, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(6, 2, 2, '2026-07-06', 13, 10.36, 78.30, 0.30, 0.20, 'Normal', 'approved', '2026-07-16 09:20:20', '2026-07-19 20:00:47'),
-	(7, 3, 3, '2026-05-03', 12, 10.50, 78.00, 1.10, 1.00, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(8, 3, 3, '2026-06-05', 13, 10.68, 78.90, 1.10, 1.00, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(9, 3, 3, '2026-07-04', 14, 10.86, 79.80, 1.10, 1.00, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(10, 4, 1, '2026-05-03', 13, 9.00, 74.00, -0.90, -1.00, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(11, 4, 1, '2026-06-04', 14, 9.18, 74.90, -0.90, -1.00, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(12, 4, 1, '2026-07-06', 15, 9.36, 75.80, -0.90, -1.00, 'Normal', 'approved', '2026-07-16 09:20:20', '2026-07-19 14:32:46'),
-	(13, 5, 2, '2026-05-02', 14, 10.20, 77.00, 0.60, 0.50, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(14, 5, 2, '2026-06-03', 15, 10.38, 77.90, 0.60, 0.50, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(15, 5, 2, '2026-07-03', 16, 10.56, 78.80, 0.60, 0.50, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(16, 6, 3, '2026-05-02', 15, 9.20, 74.50, -0.70, -0.80, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(17, 6, 3, '2026-06-03', 16, 9.38, 75.40, -0.70, -0.80, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(18, 6, 3, '2026-07-04', 17, 9.56, 76.30, -0.70, -0.80, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(19, 7, 1, '2026-05-05', 16, 11.00, 79.00, 1.60, 1.50, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(20, 7, 1, '2026-06-05', 17, 11.18, 79.90, 1.60, 1.50, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(21, 7, 1, '2026-07-06', 18, 11.36, 80.80, 1.60, 1.50, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(22, 8, 2, '2026-05-03', 17, 9.80, 76.00, 0.10, 0.00, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(23, 8, 2, '2026-06-03', 18, 9.98, 76.90, 0.10, 0.00, 'Normal', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(24, 8, 2, '2026-07-06', 19, 10.16, 77.80, 0.10, 0.00, 'Normal', 'approved', '2026-07-16 09:20:20', '2026-07-19 20:00:35'),
-	(25, 9, 3, '2026-05-04', 18, 8.50, 72.00, -1.70, -1.80, 'Risiko', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(26, 9, 3, '2026-06-05', 19, 8.62, 72.60, -1.70, -1.80, 'Risiko', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(27, 9, 3, '2026-07-04', 20, 8.74, 73.20, -1.70, -1.80, 'Risiko', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(28, 10, 1, '2026-05-03', 19, 8.30, 71.50, -1.80, -1.90, 'Risiko', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(29, 10, 1, '2026-06-05', 20, 8.42, 72.10, -1.80, -1.90, 'Risiko', 'pending', '2026-07-16 09:20:20', '2026-07-16 09:20:20'),
-	(30, 10, 1, '2026-07-05', 21, 8.54, 72.70, -1.80, -1.90, 'Risiko', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(31, 11, 2, '2026-05-06', 20, 8.70, 72.50, -1.50, -1.60, 'Risiko', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(32, 11, 2, '2026-06-06', 21, 8.82, 73.10, -1.50, -1.60, 'Risiko', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(33, 11, 2, '2026-07-05', 22, 8.94, 73.70, -1.50, -1.60, 'Risiko', 'rejected', '2026-07-16 09:20:21', '2026-07-19 13:31:40'),
-	(34, 12, 3, '2026-05-03', 21, 8.60, 72.20, -1.60, -1.70, 'Risiko', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(35, 12, 3, '2026-06-05', 22, 8.72, 72.80, -1.60, -1.70, 'Risiko', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(36, 12, 3, '2026-07-02', 23, 8.84, 73.40, -1.60, -1.70, 'Risiko', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(37, 13, 1, '2026-05-03', 10, 7.50, 69.00, -2.40, -2.50, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(38, 13, 1, '2026-06-03', 11, 7.56, 69.30, -2.40, -2.50, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(39, 13, 1, '2026-07-04', 12, 7.62, 69.60, -2.40, -2.50, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(40, 14, 2, '2026-05-03', 11, 7.20, 68.00, -2.70, -2.80, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(41, 14, 2, '2026-06-03', 12, 7.26, 68.30, -2.70, -2.80, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(42, 14, 2, '2026-07-05', 13, 7.32, 68.60, -2.70, -2.80, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(43, 15, 3, '2026-05-06', 12, 6.80, 67.00, -3.00, -3.10, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(44, 15, 3, '2026-06-03', 13, 6.86, 67.30, -3.00, -3.10, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(45, 15, 3, '2026-07-06', 14, 6.92, 67.60, -3.00, -3.10, 'Stunting', 'pending', '2026-07-16 09:20:21', '2026-07-16 09:20:21'),
-	(46, 17, 1, '2026-07-17', 21, 17.20, 92.20, 7.57, 7.09, 'Normal', 'approved', '2026-07-17 02:02:23', '2026-07-19 02:57:56'),
-	(47, 18, 1, '2026-07-17', 1, 12.60, 80.20, 8.32, 10.46, 'Normal', 'approved', '2026-07-17 02:05:07', '2026-07-19 02:55:09'),
-	(49, 20, 1, '2026-07-17', 3, 4.30, 67.10, 0.14, 4.20, 'Normal', 'approved', '2026-07-17 07:18:11', '2026-07-19 02:54:41'),
-	(50, 21, 1, '2026-07-17', 3, 6.20, 12.30, -0.29, -21.35, 'Stunting', 'approved', '2026-07-17 07:32:10', '2026-07-19 11:18:31'),
-	(51, 21, 1, '2026-07-17', 3, 12.50, 79.20, 8.71, 7.74, 'Normal', 'approved', '2026-07-17 07:32:30', '2026-07-19 02:04:25'),
-	(52, 21, 1, '2026-07-17', 3, 11.40, 50.20, 7.14, -4.87, 'Stunting', 'approved', '2026-07-17 07:33:24', '2026-07-19 11:22:21'),
-	(53, 9, 1, '2026-07-17', 20, 12.50, 87.90, 0.95, 1.22, 'Normal', 'approved', '2026-07-17 07:50:44', '2026-07-19 01:46:44'),
-	(54, 22, 1, '2026-07-17', 28, 11.20, 70.10, -1.21, -5.56, 'Stunting', 'approved', '2026-07-17 08:06:22', '2026-07-19 02:58:39'),
-	(55, 5, 1, '2026-07-17', 16, 10.20, 78.10, -0.24, -0.65, 'Normal', 'approved', '2026-07-17 08:42:10', '2026-07-19 02:02:32'),
-	(56, 5, 1, '2026-07-17', 16, 7.20, 51.20, -2.88, -9.42, 'Stunting', 'approved', '2026-07-17 08:42:26', '2026-07-20 06:46:41'),
-	(59, 11, 1, '2026-07-18', 22, 10.00, 78.00, -1.39, -2.25, 'Stunting', 'approved', '2026-07-18 07:18:48', '2026-07-19 19:59:18'),
-	(60, 11, 1, '2026-07-18', 22, 17.00, 79.00, 4.13, -1.95, 'Risiko', 'approved', '2026-07-18 07:19:19', '2026-07-19 19:42:52'),
-	(61, 11, 1, '2026-07-18', 22, 25.00, 90.00, 10.45, 1.35, 'Normal', 'approved', '2026-07-18 07:19:38', '2026-07-19 01:45:31'),
-	(62, 24, 1, '2026-07-19', 8, 45.00, 75.00, 40.44, 1.69, 'Normal', 'approved', '2026-07-19 12:46:55', '2026-07-19 12:47:54'),
-	(63, 25, 1, '2026-07-19', 18, 70.00, 90.00, 65.92, 11.78, 'Normal', 'approved', '2026-07-19 13:55:42', '2026-07-19 13:58:42');
+INSERT INTO `pengukurans` VALUES
+('1', '1', '1', '2026-05-16', '11', '8.58', '73.10', '39.00', '0', '-0.82', '-0.50', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('2', '1', '1', '2026-06-18', '12', '9.06', '75.20', '39.40', '0', '-0.54', '-0.18', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('3', '1', '1', '2026-08-13', '14', '10.02', '79.40', '40.30', '0', '-0.01', '0.51', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('4', '2', '1', '2026-05-16', '5', '5.70', '60.50', '36.30', '1', '-1.50', '-1.46', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('5', '2', '1', '2026-06-11', '6', '6.18', '62.60', '36.70', '1', '-1.40', '-1.24', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('6', '2', '1', '2026-07-21', '7', '6.66', '64.70', '37.20', '0', '-1.04', '-1.04', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('7', '2', '1', '2026-08-14', '8', '7.14', '66.80', '37.60', '0', '-0.84', '-0.73', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('8', '3', '1', '2026-05-12', '14', '7.20', '70.50', '38.30', '0', '-2.00', '-1.95', 'Kurang', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('9', '3', '1', '2026-06-15', '15', '7.48', '72.00', '38.60', '0', '-1.88', '-1.78', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('10', '3', '1', '2026-07-06', '16', '7.76', '73.50', '39.00', '0', '-1.77', '-1.62', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('11', '3', '1', '2026-08-09', '17', '8.04', '75.00', '39.30', '0', '-1.67', '-1.46', 'Risiko', 'T', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('12', '4', '1', '2026-05-07', '11', '7.04', '70.60', '38.30', '0', '-1.66', '-0.81', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('13', '4', '1', '2026-06-04', '12', '7.36', '72.40', '38.70', '0', '-1.54', '-0.57', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('14', '4', '1', '2026-07-16', '13', '7.68', '74.20', '39.10', '0', '-1.39', '-0.32', 'Normal', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('15', '4', '1', '2026-08-16', '14', '8.00', '76.00', '39.50', '0', '-1.25', '-0.08', 'Normal', 'T', 'pending', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('16', '5', '1', '2026-05-13', '27', '16.26', '106.70', '46.20', '0', '2.57', '4.89', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('17', '5', '1', '2026-06-06', '27', '16.74', '108.80', '46.60', '0', '2.92', '5.48', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('18', '5', '1', '2026-07-07', '28', '17.22', '110.90', '47.10', '0', '3.09', '5.78', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('19', '5', '1', '2026-08-05', '29', '21.20', '113.00', '47.50', '0', '5.70', '6.07', 'Normal', 'N', 'rejected', 'Anomali kenaikan ekstrem dalam 1 bulan. Mohon timbang ulang balita.', 'Timbangan terbaca melonjak (kemungkinan salah catat).', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('20', '6', '1', '2026-05-15', '21', '13.38', '94.10', '43.50', '0', '1.95', '3.25', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('21', '6', '1', '2026-06-13', '22', '13.86', '96.20', '43.90', '0', '2.10', '3.58', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('22', '6', '1', '2026-07-06', '23', '14.34', '98.30', '44.40', '0', '2.24', '3.89', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('23', '6', '1', '2026-08-04', '24', '14.82', '100.40', '44.80', '0', '2.37', '4.20', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('24', '7', '1', '2026-05-12', '10', '6.40', '67.00', '37.50', '0', '-2.10', '-1.67', 'Kurang', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('25', '7', '1', '2026-06-09', '11', '6.72', '68.80', '37.90', '0', '-1.98', '-1.48', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('26', '7', '1', '2026-07-19', '12', '7.04', '70.60', '38.30', '0', '-1.86', '-1.21', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('27', '7', '1', '2026-08-15', '13', '7.36', '72.40', '38.70', '0', '-1.70', '-0.95', 'Risiko', 'T', 'pending', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('28', '8', '1', '2026-05-17', '17', '11.46', '85.70', '41.70', '0', '0.67', '1.44', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('29', '8', '1', '2026-06-04', '18', '11.94', '87.80', '42.10', '0', '0.87', '1.72', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('30', '8', '1', '2026-07-09', '19', '12.42', '89.90', '42.60', '0', '1.07', '2.10', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('31', '9', '1', '2026-05-07', '3', '4.74', '56.30', '35.40', '1', '-1.51', '-1.59', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('32', '9', '1', '2026-06-07', '4', '5.22', '58.40', '35.80', '1', '-1.69', '-1.61', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('33', '9', '1', '2026-07-11', '5', '5.70', '60.50', '36.30', '1', '-1.50', '-1.46', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('34', '10', '1', '2026-05-08', '0', '3.78', '52.10', '34.50', '1', '1.20', '1.16', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('35', '10', '1', '2026-06-06', '1', '4.26', '54.20', '34.90', '1', '-0.48', '-0.24', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('36', '10', '1', '2026-07-12', '2', '4.74', '56.30', '35.40', '1', '-1.43', '-0.95', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('37', '11', '1', '2026-05-08', '2', '4.26', '54.20', '34.90', '1', '-1.40', '-1.38', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('38', '11', '1', '2026-06-16', '3', '4.74', '56.30', '35.40', '1', '-1.51', '-1.59', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('39', '11', '1', '2026-07-16', '4', '5.22', '58.40', '35.80', '1', '-1.69', '-1.61', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('40', '11', '1', '2026-08-13', '5', '5.70', '60.50', '36.30', '1', '-1.50', '-1.46', 'Risiko', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('41', '12', '1', '2026-05-06', '7', '7.14', '66.80', '37.60', '0', '-1.29', '-0.92', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('42', '12', '1', '2026-06-17', '9', '7.62', '68.90', '38.10', '0', '-1.42', '-1.15', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('43', '12', '1', '2026-07-17', '10', '8.10', '71.00', '38.50', '0', '-1.10', '-0.85', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('44', '12', '1', '2026-08-21', '11', '8.58', '73.10', '39.00', '0', '-0.82', '-0.50', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('45', '13', '1', '2026-05-06', '5', '6.18', '62.60', '36.70', '1', '-1.65', '-1.32', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('46', '13', '1', '2026-06-18', '7', '6.66', '64.70', '37.20', '0', '-1.82', '-1.73', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('47', '13', '1', '2026-07-04', '7', '7.14', '66.80', '37.60', '0', '-1.29', '-0.92', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('48', '13', '1', '2026-08-15', '9', '7.62', '68.90', '38.10', '0', '-1.42', '-1.15', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('49', '14', '1', '2026-05-16', '19', '8.32', '76.50', '39.70', '0', '-1.70', '-1.55', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('50', '14', '1', '2026-06-07', '20', '8.60', '78.00', '40.00', '0', '-1.61', '-1.32', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('51', '14', '1', '2026-07-14', '21', '8.88', '79.50', '40.40', '0', '-1.52', '-1.10', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('52', '14', '1', '2026-08-08', '22', '9.16', '81.00', '40.70', '0', '-1.43', '-0.89', 'Normal', 'T', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('53', '15', '1', '2026-05-19', '13', '9.54', '77.30', '39.90', '0', '-0.27', '0.17', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('54', '15', '1', '2026-06-09', '13', '10.02', '79.40', '40.30', '0', '0.20', '0.91', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('55', '15', '1', '2026-07-13', '14', '10.50', '81.50', '40.80', '0', '0.44', '1.23', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('56', '15', '1', '2026-08-17', '15', '10.98', '83.60', '41.20', '0', '0.66', '1.53', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('57', '16', '1', '2026-05-04', '3', '5.22', '58.40', '35.80', '1', '-0.83', '-0.64', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('58', '16', '1', '2026-06-07', '4', '5.70', '60.50', '36.30', '1', '-1.00', '-0.70', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('59', '16', '1', '2026-08-16', '7', '6.66', '64.70', '37.20', '0', '-1.04', '-1.04', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('60', '17', '1', '2026-05-15', '25', '15.30', '102.50', '45.30', '0', '2.21', '4.25', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('61', '17', '1', '2026-06-12', '26', '15.78', '104.60', '45.70', '0', '2.39', '4.57', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('62', '17', '1', '2026-07-04', '27', '16.26', '106.70', '46.20', '0', '2.57', '4.89', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('63', '17', '1', '2026-08-08', '28', '16.74', '108.80', '46.60', '0', '2.74', '5.19', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('64', '18', '1', '2026-05-18', '9', '6.08', '65.20', '37.10', '0', '-2.36', '-1.88', 'Kurang', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('65', '18', '1', '2026-06-21', '10', '6.40', '67.00', '37.50', '0', '-2.10', '-1.67', 'Kurang', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('66', '18', '1', '2026-07-12', '11', '6.72', '68.80', '37.90', '0', '-1.98', '-1.48', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('67', '19', '1', '2026-05-14', '14', '10.02', '79.40', '40.30', '0', '-0.01', '0.51', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('68', '19', '1', '2026-06-21', '15', '10.50', '81.50', '40.80', '0', '0.23', '0.83', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('69', '19', '1', '2026-07-19', '16', '10.98', '83.60', '41.20', '0', '0.45', '1.14', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('70', '20', '1', '2026-06-10', '0', '3.78', '52.10', '34.50', '1', '1.45', '1.67', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('71', '20', '1', '2026-07-20', '2', '4.26', '54.20', '34.90', '1', '-1.40', '-1.38', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('72', '21', '1', '2026-05-15', '23', '14.34', '98.30', '44.40', '0', '1.84', '3.56', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('73', '21', '1', '2026-06-19', '24', '14.82', '100.40', '44.80', '0', '2.02', '3.91', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('74', '21', '1', '2026-07-10', '25', '15.30', '102.50', '45.30', '0', '2.21', '4.25', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('75', '21', '1', '2026-08-20', '26', '15.78', '104.60', '45.70', '0', '2.39', '4.57', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('76', '22', '1', '2026-05-11', '15', '7.48', '72.00', '38.60', '0', '-1.88', '-1.78', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('77', '22', '1', '2026-06-17', '17', '7.76', '73.50', '39.00', '0', '-1.91', '-1.94', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('78', '22', '1', '2026-07-07', '17', '8.04', '75.00', '39.30', '0', '-1.67', '-1.46', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('79', '22', '1', '2026-08-20', '19', '8.32', '76.50', '39.70', '0', '-1.70', '-1.55', 'Risiko', 'T', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('80', '23', '1', '2026-05-04', '6', '6.66', '64.70', '37.20', '0', '-1.55', '-1.16', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('81', '23', '1', '2026-06-18', '8', '7.14', '66.80', '37.60', '0', '-1.62', '-1.46', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('82', '23', '1', '2026-07-16', '9', '7.62', '68.90', '38.10', '0', '-1.42', '-1.15', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('83', '23', '1', '2026-08-07', '9', '8.10', '71.00', '38.50', '0', '-0.89', '-0.37', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('84', '24', '1', '2026-05-05', '18', '11.94', '87.80', '42.10', '0', '1.45', '2.22', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('85', '24', '1', '2026-06-19', '19', '12.42', '89.90', '42.60', '0', '1.62', '2.57', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('86', '24', '1', '2026-07-21', '20', '12.90', '92.00', '43.00', '0', '1.79', '2.92', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('87', '24', '1', '2026-08-15', '21', '13.38', '94.10', '43.50', '0', '1.95', '3.25', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('88', '25', '1', '2026-05-10', '11', '7.04', '70.60', '38.30', '0', '-2.36', '-1.39', 'Kurang', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('89', '25', '1', '2026-06-07', '12', '7.36', '72.40', '38.70', '0', '-2.24', '-1.18', 'Kurang', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('90', '25', '1', '2026-07-06', '13', '7.68', '74.20', '39.10', '0', '-2.07', '-0.91', 'Kurang', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('91', '25', '1', '2026-08-12', '14', '8.00', '76.00', '39.50', '0', '-1.91', '-0.65', 'Risiko', 'T', 'pending', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('92', '26', '1', '2026-05-17', '29', '17.22', '110.90', '47.10', '0', '3.10', '5.68', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('93', '26', '1', '2026-06-12', '30', '17.70', '113.00', '47.50', '0', '3.23', '5.95', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('94', '26', '1', '2026-07-13', '31', '18.18', '115.10', '48.00', '0', '3.35', '6.21', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('95', '26', '1', '2026-08-20', '32', '18.66', '117.20', '48.40', '0', '3.48', '6.47', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('96', '27', '1', '2026-05-18', '33', '19.14', '119.30', '48.90', '0', '3.52', '6.61', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('97', '27', '1', '2026-06-07', '34', '19.62', '121.40', '49.30', '0', '3.66', '6.87', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('98', '27', '1', '2026-07-17', '35', '20.10', '123.50', '49.80', '0', '3.79', '7.13', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('99', '27', '1', '2026-08-05', '36', '20.58', '125.60', '50.20', '0', '3.93', '7.38', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('100', '28', '1', '2026-07-12', '0', '3.78', '52.10', '34.50', '1', '1.45', '1.67', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('101', '29', '2', '2026-05-10', '18', '9.28', '83.20', '41.10', '0', '-1.35', '0.28', 'Normal', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('102', '29', '2', '2026-06-18', '20', '9.60', '85.00', '41.50', '0', '-1.41', '0.34', 'Normal', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('103', '29', '2', '2026-07-16', '21', '9.92', '86.80', '41.90', '0', '-1.30', '0.64', 'Normal', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('104', '30', '2', '2026-05-14', '8', '7.14', '66.80', '37.60', '0', '-1.62', '-1.46', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('105', '30', '2', '2026-06-13', '9', '7.62', '68.90', '38.10', '0', '-1.42', '-1.15', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('106', '30', '2', '2026-07-10', '9', '8.10', '71.00', '38.50', '0', '-0.89', '-0.37', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('107', '31', '2', '2026-05-11', '6', '6.18', '62.60', '36.70', '1', '-2.15', '-2.00', 'Kurang', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('108', '31', '2', '2026-06-14', '7', '6.66', '64.70', '37.20', '0', '-1.82', '-1.73', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('109', '31', '2', '2026-08-07', '9', '7.62', '68.90', '38.10', '0', '-1.42', '-1.15', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('110', '32', '2', '2026-05-20', '16', '7.48', '72.00', '38.60', '0', '-2.02', '-2.11', 'Stunting', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('111', '32', '2', '2026-06-09', '16', '7.76', '73.50', '39.00', '0', '-1.77', '-1.62', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('112', '32', '2', '2026-07-15', '18', '8.04', '75.00', '39.30', '0', '-1.80', '-1.78', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('113', '32', '2', '2026-08-20', '19', '8.32', '76.50', '39.70', '0', '-1.70', '-1.55', 'Risiko', 'T', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('114', '33', '2', '2026-06-08', '0', '3.78', '52.10', '34.50', '1', '1.20', '1.16', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('115', '33', '2', '2026-07-11', '2', '4.26', '54.20', '34.90', '1', '-2.23', '-1.91', 'Kurang', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('116', '33', '2', '2026-08-09', '2', '8.24', '56.30', '35.40', '1', '4.40', '-0.95', 'Normal', 'N', 'rejected', 'Anomali kenaikan ekstrem dalam 1 bulan. Mohon timbang ulang balita.', 'Timbangan terbaca melonjak (kemungkinan salah catat).', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('117', '34', '2', '2026-05-10', '13', '9.54', '77.30', '39.90', '0', '0.41', '0.76', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('118', '34', '2', '2026-06-16', '14', '10.02', '79.40', '40.30', '0', '0.64', '1.08', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('119', '34', '2', '2026-07-20', '15', '10.50', '81.50', '40.80', '0', '0.86', '1.38', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('120', '34', '2', '2026-08-06', '15', '10.98', '83.60', '41.20', '0', '1.30', '2.08', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('121', '35', '2', '2026-05-07', '9', '8.10', '71.00', '38.50', '0', '-0.89', '-0.37', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('122', '35', '2', '2026-06-14', '10', '8.58', '73.10', '39.00', '0', '-0.62', '-0.07', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('123', '35', '2', '2026-07-19', '12', '9.06', '75.20', '39.40', '0', '-0.54', '-0.18', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('124', '35', '2', '2026-08-13', '12', '9.54', '77.30', '39.90', '0', '-0.06', '0.57', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('125', '36', '2', '2026-05-10', '5', '5.70', '60.50', '36.30', '1', '-1.50', '-1.46', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('126', '36', '2', '2026-06-18', '6', '6.18', '62.60', '36.70', '1', '-1.40', '-1.24', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('127', '36', '2', '2026-07-10', '7', '6.66', '64.70', '37.20', '0', '-1.04', '-1.04', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('128', '36', '2', '2026-08-04', '7', '7.14', '66.80', '37.60', '0', '-0.51', '-0.20', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('129', '37', '2', '2026-05-11', '22', '13.86', '96.20', '43.90', '0', '1.65', '3.21', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('130', '37', '2', '2026-06-10', '23', '14.34', '98.30', '44.40', '0', '1.84', '3.56', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('131', '37', '2', '2026-07-08', '24', '14.82', '100.40', '44.80', '0', '2.02', '3.91', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('132', '37', '2', '2026-08-07', '25', '15.30', '102.50', '45.30', '0', '2.21', '4.25', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('133', '38', '2', '2026-05-18', '11', '6.72', '68.80', '37.90', '0', '-1.98', '-1.48', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('134', '38', '2', '2026-06-07', '12', '7.04', '70.60', '38.30', '0', '-1.86', '-1.21', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('135', '38', '2', '2026-07-09', '13', '7.36', '72.40', '38.70', '0', '-1.70', '-0.95', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:34', '2026-08-19 00:58:34'),
+('136', '39', '2', '2026-05-05', '26', '15.78', '104.60', '45.70', '0', '2.39', '4.57', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('137', '39', '2', '2026-06-11', '27', '16.26', '106.70', '46.20', '0', '2.57', '4.89', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('138', '39', '2', '2026-07-05', '28', '16.74', '108.80', '46.60', '0', '2.74', '5.19', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('139', '40', '2', '2026-05-15', '4', '5.22', '58.40', '35.80', '1', '-1.69', '-1.61', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('140', '40', '2', '2026-06-06', '5', '5.70', '60.50', '36.30', '1', '-1.50', '-1.46', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('141', '40', '2', '2026-07-05', '6', '6.18', '62.60', '36.70', '1', '-1.40', '-1.24', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('142', '41', '2', '2026-05-14', '1', '4.26', '54.20', '34.90', '1', '-0.48', '-0.24', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('143', '41', '2', '2026-06-08', '2', '4.74', '56.30', '35.40', '1', '-1.43', '-0.95', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('144', '41', '2', '2026-07-18', '4', '5.22', '58.40', '35.80', '1', '-2.54', '-2.29', 'Stunting', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('145', '41', '2', '2026-08-05', '4', '5.70', '60.50', '36.30', '1', '-1.86', '-1.42', 'Risiko', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('146', '42', '2', '2026-05-18', '14', '6.92', '69.00', '37.90', '0', '-2.26', '-2.47', 'Stunting', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('147', '42', '2', '2026-06-20', '15', '7.20', '70.50', '38.30', '0', '-2.14', '-2.28', 'Stunting', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('148', '42', '2', '2026-07-05', '16', '7.48', '72.00', '38.60', '0', '-2.02', '-2.11', 'Stunting', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('149', '42', '2', '2026-08-14', '17', '7.76', '73.50', '39.00', '0', '-1.91', '-1.94', 'Risiko', 'T', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('150', '43', '2', '2026-05-09', '18', '11.94', '87.80', '42.10', '0', '0.87', '1.72', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('151', '43', '2', '2026-06-13', '19', '12.42', '89.90', '42.60', '0', '1.07', '2.10', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('152', '43', '2', '2026-07-18', '20', '12.90', '92.00', '43.00', '0', '1.27', '2.48', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('153', '43', '2', '2026-08-07', '21', '13.38', '94.10', '43.50', '0', '1.46', '2.85', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('154', '44', '2', '2026-05-17', '7', '6.66', '64.70', '37.20', '0', '-1.04', '-1.04', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('155', '44', '2', '2026-06-08', '8', '7.14', '66.80', '37.60', '0', '-0.84', '-0.73', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('156', '44', '2', '2026-07-08', '9', '7.62', '68.90', '38.10', '0', '-0.64', '-0.46', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('157', '44', '2', '2026-08-19', '10', '8.10', '71.00', '38.50', '0', '-0.40', '-0.19', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('158', '45', '2', '2026-05-17', '24', '14.82', '100.40', '44.80', '0', '2.02', '3.91', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('159', '45', '2', '2026-06-05', '25', '15.30', '102.50', '45.30', '0', '2.21', '4.25', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('160', '45', '2', '2026-07-06', '26', '15.78', '104.60', '45.70', '0', '2.39', '4.57', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('161', '45', '2', '2026-08-05', '27', '16.26', '106.70', '46.20', '0', '2.57', '4.89', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('162', '46', '2', '2026-05-04', '1', '3.78', '52.10', '34.50', '1', '-0.84', '-0.80', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('163', '46', '2', '2026-06-18', '2', '4.26', '54.20', '34.90', '1', '-1.40', '-1.38', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('164', '46', '2', '2026-08-15', '4', '5.22', '58.40', '35.80', '1', '-1.69', '-1.61', 'Risiko', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('165', '47', '2', '2026-05-09', '9', '6.08', '65.20', '37.10', '0', '-3.13', '-2.52', 'Stunting', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('166', '47', '2', '2026-06-08', '10', '6.40', '67.00', '37.50', '0', '-2.80', '-2.33', 'Stunting', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('167', '47', '2', '2026-07-19', '11', '6.72', '68.80', '37.90', '0', '-2.68', '-2.04', 'Stunting', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('168', '47', '2', '2026-08-19', '12', '7.04', '70.60', '38.30', '0', '-2.56', '-1.82', 'Kurang', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('169', '48', '2', '2026-05-06', '19', '12.90', '92.00', '43.00', '0', '2.01', '3.22', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('170', '48', '2', '2026-06-20', '21', '13.38', '94.10', '43.50', '0', '1.95', '3.25', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('171', '48', '2', '2026-07-12', '21', '13.86', '96.20', '43.90', '0', '2.32', '3.88', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('172', '49', '2', '2026-05-20', '28', '16.74', '108.80', '46.60', '0', '2.74', '5.19', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('173', '49', '2', '2026-06-07', '29', '17.22', '110.90', '47.10', '0', '2.91', '5.49', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('174', '49', '2', '2026-07-19', '30', '17.70', '113.00', '47.50', '0', '3.07', '5.78', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('175', '50', '2', '2026-05-10', '15', '7.20', '70.50', '38.30', '0', '-2.14', '-2.28', 'Stunting', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('176', '50', '2', '2026-06-13', '16', '7.48', '72.00', '38.60', '0', '-2.02', '-2.11', 'Stunting', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('177', '50', '2', '2026-07-04', '16', '7.76', '73.50', '39.00', '0', '-1.77', '-1.62', 'Risiko', 'T', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('178', '51', '2', '2026-05-21', '5', '5.70', '60.50', '36.30', '1', '-2.25', '-2.16', 'Stunting', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('179', '51', '2', '2026-06-15', '6', '6.18', '62.60', '36.70', '1', '-2.15', '-2.00', 'Kurang', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('180', '51', '2', '2026-07-20', '7', '6.66', '64.70', '37.20', '0', '-1.82', '-1.73', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('181', '51', '2', '2026-08-16', '8', '7.14', '66.80', '37.60', '0', '-1.62', '-1.46', 'Risiko', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('182', '52', '2', '2026-05-15', '12', '9.06', '75.20', '39.40', '0', '0.16', '0.43', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('183', '52', '2', '2026-06-07', '13', '9.54', '77.30', '39.90', '0', '0.41', '0.76', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('184', '52', '2', '2026-07-13', '14', '10.02', '79.40', '40.30', '0', '0.64', '1.08', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('185', '52', '2', '2026-08-12', '15', '10.50', '81.50', '40.80', '0', '0.86', '1.38', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('186', '53', '2', '2026-05-13', '31', '18.18', '115.10', '48.00', '0', '3.22', '6.07', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('187', '53', '2', '2026-06-11', '32', '18.66', '117.20', '48.40', '0', '3.37', '6.34', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('188', '53', '2', '2026-07-15', '33', '19.14', '119.30', '48.90', '0', '3.52', '6.61', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('189', '53', '2', '2026-08-09', '34', '19.62', '121.40', '49.30', '0', '3.66', '6.87', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('190', '54', '2', '2026-08-15', '1', '3.78', '52.10', '34.50', '1', '-0.84', '-0.80', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('191', '55', '3', '2026-05-21', '2', '4.26', '54.20', '34.90', '1', '-1.40', '-1.38', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('192', '55', '3', '2026-06-15', '3', '4.74', '56.30', '35.40', '1', '-1.51', '-1.59', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('193', '55', '3', '2026-07-06', '3', '5.22', '58.40', '35.80', '1', '-0.83', '-0.64', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('194', '55', '3', '2026-08-16', '5', '5.70', '60.50', '36.30', '1', '-1.50', '-1.46', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('195', '56', '3', '2026-05-18', '25', '15.30', '102.50', '45.30', '0', '2.21', '4.25', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('196', '56', '3', '2026-06-12', '25', '15.78', '104.60', '45.70', '0', '2.57', '4.86', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('197', '56', '3', '2026-07-20', '27', '16.26', '106.70', '46.20', '0', '2.57', '4.89', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('198', '56', '3', '2026-08-12', '27', '16.74', '108.80', '46.60', '0', '2.92', '5.48', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('199', '57', '3', '2026-05-21', '1', '3.78', '52.10', '34.50', '1', '-0.84', '-0.80', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('200', '57', '3', '2026-06-14', '2', '4.26', '54.20', '34.90', '1', '-1.40', '-1.38', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('201', '57', '3', '2026-07-21', '3', '4.74', '56.30', '35.40', '1', '-1.51', '-1.59', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('202', '57', '3', '2026-08-12', '4', '5.22', '58.40', '35.80', '1', '-1.69', '-1.61', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('203', '58', '3', '2026-05-11', '4', '5.22', '58.40', '35.80', '1', '-2.54', '-2.29', 'Stunting', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('204', '58', '3', '2026-06-11', '5', '5.70', '60.50', '36.30', '1', '-2.25', '-2.16', 'Stunting', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('205', '58', '3', '2026-07-15', '6', '6.18', '62.60', '36.70', '1', '-2.15', '-2.00', 'Kurang', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('206', '59', '3', '2026-05-21', '7', '6.66', '64.70', '37.20', '0', '-1.82', '-1.73', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('207', '59', '3', '2026-06-15', '8', '7.14', '66.80', '37.60', '0', '-1.62', '-1.46', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('208', '59', '3', '2026-07-10', '9', '7.62', '68.90', '38.10', '0', '-1.42', '-1.15', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('209', '60', '3', '2026-05-05', '11', '9.06', '75.20', '39.40', '0', '-0.34', '0.25', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('210', '60', '3', '2026-06-09', '12', '9.54', '77.30', '39.90', '0', '-0.06', '0.57', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('211', '60', '3', '2026-07-10', '13', '10.02', '79.40', '40.30', '0', '0.20', '0.91', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('212', '61', '3', '2026-05-04', '17', '11.46', '85.70', '41.70', '0', '1.27', '1.95', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('213', '61', '3', '2026-06-10', '18', '11.94', '87.80', '42.10', '0', '1.45', '2.22', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('214', '61', '3', '2026-08-08', '20', '12.90', '92.00', '43.00', '0', '1.79', '2.92', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('215', '62', '3', '2026-05-06', '9', '6.08', '65.20', '37.10', '0', '-3.13', '-2.52', 'Stunting', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('216', '62', '3', '2026-06-08', '10', '6.40', '67.00', '37.50', '0', '-2.80', '-2.33', 'Stunting', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('217', '62', '3', '2026-07-06', '11', '6.72', '68.80', '37.90', '0', '-2.68', '-2.04', 'Stunting', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('218', '62', '3', '2026-08-04', '11', '7.04', '70.60', '38.30', '0', '-2.36', '-1.39', 'Kurang', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('219', '63', '3', '2026-05-06', '21', '13.86', '96.20', '43.90', '0', '2.32', '3.88', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('220', '63', '3', '2026-06-04', '22', '14.34', '98.30', '44.40', '0', '2.46', '4.20', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('221', '63', '3', '2026-07-20', '24', '14.82', '100.40', '44.80', '0', '2.37', '4.20', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('222', '63', '3', '2026-08-13', '24', '15.30', '102.50', '45.30', '0', '2.71', '4.80', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('223', '64', '3', '2026-05-11', '12', '9.54', '77.30', '39.90', '0', '-0.06', '0.57', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('224', '64', '3', '2026-06-12', '13', '10.02', '79.40', '40.30', '0', '0.20', '0.91', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('225', '64', '3', '2026-07-08', '14', '10.50', '81.50', '40.80', '0', '0.44', '1.23', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('226', '64', '3', '2026-08-16', '16', '10.98', '83.60', '41.20', '0', '0.45', '1.14', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('227', '65', '3', '2026-05-05', '19', '8.32', '76.50', '39.70', '0', '-1.70', '-1.55', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('228', '65', '3', '2026-06-20', '20', '8.60', '78.00', '40.00', '0', '-1.61', '-1.32', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('229', '65', '3', '2026-07-12', '21', '8.88', '79.50', '40.40', '0', '-1.52', '-1.10', 'Risiko', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('230', '65', '3', '2026-08-11', '22', '9.16', '81.00', '40.70', '0', '-1.43', '-0.89', 'Normal', 'T', 'pending', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('231', '66', '3', '2026-05-18', '6', '6.18', '62.60', '36.70', '1', '-2.15', '-2.00', 'Kurang', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('232', '66', '3', '2026-06-13', '7', '6.66', '64.70', '37.20', '0', '-1.82', '-1.73', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('233', '66', '3', '2026-07-13', '8', '7.14', '66.80', '37.60', '0', '-1.62', '-1.46', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('234', '66', '3', '2026-08-20', '9', '7.62', '68.90', '38.10', '0', '-1.42', '-1.15', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('235', '67', '3', '2026-05-19', '3', '4.74', '56.30', '35.40', '1', '-1.51', '-1.59', 'Risiko', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('236', '67', '3', '2026-06-09', '4', '5.22', '58.40', '35.80', '1', '-1.69', '-1.61', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('237', '67', '3', '2026-07-09', '5', '5.70', '60.50', '36.30', '1', '-1.50', '-1.46', 'Risiko', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('238', '67', '3', '2026-08-21', '6', '6.18', '62.60', '36.70', '1', '-1.40', '-1.24', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('239', '68', '3', '2026-05-09', '15', '10.50', '81.50', '40.80', '0', '0.23', '0.83', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('240', '68', '3', '2026-06-04', '16', '10.98', '83.60', '41.20', '0', '0.45', '1.14', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('241', '68', '3', '2026-07-12', '17', '11.46', '85.70', '41.70', '0', '0.67', '1.44', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('242', '69', '3', '2026-05-09', '10', '6.72', '68.80', '37.90', '0', '-1.78', '-1.00', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('243', '69', '3', '2026-06-15', '12', '7.04', '70.60', '38.30', '0', '-1.86', '-1.21', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('244', '69', '3', '2026-07-06', '12', '7.36', '72.40', '38.70', '0', '-1.54', '-0.57', 'Risiko', 'T', 'approved', 'Konseling pemberian makanan kaya protein hewani.', 'Kenaikan BB di bawah KBM (<200g), evaluasi MPASI.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('245', '70', '3', '2026-05-17', '27', '16.26', '106.70', '46.20', '0', '2.57', '4.89', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('246', '70', '3', '2026-06-19', '28', '16.74', '108.80', '46.60', '0', '2.74', '5.19', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('247', '70', '3', '2026-07-19', '29', '17.22', '110.90', '47.10', '0', '2.91', '5.49', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('248', '71', '3', '2026-05-04', '7', '7.14', '66.80', '37.60', '0', '-0.51', '-0.20', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('249', '71', '3', '2026-06-11', '8', '7.62', '68.90', '38.10', '0', '-0.31', '0.08', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('250', '71', '3', '2026-07-07', '9', '8.10', '71.00', '38.50', '0', '-0.11', '0.35', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('251', '71', '3', '2026-08-16', '10', '8.58', '73.10', '39.00', '0', '0.08', '0.59', 'Normal', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('252', '72', '3', '2026-06-14', '0', '3.78', '52.10', '34.50', '1', '1.20', '1.16', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('253', '72', '3', '2026-07-08', '1', '4.26', '54.20', '34.90', '1', '-0.48', '-0.24', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('254', '72', '3', '2026-08-09', '2', '4.74', '56.30', '35.40', '1', '-1.43', '-0.95', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('255', '73', '3', '2026-05-19', '24', '14.82', '100.40', '44.80', '0', '2.37', '4.20', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('256', '73', '3', '2026-06-08', '25', '15.30', '102.50', '45.30', '0', '2.53', '4.51', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('257', '73', '3', '2026-07-15', '26', '15.78', '104.60', '45.70', '0', '2.68', '4.81', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('258', '73', '3', '2026-08-05', '27', '16.26', '106.70', '46.20', '0', '2.82', '5.11', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('259', '74', '3', '2026-05-04', '17', '8.04', '75.00', '39.30', '0', '-2.27', '-1.98', 'Kurang', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('260', '74', '3', '2026-06-13', '19', '8.32', '76.50', '39.70', '0', '-2.30', '-2.04', 'Stunting', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('261', '74', '3', '2026-07-04', '19', '8.60', '78.00', '40.00', '0', '-2.07', '-1.58', 'Kurang', 'N', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('262', '74', '3', '2026-08-14', '21', '8.88', '79.50', '40.40', '0', '-2.14', '-1.58', 'Kurang', 'T', 'approved', 'Diberikan paket intervensi PMT & konseling gizi Puskesmas.', 'Nafsu makan kurang, riwayat BBLR / sakit.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('263', '75', '3', '2026-05-11', '10', '8.10', '71.00', '38.50', '0', '-0.40', '-0.19', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('264', '75', '3', '2026-06-08', '10', '8.58', '73.10', '39.00', '0', '0.08', '0.59', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('265', '75', '3', '2026-07-15', '12', '9.06', '75.20', '39.40', '0', '0.16', '0.43', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('266', '75', '3', '2026-08-20', '13', '9.54', '77.30', '39.90', '0', '0.41', '0.76', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('267', '76', '3', '2026-05-12', '5', '5.70', '60.50', '36.30', '1', '-2.25', '-2.16', 'Stunting', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('268', '76', '3', '2026-06-05', '6', '6.18', '62.60', '36.70', '1', '-2.15', '-2.00', 'Kurang', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('269', '76', '3', '2026-08-17', '8', '7.14', '66.80', '37.60', '0', '-1.62', '-1.46', 'Risiko', 'N', 'pending', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('270', '77', '3', '2026-05-19', '16', '10.98', '83.60', '41.20', '0', '1.07', '1.67', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('271', '77', '3', '2026-06-05', '17', '11.46', '85.70', '41.70', '0', '1.27', '1.95', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('272', '77', '3', '2026-07-12', '18', '11.94', '87.80', '42.10', '0', '1.45', '2.22', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('273', '77', '3', '2026-08-09', '19', '12.42', '89.90', '42.60', '0', '1.62', '2.57', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('274', '78', '3', '2026-05-11', '21', '13.38', '94.10', '43.50', '0', '1.46', '2.85', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('275', '78', '3', '2026-06-17', '22', '13.86', '96.20', '43.90', '0', '1.65', '3.21', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('276', '78', '3', '2026-07-07', '23', '14.34', '98.30', '44.40', '0', '1.84', '3.56', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('277', '79', '3', '2026-05-09', '2', '4.26', '54.20', '34.90', '1', '-1.40', '-1.38', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('278', '79', '3', '2026-06-06', '2', '4.74', '56.30', '35.40', '1', '-0.60', '-0.38', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('279', '79', '3', '2026-07-05', '3', '5.22', '58.40', '35.80', '1', '-0.83', '-0.64', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('280', '80', '3', '2026-05-18', '32', '18.66', '117.20', '48.40', '0', '3.37', '6.34', 'Normal', 'B', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('281', '80', '3', '2026-06-06', '32', '19.14', '119.30', '48.90', '0', '3.69', '6.89', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35'),
+('282', '80', '3', '2026-07-13', '34', '19.62', '121.40', '49.30', '0', '3.66', '6.87', 'Normal', 'N', 'approved', 'Pertumbuhan normal sesuai usia.', 'Balita sehat, nafsu makan baik dan aktif.', '2026-08-19 00:58:35', '2026-08-19 00:58:35');
 
--- Dumping structure for table laravel.personal_access_tokens
-CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
+DROP TABLE IF EXISTS `personal_access_tokens`;
+CREATE TABLE `personal_access_tokens` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint unsigned NOT NULL,
@@ -277,10 +609,8 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.personal_access_tokens: ~0 rows (approximately)
-
--- Dumping structure for table laravel.posyandus
-CREATE TABLE IF NOT EXISTS `posyandus` (
+DROP TABLE IF EXISTS `posyandus`;
+CREATE TABLE `posyandus` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `puskesmas_id` bigint unsigned NOT NULL,
   `nama` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -291,15 +621,15 @@ CREATE TABLE IF NOT EXISTS `posyandus` (
   PRIMARY KEY (`id`),
   KEY `posyandus_puskesmas_id_foreign` (`puskesmas_id`),
   CONSTRAINT `posyandus_puskesmas_id_foreign` FOREIGN KEY (`puskesmas_id`) REFERENCES `puskesmas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.posyandus: ~2 rows (approximately)
-INSERT INTO `posyandus` (`id`, `puskesmas_id`, `nama`, `desa_kelurahan`, `alamat`, `created_at`, `updated_at`) VALUES
-	(1, 1, 'Posyandu Mawar', 'Desa Makmur', 'Balai Desa Makmur', '2026-07-16 09:20:16', '2026-07-16 09:20:16'),
-	(2, 1, 'Posyandu Melati', 'Desa Sejahtera', 'Balai Desa Sejahtera', '2026-07-16 09:20:16', '2026-07-16 09:20:16');
+INSERT INTO `posyandus` VALUES
+('1', '1', 'Posyandu Bunga Tanjung VII', 'Gampong Lampulo', 'Balai Pertemuan Warga, Lr. Samudra No. 12, Lampulo', '2026-08-19 00:58:16', '2026-08-19 00:58:16'),
+('2', '1', 'Posyandu Melati Sejahtera', 'Gampong Peunayong', 'Kompleks Rukun Warga, Jl. Panglima Polem No. 45, Peunayong', '2026-08-19 00:58:16', '2026-08-19 00:58:16'),
+('3', '1', 'Posyandu Cempaka Harapan', 'Gampong Bandar Baru', 'Balai Desa Bandar Baru, Jl. Seulanga No. 8, Bandar Baru', '2026-08-19 00:58:16', '2026-08-19 00:58:16');
 
--- Dumping structure for table laravel.puskesmas
-CREATE TABLE IF NOT EXISTS `puskesmas` (
+DROP TABLE IF EXISTS `puskesmas`;
+CREATE TABLE `puskesmas` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned DEFAULT NULL,
   `nama` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -313,12 +643,24 @@ CREATE TABLE IF NOT EXISTS `puskesmas` (
   CONSTRAINT `puskesmas_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.puskesmas: ~1 rows (approximately)
-INSERT INTO `puskesmas` (`id`, `user_id`, `nama`, `kode_faskes`, `alamat`, `created_at`, `updated_at`) VALUES
-	(1, 1, 'Puskesmas Kecamatan Kuta Alam', 'PKS-001', 'Jl. Kesehatan No. 1, Kota Sehat SPBU', '2026-07-16 09:20:16', '2026-07-18 22:26:23');
+INSERT INTO `puskesmas` VALUES
+('1', '1', 'Puskesmas Kuta Alam', 'P11710101', 'Jl. T. Nyak Arief No. 24, Kuta Alam, Kota Banda Aceh', '2026-08-19 00:58:16', '2026-08-19 00:58:16');
 
--- Dumping structure for table laravel.users
-CREATE TABLE IF NOT EXISTS `users` (
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessions_user_id_index` (`user_id`),
+  KEY `sessions_last_activity_index` (`last_activity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -331,36 +673,59 @@ CREATE TABLE IF NOT EXISTS `users` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table laravel.users: ~23 rows (approximately)
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Admin Puskesmas gaming', 'puskesmas@nutrigen.com', NULL, '$2y$12$5cgmJX1NeUdMaXoU6.ByMuyp2snMNVIZVP0UIbfsfmMr3MuaBrseC', 'puskesmas', NULL, '2026-07-16 09:20:16', '2026-07-18 22:31:14', NULL),
-	(2, 'Naufal Alif', 'kader1@nutrigen.com', NULL, '$2y$12$xlFGZvWzQ6JcLXB2yZp3guVCt3mB/qVvb5D1Tjqo0wD/Rx6LAaNt.', 'kader', NULL, '2026-07-16 09:20:16', '2026-07-18 04:49:40', NULL),
-	(3, 'Kader Mawar 2', 'kader2@nutrigen.com', NULL, '$2y$12$5/.7iQpBAaO87NuReXWSY.PR8mLLgET.AGU0danmoyd/L1UtHEHLW', 'kader', NULL, '2026-07-16 09:20:17', '2026-07-16 09:20:17', NULL),
-	(4, 'Kader Melati 1', 'kader3@nutrigen.com', NULL, '$2y$12$YpDrsvSegXioRP.2ppqCn.TkQLebuqDzhWLNTT/rEz5.ec9qCoPSq', 'kader', NULL, '2026-07-16 09:20:17', '2026-07-16 09:20:17', NULL),
-	(5, 'Ibu Budi 1 Gaming', 'ibu1@nutrigen.com', NULL, '$2y$12$KSISr9YRcepJ1gVD9esrTu6HuzxTUmJNAow3AaLx.LQ1xl4Hn5IPe', 'ibu', NULL, '2026-07-16 09:20:17', '2026-07-17 02:18:35', NULL),
-	(6, 'Ibu Budi 2', 'ibu2@nutrigen.com', NULL, '$2y$12$r/6V/rcoveMQlqr01DJGneLlpxCmuMlOXpPUD/Jmbry4FzgfATUyG', 'ibu', NULL, '2026-07-16 09:20:18', '2026-07-16 09:20:18', NULL),
-	(7, 'Ibu Budi 3', 'ibu3@nutrigen.com', NULL, '$2y$12$rH7eTTumI6mQHLgnzWX7MOec3jr63Diom7UQLa3VPOJ.CzxqUsDOi', 'ibu', NULL, '2026-07-16 09:20:18', '2026-07-16 09:20:18', NULL),
-	(8, 'Ibu Budi 4', 'ibu4@nutrigen.com', NULL, '$2y$12$4huO9Tq6YdU3Cim.4LW60uMtYCOJH7cPCa01Z9wMptCI//hKE6v1S', 'ibu', NULL, '2026-07-16 09:20:18', '2026-07-16 09:20:18', NULL),
-	(9, 'Ibu Budi 5', 'ibu5@nutrigen.com', NULL, '$2y$12$q3HD2mIk4zlGYvYs2VSZJu0RMf9G3lY05UhHD8Xiox8FrH0sgTTP2', 'ibu', NULL, '2026-07-16 09:20:19', '2026-07-16 09:20:19', NULL),
-	(10, 'Ibu Budi 6', 'ibu6@nutrigen.com', NULL, '$2y$12$7EfC/v1f74gyjsIM.FWubOiquPVr1Vk4x.1iAXey2plwReh5aVtr2', 'ibu', NULL, '2026-07-16 09:20:19', '2026-07-16 09:20:19', NULL),
-	(11, 'Ibu Budi 7', 'ibu7@nutrigen.com', NULL, '$2y$12$IKjTb.FER7CqVoDJgoEbAetDsjCYJJnrHmpySBkTOl8g7pV4QNNsC', 'ibu', NULL, '2026-07-16 09:20:19', '2026-07-16 09:20:19', NULL),
-	(12, 'Ibu Budi 8', 'ibu8@nutrigen.com', NULL, '$2y$12$9KJcB76Ab/yz2WiYGHAXouRfcIr87wHIyoaFg.Fd04cA/2wyqkU4C', 'ibu', NULL, '2026-07-16 09:20:20', '2026-07-16 09:20:20', NULL),
-	(13, 'Ibu Budi 9', 'ibu9@nutrigen.com', NULL, '$2y$12$e6eIhATVC2itEdrNtZZq4uxCxg5xUQkHHT2CpEjuXD3SSwcncf3XC', 'ibu', NULL, '2026-07-16 09:20:20', '2026-07-16 09:20:20', NULL),
-	(14, 'Ibu Budi 10', 'ibu10@nutrigen.com', NULL, '$2y$12$BgfHaNu0NDp.s6.NH1f5TeHVBIYdyKuZf9v5F5uqc3q.V3iJmlT1K', 'ibu', NULL, '2026-07-16 09:20:20', '2026-07-16 09:20:20', NULL),
-	(15, 'nurhasanah', '085234664133@nutrigen.com', NULL, '$2y$12$wJ8dBomdBd3T57VeiuSCC.umKq7Febq6hkiRcohC9u2nP9lLBTNKO', 'ibu', NULL, '2026-07-17 00:51:14', '2026-07-17 00:51:14', NULL),
-	(16, 'Ellana', '085234664130@nutrigen.com', NULL, '$2y$12$zu0QbvccAAgyhdMb5ZVnFOpKZHCwq6MH1LAyMpyM2bfYNMvIYQS.S', 'ibu', NULL, '2026-07-17 01:29:06', '2026-07-17 02:56:49', NULL),
-	(17, 'masyitah', '09292827262725@nutrigen.com', NULL, '$2y$12$gN1e18L/F4oxY2bVpIvxpu1oX7gl1rHmjIl3SpHQ6yucuSpHaiYpK', 'ibu', NULL, '2026-07-17 02:04:02', '2026-07-17 02:04:02', NULL),
-	(18, 'maryati', '098782627352@nutrigen.com', NULL, '$2y$12$lzLHFlTmYB1Lf1tpvURmi.UMXDBl8YU3OTL5PfdB/dR3V6LN.qaJG', 'ibu', NULL, '2026-07-17 06:56:34', '2026-07-17 08:39:05', '2026-07-17 08:39:05'),
-	(19, 'Azzahra', '098765345678@nutrigen.com', NULL, '$2y$12$n/xwl3b5XXDx4avsyLblB.Ej1ALiLK2fZkOrJUrOAOYS9jNtPHUTq', 'ibu', NULL, '2026-07-17 07:17:01', '2026-07-17 07:17:01', NULL),
-	(20, 'musdhalifah', '09897875626756376@nutrigen.com', NULL, '$2y$12$yjkgNXDx.L3dhjMGS94wJeO8moaojlTODMyIrV8s38iuFzTadJPKO', 'ibu', NULL, '2026-07-17 07:30:40', '2026-07-17 07:30:40', NULL),
-	(21, 'mariana', '987977898678@nutrigen.com', NULL, '$2y$12$oEaGZOVg6i6ar.l6YFfRQ.AMnv3UCwBpTxoU9zOA2r1x4IgeO9t6e', 'ibu', NULL, '2026-07-17 08:05:13', '2026-07-17 08:05:13', NULL),
-	(22, 'AIsyah', '0851614263@nutrigen.com', NULL, '$2y$12$MXWBN30UCSGRSih8E.KBO.RmIrG4LqvKqU1uzrIwvIP8E845OJQUe', 'ibu', NULL, '2026-07-18 07:09:43', '2026-07-18 07:11:11', '2026-07-18 07:11:11'),
-	(23, 'nulaila', '09876789286@nutrigen.com', NULL, '$2y$12$ASt.Ctm8Yt7iZUQhynWIeei5jLEo6KX48fTMPGyPjA1ju3zbWQrmG', 'ibu', NULL, '2026-07-19 13:54:54', '2026-07-19 13:54:54', NULL);
+INSERT INTO `users` VALUES
+('1', 'dr. Cut Nyak Sarah, S.Gz', 'puskesmas@nutrigen.com', NULL, '$2y$12$KGXPjXkCcpAiwjBjuRm5SumRbwKHpfNcFv8JjpK8ZamOg3wx.r8oe', 'puskesmas', NULL, '2026-08-19 00:58:16', '2026-08-19 00:58:16', NULL),
+('2', 'Cut Malahayati, A.Md.Keb', 'kader@nutrigen.com', NULL, '$2y$12$SJDchx2E.z6DpjlsiomNg./HSGvvGcf01BDh2Je9YzE3yAlWXAw.2', 'kader', NULL, '2026-08-19 00:58:17', '2026-08-19 00:58:17', NULL),
+('3', 'Cut Malahayati (Kader 1)', 'kader1@gmail.com', NULL, '$2y$12$33mUppDiEJyW4IHxKhJ7RuLSekMqMaX0a.n/qBpxO7cILthOjcrZq', 'kader', NULL, '2026-08-19 00:58:17', '2026-08-19 00:58:17', NULL),
+('4', 'Cut Malahayati (Kader 1 Nutrigen)', 'kader1@nutrigen.com', NULL, '$2y$12$CJegLZM36dEuPXX1cQ7aiOHMR6JY6GN2J6yr33zg9uLUcouBW0fxm', 'kader', NULL, '2026-08-19 00:58:17', '2026-08-19 00:58:17', NULL),
+('5', 'Siti Rahmah, S.Pd', 'kader2@nutrigen.com', NULL, '$2y$12$XbR04z9.7SFh2c1es5ENx.7TzDn6FF7Eb0TO35SifrjPMZUkXd5nW', 'kader', NULL, '2026-08-19 00:58:18', '2026-08-19 00:58:18', NULL),
+('6', 'Nurul Fauziah', 'kader3@nutrigen.com', NULL, '$2y$12$wiuJ5bvAgZy0QcYRawj7MegYfqOKuTxsI40eJo5Ti0A8ODUyS9JbG', 'kader', NULL, '2026-08-19 00:58:18', '2026-08-19 00:58:18', NULL),
+('7', 'Cut Annisa Zahra', 'ibu1@nutrigen.com', NULL, '$2y$12$Dm6N/sZY1nKqciagBy.lNeQjTkPXcWpxyQfitWfBbLtnVYccCthRS', 'ibu', NULL, '2026-08-19 00:58:19', '2026-08-19 00:58:19', NULL),
+('8', 'Rina Agustina', 'ibu2@nutrigen.com', NULL, '$2y$12$TLkXFXvkGMnszQjLh7dX7uZxJExah6YPtkUqZ/3Z8kp35jojCAOBe', 'ibu', NULL, '2026-08-19 00:58:19', '2026-08-19 00:58:19', NULL),
+('9', 'Nurhaliza, S.E.', 'ibu3@nutrigen.com', NULL, '$2y$12$CPY../av4GlU0ohj.iwq.uoWzrjBUoisbUzVjMP5FDxluCOCHdLOK', 'ibu', NULL, '2026-08-19 00:58:19', '2026-08-19 00:58:19', NULL),
+('10', 'Sri Wahyuni', 'ibu4@nutrigen.com', NULL, '$2y$12$tMiWn2E9CWuyGjVkMQi4P.E1SNRJ6RQlICEPV8cniBswDtc/ArvMS', 'ibu', NULL, '2026-08-19 00:58:20', '2026-08-19 00:58:20', NULL),
+('11', 'Maisarah, S.Pd', 'ibu5@nutrigen.com', NULL, '$2y$12$8SBZzycLxKqWoOxAV4pJYeSQ.bShDCE3t9L5hQUGm2AKnK494Khae', 'ibu', NULL, '2026-08-19 00:58:20', '2026-08-19 00:58:20', NULL),
+('12', 'Fitri Handayani', 'ibu6@nutrigen.com', NULL, '$2y$12$Fm1zSuJ1YsvKGJsY8chCzOQOfV46FwPr3uPxdEE7UbKp79glhpR7u', 'ibu', NULL, '2026-08-19 00:58:20', '2026-08-19 00:58:20', NULL),
+('13', 'Dewi Sartika', 'ibu7@nutrigen.com', NULL, '$2y$12$B8wrZfUtHA2dsi8bL/czsO6GDUFUx2KHMEDFcnRKiuAaYz6n5amkS', 'ibu', NULL, '2026-08-19 00:58:21', '2026-08-19 00:58:21', NULL),
+('14', 'Lestari Ningsih', 'ibu8@nutrigen.com', NULL, '$2y$12$6ZSXEl/dXienoHEhZAnU9.nsLFXXQEoXP3NXqhZYEeiYPvPsNE1bi', 'ibu', NULL, '2026-08-19 00:58:21', '2026-08-19 00:58:21', NULL),
+('15', 'Eka Putri Rahayu', 'ibu9@nutrigen.com', NULL, '$2y$12$pIZJXt0e1xtS1aJuZYHUweL6H/iBH4v3s8GSQiRf9HBkK3UcKj3/i', 'ibu', NULL, '2026-08-19 00:58:22', '2026-08-19 00:58:22', NULL),
+('16', 'Nurhasanah', 'ibu10@nutrigen.com', NULL, '$2y$12$Xirp9E7eSvtviQf3IFnM1OUr04661BqEIkRPAJXieseRlv0umpKka', 'ibu', NULL, '2026-08-19 00:58:22', '2026-08-19 00:58:22', NULL),
+('17', 'Tia Rahmawati', 'ibu11@nutrigen.com', NULL, '$2y$12$VLoyX5ehm6Gvleg4pTQ0nOcwasi.u2deMXfr5s1GwC/F8kv5Gorbu', 'ibu', NULL, '2026-08-19 00:58:22', '2026-08-19 00:58:22', NULL),
+('18', 'Rini Kusuma Wardani', 'ibu12@nutrigen.com', NULL, '$2y$12$roWwMM6F/S7u1hNnNszo3.KZLaFM/poI31gQaGDLqzzK1ieCshizq', 'ibu', NULL, '2026-08-19 00:58:23', '2026-08-19 00:58:23', NULL),
+('19', 'Cut Putri Mayang Sari', 'ibu13@nutrigen.com', NULL, '$2y$12$WzQTqif5kuLLDowF7CCCCe/pZaVYtAekXwE7tWrMv9M6zyGzo8.rm', 'ibu', NULL, '2026-08-19 00:58:23', '2026-08-19 00:58:23', NULL),
+('20', 'Indah Permatasari', 'ibu14@nutrigen.com', NULL, '$2y$12$jAaL9gGdbwYU986hLTjmOeB8fchMHBv4Brpc93ioR2z8wSwWHZNe6', 'ibu', NULL, '2026-08-19 00:58:23', '2026-08-19 00:58:23', NULL),
+('21', 'Siti Aminah', 'ibu15@nutrigen.com', NULL, '$2y$12$vMgtbefKQ5BUrmF6jwqXS.diESzpKr2xu1aVxrfIB7z75omegLMNC', 'ibu', NULL, '2026-08-19 00:58:24', '2026-08-19 00:58:24', NULL),
+('22', 'Zahratul Ula', 'ibu16@nutrigen.com', NULL, '$2y$12$xdj9him32VLfkV.iejRNVOgjGB6ve7u70U5YzZM6NR5KlsN68oBji', 'ibu', NULL, '2026-08-19 00:58:24', '2026-08-19 00:58:24', NULL),
+('23', 'Marlina, S.Kep', 'ibu17@nutrigen.com', NULL, '$2y$12$q3y5vctGDujGA/C4.Tnuredo1VSXzdHE.ShVhntFVOfk5du8I1SJy', 'ibu', NULL, '2026-08-19 00:58:24', '2026-08-19 00:58:24', NULL),
+('24', 'Yuliana Safitri', 'ibu18@nutrigen.com', NULL, '$2y$12$DHzMOM.fR3gJGr9y7U.c8u7YAEm.n/W/Qyv0yGSjYSf4Cqewgd7Mu', 'ibu', NULL, '2026-08-19 00:58:25', '2026-08-19 00:58:25', NULL),
+('25', 'Hasanah Putri', 'ibu19@nutrigen.com', NULL, '$2y$12$kxq7kke.gwAymLvLWEhSgORy3WiqhfChnl3Oz3Z.b3V7qYlL4PCJ.', 'ibu', NULL, '2026-08-19 00:58:25', '2026-08-19 00:58:25', NULL),
+('26', 'Cut Mutia Rahmi', 'ibu20@nutrigen.com', NULL, '$2y$12$i5tPiE6WsFSenkHcc7gdM.twZMtmAaOHM56VhbSNCIdGSerEwt4cC', 'ibu', NULL, '2026-08-19 00:58:25', '2026-08-19 00:58:25', NULL),
+('27', 'Desi Ratnasari', 'ibu21@nutrigen.com', NULL, '$2y$12$1nGADq1MV1umXkPI5pxoqOHYYkAIerkaZ6cRV0LDl8/D3Zg7i6Z.e', 'ibu', NULL, '2026-08-19 00:58:26', '2026-08-19 00:58:26', NULL),
+('28', 'Wardah Hayati', 'ibu22@nutrigen.com', NULL, '$2y$12$oAIfEtW4glboJNhdSkpqUO299aBrh9lXSRc3qA16SdkMq.vZ.NtxK', 'ibu', NULL, '2026-08-19 00:58:26', '2026-08-19 00:58:26', NULL),
+('29', 'Syelifa Nanda', 'ibu23@nutrigen.com', NULL, '$2y$12$hQtgFI.eaJL3zGSex7ZAeetN3igO.VGaQyXLZij7LxdA4R2dpoXcC', 'ibu', NULL, '2026-08-19 00:58:26', '2026-08-19 00:58:26', NULL),
+('30', 'Khadijah Marwan', 'ibu24@nutrigen.com', NULL, '$2y$12$9PWYp2sJ8zUCHWobiKPn1u5cgk5SoY2xEAMYrolBlsfITyTDxHSD6', 'ibu', NULL, '2026-08-19 00:58:27', '2026-08-19 00:58:27', NULL),
+('31', 'Cut Riska Amalia', 'ibu25@nutrigen.com', NULL, '$2y$12$p7WgSRXhnUl3bRP.3rIFp.tKipLqkOLFdCf3nL3gQdVevIB.U5FFy', 'ibu', NULL, '2026-08-19 00:58:27', '2026-08-19 00:58:27', NULL),
+('32', 'Nurlailawati', 'ibu26@nutrigen.com', NULL, '$2y$12$Ya5B/enuzB4DGGPZvDujV./0CuIJWyVbIYA0SSzRUeuicTSEIgp/K', 'ibu', NULL, '2026-08-19 00:58:27', '2026-08-19 00:58:27', NULL),
+('33', 'Rahmi Novita', 'ibu27@nutrigen.com', NULL, '$2y$12$cD4zZiqOTmCeZC2IAo/7Ve7Nu8GzA3sGZC8G33gB5JDCzidhAjqJa', 'ibu', NULL, '2026-08-19 00:58:28', '2026-08-19 00:58:28', NULL),
+('34', 'Putri Balqis', 'ibu28@nutrigen.com', NULL, '$2y$12$08PpIhmeFLPIU0aMX7YcZ.M7mtVWjxnjPUUhsdZSxBTxlCJw.dN.m', 'ibu', NULL, '2026-08-19 00:58:28', '2026-08-19 00:58:28', NULL),
+('35', 'Harnum Melati', 'ibu29@nutrigen.com', NULL, '$2y$12$dhXGLhtwS1RbI5iWgXEwaepHFdN1CC/PpOrolt6C/.n02f8mZlFK2', 'ibu', NULL, '2026-08-19 00:58:28', '2026-08-19 00:58:28', NULL),
+('36', 'Anita Zahara', 'ibu30@nutrigen.com', NULL, '$2y$12$FbNlvDfMg3dFi0IXC5KGpuTyrEkfUVd9mf1vgYFduvDM26IwBJCd6', 'ibu', NULL, '2026-08-19 00:58:29', '2026-08-19 00:58:29', NULL),
+('37', 'Cut Syarifah', 'ibu31@nutrigen.com', NULL, '$2y$12$oTZw61RuIBJcSDi/v1yeDu5V0Nt/u4lF/scHj9qjqm5c944R1UdEW', 'ibu', NULL, '2026-08-19 00:58:29', '2026-08-19 00:58:29', NULL),
+('38', 'Maulida Sari', 'ibu32@nutrigen.com', NULL, '$2y$12$VZ2v/NOka1LkFLdNUk60UeL4WPBRO4KMkfB8HZcJr/Xr9ErKc4Zlq', 'ibu', NULL, '2026-08-19 00:58:29', '2026-08-19 00:58:29', NULL),
+('39', 'Fatimah Az-Zahra', 'ibu33@nutrigen.com', NULL, '$2y$12$QnsL4rqCAnfyXXBUOjDAa.p.q7k1Jv3YTtVGQNP/tf9fxWVKMDqXC', 'ibu', NULL, '2026-08-19 00:58:30', '2026-08-19 00:58:30', NULL),
+('40', 'Raudhatul Jannah', 'ibu34@nutrigen.com', NULL, '$2y$12$Oqd544NXW5lU/Thn0HQwV.c/EXt2/s5WAvgNxtMTmayuAHwgVP0US', 'ibu', NULL, '2026-08-19 00:58:30', '2026-08-19 00:58:30', NULL),
+('41', 'Nurul Afifah', 'ibu35@nutrigen.com', NULL, '$2y$12$nPkh2zYwMGNNNiQ7kQBGiui/UWw5FAQTKKYh9ZUBS5vv8GtRNNsha', 'ibu', NULL, '2026-08-19 00:58:30', '2026-08-19 00:58:30', NULL),
+('42', 'Husna Mufida', 'ibu36@nutrigen.com', NULL, '$2y$12$wvibvZMV2FH58MajQSGwY.2pCi6sgiDAE2ycs/ht9kv7QgPkyEw3S', 'ibu', NULL, '2026-08-19 00:58:31', '2026-08-19 00:58:31', NULL),
+('43', 'Cut Dara Meutia', 'ibu37@nutrigen.com', NULL, '$2y$12$.F7z4BwyfPpcOs17xDzMRunnV95pIgo2oSkk64ZK3r/UgXXZ.zn3C', 'ibu', NULL, '2026-08-19 00:58:31', '2026-08-19 00:58:31', NULL),
+('44', 'Suryani', 'ibu38@nutrigen.com', NULL, '$2y$12$WCVSIXotGF78SkdisW2o0Om6OvF/WJ.8064BjJreM7OwG1ASuetti', 'ibu', NULL, '2026-08-19 00:58:31', '2026-08-19 00:58:31', NULL),
+('45', 'Ratna Juwita', 'ibu39@nutrigen.com', NULL, '$2y$12$/9Y5AbZYkcUYMgU70kcRj.MN.08xaL33onx4hh7dDncgimMQbvrHK', 'ibu', NULL, '2026-08-19 00:58:32', '2026-08-19 00:58:32', NULL),
+('46', 'Hayatun Nufus', 'ibu40@nutrigen.com', NULL, '$2y$12$W4119qBZ2/dneigtwWUv2ueCsXQx8MMGjazOL9.xymSC7s9Xj.ryK', 'ibu', NULL, '2026-08-19 00:58:32', '2026-08-19 00:58:32', NULL),
+('47', 'Zubairah', 'ibu41@nutrigen.com', NULL, '$2y$12$zPcvTbqQ8A2.xnCpTQ78FO0MFi0yYtspRfLxqXHTxNVZlZ4FYOrQ2', 'ibu', NULL, '2026-08-19 00:58:32', '2026-08-19 00:58:32', NULL),
+('48', 'Rosdiana', 'ibu42@nutrigen.com', NULL, '$2y$12$UoL0dgeD0GzcESVdz1yq.O.gOgxKxsFkK77bw2ktmD0BLZsfdrup6', 'ibu', NULL, '2026-08-19 00:58:33', '2026-08-19 00:58:33', NULL),
+('49', 'Safura', 'ibu43@nutrigen.com', NULL, '$2y$12$k0dPKwnAAS2hlCOC33RYkuZtRpUfMRUdXOXgKsX7V7mL0AfKxRYdW', 'ibu', NULL, '2026-08-19 00:58:33', '2026-08-19 00:58:33', NULL),
+('50', 'Cut Nurul Huda', 'ibu44@nutrigen.com', NULL, '$2y$12$MFTDfO8goCmJfCMA1USaq.KfNPlho2XGsZ2b6IJikPkkeNMV9iZUq', 'ibu', NULL, '2026-08-19 00:58:33', '2026-08-19 00:58:33', NULL),
+('51', 'Aisyah Humairah', 'ibu45@nutrigen.com', NULL, '$2y$12$PCdyqOaQ.xtyecD9o7BkTuzwxBejyjhMR5bjgDk5CAaZr9u.r75qu', 'ibu', NULL, '2026-08-19 00:58:34', '2026-08-19 00:58:34', NULL);
 
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+SET FOREIGN_KEY_CHECKS=1;

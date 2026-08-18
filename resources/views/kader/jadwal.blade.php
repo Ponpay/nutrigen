@@ -260,7 +260,7 @@
 
 {{-- ── 1. MODAL FORM: EDIT & TAMBAH JADWAL (Clean, Spacious & Responsive) ── --}}
 <div id="modal-jadwal-wrapper" 
-     class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs transition-all duration-200 opacity-0 pointer-events-none"
+     class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs transition-all duration-200 opacity-0 pointer-events-none"
      onclick="handleBackdropClick(event)">
     
     <div id="modal-jadwal-box" 
@@ -390,7 +390,7 @@
 
 {{-- ── 2. MODAL DETAIL JADWAL (Spacious & Clean Popup) ── --}}
 <div id="modal-detail-wrapper" 
-     class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs transition-all duration-200 opacity-0 pointer-events-none"
+     class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-slate-900/60 backdrop-blur-xs transition-all duration-200 opacity-0 pointer-events-none"
      onclick="handleDetailBackdropClick(event)">
     
     <div id="modal-detail-box" 
@@ -579,10 +579,13 @@
     }
 
     function showFormModal() {
-        modalWrapper.classList.remove('opacity-0', 'pointer-events-none');
-        modalWrapper.classList.add('opacity-100', 'pointer-events-auto');
-        modalBox.classList.remove('scale-95');
-        modalBox.classList.add('scale-100');
+        modalWrapper.classList.remove('hidden');
+        setTimeout(() => {
+            modalWrapper.classList.remove('opacity-0', 'pointer-events-none');
+            modalWrapper.classList.add('opacity-100', 'pointer-events-auto');
+            modalBox.classList.remove('scale-95');
+            modalBox.classList.add('scale-100');
+        }, 10);
         document.body.style.overflow = 'hidden';
     }
 
@@ -591,6 +594,9 @@
         modalWrapper.classList.add('opacity-0', 'pointer-events-none');
         modalBox.classList.remove('scale-100');
         modalBox.classList.add('scale-95');
+        setTimeout(() => {
+            modalWrapper.classList.add('hidden');
+        }, 200);
         document.body.style.overflow = '';
     }
 
@@ -644,10 +650,13 @@
     }
 
     function showDetailModal() {
-        detailWrapper.classList.remove('opacity-0', 'pointer-events-none');
-        detailWrapper.classList.add('opacity-100', 'pointer-events-auto');
-        detailBox.classList.remove('scale-95');
-        detailBox.classList.add('scale-100');
+        detailWrapper.classList.remove('hidden');
+        setTimeout(() => {
+            detailWrapper.classList.remove('opacity-0', 'pointer-events-none');
+            detailWrapper.classList.add('opacity-100', 'pointer-events-auto');
+            detailBox.classList.remove('scale-95');
+            detailBox.classList.add('scale-100');
+        }, 10);
         document.body.style.overflow = 'hidden';
     }
 
@@ -656,6 +665,9 @@
         detailWrapper.classList.add('opacity-0', 'pointer-events-none');
         detailBox.classList.remove('scale-100');
         detailBox.classList.add('scale-95');
+        setTimeout(() => {
+            detailWrapper.classList.add('hidden');
+        }, 200);
         document.body.style.overflow = '';
     }
 

@@ -201,23 +201,27 @@
 
     </div>
 
-    <!-- Segmented Tab Navigation (Snug & Clean Inline Flex) -->
+    <!-- Modern Clean Tab Navigation -->
     <div class="max-w-7xl mx-auto px-4 lg:px-8 mt-7 mb-7 motion-card opacity-0" id="profile-tabs">
-        <div class="flex">
-            <div class="inline-flex bg-slate-200/70 p-1.5 rounded-2xl gap-1.5 overflow-x-auto hide-scrollbar max-w-full">
-                <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="px-4.5 py-2.5 rounded-xl bg-white text-teal-800 font-bold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer shadow-xs">
-                    Ringkasan
+        <div class="border-b border-slate-200">
+            <nav class="flex space-x-5 sm:space-x-8 overflow-x-auto hide-scrollbar" aria-label="Tabs">
+                <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="border-teal-600 text-teal-600 border-b-2 font-bold text-[13.5px] sm:text-[14.5px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
+                    <span>Ringkasan</span>
                 </button>
-                <button onclick="switchTab('detail')" id="tab-detail" class="px-4.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-semibold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer">
-                    Detail Informasi
+                <button onclick="switchTab('detail')" id="tab-detail" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[13.5px] sm:text-[14.5px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+                    <span>Detail Informasi</span>
                 </button>
-                <button onclick="switchTab('riwayat')" id="tab-riwayat" class="px-4.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-semibold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer">
-                    Riwayat Pengukuran
+                <button onclick="switchTab('riwayat')" id="tab-riwayat" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[13.5px] sm:text-[14.5px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>Riwayat Pengukuran</span>
                 </button>
-                <button onclick="switchTab('grafik')" id="tab-grafik" class="px-4.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 font-semibold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer">
-                    Grafik Pertumbuhan
+                <button onclick="switchTab('grafik')" id="tab-grafik" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[13.5px] sm:text-[14.5px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A2.25 2.25 0 013 18.75v-5.625zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a2.25 2.25 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a2.25 2.25 0 01-1.125-1.125V4.125z" /></svg>
+                    <span>Grafik Pertumbuhan</span>
                 </button>
-            </div>
+            </nav>
         </div>
     </div>
 
@@ -654,8 +658,8 @@
             el.classList.add('hidden');
         });
         
-        const activeClasses = ['bg-white', 'text-teal-800', 'font-bold', 'shadow-xs'];
-        const inactiveClasses = ['text-slate-600', 'hover:text-slate-900', 'font-semibold'];
+        const activeClasses = ['border-teal-600', 'text-teal-600', 'font-bold'];
+        const inactiveClasses = ['border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300', 'font-medium'];
         
         ['ringkasan', 'detail', 'riwayat', 'grafik'].forEach(id => {
             const btn = document.getElementById('tab-' + id);

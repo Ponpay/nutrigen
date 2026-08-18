@@ -824,6 +824,14 @@
                 growthChart.update();
             });
         }
+
+        @if(request('action') === 'ukur')
+            setTimeout(() => {
+                if (typeof openMeasurementModal === 'function') {
+                    openMeasurementModal();
+                }
+            }, 300);
+        @endif
     });
 </script>
 

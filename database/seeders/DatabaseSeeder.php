@@ -162,6 +162,15 @@ class DatabaseSeeder extends Seeder
             ['Aisyah Humairah', 'Ikhwanul Muslimin', 'Gampong Peunayong, Jl. WR Monginsidi No. 7'],
         ];
 
+        $pekerjaanIbuList = [
+            'Ibu Rumah Tangga', 'Guru PNS', 'Wiraswasta', 'Bidan', 'Perawat',
+            'Pegawai Swasta', 'Dosen', 'PNS Dinas Kesehatan', 'Pedagang', 'Apoteker'
+        ];
+        $pekerjaanAyahList = [
+            'Wiraswasta', 'PNS Pemko Banda Aceh', 'Nelayan', 'Pedagang', 'Karyawan BUMN',
+            'Guru SMA', 'Arsitek', 'Tenaga Medis', 'Mekanik', 'Karyawan Swasta', 'Dosen'
+        ];
+
         $orangTuas = [];
         foreach ($parentNames as $idx => $p) {
             $userIbu = User::create([
@@ -171,13 +180,24 @@ class DatabaseSeeder extends Seeder
                 'role' => 'ibu',
             ]);
 
+            $noKk = '117101' . '1506' . str_pad($idx + 1, 6, '0', STR_PAD_LEFT);
+            $nikIbu = '117101' . '5504' . str_pad($idx + 1, 6, '0', STR_PAD_LEFT);
+            $nikAyah = '117101' . '1208' . str_pad($idx + 1, 6, '0', STR_PAD_LEFT);
+            $pekIbu = $pekerjaanIbuList[$idx % count($pekerjaanIbuList)];
+            $pekAyah = $pekerjaanAyahList[$idx % count($pekerjaanAyahList)];
+
             $orangTuas[] = OrangTua::create([
                 'user_id' => $userIbu->id,
-                'nik_ibu' => '117101' . str_pad($idx + 1, 2, '0', STR_PAD_LEFT) . '95000' . ($idx % 9 + 1),
+                'no_kk' => $noKk,
+                'nik_ibu' => $nikIbu,
+                'nik_ayah' => $nikAyah,
                 'nama_ibu' => $p[0],
                 'nama_ayah' => $p[1],
+                'pekerjaan_ibu' => $pekIbu,
+                'pekerjaan_ayah' => $pekAyah,
                 'no_hp_whatsapp' => '081269' . str_pad($idx + 10, 6, '0', STR_PAD_LEFT),
-                'alamat' => $p[2] . ', Kec. Kuta Alam, Banda Aceh',
+                'alamat' => $p[2] . ', Banda Aceh',
+                'kecamatan' => 'Kuta Alam',
             ]);
         }
 

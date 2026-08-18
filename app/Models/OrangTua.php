@@ -22,6 +22,7 @@ class OrangTua extends Model
         'pekerjaan_ibu',
         'no_hp_whatsapp',
         'alamat',
+        'kecamatan',
     ];
 
     public function user(): BelongsTo

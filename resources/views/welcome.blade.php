@@ -4,262 +4,157 @@
 
 @section('content')
 
-    {{-- 1. Hero Section (Clean White Background, Solid Cards, Teal Branding) --}}
-    <section class="relative pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden bg-white border-b border-slate-100">
-        {{-- Subtle Grid Pattern --}}
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-0"></div>
-        {{-- Soft Glow Aura (Teal / Emerald ONLY) --}}
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-gradient-to-b from-emerald-100/50 via-teal-50/40 to-transparent rounded-full blur-[100px] opacity-70 pointer-events-none z-0"></div>
+    {{-- 1. Hero Section (Clean, Editorial, Intentional Whitespace, High Contrast) --}}
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-white border-b border-slate-100">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center flex flex-col items-center">
 
-        {{-- Floating/Side Solid Info Cards (Desktop) --}}
-        <div id="hero-badge-left" class="hidden lg:block absolute top-52 left-6 xl:left-16 z-20 transition-all">
-            <div class="bg-white border border-slate-200/80 p-3.5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] flex items-center gap-3 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-                <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <div class="text-left">
-                    <p class="text-xs font-bold text-slate-800 leading-tight">Validasi Real-time</p>
-                    <p class="text-[11px] text-slate-500 font-medium mt-0.5">Oleh Ahli Gizi Puskesmas</p>
-                </div>
-            </div>
-        </div>
-        <div id="hero-badge-right" class="hidden lg:block absolute top-64 right-6 xl:right-16 z-20 transition-all">
-            <div class="bg-white border border-slate-200/80 p-3.5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] flex items-center gap-3 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-                <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shrink-0">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                </div>
-                <div class="text-left">
-                    <p class="text-xs font-bold text-slate-800 leading-tight">Standar WHO 2006</p>
-                    <p class="text-[11px] text-slate-500 font-medium mt-0.5">Z-Score Standar Kemenkes</p>
-                </div>
-            </div>
-        </div>
+            {{-- Understated Top Kicker (No Flashy Pill, No Pulsing Dot) --}}
+            <p id="hero-kicker" class="text-xs font-semibold uppercase tracking-widest text-emerald-800 mb-6">
+                Platform Digital Pencegahan Stunting
+            </p>
 
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-20 text-center flex flex-col items-center">
-
-            {{-- Top Badge --}}
-            <div id="hero-badge-top" class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-50 border border-slate-200/80 text-emerald-800 font-semibold text-xs sm:text-sm mb-6 shadow-sm">
-                <span class="relative flex h-2.5 w-2.5">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                </span>
-                Solusi Digital Stunting Terintegrasi 2026
-            </div>
-
-            {{-- Headline --}}
-            <h1 id="hero-title" class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto">
-                Bersama Tuntaskan Stunting,<br class="hidden sm:block"> 
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700">Bangun Generasi Emas</span>
+            {{-- Main Headline --}}
+            <h1 id="hero-title" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.12] mb-6 max-w-3xl">
+                Bersama Tuntaskan Stunting,<br class="hidden sm:block">
+                <span class="text-emerald-700">Bangun Generasi Emas.</span>
             </h1>
 
             {{-- Subheadline --}}
-            <p id="hero-subheadline" class="text-base sm:text-lg lg:text-xl font-medium text-slate-600 mb-9 max-w-2xl mx-auto leading-relaxed">
-                Ekosistem digital terintegrasi yang menghubungkan Ibu, Kader Posyandu, dan Tenaga Puskesmas untuk pemantauan gizi anak yang presisi, <span class="text-slate-900 font-semibold">real-time</span>, dan berbasis standar WHO 2006.
+            <p id="hero-subheadline" class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed mb-10">
+                Ekosistem terpadu yang menghubungkan Ibu, Kader Posyandu, dan Puskesmas untuk pemantauan kurva pertumbuhan balita berbasis standar baku WHO 2006.
             </p>
 
-            {{-- CTAs --}}
-            <div id="hero-ctas" class="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
-                <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-[0_8px_24px_rgba(16,185,129,0.25)] hover:shadow-[0_12px_28px_rgba(16,185,129,0.35)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2.5 group">
+            {{-- CTAs (1 Focal Emerald, 1 Clean Neutral) --}}
+            <div id="hero-ctas" class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+                <a href="{{ route('login') }}" class="w-full sm:w-auto px-7 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm rounded-xl transition-colors shadow-sm inline-flex items-center justify-center gap-2">
                     <span>Masuk ke Sistem</span>
-                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </a>
-                <a href="#how-it-works" class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-bold rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-slate-200/90 transition-all duration-300 hover:shadow-[0_6px_20px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2">
+                <a href="#how-it-works" class="w-full sm:w-auto px-7 py-3.5 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm rounded-xl border border-slate-200 transition-colors">
                     Pelajari Ekosistem
                 </a>
             </div>
 
-            {{-- Trust Badges Row (Mobile & Desktop) --}}
-            <div id="hero-trust-badges" class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-500">
-                <span class="inline-flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Standar Kurva WHO 2006</span>
-                <span class="inline-flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> 100% Paperless Posyandu</span>
-                <span class="inline-flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Sinkronisasi Puskesmas</span>
-            </div>
-
-            {{-- Live Product Showcase Preview (Solid Card) --}}
-            <div id="hero-preview-card" class="w-full max-w-4xl mx-auto mt-12 sm:mt-16 text-left">
-                <div class="bg-white rounded-2xl sm:rounded-[24px] border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.08)] p-5 sm:p-7 md:p-8 relative overflow-hidden group">
-                    {{-- Top Card Bar --}}
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-100 gap-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-base shadow-sm">
-                                NG
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <h3 class="text-sm sm:text-base font-bold text-slate-900">Live KMS & Validasi Gizi Balita</h3>
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200/80">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Terverifikasi
-                                    </span>
-                                </div>
-                                <p class="text-xs text-slate-500 font-medium">Posyandu Bunga Tanjung VII &bull; Banda Aceh</p>
-                            </div>
-                        </div>
-                        <div class="inline-flex items-center gap-2 self-start sm:self-auto px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-semibold text-slate-600">
-                            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            <span>Sinkron ke Puskesmas: <strong class="text-slate-800 font-bold">0.4 detik</strong></span>
-                        </div>
-                    </div>
-
-                    {{-- Metrics Grid --}}
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-5">
-                        <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-3 sm:p-4">
-                            <span class="text-[11px] font-semibold text-slate-500 block">Status BB/U</span>
-                            <span class="text-sm sm:text-base font-bold text-emerald-700 mt-1 block">Berat Badan Normal</span>
-                            <span class="text-[10px] font-medium text-slate-400 mt-0.5 block">Z-Score: +0.42 SD</span>
-                        </div>
-                        <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-3 sm:p-4">
-                            <span class="text-[11px] font-semibold text-slate-500 block">Status PB/U</span>
-                            <span class="text-sm sm:text-base font-bold text-emerald-700 mt-1 block">Tinggi Normal</span>
-                            <span class="text-[10px] font-medium text-slate-400 mt-0.5 block">Z-Score: +0.18 SD</span>
-                        </div>
-                        <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-3 sm:p-4">
-                            <span class="text-[11px] font-semibold text-slate-500 block">Status BB/PB</span>
-                            <span class="text-sm sm:text-base font-bold text-emerald-700 mt-1 block">Gizi Baik</span>
-                            <span class="text-[10px] font-medium text-slate-400 mt-0.5 block">Z-Score: +0.31 SD</span>
-                        </div>
-                        <div class="bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-3 sm:p-4">
-                            <span class="text-[11px] font-semibold text-emerald-800 block">Kesimpulan Akhir</span>
-                            <span class="text-sm sm:text-base font-bold text-emerald-800 mt-1 block">Bebas Risiko Stunting</span>
-                            <span class="text-[10px] font-medium text-emerald-600 mt-0.5 block">Intervensi Tepat & Real-time</span>
-                        </div>
-                    </div>
-                </div>
+            {{-- Understated Trust Metadata Line (No flashy icons) --}}
+            <div id="hero-meta" class="mt-12 pt-8 border-t border-slate-100 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs text-slate-400 font-medium">
+                <span>Standar Antropometri WHO 2006</span>
+                <span class="hidden sm:inline text-slate-300">&bull;</span>
+                <span>Pencatatan Digital Posyandu</span>
+                <span class="hidden sm:inline text-slate-300">&bull;</span>
+                <span>Rujukan Terintegrasi Puskesmas</span>
             </div>
 
         </div>
     </section>
 
-    {{-- 2 & 3. Permasalahan & Statistik (Alternating Background: slate-50, Solid Cards) --}}
-    <section id="problem" class="py-24 lg:py-32 bg-slate-50 relative border-b border-slate-200/80">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    {{-- 2 & 3. Permasalahan & Statistik (Alternating Background: slate-50, Calm, Solid Cards, Grounded Tone) --}}
+    <section id="problem" class="py-20 lg:py-28 bg-slate-50 border-b border-slate-200/70">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
-                {{-- Left Area (Problem) --}}
+                {{-- Left: Problem Narrative & 3 Points --}}
                 <div class="lg:col-span-7" id="problem-text-container">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-rose-50 border border-rose-200/80 rounded-full text-rose-700 text-xs font-bold uppercase tracking-wider mb-4">
-                        <span class="w-1.5 h-1.5 bg-rose-500 rounded-full"></span>
-                        Realita Saat Ini
-                    </div>
-                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-5">
-                        Pemantauan Manual Meninggalkan Celah Berbahaya.
+                    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">
+                        Tantangan di Lapangan
+                    </p>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-snug mb-4">
+                        Tantangan Pemantauan Tumbuh Kembang Manual
                     </h2>
-                    <p class="text-base sm:text-lg text-slate-600 font-medium leading-relaxed mb-8">
-                        Jutaan buku KIA tersimpan di laci tanpa evaluasi berkala. Data Posyandu memakan waktu berminggu-minggu untuk direkapitulasi secara manual, menyebabkan keterlambatan penanganan pada masa <em class="text-slate-800 font-semibold">periode emas (golden age)</em> balita.
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-8">
+                        Pencatatan konvensional pada buku KIA sering menghadapi kendala rekapitulasi data dan keterbatasan orang tua dalam memahami kurva Z-score secara mandiri.
                     </p>
 
-                    {{-- 3 Problem Cards (Solid Card Standard) --}}
-                    <div class="space-y-3.5" id="problem-cards-container">
-                        {{-- Problem 1 --}}
-                        <div class="problem-card bg-white border border-slate-200/80 p-4 sm:p-5 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:border-rose-300 hover:shadow-md transition-all duration-300 flex items-start gap-4">
-                            <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-rose-500 text-white flex items-center justify-center shadow-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.25"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    {{-- 3 Points: Clean Editorial Layout with Subtle Numbering (Zero clutter, Zero heavy icons) --}}
+                    <div class="space-y-4" id="problem-cards-container">
+                        <div class="problem-card bg-white border border-slate-200/70 p-5 rounded-xl transition-colors">
+                            <div class="flex items-baseline gap-3 mb-1.5">
+                                <span class="text-xs font-bold text-slate-400 font-mono">01</span>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900">Keterlambatan Rekapitulasi Data</h3>
                             </div>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between gap-2 mb-1">
-                                    <h3 class="text-slate-900 font-bold text-base leading-snug">Data Lambat Diproses</h3>
-                                    <span class="text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200/60 shrink-0">Birokrasi Lambat</span>
-                                </div>
-                                <p class="text-slate-500 text-sm leading-relaxed">Data bulanan terlambat sampai ke tenaga gizi Puskesmas, menunda intervensi klinis sebelum terlambat.</p>
-                            </div>
+                            <p class="text-xs sm:text-sm text-slate-500 leading-relaxed pl-7">
+                                Rekapitulasi manual berkala memerlukan waktu sebelum data sampai ke tenaga gizi Puskesmas untuk evaluasi tindak lanjut.
+                            </p>
                         </div>
 
-                        {{-- Problem 2 --}}
-                        <div class="problem-card bg-white border border-slate-200/80 p-4 sm:p-5 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:border-amber-300 hover:shadow-md transition-all duration-300 flex items-start gap-4">
-                            <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.25"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                        <div class="problem-card bg-white border border-slate-200/70 p-5 rounded-xl transition-colors">
+                            <div class="flex items-baseline gap-3 mb-1.5">
+                                <span class="text-xs font-bold text-slate-400 font-mono">02</span>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900">Kurva Pertumbuhan Sulit Dipahami</h3>
                             </div>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between gap-2 mb-1">
-                                    <h3 class="text-slate-900 font-bold text-base leading-snug">Kurangnya Edukasi Mandiri</h3>
-                                    <span class="text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60 shrink-0">Kurva Rumit</span>
-                                </div>
-                                <p class="text-slate-500 text-sm leading-relaxed">Banyak ibu kesulitan membaca grafik pertumbuhan manual dan tidak tahu langkah gizi pencegahan di rumah.</p>
-                            </div>
+                            <p class="text-xs sm:text-sm text-slate-500 leading-relaxed pl-7">
+                                Sebagian orang tua belum terbiasa membaca interpretasi grafik deviasi standar (SD) tanpa pendampingan langsung petugas.
+                            </p>
                         </div>
 
-                        {{-- Problem 3 --}}
-                        <div class="problem-card bg-white border border-slate-200/80 p-4 sm:p-5 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:border-slate-400 hover:shadow-md transition-all duration-300 flex items-start gap-4">
-                            <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-slate-800 text-white flex items-center justify-center shadow-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.25"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        <div class="problem-card bg-white border border-slate-200/70 p-5 rounded-xl transition-colors">
+                            <div class="flex items-baseline gap-3 mb-1.5">
+                                <span class="text-xs font-bold text-slate-400 font-mono">03</span>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900">Potensi Galat Hitung Manual</h3>
                             </div>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between gap-2 mb-1">
-                                    <h3 class="text-slate-900 font-bold text-base leading-snug">Rawan Human Error</h3>
-                                    <span class="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/80 shrink-0">Akurasi Manual Rendah</span>
-                                </div>
-                                <p class="text-slate-500 text-sm leading-relaxed">Plotting manual pada kertas rentan keliru hitung selisih umur atau salah menarik garis standar Z-score.</p>
-                            </div>
+                            <p class="text-xs sm:text-sm text-slate-500 leading-relaxed pl-7">
+                                Perhitungan selisih usia bulan dan penentuan batas ambang gizi secara manual rentan terhadap ketidaktelitian plotting.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                {{-- Right Area: Statistik Card (Solid Card Standard + Framer Motion Counter) --}}
+                {{-- Right: National Stats Card (Clean, Understated, Highly Credible) --}}
                 <div class="lg:col-span-5" id="problem-stat-container">
-                    <div class="bg-white p-6 sm:p-9 rounded-2xl sm:rounded-[24px] border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.08)] relative overflow-hidden">
-                        {{-- Top Tag --}}
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-50 border border-rose-200/80 rounded-full text-rose-700 text-xs font-bold uppercase tracking-wider">
-                                <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span> Darurat Nasional
-                            </span>
-                            <span class="text-xs font-bold text-slate-400">Data SSGI / SKI</span>
-                        </div>
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/70 shadow-sm">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">
+                            Konteks Nasional &bull; Data SKI
+                        </p>
 
                         {{-- Big Counter Number --}}
                         <div class="flex items-baseline mb-2">
-                            <span id="stat-stunting-counter" class="text-6xl sm:text-7xl lg:text-8xl font-black text-slate-900 tracking-tight leading-none">0.0</span>
-                            <span class="text-4xl sm:text-5xl font-extrabold text-rose-500 ml-1.5">%</span>
+                            <span id="stat-stunting-counter" class="text-5xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-none">0.0</span>
+                            <span class="text-3xl sm:text-4xl font-bold text-slate-400 ml-1">%</span>
                         </div>
 
-                        <h3 class="text-xl font-bold text-slate-900 mb-3">Angka Prevalensi Stunting Nasional</h3>
-                        <p class="text-slate-500 font-medium leading-relaxed text-sm mb-6">
-                            Meskipun tren menurun, prevalensi nasional masih berada di atas ambang batas kritis WHO (&lt;20%) dan jauh dari target percepatan pemerintah sebesar 14%.
+                        <h3 class="text-base font-bold text-slate-900 mb-2">Prevalensi Stunting Nasional</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6">
+                            Menjadi fokus percepatan penurunan gizi balita menuju target nasional 14% melalui penguatan deteksi dini di tingkat Posyandu.
                         </p>
 
-                        {{-- Visual Comparison Bars --}}
-                        <div class="space-y-3 pt-5 border-t border-slate-100">
+                        {{-- Clean Minimal Comparison Indicators --}}
+                        <div class="space-y-3 pt-5 border-t border-slate-100 text-xs">
                             <div>
-                                <div class="flex justify-between text-xs font-bold mb-1.5">
-                                    <span class="text-slate-700">Kondisi Saat Ini (Nasional)</span>
-                                    <span class="text-rose-600 font-extrabold">21.6%</span>
+                                <div class="flex justify-between font-medium text-slate-600 mb-1">
+                                    <span>Nasional (Terkini)</span>
+                                    <span class="font-bold text-slate-900">21.5%</span>
                                 </div>
-                                <div class="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div id="stat-bar-current" class="h-full bg-rose-500 rounded-full transition-all duration-1000" style="width: 0%;"></div>
+                                <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div id="stat-bar-current" class="h-full bg-slate-900 rounded-full transition-all duration-1000" style="width: 0%;"></div>
                                 </div>
                             </div>
 
                             <div>
-                                <div class="flex justify-between text-xs font-bold mb-1.5">
-                                    <span class="text-slate-500">Ambang Batas Toleransi WHO</span>
-                                    <span class="text-amber-600">20.0%</span>
+                                <div class="flex justify-between font-medium text-slate-500 mb-1">
+                                    <span>Batas Toleransi WHO</span>
+                                    <span>20.0%</span>
                                 </div>
-                                <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-amber-400 rounded-full" style="width: 66.6%;"></div>
+                                <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-slate-300 rounded-full" style="width: 66%;"></div>
                                 </div>
                             </div>
 
                             <div>
-                                <div class="flex justify-between text-xs font-bold mb-1.5">
-                                    <span class="text-emerald-700">Target Intervensi Nasional</span>
-                                    <span class="text-emerald-600 font-extrabold">14.0%</span>
+                                <div class="flex justify-between font-medium text-slate-500 mb-1">
+                                    <span>Target Intervensi</span>
+                                    <span class="font-bold text-emerald-700">14.0%</span>
                                 </div>
-                                <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-emerald-500 rounded-full" style="width: 46.6%;"></div>
+                                <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-emerald-600 rounded-full" style="width: 46%;"></div>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Impact Footer Callout --}}
+                        {{-- Grounded Scientific Note --}}
                         <div class="mt-6 pt-4 border-t border-slate-100">
-                            <div class="bg-emerald-50 border border-emerald-200/80 rounded-xl p-3 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                </div>
-                                <p class="text-xs font-semibold text-emerald-900 leading-snug">
-                                    NutriGen memangkas waktu deteksi dari <strong>30 hari</strong> menjadi <strong>0.4 detik</strong>.
-                                </p>
-                            </div>
+                            <p class="text-xs text-slate-500 leading-relaxed">
+                                NutriGen membantu standarisasi klasifikasi status gizi secara otomatis sesuai tabel referensi baku Kementerian Kesehatan RI.
+                            </p>
                         </div>
-
                     </div>
                 </div>
 
@@ -766,23 +661,20 @@
 
             // 1. Hero Entrance Animations (Framer Motion Staggered Fade Up)
             const heroElements = [
-                document.getElementById('hero-badge-top'),
+                document.getElementById('hero-kicker'),
                 document.getElementById('hero-title'),
                 document.getElementById('hero-subheadline'),
                 document.getElementById('hero-ctas'),
-                document.getElementById('hero-trust-badges'),
-                document.getElementById('hero-badge-left'),
-                document.getElementById('hero-badge-right'),
-                document.getElementById('hero-preview-card')
+                document.getElementById('hero-meta')
             ].filter(Boolean);
 
             if (window.Motion && !prefersReduced) {
                 window.Motion.animate(
                     heroElements,
-                    { opacity: [0, 1], y: [20, 0] },
+                    { opacity: [0, 1], y: [16, 0] },
                     { 
-                        delay: window.Motion.stagger(0.08, { start: 0.1 }),
-                        duration: 0.45,
+                        delay: window.Motion.stagger(0.08, { start: 0.05 }),
+                        duration: 0.4,
                         ease: [0.22, 1, 0.36, 1]
                     }
                 );
@@ -794,23 +686,23 @@
                         const cards = problemContainer.querySelectorAll('.problem-card');
                         window.Motion.animate(
                             cards,
-                            { opacity: [0, 1], y: [24, 0] },
+                            { opacity: [0, 1], y: [16, 0] },
                             {
-                                delay: window.Motion.stagger(0.12),
-                                duration: 0.45,
+                                delay: window.Motion.stagger(0.1),
+                                duration: 0.35,
                                 ease: [0.22, 1, 0.36, 1]
                             }
                         );
                     });
                 }
 
-                // 3. Counting-up Animation for 21.6% Stunting Stats + Progress Bar
+                // 3. Counting-up Animation for 21.5% Stunting Stats + Progress Bar
                 const counterEl = document.getElementById('stat-stunting-counter');
                 const barCurrent = document.getElementById('stat-bar-current');
                 if (counterEl) {
                     window.Motion.inView(counterEl, () => {
-                        window.Motion.animate(0, 21.6, {
-                            duration: 1.4,
+                        window.Motion.animate(0, 21.5, {
+                            duration: 1.2,
                             ease: [0.16, 1, 0.3, 1],
                             onUpdate: (latest) => {
                                 counterEl.textContent = latest.toFixed(1);
@@ -818,17 +710,17 @@
                         });
                         if (barCurrent) {
                             setTimeout(() => {
-                                barCurrent.style.width = '72%';
-                            }, 200);
+                                barCurrent.style.width = '70%';
+                            }, 150);
                         }
                     });
                 }
             } else {
                 // Fallback for prefers-reduced-motion or missing Motion
                 const counterEl = document.getElementById('stat-stunting-counter');
-                if (counterEl) counterEl.textContent = '21.6';
+                if (counterEl) counterEl.textContent = '21.5';
                 const barCurrent = document.getElementById('stat-bar-current');
-                if (barCurrent) barCurrent.style.width = '72%';
+                if (barCurrent) barCurrent.style.width = '70%';
             }
         });
     </script>

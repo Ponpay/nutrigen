@@ -210,16 +210,16 @@
     <!-- Tabs -->
     <div class="max-w-7xl mx-auto px-4 lg:px-8 border-b border-slate-200 mb-6 lg:mb-8 motion-card opacity-0" id="profile-tabs">
         <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-3">
-            <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="px-4 py-2 rounded-full bg-teal-600 text-white font-medium text-[14px] transition-colors whitespace-nowrap">
+            <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="px-4 py-2 rounded-full bg-teal-600 text-white font-bold text-[13px] sm:text-[14px] transition-all whitespace-nowrap cursor-pointer shadow-xs">
                 Ringkasan
             </button>
-            <button onclick="switchTab('detail')" id="tab-detail" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-medium text-[14px] hover:bg-slate-200 transition-colors whitespace-nowrap">
+            <button onclick="switchTab('detail')" id="tab-detail" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-bold text-[13px] sm:text-[14px] hover:bg-slate-200 transition-all whitespace-nowrap cursor-pointer">
                 Detail Informasi
             </button>
-            <button onclick="switchTab('riwayat')" id="tab-riwayat" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-medium text-[14px] hover:bg-slate-200 transition-colors whitespace-nowrap">
+            <button onclick="switchTab('riwayat')" id="tab-riwayat" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-bold text-[13px] sm:text-[14px] hover:bg-slate-200 transition-all whitespace-nowrap cursor-pointer">
                 Riwayat Pengukuran
             </button>
-            <button onclick="switchTab('grafik')" id="tab-grafik" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-medium text-[14px] hover:bg-slate-200 transition-colors whitespace-nowrap">
+            <button onclick="switchTab('grafik')" id="tab-grafik" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-bold text-[13px] sm:text-[14px] hover:bg-slate-200 transition-all whitespace-nowrap cursor-pointer">
                 Grafik Pertumbuhan
             </button>
         </div>
@@ -520,7 +520,7 @@
         </div>
 
         <!-- TAB: RIWAYAT -->
-        <div id="content-riwayat" class="tab-content hidden flex flex-col p-5 lg:p-7 bg-white border border-slate-200 rounded-[24px] shadow-sm">
+        <div id="content-riwayat" class="tab-content hidden flex flex-col p-4 sm:p-6 lg:p-7 bg-white border border-slate-200/80 rounded-[24px] shadow-sm">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                 <div>
                     <h2 class="text-[16px] font-black text-slate-900 tracking-tight">Riwayat Pengukuran</h2>

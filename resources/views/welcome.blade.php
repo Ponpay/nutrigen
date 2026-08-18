@@ -11,8 +11,8 @@
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-r from-emerald-100/60 via-cyan-100/60 to-emerald-100/60 rounded-[100%] blur-[120px] opacity-80 pointer-events-none z-0"></div>
 
         {{-- Floating Info Cards --}}
-        <div class="hidden lg:block absolute top-56 left-8 xl:left-20 z-10" data-aos="fade-right" data-aos-delay="400">
-            <div class="bg-white/90 backdrop-blur-md border border-slate-100 p-3 rounded-2xl shadow-lg flex items-center gap-3">
+        <div id="hero-card-left" class="hidden lg:block absolute top-56 left-8 xl:left-20 z-10" style="opacity:0;transform:translateX(-18px)">
+            <div class="bg-white border border-slate-100 p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
@@ -22,8 +22,8 @@
                 </div>
             </div>
         </div>
-        <div class="hidden lg:block absolute top-72 right-8 xl:right-20 z-10" data-aos="fade-left" data-aos-delay="500">
-            <div class="bg-white/90 backdrop-blur-md border border-slate-100 p-3 rounded-2xl shadow-lg flex items-center gap-3">
+        <div id="hero-card-right" class="hidden lg:block absolute top-72 right-8 xl:right-20 z-10" style="opacity:0;transform:translateX(18px)">
+            <div class="bg-white border border-slate-100 p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-600 shrink-0">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                 </div>
@@ -37,7 +37,7 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-20 text-center flex flex-col items-center">
 
             {{-- Badge --}}
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-emerald-700 font-semibold text-xs sm:text-sm mb-8 shadow-sm" data-aos="fade-up">
+            <div id="hero-badge" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-emerald-700 font-semibold text-xs sm:text-sm mb-8 shadow-sm" style="opacity:0;transform:translateY(20px)">
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -45,16 +45,16 @@
                 Solusi Digital Stunting Terintegrasi 2026
             </div>
 
-            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.08] mb-6 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+            <h1 id="hero-headline" class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.08] mb-6 max-w-4xl mx-auto" style="opacity:0;transform:translateY(24px)">
                 Bersama Tuntaskan Stunting,<br class="hidden sm:block"> <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600">Bangun Generasi Emas</span>
             </h1>
 
-            <p class="text-lg lg:text-xl font-medium text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+            <p id="hero-sub" class="text-lg lg:text-xl font-medium text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed" style="opacity:0;transform:translateY(24px)">
                 Ekosistem digital terintegrasi yang menghubungkan Ibu, Kader Posyandu, dan Tenaga Puskesmas untuk pemantauan gizi anak yang presisi, <span class="text-slate-700 font-semibold">real-time</span>, dan berbasis data.
             </p>
 
             {{-- CTAs --}}
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto" data-aos="fade-up" data-aos-delay="300">
+            <div id="hero-cta" class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto" style="opacity:0;transform:translateY(24px)">
                 <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-bold rounded-2xl shadow-[0_8px_24px_rgba(16,185,129,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(16,185,129,0.4)] active:scale-95 flex items-center justify-center gap-2 group">
                     <span>Masuk ke Sistem</span>
                     <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
@@ -64,7 +64,7 @@
                 </a>
             </div>
 
-            <p class="mt-8 text-xs font-semibold text-slate-400 uppercase tracking-widest" data-aos="fade-up" data-aos-delay="400">Terintegrasi dengan Standar Kurva WHO 2006</p>
+            <p id="hero-tagline" class="mt-8 text-xs font-semibold text-slate-400 uppercase tracking-widest" style="opacity:0;transform:translateY(16px)">Terintegrasi dengan Standar Kurva WHO 2006</p>
         </div>
     </section>
 
@@ -73,7 +73,7 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
                 {{-- Text Area (Problem) --}}
-                <div class="lg:col-span-7" data-aos="fade-up">
+                <div id="problem-text" class="lg:col-span-7" style="opacity:0;transform:translateY(28px)">
                     <h2 class="text-emerald-600 font-extrabold text-sm uppercase tracking-widest mb-4">Realita Saat Ini</h2>
                     <h3 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
                         Pemantauan Manual Meninggalkan Celah Berbahaya.
@@ -82,28 +82,36 @@
                         Jutaan buku KIA tersimpan di laci tanpa dievaluasi. Data Posyandu memakan waktu berminggu-minggu untuk direkap, menyebabkan keterlambatan intervensi gizi pada masa <em>golden age</em> balita.
                     </p>
 
-                    <div class="space-y-3">
-                        <div class="flex items-start gap-4 group p-4 rounded-2xl hover:bg-rose-50/50 border border-transparent hover:border-rose-100 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="space-y-3" id="problem-items">
+                        {{-- Problem Item 1: Data Lambat --}}
+                        <div class="problem-item flex items-start gap-4 group p-4 rounded-2xl hover:bg-rose-50/50 border border-transparent hover:border-rose-100 transition-all duration-300" style="opacity:0;transform:translateY(20px)">
                             <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center group-hover:scale-110 group-hover:bg-rose-100 transition-all duration-300 shadow-sm">
-                                <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                {{-- Solid Clock/Timer icon --}}
+                                <svg class="w-5 h-5 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <div>
                                 <h4 class="text-slate-900 font-bold text-base leading-snug mb-1 group-hover:text-rose-700 transition-colors">Data Lambat Diproses</h4>
                                 <p class="text-slate-500 text-sm leading-relaxed">Data lambat sampai ke tenaga kesehatan Puskesmas, menunda tindakan preventif.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4 group p-4 rounded-2xl hover:bg-amber-50/50 border border-transparent hover:border-amber-100 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+
+                        {{-- Problem Item 2: Edukasi --}}
+                        <div class="problem-item flex items-start gap-4 group p-4 rounded-2xl hover:bg-amber-50/50 border border-transparent hover:border-amber-100 transition-all duration-300" style="opacity:0;transform:translateY(20px)">
                             <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-100 transition-all duration-300 shadow-sm">
-                                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                {{-- Solid Book/Education icon --}}
+                                <svg class="w-5 h-5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                             </div>
                             <div>
                                 <h4 class="text-slate-900 font-bold text-base leading-snug mb-1 group-hover:text-amber-700 transition-colors">Kurangnya Edukasi Mandiri</h4>
                                 <p class="text-slate-500 text-sm leading-relaxed">Ibu tidak memahami kurva pertumbuhan anaknya secara mandiri di rumah.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4 group p-4 rounded-2xl hover:bg-blue-50/50 border border-transparent hover:border-blue-100 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+
+                        {{-- Problem Item 3: Human Error --}}
+                        <div class="problem-item flex items-start gap-4 group p-4 rounded-2xl hover:bg-blue-50/50 border border-transparent hover:border-blue-100 transition-all duration-300" style="opacity:0;transform:translateY(20px)">
                             <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-100 transition-all duration-300 shadow-sm">
-                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{-- Solid Shield Warning icon --}}
+                                <svg class="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                             </div>
                             <div>
                                 <h4 class="text-slate-900 font-bold text-base leading-snug mb-1 group-hover:text-blue-700 transition-colors">Rawan Human Error</h4>
@@ -113,14 +121,14 @@
                     </div>
                 </div>
 
-                {{-- Statistik Card — Light with green tones --}}
-                <div class="lg:col-span-5" data-aos="fade-up" data-aos-delay="200">
+                {{-- Statistik Card — Light with green tones + count-up animation --}}
+                <div id="stat-card" class="lg:col-span-5" style="opacity:0;transform:translateY(32px)">
                     <div class="relative bg-gradient-to-br from-emerald-50 via-white to-cyan-50 p-6 sm:p-10 rounded-[1.5rem] sm:rounded-[2.5rem] border border-emerald-100 shadow-[0_20px_60px_rgba(16,185,129,0.1)] overflow-hidden group hover:-translate-y-2 hover:shadow-[0_30px_70px_rgba(16,185,129,0.15)] transition-all duration-500">
                         <div class="absolute top-0 right-0 w-48 h-48 bg-emerald-100/50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none"></div>
                         <div class="absolute bottom-0 left-0 w-48 h-48 bg-cyan-100/50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none"></div>
                         <div class="relative z-10">
                             <div class="flex items-baseline mb-2">
-                                <span class="text-6xl sm:text-7xl lg:text-8xl font-extrabold text-slate-900 tracking-tight">21.6</span>
+                                <span id="stat-counter" class="text-6xl sm:text-7xl lg:text-8xl font-extrabold text-slate-900 tracking-tight" aria-label="21.6">0</span>
                                 <span class="text-3xl sm:text-4xl font-bold text-emerald-500 ml-2">%</span>
                             </div>
                             <h4 class="text-xl font-bold text-slate-800 mb-5 pb-5 border-b border-slate-200">Angka Stunting Nasional</h4>
@@ -130,9 +138,13 @@
                             <div class="mt-6 pt-5 border-t border-slate-100">
                                 <div class="flex items-center gap-2">
                                     <div class="h-2 flex-1 bg-slate-100 rounded-full overflow-hidden">
-                                        <div class="h-full w-[72%] bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full"></div>
+                                        <div id="stat-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full transition-all duration-1000" style="width:0%"></div>
                                     </div>
                                     <span class="text-xs font-bold text-slate-500">Target: 14%</span>
+                                </div>
+                                <div class="flex justify-between mt-1.5">
+                                    <span class="text-[10px] font-semibold text-slate-400">Saat ini: 21.6%</span>
+                                    <span class="text-[10px] font-semibold text-emerald-500">Progress: 35%</span>
                                 </div>
                             </div>
                         </div>
@@ -141,6 +153,135 @@
             </div>
         </div>
     </section>
+
+    {{-- Phase 1: Framer Motion Animation Script --}}
+    @push('head')
+    <style>
+        /* Prefers-reduced-motion: skip all animations */
+        @media (prefers-reduced-motion: reduce) {
+            #hero-badge, #hero-headline, #hero-sub, #hero-cta, #hero-tagline,
+            #hero-card-left, #hero-card-right,
+            #problem-text, .problem-item, #stat-card {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+    @endpush
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check reduced motion preference
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) return;
+
+        // Ensure Framer Motion DOM is available
+        const { animate, inView, stagger } = window.Motion || {};
+        if (!animate || !inView || !stagger) {
+            // Fallback: just show everything
+            document.querySelectorAll('[style*="opacity:0"]').forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+            return;
+        }
+
+        // ========================================================
+        // HERO SECTION — Staggered entrance on DOMContentLoaded
+        // ========================================================
+        const heroItems = [
+            { el: '#hero-badge',    y: 20, delay: 0 },
+            { el: '#hero-headline', y: 28, delay: 0.08 },
+            { el: '#hero-sub',      y: 24, delay: 0.16 },
+            { el: '#hero-cta',      y: 24, delay: 0.24 },
+            { el: '#hero-tagline',  y: 16, delay: 0.34 },
+        ];
+
+        heroItems.forEach(({ el, delay }) => {
+            const element = document.querySelector(el);
+            if (!element) return;
+            animate(element,
+                { opacity: [0, 1], y: [element.tagName === 'P' && el === '#hero-tagline' ? 16 : 24, 0] },
+                { duration: 0.5, delay: delay, easing: [0.16, 1, 0.3, 1] }
+            );
+        });
+
+        // Floating side cards — slide in from sides
+        const cardLeft = document.getElementById('hero-card-left');
+        const cardRight = document.getElementById('hero-card-right');
+        if (cardLeft) animate(cardLeft, { opacity: [0, 1], x: [-18, 0] }, { duration: 0.55, delay: 0.42, easing: [0.16, 1, 0.3, 1] });
+        if (cardRight) animate(cardRight, { opacity: [0, 1], x: [18, 0] }, { duration: 0.55, delay: 0.50, easing: [0.16, 1, 0.3, 1] });
+
+        // ========================================================
+        // PROBLEM SECTION — Scroll-triggered reveal
+        // ========================================================
+        const problemText = document.getElementById('problem-text');
+        if (problemText) {
+            inView(problemText, () => {
+                animate(problemText, { opacity: [0, 1], y: [28, 0] }, { duration: 0.5, easing: [0.16, 1, 0.3, 1] });
+
+                // Stagger problem items
+                const items = document.querySelectorAll('.problem-item');
+                animate(items, { opacity: [0, 1], y: [20, 0] }, {
+                    duration: 0.45,
+                    delay: stagger(0.12, { start: 0.18 }),
+                    easing: [0.16, 1, 0.3, 1]
+                });
+            }, { amount: 0.2 });
+        }
+
+        // ========================================================
+        // STAT CARD — Scroll-triggered count-up + progress bar
+        // ========================================================
+        const statCard = document.getElementById('stat-card');
+        const statCounter = document.getElementById('stat-counter');
+        const statBar = document.getElementById('stat-progress-bar');
+
+        if (statCard && statCounter) {
+            let counted = false;
+            inView(statCard, () => {
+                // Animate card in
+                animate(statCard, { opacity: [0, 1], y: [32, 0] }, { duration: 0.55, easing: [0.16, 1, 0.3, 1] });
+
+                if (counted) return;
+                counted = true;
+
+                // Count-up: 0 → 21.6 over 1.4s
+                const target = 21.6;
+                const duration = 1400;
+                const startTime = performance.now();
+
+                function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+
+                function countUp(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const value = target * easeOutQuart(progress);
+                    statCounter.textContent = value < 10
+                        ? value.toFixed(1)
+                        : value.toFixed(1);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(countUp);
+                    } else {
+                        statCounter.textContent = '21.6';
+                    }
+                }
+
+                // Small delay before counting starts (card animates in first)
+                setTimeout(() => {
+                    requestAnimationFrame(countUp);
+                    // Animate progress bar (21.6% progress toward 14% target — ~35% gap closed since peak ~30%)
+                    if (statBar) {
+                        statBar.style.transition = 'width 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                        statBar.style.width = '72%';
+                    }
+                }, 300);
+            }, { amount: 0.3 });
+        }
+    });
+    </script>
 
     {{-- 4. Solusi (Solution) --}}
     <section class="py-24 lg:py-32 relative overflow-hidden bg-white">

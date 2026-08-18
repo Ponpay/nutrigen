@@ -67,41 +67,46 @@
 
     <div class="max-w-7xl mx-auto px-4 lg:px-8 space-y-6 lg:space-y-8">
         
-        <!-- TOP PROFILE HERO CARD (Sleek & Seamless Modern Design) -->
-        <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-slate-200/80 relative overflow-hidden">
+        <!-- TOP PROFILE HERO CARD (Modern Health App Design) -->
+        <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.04)] border border-slate-200/80 relative overflow-hidden">
             
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
+            <!-- Ambient Top Accent -->
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-teal-500 via-emerald-400 to-teal-600"></div>
+
+            <!-- Top Row: Identity + Desktop Action -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
                 
-                <!-- Left: Avatar & Identity -->
-                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-center sm:text-left flex-1 min-w-0">
+                <!-- Avatar & Details (Always Left-Aligned) -->
+                <div class="flex items-center gap-3.5 sm:gap-5 min-w-0 flex-1">
                     
-                    <!-- Avatar (Organic Round with Soft Ring) -->
+                    <!-- Avatar with Gradient Ring -->
                     <div class="relative shrink-0">
-                        <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-teal-100/80 via-emerald-50 to-teal-50 border-2 border-white ring-2 ring-teal-500/15 shadow-sm flex items-center justify-center text-teal-700 font-black text-2xl sm:text-[26px] select-none">
-                            {{ strtoupper(substr($childName, 0, 1)) }}
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-teal-500 via-emerald-400 to-teal-600 p-[2.5px] shadow-md shadow-teal-600/10">
+                            <div class="w-full h-full rounded-[13px] bg-gradient-to-br from-teal-50 to-emerald-50/80 flex items-center justify-center text-teal-800 font-black text-2xl sm:text-3xl select-none">
+                                {{ strtoupper(substr($childName, 0, 1)) }}
+                            </div>
                         </div>
-                        <div class="absolute bottom-0 right-0 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-xs border border-slate-200 text-teal-600" title="Foto Profil">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3">
+                        <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-xs border border-slate-200 text-teal-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                               <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
                             </svg>
                         </div>
                     </div>
 
-                    <!-- Details & Badges -->
-                    <div class="flex flex-col items-center sm:items-start min-w-0 flex-1">
-                        <!-- Name & Gender -->
-                        <div class="flex items-center gap-2.5 flex-wrap justify-center sm:justify-start">
-                            <h1 class="text-[22px] sm:text-[25px] font-black text-slate-900 tracking-tight leading-tight">{{ $childName }}</h1>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700 border border-sky-200/70' : 'bg-pink-50 text-pink-700 border border-pink-200/70' }}">
+                    <!-- Name & Status Badges -->
+                    <div class="flex flex-col min-w-0 flex-1">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h1 class="text-[19px] sm:text-[24px] font-black text-slate-900 tracking-tight truncate">{{ $childName }}</h1>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10.5px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700 border border-sky-200/70' : 'bg-pink-50 text-pink-700 border border-pink-200/70' }}">
                                 {{ $gender === 'L' ? 'Laki-laki' : 'Perempuan' }}
                             </span>
                         </div>
 
                         <!-- Status Badges Row -->
-                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1.5">
                             <!-- Age -->
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-100/80 text-slate-700 rounded-full text-[11px] font-semibold border border-slate-200/50">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 bg-slate-100 text-slate-700 rounded-lg text-[11px] font-semibold border border-slate-200/60">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -109,7 +114,7 @@
                             </span>
 
                             <!-- Status Gizi -->
-                            <span class="inline-flex items-center gap-1.5 {{ $badgeClasses }} px-3 py-0.5 rounded-full text-[11px] font-bold">
+                            <span class="inline-flex items-center gap-1 {{ $badgeClasses }} px-2.5 py-0.5 rounded-lg text-[11px] font-bold">
                                 {!! $badgeIcon !!}
                                 <span>{{ $status }}</span>
                             </span>
@@ -130,20 +135,19 @@
                                         default => ''
                                     };
                                 @endphp
-                                <span class="inline-flex items-center gap-1.5 {{ $valColors }} px-3 py-0.5 rounded-full text-[11px] font-bold border">
+                                <span class="inline-flex items-center gap-1 {{ $valColors }} px-2.5 py-0.5 rounded-lg text-[11px] font-bold border">
                                     {!! $valIcon !!}
                                     <span class="capitalize">{{ $latestMeasure['status_validasi'] }}</span>
                                 </span>
                             @endif
                         </div>
-
                     </div>
 
                 </div>
 
-                <!-- Right: Action Button -->
-                <div class="flex items-center justify-center sm:justify-start lg:justify-end shrink-0 pt-2 lg:pt-0">
-                    <button onclick="openMeasurementModal()" class="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_14px_-2px_rgba(13,148,136,0.35)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <!-- Desktop Action Button -->
+                <div class="hidden sm:flex items-center shrink-0">
+                    <button onclick="openMeasurementModal()" class="px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_14px_-2px_rgba(13,148,136,0.35)] active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
                         <span>Ukur Sekarang</span>
                     </button>
@@ -151,45 +155,55 @@
 
             </div>
 
-            <!-- Seamless Horizontal Info Strip (No Heavy Boxes) -->
-            <div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-y-3 gap-x-6 text-[13px]">
+            <!-- Clean 3-Metric Info Strip -->
+            <div class="mt-4 pt-3.5 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[13px]">
                 
                 <!-- Ibu -->
-                <div class="flex items-center gap-2 min-w-0">
+                <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-50/70 border border-slate-100">
                     <span class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                     </span>
-                    <div class="flex items-center gap-1.5 truncate">
-                        <span class="text-slate-400 font-medium">Ibu:</span>
-                        <strong class="text-slate-800 font-bold truncate">{{ $motherName }}</strong>
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 leading-none">Ibu / Wali</span>
+                        <span class="text-slate-800 font-bold truncate mt-0.5">{{ $motherName }}</span>
                     </div>
                 </div>
 
                 <!-- NIK -->
-                <div class="flex items-center gap-2 min-w-0">
-                    <span class="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
-                    </span>
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-slate-400 font-medium">NIK:</span>
-                        <strong class="text-slate-800 font-bold font-mono tracking-wider">{{ $nik }}</strong>
-                        <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-all cursor-pointer ml-0.5" title="Salin NIK">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
-                        </button>
+                <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-slate-50/70 border border-slate-100">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <span class="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                        </span>
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 leading-none">NIK Balita</span>
+                            <span class="text-slate-800 font-bold font-mono tracking-wider truncate mt-0.5">{{ $nik }}</span>
+                        </div>
                     </div>
+                    <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-md transition-all cursor-pointer shrink-0" title="Salin NIK">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
+                    </button>
                 </div>
 
                 <!-- Posyandu -->
-                <div class="flex items-center gap-2 min-w-0">
+                <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-50/70 border border-slate-100">
                     <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
                     </span>
-                    <div class="flex items-center gap-1.5 truncate">
-                        <span class="text-slate-400 font-medium">Posyandu:</span>
-                        <strong class="text-slate-800 font-bold truncate">{{ $posyanduName }}</strong>
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 leading-none">Posyandu Binaan</span>
+                        <span class="text-slate-800 font-bold truncate mt-0.5">{{ $posyanduName }}</span>
                     </div>
                 </div>
 
+            </div>
+
+            <!-- Mobile Action Button (Full Width at Bottom) -->
+            <div class="mt-3.5 sm:hidden">
+                <button onclick="openMeasurementModal()" class="w-full py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_14px_-2px_rgba(13,148,136,0.35)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
+                    <span>Ukur Sekarang</span>
+                </button>
             </div>
 
         </div>

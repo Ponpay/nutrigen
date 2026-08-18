@@ -268,7 +268,7 @@
                             @endif
                         </div>
                         <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-4xl font-extrabold text-slate-800 tracking-tight">{{ $latestMeasure['weight'] ?? '-' }}</span>
+                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['weight'] ?? '-' }}</span>
                             <span class="text-base font-bold text-slate-500">kg</span>
                         </div>
                         <div class="flex items-center justify-between pt-2 border-t border-emerald-200/50 text-xs">
@@ -293,7 +293,7 @@
                             @endif
                         </div>
                         <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-4xl font-extrabold text-slate-800 tracking-tight">{{ $latestMeasure['height'] ?? '-' }}</span>
+                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['height'] ?? '-' }}</span>
                             <span class="text-base font-bold text-slate-500">cm</span>
                         </div>
                         <div class="flex items-center justify-between pt-2 border-t border-amber-200/50 text-xs">
@@ -318,7 +318,7 @@
                             @endif
                         </div>
                         <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-4xl font-extrabold text-slate-800 tracking-tight">{{ $latestMeasure['head_circ'] ?? '-' }}</span>
+                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['head_circ'] ?? '-' }}</span>
                             <span class="text-base font-bold text-slate-500">cm</span>
                         </div>
                         <div class="flex items-center justify-between pt-2 border-t border-teal-200/50 text-xs">

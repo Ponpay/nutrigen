@@ -79,7 +79,7 @@
             <div class="flex flex-col flex-1 mt-2 sm:mt-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-sm leading-tight">{{ $kaderName ?? 'Ibu Siti Aminah' }}</h1>
+                        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight drop-shadow-sm leading-tight">{{ $kaderName ?? 'Ibu Siti Aminah' }}</h1>
                         <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-[13px] font-bold text-teal-800 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" /></svg>

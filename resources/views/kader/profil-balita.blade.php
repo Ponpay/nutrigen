@@ -67,57 +67,54 @@
 
     <div class="max-w-7xl mx-auto px-4 lg:px-8 space-y-6 lg:space-y-8">
         
-        <!-- TOP PROFILE HERO CARD -->
-        <div class="bg-white rounded-3xl p-5 sm:p-6 lg:p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/80 relative overflow-hidden flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-8">
+        <!-- TOP PROFILE HERO CARD (Sleek & Seamless Modern Design) -->
+        <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-slate-200/80 relative overflow-hidden">
             
-            <!-- Ambient Decorative Gradient (Desktop only) -->
-            <div class="hidden lg:block absolute -right-16 -top-16 w-80 h-80 rounded-full bg-gradient-to-bl from-teal-100/40 via-emerald-50/20 to-transparent pointer-events-none"></div>
-
-            <!-- Left: Avatar + Details & Info Grid -->
-            <div class="flex flex-col gap-4.5 flex-1 min-w-0 z-10">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
                 
-                <!-- Row 1: Avatar & Identity -->
-                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-center sm:text-left">
+                <!-- Left: Avatar & Identity -->
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-center sm:text-left flex-1 min-w-0">
                     
-                    <!-- Avatar with Camera Badge -->
+                    <!-- Avatar (Organic Round with Soft Ring) -->
                     <div class="relative shrink-0">
-                        <div class="w-[76px] h-[76px] sm:w-[88px] sm:h-[88px] rounded-2xl bg-gradient-to-tr from-teal-100 via-emerald-50 to-teal-50 border-2 border-white shadow-[0_4px_16px_rgba(13,148,136,0.12)] ring-1 ring-slate-200/80 flex items-center justify-center text-teal-700 font-black text-2xl sm:text-3xl select-none">
+                        <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-teal-100/80 via-emerald-50 to-teal-50 border-2 border-white ring-2 ring-teal-500/15 shadow-sm flex items-center justify-center text-teal-700 font-black text-2xl sm:text-[26px] select-none">
                             {{ strtoupper(substr($childName, 0, 1)) }}
                         </div>
-                        <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-xl flex items-center justify-center shadow-xs border border-slate-200 text-teal-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                        <div class="absolute bottom-0 right-0 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-xs border border-slate-200 text-teal-600" title="Foto Profil">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                               <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
                             </svg>
                         </div>
                     </div>
 
-                    <!-- Name & Status Badges -->
+                    <!-- Details & Badges -->
                     <div class="flex flex-col items-center sm:items-start min-w-0 flex-1">
-                        <div class="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
-                            <h1 class="text-[21px] sm:text-[24px] lg:text-[26px] font-black text-slate-900 tracking-tight leading-tight truncate max-w-full">{{ $childName }}</h1>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10.5px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700 border border-sky-200/60' : 'bg-pink-50 text-pink-700 border border-pink-200/60' }}">
+                        <!-- Name & Gender -->
+                        <div class="flex items-center gap-2.5 flex-wrap justify-center sm:justify-start">
+                            <h1 class="text-[22px] sm:text-[25px] font-black text-slate-900 tracking-tight leading-tight">{{ $childName }}</h1>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700 border border-sky-200/70' : 'bg-pink-50 text-pink-700 border border-pink-200/70' }}">
                                 {{ $gender === 'L' ? 'Laki-laki' : 'Perempuan' }}
                             </span>
                         </div>
-                        
-                        <!-- Badges Ribbon -->
+
+                        <!-- Status Badges Row -->
                         <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
-                            <!-- Age Pill -->
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-100 text-slate-700 rounded-lg text-[11px] font-bold border border-slate-200/60">
+                            <!-- Age -->
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-100/80 text-slate-700 rounded-full text-[11px] font-semibold border border-slate-200/50">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <span>{{ $age }}</span>
                             </span>
 
-                            <!-- Status Gizi Badge -->
-                            <span class="inline-flex items-center gap-1.5 {{ $badgeClasses }} px-2.5 py-0.5 rounded-lg text-[11px] font-bold">
+                            <!-- Status Gizi -->
+                            <span class="inline-flex items-center gap-1.5 {{ $badgeClasses }} px-3 py-0.5 rounded-full text-[11px] font-bold">
                                 {!! $badgeIcon !!}
                                 <span>{{ $status }}</span>
                             </span>
 
-                            <!-- Status Validasi Badge -->
+                            <!-- Status Validasi -->
                             @if(!empty($latestMeasure['status_validasi']))
                                 @php
                                     $valColors = match($latestMeasure['status_validasi']) {
@@ -133,76 +130,66 @@
                                         default => ''
                                     };
                                 @endphp
-                                <span class="inline-flex items-center gap-1.5 {{ $valColors }} px-2.5 py-0.5 rounded-lg text-[11px] font-bold border">
+                                <span class="inline-flex items-center gap-1.5 {{ $valColors }} px-3 py-0.5 rounded-full text-[11px] font-bold border">
                                     {!! $valIcon !!}
                                     <span class="capitalize">{{ $latestMeasure['status_validasi'] }}</span>
                                 </span>
                             @endif
                         </div>
+
                     </div>
+
                 </div>
 
-                <!-- Row 2: 3-Card Rich Info Grid (Ibu, NIK, Posyandu) -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full pt-1">
-                    
-                    <!-- Card 1: Ibu / Orang Tua -->
-                    <div class="bg-slate-50/80 hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-3 flex items-center gap-3 transition-all hover:shadow-2xs">
-                        <div class="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-100 flex items-center justify-center text-teal-600 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4.5 h-4.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
-                        </div>
-                        <div class="flex flex-col min-w-0">
-                            <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-none">Ibu / Wali</span>
-                            <span class="text-[13px] font-bold text-slate-800 truncate leading-tight mt-1">{{ $motherName }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: NIK Balita -->
-                    <div class="bg-slate-50/80 hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-3 flex items-center justify-between gap-2 transition-all hover:shadow-2xs">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-100 flex items-center justify-center text-sky-600 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4.5 h-4.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
-                            </div>
-                            <div class="flex flex-col min-w-0">
-                                <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-none">NIK Balita</span>
-                                <span class="text-[12.5px] font-bold text-slate-800 font-mono tracking-wider truncate leading-tight mt-1">{{ $nik }}</span>
-                            </div>
-                        </div>
-                        <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-all shrink-0 cursor-pointer" title="Salin NIK">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
-                        </button>
-                    </div>
-
-                    <!-- Card 3: Posyandu -->
-                    <div class="bg-slate-50/80 hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-3 flex items-center gap-3 transition-all hover:shadow-2xs">
-                        <div class="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4.5 h-4.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
-                        </div>
-                        <div class="flex flex-col min-w-0">
-                            <span class="text-[9.5px] uppercase font-bold text-slate-400 tracking-wider leading-none">Posyandu</span>
-                            <span class="text-[13px] font-bold text-slate-800 truncate leading-tight mt-1">{{ $posyanduName }}</span>
-                        </div>
-                    </div>
-
+                <!-- Right: Action Button -->
+                <div class="flex items-center justify-center sm:justify-start lg:justify-end shrink-0 pt-2 lg:pt-0">
+                    <button onclick="openMeasurementModal()" class="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_14px_-2px_rgba(13,148,136,0.35)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
+                        <span>Ukur Sekarang</span>
+                    </button>
                 </div>
 
             </div>
 
-            <!-- Right: Aksi Cepat Card -->
-            <div class="w-full lg:w-[260px] shrink-0 bg-gradient-to-br from-teal-500/[0.08] via-emerald-500/[0.04] to-teal-500/[0.02] rounded-2xl p-4.5 flex flex-col justify-between border border-teal-200/80 shadow-2xs relative z-10">
-                <div>
-                    <div class="flex items-center gap-2 mb-1.5">
-                        <div class="w-7 h-7 rounded-lg bg-teal-500/15 text-teal-700 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
-                        </div>
-                        <span class="text-[14px] font-bold text-teal-900">Aksi Cepat</span>
-                    </div>
-                    <p class="text-[12px] text-teal-700/80 leading-relaxed mb-4">Input data pengukuran dan pemantauan gizi anak bulan ini.</p>
-                </div>
+            <!-- Seamless Horizontal Info Strip (No Heavy Boxes) -->
+            <div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-y-3 gap-x-6 text-[13px]">
                 
-                <button onclick="openMeasurementModal()" class="w-full py-3 px-4 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_14px_-2px_rgba(13,148,136,0.4)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
-                    <span>Ukur Sekarang</span>
-                </button>
+                <!-- Ibu -->
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    </span>
+                    <div class="flex items-center gap-1.5 truncate">
+                        <span class="text-slate-400 font-medium">Ibu:</span>
+                        <strong class="text-slate-800 font-bold truncate">{{ $motherName }}</strong>
+                    </div>
+                </div>
+
+                <!-- NIK -->
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                    </span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-slate-400 font-medium">NIK:</span>
+                        <strong class="text-slate-800 font-bold font-mono tracking-wider">{{ $nik }}</strong>
+                        <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-all cursor-pointer ml-0.5" title="Salin NIK">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Posyandu -->
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                    </span>
+                    <div class="flex items-center gap-1.5 truncate">
+                        <span class="text-slate-400 font-medium">Posyandu:</span>
+                        <strong class="text-slate-800 font-bold truncate">{{ $posyanduName }}</strong>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -211,20 +198,19 @@
     <!-- Alert Skrining -->
     <div class="max-w-7xl mx-auto px-4 lg:px-8 mt-0 mb-6 motion-card opacity-0">
         @php
-            $alertBg = $status_type == 'danger' ? 'bg-rose-50' : ($status_type == 'warning' ? 'bg-amber-50' : 'bg-emerald-50');
-            $alertBorder = $status_type == 'danger' ? 'border-rose-200' : ($status_type == 'warning' ? 'border-amber-200' : 'border-emerald-200');
-            $alertSide = $status_type == 'danger' ? 'bg-rose-400' : ($status_type == 'warning' ? 'bg-amber-400' : 'bg-emerald-400');
-            $alertText = $status_type == 'danger' ? 'text-rose-600' : ($status_type == 'warning' ? 'text-amber-600' : 'text-emerald-600');
-            $alertIcon = $status_type == 'danger' ? 'text-rose-500' : ($status_type == 'warning' ? 'text-amber-500' : 'text-emerald-500');
+            $alertBg = $status_type == 'danger' ? 'bg-rose-50/70 border-rose-200/80 text-rose-800' : ($status_type == 'warning' ? 'bg-amber-50/70 border-amber-200/80 text-amber-800' : 'bg-emerald-50/70 border-emerald-200/80 text-emerald-800');
+            $alertIcon = $status_type == 'danger' ? 'text-rose-500 bg-rose-100/80' : ($status_type == 'warning' ? 'text-amber-500 bg-amber-100/80' : 'text-emerald-500 bg-emerald-100/80');
         @endphp
-        <div class="flex items-start gap-3 p-4 {{ $alertBg }} {{ $alertBorder }} rounded-[16px] border relative overflow-hidden">
-            <div class="absolute left-0 top-0 bottom-0 w-1.5 {{ $alertSide }}"></div>
-            <div class="shrink-0 {{ $alertIcon }} pl-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>
+        <div class="flex items-start gap-3.5 p-4 sm:p-4.5 {{ $alertBg }} rounded-2xl border shadow-2xs">
+            <div class="w-8 h-8 rounded-xl {{ $alertIcon }} flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4.5 h-4.5"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>
             </div>
-            <div class="flex flex-col">
-                <span class="text-[14px] font-bold text-slate-700">Hasil Skrining: <span class="{{ $alertText }} font-black">{{ $latestMeasure['status'] ?? 'Belum Diukur' }}</span></span>
-                <span class="text-[13px] text-slate-600 mt-0.5 leading-relaxed">{{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang anak.' }}</span>
+            <div class="flex flex-col text-[13px] leading-relaxed">
+                <div>
+                    <span class="font-bold text-slate-800">Hasil Skrining:</span>
+                    <span class="font-extrabold">{{ $latestMeasure['status'] ?? 'Belum Diukur' }}</span>
+                </div>
+                <p class="text-slate-600 mt-0.5">{{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang anak.' }}</p>
             </div>
         </div>
     </div>

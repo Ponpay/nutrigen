@@ -27,8 +27,9 @@
 
 @php
     $isFiltered = request()->filled('filter') || request()->filled('q') || request()->filled('status_gizi');
-    $priorityBalitas = $isFiltered ? collect([]) : $balitas->filter(fn($b) => in_array($b['status_type'], ['danger', 'warning']));
-    $displayBalitas  = $isFiltered ? $balitas : $balitas->filter(fn($b) => !in_array($b['status_type'], ['danger', 'warning']));
+    $balitasCollection = collect($balitas ?? []);
+    $priorityBalitas = $isFiltered ? collect([]) : $balitasCollection->filter(fn($b) => in_array($b['status_type'] ?? '', ['danger', 'warning']));
+    $displayBalitas  = $isFiltered ? $balitasCollection : $balitasCollection->filter(fn($b) => !in_array($b['status_type'] ?? '', ['danger', 'warning']));
 @endphp
 
 {{--
@@ -128,7 +129,7 @@
     {{-- ── MAIN CONTENT AREA ───────────────────────────────────────────────── --}}
     <div class="flex-1 max-w-7xl lg:mx-auto w-full px-4 lg:px-0 mt-6 lg:mt-8">
 
-        @if(request('q') && count($priorityBalitas) === 0 && count($queueBalitas) === 0)
+        @if(request('q') && $priorityBalitas->isEmpty() && $displayBalitas->isEmpty())
         {{-- ── EMPTY STATE ──────────────────────────────────────────────────── --}}
         <div class="flex flex-col items-center justify-center text-center py-16 px-6 gap-3 bg-white border border-slate-200/60 rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
             <div class="w-12 h-12 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-1">
@@ -144,7 +145,7 @@
         @else
 
         {{-- ── SECTION 1: PRIORITAS ─────────────────────────────────────────── --}}
-        @if(count($priorityBalitas) > 0)
+        @if($priorityBalitas->isNotEmpty())
         <section class="mb-8 lg:mb-10 motion-card opacity-0">
 
             {{-- Section surface: subtle warm tint to distinguish from queue --}}
@@ -155,7 +156,7 @@
                     {{-- Left accent bar on heading --}}
                     <div class="w-1 h-5 rounded-full bg-rose-400 flex-shrink-0"></div>
                     <h2 class="text-[15px] font-bold text-slate-800 leading-none tracking-tight">Prioritas Hari Ini</h2>
-                    <span class="ml-auto bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">{{ count($priorityBalitas) }} anak</span>
+                    <span class="ml-auto bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">{{ $priorityBalitas->count() }} anak</span>
                 </div>
 
                 {{-- Horizontal scroll cards --}}

@@ -82,50 +82,50 @@
     <div class="bg-white border {{ $isLatest ? 'border-teal-300 shadow-[0_4px_16px_rgba(13,148,136,0.06)]' : 'border-slate-200/80 shadow-[0_2px_10px_rgb(0,0,0,0.03)]' }} rounded-[20px] transition-all duration-200 overflow-hidden">
         
         <!-- Summary Header Bar (Always Visible & Clickable) -->
-        <button type="button" @click="open = !open" class="w-full text-left p-3.5 sm:p-4.5 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+        <button type="button" @click="open = !open" class="w-full text-left p-3.5 sm:p-4.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 hover:bg-slate-50/80 transition-colors cursor-pointer select-none">
             
-            <!-- Left Side: Date, Age, Badges, Quick Metric Preview -->
-            <div class="flex items-center flex-wrap gap-2 sm:gap-3">
-                <span class="text-sm sm:text-[15px] font-extrabold text-slate-800">{{ $measurement['date'] }}</span>
+            <!-- Left Side: Date, Age, Badges & Quick Metric Preview -->
+            <div class="flex items-center flex-wrap gap-2 sm:gap-2.5">
+                <span class="text-[14px] sm:text-[15px] font-extrabold text-slate-800 tracking-tight">{{ $measurement['date'] }}</span>
                 
                 @if(isset($measurement['age_at_measure']))
-                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[11px] font-semibold">
+                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[10.5px] sm:text-[11px] font-bold">
                         Usia {{ $measurement['age_at_measure'] }}
                     </span>
                 @endif
 
                 @if($isLatest)
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-50 text-teal-700 border border-teal-200/60">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[10.5px] font-extrabold bg-teal-50 text-teal-700 border border-teal-200/70">
                         <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
                         Terbaru
                     </span>
                 @endif
 
-                <!-- Quick Inline Summary (BB & TB) -->
-                <div class="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200 text-xs">
-                    <span class="text-slate-500 font-medium">BB: <strong class="text-slate-800">{{ $measurement['weight'] }} kg</strong></span>
+                <!-- Quick Inline Summary (BB & TB) - visible & styled on all screen sizes -->
+                <div class="flex items-center gap-1.5 px-2 py-0.5 bg-slate-100/80 border border-slate-200/50 rounded-lg text-[11px] font-medium text-slate-600">
+                    <span>BB: <strong class="text-slate-900 font-bold">{{ $measurement['weight'] }} kg</strong></span>
                     <span class="text-slate-300">•</span>
-                    <span class="text-slate-500 font-medium">TB: <strong class="text-slate-800">{{ $measurement['height'] }} cm</strong></span>
+                    <span>TB: <strong class="text-slate-900 font-bold">{{ $measurement['height'] }} cm</strong></span>
                 </div>
             </div>
             
             <!-- Right Side: Status Badges & Toggle Chevron Button -->
-            <div class="flex items-center justify-between md:justify-end gap-2 w-full md:w-auto">
+            <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto pt-1 sm:pt-0 border-t border-slate-100 sm:border-0">
                 <div class="flex items-center flex-wrap gap-1.5">
                     <!-- Status Gizi Badge -->
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10.5px] font-bold border {{ $colors['badge'] }}">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold border {{ $colors['badge'] }}">
                         {{ $measurement['status'] }}
                     </span>
                     
                     <!-- Status Validasi Badge -->
-                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold border {{ $valConfig['badge'] }}">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold border {{ $valConfig['badge'] }}">
                         {!! $valConfig['icon'] !!}
                         <span>{{ $valConfig['label'] }}</span>
                     </span>
                 </div>
 
                 <!-- Animated Chevron -->
-                <div class="w-7 h-7 rounded-lg bg-slate-100/80 text-slate-500 flex items-center justify-center shrink-0 ml-1 transition-transform duration-200" :class="{ 'rotate-180 bg-teal-50 text-teal-700': open }">
+                <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 ml-1 transition-all duration-200" :class="{ 'rotate-180 bg-teal-50 text-teal-700': open }">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
                 </div>
             </div>

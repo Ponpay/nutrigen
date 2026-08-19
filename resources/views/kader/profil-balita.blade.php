@@ -240,7 +240,7 @@
                     <div class="flex items-center gap-2">
                         <div class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200/60 shadow-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
-                            <span class="text-xs font-bold">{{ $latestMeasure['date'] ?? 'Belum ada data' }}</span>
+                            <span class="text-xs font-bold">{{ $latestMeasure['date'] ?? ($birthDate ? 'Saat Lahir (' . $birthDate . ')' : 'Belum ada data') }}</span>
                         </div>
                     </div>
                 </div>
@@ -265,15 +265,19 @@
                                 <span class="inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-100/80 px-2.5 py-1 rounded-full border border-rose-200">
                                     {{ $latestMeasure['weight_trend'] }} kg
                                 </span>
+                            @elseif(!$latestMeasure && $birthWeight)
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">
+                                    Saat Lahir
+                                </span>
                             @endif
                         </div>
                         <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['weight'] ?? '-' }}</span>
+                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['weight'] ?? ($birthWeight ?: '-') }}</span>
                             <span class="text-base font-bold text-slate-500">kg</span>
                         </div>
                         <div class="flex items-center justify-between pt-2 border-t border-emerald-200/50 text-xs">
                             <span class="text-slate-500 font-medium">Z-Score BB/U</span>
-                            <span class="font-bold text-slate-700">{{ isset($latestMeasure['z_score_bbu']) && $latestMeasure['z_score_bbu'] !== null ? $latestMeasure['z_score_bbu'] . ' SD' : '-' }}</span>
+                            <span class="font-bold text-slate-700">{{ isset($latestMeasure['z_score_bbu']) && $latestMeasure['z_score_bbu'] !== null ? $latestMeasure['z_score_bbu'] . ' SD' : ($birthWeight ? 'Data Awal Lahir' : '-') }}</span>
                         </div>
                     </div>
                     
@@ -290,15 +294,19 @@
                                 <span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-full border border-emerald-200">
                                     +{{ $latestMeasure['height_trend'] }} cm
                                 </span>
+                            @elseif(!$latestMeasure && $birthLength)
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">
+                                    Saat Lahir
+                                </span>
                             @endif
                         </div>
                         <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['height'] ?? '-' }}</span>
+                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['height'] ?? ($birthLength ?: '-') }}</span>
                             <span class="text-base font-bold text-slate-500">cm</span>
                         </div>
                         <div class="flex items-center justify-between pt-2 border-t border-amber-200/50 text-xs">
                             <span class="text-slate-500 font-medium">Z-Score TB/U</span>
-                            <span class="font-bold text-slate-700">{{ isset($latestMeasure['z_score_tbu']) && $latestMeasure['z_score_tbu'] !== null ? $latestMeasure['z_score_tbu'] . ' SD' : '-' }}</span>
+                            <span class="font-bold text-slate-700">{{ isset($latestMeasure['z_score_tbu']) && $latestMeasure['z_score_tbu'] !== null ? $latestMeasure['z_score_tbu'] . ' SD' : ($birthLength ? 'Data Awal Lahir' : '-') }}</span>
                         </div>
                     </div>
                     
@@ -315,18 +323,29 @@
                                 <span class="inline-flex items-center gap-1 text-[11px] font-bold text-teal-700 bg-teal-100/80 px-2.5 py-1 rounded-full border border-teal-200">
                                     ASI Eksklusif
                                 </span>
+                            @elseif(!$latestMeasure && $birthHeadCirc)
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full border border-teal-200">
+                                    Saat Lahir
+                                </span>
                             @endif
                         </div>
                         <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['head_circ'] ?? '-' }}</span>
+                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['head_circ'] ?? ($birthHeadCirc ?: '-') }}</span>
                             <span class="text-base font-bold text-slate-500">cm</span>
                         </div>
                         <div class="flex items-center justify-between pt-2 border-t border-teal-200/50 text-xs">
                             <span class="text-slate-500 font-medium">Status Pengukuran</span>
-                            <span class="font-bold text-teal-700">{{ !empty($latestMeasure['head_circ']) ? 'Tercatat Sesuai KIA' : 'Belum Ada Data' }}</span>
+                            <span class="font-bold text-teal-700">{{ !empty($latestMeasure['head_circ']) ? 'Tercatat Sesuai KIA' : ($birthHeadCirc ? 'Data Lahir KIA' : 'Belum Ada Data') }}</span>
                         </div>
                     </div>
                 </div>
+
+                @if(!$latestMeasure && ($birthWeight || $birthLength || $birthHeadCirc))
+                    <div class="mb-6 p-3.5 sm:p-4 bg-teal-50/70 border border-teal-200/80 rounded-2xl flex items-center gap-3 text-xs text-teal-900 font-medium">
+                        <svg class="w-5 h-5 text-teal-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
+                        <span>Menampilkan <strong>Data Antropometri Saat Lahir (Buku KIA / KMS)</strong>. Klik tombol <strong>"Ukur Sekarang"</strong> untuk mencatat hasil penimbangan bulanan pertama di Posyandu.</span>
+                    </div>
+                @endif
 
                 <!-- Action Strip -->
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">

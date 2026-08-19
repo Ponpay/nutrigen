@@ -91,18 +91,24 @@
             {{-- Status Badges --}}
             <div class="flex flex-wrap items-center gap-1.5 min-h-[24px]">
                 {{-- Status Gizi Badge --}}
-                <div class="flex items-center gap-1.5 {{ $colors['badge_bg'] }} {{ $colors['badge_text'] }} px-2.5 py-0.5 rounded-full">
+                <div class="flex items-center gap-1.5 {{ $colors['badge_bg'] }} {{ $colors['badge_text'] }} px-2.5 py-0.5 rounded-full border border-slate-200/50">
                     <span class="w-1.5 h-1.5 rounded-full {{ $colors['badge_dot'] }} flex-shrink-0"></span>
-                    <span class="text-[10.5px] font-extrabold tracking-wide">{{ $balita['status'] }}</span>
+                    <span class="text-[10.5px] font-semibold tracking-tight">{{ $balita['status'] }}</span>
                 </div>
                 
                 {{-- Status Validasi Badge --}}
                 @if(isset($balita['status_validasi']) && $balita['status_validasi'])
                     @php
+                        $valLabel = match($balita['status_validasi']) {
+                            'pending' => 'Menunggu Validasi',
+                            'approved' => 'Terverifikasi',
+                            'rejected' => 'Perlu Revisi',
+                            default => $balita['status_validasi']
+                        };
                         $valColors = match($balita['status_validasi']) {
-                            'pending' => 'bg-amber-50 text-amber-700 border-amber-200/60',
-                            'approved' => 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
-                            'rejected' => 'bg-rose-50 text-rose-700 border-rose-200/60',
+                            'pending' => 'bg-amber-50/80 text-amber-700 border-amber-200/70',
+                            'approved' => 'bg-emerald-50/80 text-emerald-700 border-emerald-200/70',
+                            'rejected' => 'bg-rose-50/80 text-rose-700 border-rose-200/70',
                             default => 'bg-slate-50 text-slate-700 border-slate-200'
                         };
                         $valIcon = match($balita['status_validasi']) {
@@ -112,10 +118,12 @@
                             default => ''
                         };
                     @endphp
-                    <div class="inline-flex items-center gap-1 {{ $valColors }} px-2 py-0.5 rounded-full border shadow-2xs">
-                        {!! $valIcon !!}
-                        <span class="text-[9.5px] font-extrabold uppercase tracking-wider">{{ $balita['status_validasi'] }}</span>
-                    </div>
+                    @if(!str_contains(strtolower($balita['status']), strtolower($valLabel)))
+                        <div class="inline-flex items-center gap-1 {{ $valColors }} px-2 py-0.5 rounded-full border shadow-2xs">
+                            {!! $valIcon !!}
+                            <span class="text-[10px] font-semibold">{{ $valLabel }}</span>
+                        </div>
+                    @endif
                 @endif
             </div>
 

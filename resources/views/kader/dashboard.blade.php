@@ -14,17 +14,17 @@
 <div class="w-full min-h-screen bg-[#F8FAFC] pb-24 lg:pb-16 text-slate-800 antialiased font-sans">
     <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-7 flex flex-col gap-4 sm:gap-6">
         
-        {{-- ── 1. WELCOME HEADER (Compact, Modern & Flawlessly Responsive) ── --}}
-        <div class="bg-gradient-to-r from-teal-50/90 via-emerald-50/40 to-slate-50 border border-teal-200/80 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-5">
+        {{-- ── 1. OPERATIONAL COMMAND HEADER (Informative, High Contrast & Non-Slop) ── --}}
+        <div class="bg-white border-t-4 border-t-teal-700 border-x border-b border-slate-200/90 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
             
-            {{-- Left: Sapaan & Konteks Posyandu --}}
+            {{-- Left: Identitas Operasional & Live Context --}}
             <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-teal-100/90 border border-teal-300/80 text-teal-900 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-2xs">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-teal-50 border border-teal-200 text-teal-900 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-2xs">
                         <span class="w-2 h-2 rounded-full bg-teal-600 animate-pulse"></span>
-                        <span class="truncate max-w-[180px] sm:max-w-none">{{ $activityLocation ?? ($posyanduName ?? 'Posyandu') }}</span>
+                        <span class="truncate max-w-[200px] sm:max-w-none">{{ $activityLocation ?? ($posyanduName ?? 'Posyandu') }}</span>
                     </span>
-                    <span class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-600 font-semibold bg-white/90 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-slate-200 shadow-2xs">
+                    <span class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-600 font-semibold bg-slate-50 px-2.5 py-0.5 sm:py-1 rounded-full border border-slate-200 shadow-2xs">
                         <x-icon name="calendar" class="text-teal-700 text-xs sm:text-sm" />
                         <span class="hidden sm:inline">{{ $todayFormatted }}</span>
                         <span class="sm:hidden">{{ $todayShort }}</span>
@@ -32,24 +32,35 @@
                 </div>
 
                 <h1 class="text-lg sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight">
-                    Selamat bertugas, {{ $kaderName ?? 'Ibu Kader' }}
+                    Selamat bertugas, <span class="text-teal-800">{{ $kaderName ?? 'Ibu Kader' }}</span>
                 </h1>
-                <p class="text-xs sm:text-sm text-slate-600 font-medium mt-1 leading-relaxed max-w-xl">
-                    Pusat pemantauan tumbuh kembang balita, deteksi dini status KMS, dan sinkronisasi data antropometri Puskesmas.
-                </p>
+                
+                {{-- Live Operational Pulse (Informasi Utama) --}}
+                <div class="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-600 font-medium pt-2 border-t border-slate-100">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                        <span>Selesai Diukur: <strong class="text-slate-900 font-bold">{{ $sudah }}</strong> dari <strong class="text-slate-900 font-bold">{{ $total }}</strong> balita ({{ $percent }}%)</span>
+                    </div>
+                    @if($belum > 0)
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                        <span>Sisa Antrean: <strong class="text-amber-900 font-bold">{{ $belum }} balita</strong></span>
+                    </div>
+                    @endif
+                </div>
             </div>
 
-            {{-- Right: Quick Action Buttons (Full width on mobile, inline on desktop) --}}
-            <div class="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-3 shrink-0 pt-2 sm:pt-0 border-t border-teal-100/60 sm:border-0">
+            {{-- Right: Quick Action Hub --}}
+            <div class="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-3 shrink-0 pt-2 sm:pt-0 border-t border-slate-100 sm:border-0">
                 <a href="{{ route('balita.create') }}" 
-                   class="flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-white hover:bg-slate-50 active:scale-[0.98] border border-slate-300 text-slate-800 rounded-xl text-xs sm:text-sm font-bold shadow-2xs transition-all">
+                   class="flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 bg-slate-50 hover:bg-slate-100 active:scale-[0.98] border border-slate-300 text-slate-800 rounded-xl text-xs sm:text-sm font-bold shadow-2xs transition-all">
                     <x-icon name="user-plus" weight="bold" class="text-teal-700 text-sm sm:text-base" />
-                    <span>Daftar Balita</span>
+                    <span>+ Balita Baru</span>
                 </a>
                 <a href="{{ route('balita.index') }}" 
-                   class="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-teal-700/30 hover:shadow transition-all">
-                    <x-icon name="scales" weight="bold" class="text-white text-sm sm:text-base" />
-                    <span>Penimbangan</span>
+                   class="flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-teal-700/30 hover:shadow transition-all">
+                    <x-icon name="scales" weight="bold" class="text-teal-100 text-sm sm:text-base" />
+                    <span>Mulai Penimbangan</span>
                 </a>
             </div>
         </div>

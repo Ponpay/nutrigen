@@ -184,3 +184,113 @@ window.NutriAlert = {
         });
     }
 };
+
+/**
+ * ======================================================
+ * GLOBAL SMART DECIMAL INPUT FORMATTER (Antropometri Balita)
+ * ======================================================
+ * Otomatis menambahkan titik desimal dan mengganti koma (,) -> (.)
+ * Contoh input user:
+ *   - '687' pada Tinggi Badan -> otomatis menjadi '68.7'
+ *   - '790' pada Berat Badan  -> otomatis menjadi '7.90'
+ *   - '79' pada Berat Badan   -> otomatis menjadi '7.9'
+ *   - '425' pada Lingkar Kepala -> otomatis menjadi '42.5'
+ *   - '325' pada Berat Lahir  -> otomatis menjadi '3.25'
+ *   - '495' pada Panjang Lahir -> otomatis menjadi '49.5'
+ */
+window.formatSmartDecimal = function(value, fieldType = 'generic') {
+    if (!value) return value;
+    let str = String(value).trim().replace(/,/g, '.');
+    if (str.includes('.')) return str;
+
+    const num = parseFloat(str);
+    if (isNaN(num)) return str;
+
+    const type = fieldType.toLowerCase();
+
+    // 1. Berat Badan (BB / berat_badan / berat_lahir) — Normal range balita 1.5 - 35 kg
+    if (type.includes('berat') || type.includes('bb')) {
+        if (str.length === 2 && num >= 30) {
+            return (num / 10).toFixed(1); // 79 -> 7.9, 68 -> 6.8
+        } else if (str.length === 3) {
+            // 687 -> 68.7, 790 -> 7.90 (or 79.0), 125 -> 12.5, 325 -> 3.25
+            if (type.includes('lahir') && num >= 150) {
+                return (num / 100).toFixed(2); // 325 -> 3.25 kg
+            } else if (num >= 300) {
+                return (num / 10).toFixed(1); // 687 -> 68.7
+            } else {
+                return (num / 10).toFixed(1); // 125 -> 12.5
+            }
+        } else if (str.length === 4 && num >= 1000) {
+            // 2850 -> 2.85 kg, 3200 -> 3.20 kg
+            if (type.includes('lahir') || num <= 5000) {
+                return (num / 1000).toFixed(2);
+            } else {
+                return (num / 100).toFixed(2);
+            }
+        }
+    }
+    // 2. Tinggi Badan (TB / tinggi_badan / panjang_lahir) — Normal range 40 - 130 cm
+    else if (type.includes('tinggi') || type.includes('panjang') || type.includes('tb')) {
+        if (str.length === 3) {
+            return (num / 10).toFixed(1); // 687 -> 68.7, 495 -> 49.5, 850 -> 85.0
+        } else if (str.length === 4 && num >= 1000) {
+            return (num / 10).toFixed(1); // 1055 -> 105.5
+        }
+    }
+    // 3. Lingkar Kepala (lingkar_kepala / lingkar_kepala_lahir) — Normal range 25 - 55 cm
+    else if (type.includes('lingkar')) {
+        if (str.length === 3) {
+            return (num / 10).toFixed(1); // 345 -> 34.5, 420 -> 42.0
+        }
+    }
+
+    return str;
+};
+
+window.initSmartDecimalInputs = function() {
+    const selectors = [
+        'input[name="berat_badan"]',
+        'input[name="tinggi_badan"]',
+        'input[name="lingkar_kepala"]',
+        'input[name="berat_lahir"]',
+        'input[name="panjang_lahir"]',
+        'input[name="lingkar_kepala_lahir"]',
+        'input#berat',
+        'input#tinggi',
+        'input#lingkar',
+        'input#berat_lahir',
+        'input#panjang_lahir',
+        'input#lingkar_kepala_lahir',
+        '[data-smart-decimal]'
+    ];
+
+    document.querySelectorAll(selectors.join(',')).forEach(input => {
+        if (input.dataset.smartDecimalInit) return;
+        input.dataset.smartDecimalInit = 'true';
+
+        // Ganti koma ke titik saat mengetik
+        input.addEventListener('input', () => {
+            if (input.value.includes(',')) {
+                input.value = input.value.replace(/,/g, '.');
+            }
+        });
+
+        // Format otomatis saat selesai mengetik / keluar dari field (blur)
+        input.addEventListener('blur', () => {
+            const fieldName = (input.name || input.id || '').toLowerCase();
+            const formatted = window.formatSmartDecimal(input.value, fieldName);
+            if (formatted !== input.value) {
+                input.value = formatted;
+                // Trigger event input & change jika ada validator lain
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+    });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    window.initSmartDecimalInputs();
+});
+

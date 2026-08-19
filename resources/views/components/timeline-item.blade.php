@@ -62,7 +62,12 @@
         default => [
             'badge' => 'bg-slate-50 text-slate-600 border-slate-200/80',
             'label' => 'Menunggu Validasi',
-            'icon'  => '<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg><div x-data="{ open: {{ ($measurement['status_validasi'] ?? '') === 'rejected' ? 'true' : 'false' }} }" class="relative pl-8 sm:pl-10 pb-4 group">
+            'icon'  => '<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>'
+        ]
+    };
+@endphp
+
+<div x-data="{ open: {{ ($measurement['status_validasi'] ?? '') === 'rejected' ? 'true' : 'false' }} }" class="relative pl-8 sm:pl-10 pb-4 group">
     <!-- Timeline Track Line -->
     @unless($isLast)
         <div class="absolute left-[13px] sm:left-[15px] top-6 bottom-0 w-[2px] bg-slate-200/80 group-hover:bg-teal-200/80 transition-colors"></div>

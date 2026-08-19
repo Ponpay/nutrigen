@@ -236,10 +236,14 @@ class KaderController extends Controller
             }
         }
 
-        $balitas = $query->get();
+        $balitas = $query->with(['orangTua', 'pengukurans' => function($q) {
+            $q->orderBy('tanggal_ukur', 'desc');
+        }])->get();
 
         $formattedBalitas = $balitas->map(function($b) {
-            $latest = $b->latestPengukuran;
+            $sortedMeasurements = $b->pengukurans->sortByDesc('tanggal_ukur')->values();
+            $latest = $sortedMeasurements->first();
+            $previous = $sortedMeasurements->count() > 1 ? $sortedMeasurements->get(1) : null;
             $age = Carbon::parse($b->tanggal_lahir)->diff(Carbon::now());
             
             $status = $latest ? $latest->status_gizi : 'Belum Ada';
@@ -259,6 +263,25 @@ class KaderController extends Controller
                 $contextTag = $rejectedMeasurement->catatan_validator ? \Illuminate\Support\Str::limit($rejectedMeasurement->catatan_validator, 45) : 'Periksa kembali data ukur';
             }
 
+            // Hitung tren pertumbuhan historis HANYA jika ada pengukuran sebelumnya
+            $trendWeight = null;
+            $trendHeight = null;
+            if ($latest && $previous && $previous->berat_badan > 0) {
+                $diffWeight = round($latest->berat_badan - $previous->berat_badan, 2);
+                $diffHeight = round($latest->tinggi_badan - $previous->tinggi_badan, 1);
+                
+                $trendWeight = [
+                    'diff' => $diffWeight,
+                    'label' => ($diffWeight > 0 ? '+' : '') . $diffWeight . ' kg',
+                    'direction' => $diffWeight > 0 ? 'up' : ($diffWeight < 0 ? 'down' : 'flat')
+                ];
+                $trendHeight = [
+                    'diff' => $diffHeight,
+                    'label' => ($diffHeight > 0 ? '+' : '') . $diffHeight . ' cm',
+                    'direction' => $diffHeight > 0 ? 'up' : ($diffHeight < 0 ? 'down' : 'flat')
+                ];
+            }
+
             return [
                 'id' => $b->id,
                 'name' => $b->nama,
@@ -270,6 +293,8 @@ class KaderController extends Controller
                 'weight' => $latest ? $latest->berat_badan : $b->berat_lahir,
                 'height' => $latest ? $latest->tinggi_badan : $b->panjang_lahir,
                 'is_birth_measure' => !$latest && ($b->berat_lahir || $b->panjang_lahir),
+                'trend_weight' => $trendWeight,
+                'trend_height' => $trendHeight,
                 'status' => $this->formatDisplayStatus($status, $status_validasi),
                 'status_type' => $statusType,
                 'status_validasi' => $status_validasi,

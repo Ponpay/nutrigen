@@ -31,28 +31,31 @@ class AppServiceProvider extends ServiceProvider
             if ($user && $user->role === 'kader') {
                 $posyanduId = $user->kader?->posyandu_id;
                 if ($posyanduId) {
-                    $revisiList = Pengukuran::with('balita')
-                        ->whereHas('balita', function ($q) use ($posyanduId) {
-                            $q->where('posyandu_id', $posyanduId);
-                        })
-                        ->where('status_validasi', 'rejected')
-                        ->latest('updated_at')
-                        ->take(8)
+                    // Query balitas whose LATEST measurement is currently 'rejected'
+                    // When kader remeasures/updates the child, the latest status becomes 'pending', so it automatically disappears from notifications.
+                    $balitas = \App\Models\Balita::where('posyandu_id', $posyanduId)
+                        ->with(['latestPengukuran'])
                         ->get()
-                        ->map(function ($p) {
-                            $tgl = $p->tanggal_ukur ? Carbon::parse($p->tanggal_ukur)->translatedFormat('d M Y') : '-';
-                            return [
-                                'id' => $p->id,
-                                'balita_id' => $p->balita_id,
-                                'balita_nama' => $p->balita->nama ?? 'Balita',
-                                'balita_nik' => $p->balita->nik ?? '-',
-                                'tanggal' => $tgl,
-                                'bb' => $p->berat_badan ? number_format($p->berat_badan, 1, ',', '.') : '-',
-                                'tb' => $p->tinggi_badan ? number_format($p->tinggi_badan, 1, ',', '.') : '-',
-                                'catatan' => $p->catatan_validator ?: 'Data pengukuran perlu diperbaiki atau ditimbang ulang oleh kader sesuai arahan Puskesmas.',
-                                'updated_diff' => $p->updated_at ? $p->updated_at->diffForHumans() : '',
-                            ];
+                        ->filter(function ($b) {
+                            return $b->latestPengukuran && $b->latestPengukuran->status_validasi === 'rejected';
                         });
+
+                    $revisiList = $balitas->map(function ($b) {
+                        $p = $b->latestPengukuran;
+                        $tgl = $p->tanggal_ukur ? Carbon::parse($p->tanggal_ukur)->translatedFormat('d M Y') : '-';
+                        return [
+                            'id' => $p->id,
+                            'balita_id' => $b->id,
+                            'balita_nama' => $b->nama ?? 'Balita',
+                            'balita_nik' => $b->nik ?? '-',
+                            'tanggal' => $tgl,
+                            'bb' => $p->berat_badan ? number_format($p->berat_badan, 1, ',', '.') : '-',
+                            'tb' => $p->tinggi_badan ? number_format($p->tinggi_badan, 1, ',', '.') : '-',
+                            'catatan' => $p->catatan_validator ?: 'Data pengukuran perlu diperbaiki atau ditimbang ulang oleh kader sesuai arahan Puskesmas.',
+                            'updated_diff' => $p->updated_at ? $p->updated_at->diffForHumans() : '',
+                        ];
+                    })->values();
+
                     $revisiCount = $revisiList->count();
                 }
             }

@@ -722,6 +722,66 @@ class KaderController extends Controller
             ->with('advice', $recommendation['dietary_advice']);
     }
 
+    public function updatePengukuran(Request $request, $id)
+    {
+        if (!Auth::user()?->kader) {
+            abort(403, 'Akses ditolak: Anda tidak memiliki data Kader yang valid.');
+        }
+
+        $posyanduId = $this->getKaderPosyanduId();
+
+        $request->validate([
+            'tanggal_ukur'     => 'required|date',
+            'berat_badan'      => 'required|numeric|min:1|max:999.99',
+            'tinggi_badan'     => 'required|numeric|min:10|max:999.99',
+            'lingkar_kepala'   => 'nullable|numeric|min:10|max:99.99',
+            'asi_eksklusif'    => 'nullable',
+            'status_kenaikan'  => 'nullable|string|max:10',
+            'catatan_kader'    => 'nullable|string|max:500',
+        ]);
+
+        $pengukuran = Pengukuran::whereHas('balita', function ($q) use ($posyanduId) {
+            $q->where('posyandu_id', $posyanduId);
+        })->findOrFail($id);
+
+        $balita = $pengukuran->balita;
+
+        $calc = $this->growthService->calculate(
+            Carbon::parse($balita->tanggal_lahir),
+            Carbon::parse($request->tanggal_ukur),
+            $balita->jenis_kelamin,
+            (float) $request->berat_badan,
+            (float) $request->tinggi_badan
+        );
+
+        $pengukuran->update([
+            'tanggal_ukur'     => $request->tanggal_ukur,
+            'umur_bulan'       => $calc['umur_bulan'],
+            'berat_badan'      => $request->berat_badan,
+            'tinggi_badan'     => $request->tinggi_badan,
+            'lingkar_kepala'   => $request->lingkar_kepala,
+            'asi_eksklusif'    => $request->boolean('asi_eksklusif'),
+            'status_kenaikan'  => $request->status_kenaikan,
+            'catatan_kader'    => $request->input('catatan_kader'),
+            'z_score_bbu'      => $calc['z_score_bbu'],
+            'z_score_tbu'      => $calc['z_score_tbu'],
+            'status_gizi'      => $calc['status_gizi'],
+            'status_validasi'  => 'pending', // Reverts back to pending review
+            'catatan_validator'=> null,
+        ]);
+
+        $recommendation = $this->recommendationService->generate(
+            $calc['status_gizi'], 
+            $calc['umur_bulan'], 
+            $calc['z_score_bbu'], 
+            $calc['z_score_tbu']
+        );
+
+        return redirect()->route('balita.show', $balita->id)
+            ->with('success', 'Data revisi pengukuran berhasil disimpan dan dikirim kembali ke Puskesmas.')
+            ->with('advice', $recommendation['dietary_advice']);
+    }
+
     // =========================================================================
     // JADWAL POSYANDU CRUD
     // =========================================================================

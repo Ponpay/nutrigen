@@ -310,17 +310,17 @@
                                         
                                         <div class="flex flex-col gap-1.5">
                                             <label class="text-sm font-semibold text-slate-700">Berat Badan (kg)</label>
-                                            <input type="number" step="any" name="berat_badan" value="{{ $measurement['weight'] }}" required class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                            <input type="text" inputmode="decimal" name="berat_badan" value="{{ $measurement['weight'] }}" required class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
                                         </div>
                                         
                                         <div class="flex flex-col gap-1.5">
                                             <label class="text-sm font-semibold text-slate-700">Tinggi Badan (cm)</label>
-                                            <input type="number" step="any" name="tinggi_badan" value="{{ $measurement['height'] }}" required class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                            <input type="text" inputmode="decimal" name="tinggi_badan" value="{{ $measurement['height'] }}" required class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
                                         </div>
 
                                         <div class="flex flex-col gap-1.5 sm:col-span-2">
                                             <label class="text-sm font-semibold text-slate-700">Lingkar Kepala (cm)</label>
-                                            <input type="number" step="any" name="lingkar_kepala" value="{{ $measurement['head_circ'] ?? '' }}" placeholder="Opsional" class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                            <input type="text" inputmode="decimal" name="lingkar_kepala" value="{{ $measurement['head_circ'] ?? '' }}" placeholder="Opsional" class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
                                         </div>
 
                                         <div class="flex flex-col gap-1.5 sm:col-span-2">

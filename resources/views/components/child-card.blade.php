@@ -64,26 +64,28 @@
             {{-- Divider Jelas Antar Section --}}
             <div class="border-t border-slate-200/90"></div>
 
-            {{-- 3. DATA ANTROPOMETRI (Grid 2 Kolom, Bebas Wrapping Rusak) --}}
+            {{-- 3. DATA ANTROPOMETRI (Grid 2 Kolom Eksplisit & Konsisten di Semua Layar) --}}
             @if(!empty($balita['weight']) || !empty($balita['height']))
-                <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                <div class="grid grid-cols-2 gap-4 w-full items-start">
                     {{-- Kolom BB --}}
-                    <div class="min-w-0">
-                        <span class="text-[10.5px] font-semibold text-slate-600 uppercase tracking-wide block">Berat Badan</span>
-                        <div class="flex items-baseline gap-1 mt-0.5 whitespace-nowrap">
-                            <span class="text-lg font-bold text-slate-900">{{ $balita['weight'] ?? '-' }}</span>
-                            <span class="text-xs font-normal text-slate-500 mr-1.5">kg</span>
+                    <div class="min-w-0 flex flex-col">
+                        <span class="text-[10px] sm:text-[10.5px] font-semibold text-slate-600 uppercase tracking-wide truncate">Berat Badan</span>
+                        <div class="flex items-baseline gap-1.5 mt-0.5 flex-wrap">
+                            <div class="flex items-baseline gap-0.5 whitespace-nowrap">
+                                <span class="text-base sm:text-lg font-bold text-slate-900">{{ $balita['weight'] ?? '-' }}</span>
+                                <span class="text-xs font-normal text-slate-500">kg</span>
+                            </div>
                             
-                            {{-- Tren Berat dengan SVG Icon (Bebas Glitch Font Unicode) --}}
+                            {{-- Tren Berat dengan SVG Icon --}}
                             @if(!empty($balita['trend_weight']))
                                 @php $tw = $balita['trend_weight']; @endphp
-                                <span class="inline-flex items-center gap-0.5 text-xs font-semibold {{ $tw['direction'] === 'up' ? 'text-emerald-600' : ($tw['direction'] === 'down' ? 'text-amber-600' : 'text-slate-400') }}">
+                                <span class="inline-flex items-center gap-0.5 text-xs font-semibold whitespace-nowrap {{ $tw['direction'] === 'up' ? 'text-emerald-600' : ($tw['direction'] === 'down' ? 'text-amber-600' : 'text-slate-400') }}">
                                     @if($tw['direction'] === 'up')
-                                        <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
+                                        <svg class="w-3 h-3 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
                                     @elseif($tw['direction'] === 'down')
-                                        <svg class="w-3.5 h-3.5 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg>
+                                        <svg class="w-3 h-3 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg>
                                     @else
-                                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                                        <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
                                     @endif
                                     <span>{{ $tw['label'] }}</span>
                                 </span>
@@ -92,22 +94,24 @@
                     </div>
 
                     {{-- Kolom TB --}}
-                    <div class="min-w-0">
-                        <span class="text-[10.5px] font-semibold text-slate-600 uppercase tracking-wide block">Tinggi Badan</span>
-                        <div class="flex items-baseline gap-1 mt-0.5 whitespace-nowrap">
-                            <span class="text-lg font-bold text-slate-900">{{ $balita['height'] ?? '-' }}</span>
-                            <span class="text-xs font-normal text-slate-500 mr-1.5">cm</span>
+                    <div class="min-w-0 flex flex-col">
+                        <span class="text-[10px] sm:text-[10.5px] font-semibold text-slate-600 uppercase tracking-wide truncate">Tinggi Badan</span>
+                        <div class="flex items-baseline gap-1.5 mt-0.5 flex-wrap">
+                            <div class="flex items-baseline gap-0.5 whitespace-nowrap">
+                                <span class="text-base sm:text-lg font-bold text-slate-900">{{ $balita['height'] ?? '-' }}</span>
+                                <span class="text-xs font-normal text-slate-500">cm</span>
+                            </div>
                             
-                            {{-- Tren Tinggi dengan SVG Icon (Bebas Glitch Font Unicode) --}}
+                            {{-- Tren Tinggi dengan SVG Icon --}}
                             @if(!empty($balita['trend_height']))
                                 @php $th = $balita['trend_height']; @endphp
-                                <span class="inline-flex items-center gap-0.5 text-xs font-semibold {{ $th['direction'] === 'up' ? 'text-emerald-600' : ($th['direction'] === 'down' ? 'text-amber-600' : 'text-slate-400') }}">
+                                <span class="inline-flex items-center gap-0.5 text-xs font-semibold whitespace-nowrap {{ $th['direction'] === 'up' ? 'text-emerald-600' : ($th['direction'] === 'down' ? 'text-amber-600' : 'text-slate-400') }}">
                                     @if($th['direction'] === 'up')
-                                        <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
+                                        <svg class="w-3 h-3 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
                                     @elseif($th['direction'] === 'down')
-                                        <svg class="w-3.5 h-3.5 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg>
+                                        <svg class="w-3 h-3 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg>
                                     @else
-                                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                                        <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
                                     @endif
                                     <span>{{ $th['label'] }}</span>
                                 </span>

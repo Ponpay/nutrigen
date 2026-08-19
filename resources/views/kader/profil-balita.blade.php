@@ -162,8 +162,8 @@
                     <div class="w-7 h-7 rounded-lg bg-teal-50 border border-teal-100/80 text-teal-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                     </div>
-                    <span class="text-slate-400 font-medium text-xs shrink-0">Ibu:</span>
-                    <strong class="font-bold text-slate-800 text-xs sm:text-[13px] truncate">{{ $motherName }}</strong>
+                    <span class="text-slate-600 font-semibold text-xs shrink-0">Ibu:</span>
+                    <span class="font-semibold text-slate-700 text-xs sm:text-[13px] truncate">{{ $motherName }}</span>
                 </div>
 
                 <!-- NIK -->
@@ -171,8 +171,8 @@
                     <div class="w-7 h-7 rounded-lg bg-sky-50 border border-sky-100/80 text-sky-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
                     </div>
-                    <span class="text-slate-400 font-medium text-xs shrink-0">NIK:</span>
-                    <strong class="font-bold text-slate-800 font-mono text-xs sm:text-[13px] tracking-wider truncate">{{ $nik }}</strong>
+                    <span class="text-slate-600 font-semibold text-xs shrink-0">NIK:</span>
+                    <span class="font-semibold text-slate-700 font-mono text-xs sm:text-[13px] tracking-wider truncate">{{ $nik }}</span>
                     <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors cursor-pointer shrink-0" title="Salin NIK">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
                     </button>
@@ -183,8 +183,8 @@
                     <div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100/80 text-indigo-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
                     </div>
-                    <span class="text-slate-400 font-medium text-xs shrink-0">Posyandu:</span>
-                    <strong class="font-bold text-slate-800 text-xs sm:text-[13px] truncate">{{ $posyanduName }}</strong>
+                    <span class="text-slate-600 font-semibold text-xs shrink-0">Posyandu:</span>
+                    <span class="font-semibold text-slate-700 text-xs sm:text-[13px] truncate">{{ $posyanduName }}</span>
                 </div>
 
             </div>

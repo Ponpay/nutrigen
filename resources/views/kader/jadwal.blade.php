@@ -397,6 +397,7 @@
 
     {{-- Modal Box Container --}}
     <div class="fixed inset-0 z-10 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 pointer-events-none">
+        {{-- ── UNIFIED DETAIL MODAL SURFACE ── --}}
         <div id="modal-detail-box" 
              class="bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl border border-slate-200/90 w-full max-w-lg max-h-[88dvh] sm:max-h-[90vh] flex flex-col transform transition-all scale-95 duration-200 overflow-hidden pointer-events-auto"
              onclick="event.stopPropagation()">
@@ -406,20 +407,24 @@
                 <div class="w-10 h-1 bg-slate-300 rounded-full"></div>
             </div>
 
-            {{-- Sticky Detail Header --}}
-            <div class="px-5 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
-                <div class="flex items-center gap-2">
-                    <span id="detail-badge-status" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10.5px] font-extrabold uppercase tracking-wider border">
+            {{-- Clean Modal Header --}}
+            <div class="px-5 sm:px-7 py-3.5 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
+                <div class="flex items-center gap-2 min-w-0">
+                    <div class="w-7 h-7 rounded-lg bg-teal-50 border border-teal-100 text-teal-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+                    </div>
+                    <span class="text-xs sm:text-[13px] font-bold text-slate-700 truncate">Detail Agenda Kegiatan</span>
+                    <span id="detail-badge-status" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider border">
                         Akan Datang
                     </span>
-                    <span id="detail-countdown" class="text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-200/70 px-2.5 py-0.5 rounded-md hidden">
+                    <span id="detail-countdown" class="text-[10px] font-semibold text-teal-800 bg-teal-50 border border-teal-200/70 px-2 py-0.5 rounded-md hidden">
                         Besok
                     </span>
                 </div>
 
                 <button type="button" 
                         onclick="closeDetailModal()"
-                        class="w-9 h-9 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                        class="w-8 h-8 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer shrink-0"
                         aria-label="Tutup detail">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -427,82 +432,99 @@
                 </button>
             </div>
 
-            {{-- Detail Content Body with flex-1 min-h-0 for proper scrolling --}}
-            <div class="p-5 sm:p-8 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-4 sm:space-y-5 text-xs">
-                {{-- Title --}}
-                <div>
-                    <span class="text-[10.5px] font-bold text-teal-700 uppercase tracking-widest block mb-1">Agenda Posyandu</span>
-                    <h3 id="detail-judul" class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
+            {{-- Detail Content Body --}}
+            <div class="p-5 sm:p-7 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-4 text-xs">
+                
+                {{-- Title & Context --}}
+                <div class="bg-gradient-to-br from-teal-50/50 to-emerald-50/30 border border-teal-100/80 rounded-2xl p-4">
+                    <span class="text-[10.5px] font-bold text-teal-700 uppercase tracking-wider block mb-1">Nama Agenda</span>
+                    <h3 id="detail-judul" class="text-base sm:text-lg font-bold text-slate-800 leading-snug">
                         Layanan Posyandu
                     </h3>
+                    <p class="text-[11.5px] text-slate-500 font-medium mt-1 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-teal-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span>Terjadwal & Terpublikasi ke Beranda Portal Ibu Balita</span>
+                    </p>
                 </div>
 
-                <div class="border-t border-slate-100"></div>
-
                 {{-- Key Facts Grid --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {{-- Tanggal --}}
-                    <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-100 flex items-start gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-teal-100/80 text-teal-700 flex items-center justify-center shrink-0 shadow-2xs">
+                    <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-teal-100/80 text-teal-700 flex items-center justify-center shrink-0">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Hari & Tanggal</span>
-                            <span id="detail-tanggal" class="text-xs sm:text-sm font-bold text-slate-800 block mt-0.5">-</span>
+                            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Hari & Tanggal</span>
+                            <span id="detail-tanggal" class="text-xs sm:text-[13px] font-semibold text-slate-800 block mt-0.5">-</span>
                         </div>
                     </div>
 
                     {{-- Waktu --}}
-                    <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-100 flex items-start gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-amber-100/80 text-amber-700 flex items-center justify-center shrink-0 shadow-2xs">
+                    <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-amber-100/80 text-amber-700 flex items-center justify-center shrink-0">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Waktu Operasional</span>
-                            <span id="detail-waktu" class="text-xs sm:text-sm font-bold text-slate-800 block mt-0.5">-</span>
+                            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Waktu Operasional</span>
+                            <span id="detail-waktu" class="text-xs sm:text-[13px] font-semibold text-slate-800 block mt-0.5">-</span>
                         </div>
                     </div>
                 </div>
 
                 {{-- Lokasi Full Width --}}
-                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-100 flex items-start gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-emerald-100/80 text-emerald-700 flex items-center justify-center shrink-0 shadow-2xs">
+                <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-100/80 text-indigo-700 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                         </svg>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Lokasi Pelaksanaan</span>
-                        <span id="detail-lokasi" class="text-xs sm:text-sm font-bold text-slate-800 block mt-0.5">-</span>
+                        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Lokasi Pelaksanaan</span>
+                        <span id="detail-lokasi" class="text-xs sm:text-[13px] font-semibold text-slate-800 block mt-0.5">-</span>
+                    </div>
+                </div>
+
+                {{-- Cakupan Layanan Posyandu --}}
+                <div class="p-3.5 rounded-xl bg-slate-50/60 border border-slate-200/60">
+                    <span class="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Layanan & Fasilitas Posyandu</span>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 text-[11px] font-medium shadow-2xs">⚖️ Penimbangan BB</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 text-[11px] font-medium shadow-2xs">📏 Pengukuran TB / PB</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 text-[11px] font-medium shadow-2xs">💉 Imunisasi Rutin</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 text-[11px] font-medium shadow-2xs">🍎 Konseling Gizi & PMT</span>
                     </div>
                 </div>
 
                 {{-- Catatan --}}
-                <div id="detail-catatan-container" class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 hidden">
-                    <span class="text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Catatan Tambahan:</span>
+                <div id="detail-catatan-container" class="p-3.5 rounded-xl bg-amber-50/60 border border-amber-200/70 hidden">
+                    <div class="flex items-center gap-1.5 text-amber-800 font-bold text-[10.5px] uppercase tracking-wider mb-1">
+                        <svg class="w-3.5 h-3.5 text-amber-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
+                        <span>Catatan Tambahan Kader</span>
+                    </div>
                     <p id="detail-catatan" class="text-xs text-slate-700 font-medium leading-relaxed"></p>
                 </div>
             </div>
 
             {{-- Sticky Detail Actions Footer --}}
-            <div class="px-5 sm:px-8 py-3.5 sm:py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-white/95 backdrop-blur-md shrink-0">
+            <div class="px-5 sm:px-7 py-3.5 border-t border-slate-100 flex items-center justify-end gap-2.5 bg-slate-50/50 shrink-0">
                 <button type="button" 
                         onclick="closeDetailModal()"
-                        class="h-11 sm:h-12 px-5 sm:px-6 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                        class="h-10 sm:h-11 px-5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-semibold text-xs sm:text-[13px] transition-colors cursor-pointer">
                     Tutup
                 </button>
                 <button type="button" 
                         id="detail-btn-edit"
-                        class="flex-1 sm:flex-initial h-11 sm:h-12 px-6 sm:px-8 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-700 hover:from-teal-500 hover:to-emerald-600 active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        class="h-10 sm:h-11 px-6 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-[0.99] text-white font-semibold text-xs sm:text-[13px] shadow-xs hover:shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125" />
                     </svg>
-                    <span>Edit Jadwal Ini</span>
+                    <span>Edit Jadwal</span>
                 </button>
             </div>
 

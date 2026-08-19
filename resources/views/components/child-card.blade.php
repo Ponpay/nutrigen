@@ -55,13 +55,13 @@
 @endphp
 
 {{-- Child Card: White surface + left accent strip. Clean, scannable, uniform height. --}}
-<div class="group relative flex flex-col justify-between bg-white border border-slate-200/70 rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.03),0_4px_16px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.07)] hover:border-slate-300 transition-all duration-200 ease-out h-full w-full">
+<div class="group relative flex flex-col justify-between bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.03),0_4px_16px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.06)] hover:border-slate-300 transition-all duration-200 ease-out h-full w-full">
 
-    {{-- Status Accent Strip (left edge) — 4px, standard Tailwind w-1 --}}
+    {{-- Status Accent Strip (left edge) --}}
     <div class="absolute left-0 top-0 bottom-0 w-1 {{ $colors['accent'] }}"></div>
 
     {{-- Card Body --}}
-    <div class="p-3.5 lg:p-4 pl-4 lg:pl-5 flex flex-col justify-between h-full">
+    <div class="p-3.5 sm:p-4 pl-4.5 sm:pl-5 flex flex-col justify-between h-full gap-3">
 
         {{-- Top Section: Avatar + Info --}}
         <div>
@@ -75,25 +75,65 @@
 
                 {{-- Name + Meta --}}
                 <div class="flex-1 min-w-0">
-                    <p class="font-bold text-slate-800 text-[13.5px] leading-snug truncate group-hover:text-teal-700 transition-colors">{{ Str::title($balita['name']) }}</p>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                        <span class="text-[11.5px] font-semibold text-slate-500">{{ $balita['age'] }}</span>
+                    <div class="flex items-center justify-between gap-1">
+                        <a href="{{ route('balita.show', $balita['id'] ?? '') }}" class="font-bold text-slate-800 text-[13.5px] leading-snug truncate group-hover:text-teal-700 transition-colors">
+                            {{ Str::title($balita['name']) }}
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5 text-[11.5px]">
+                        <span class="font-medium text-slate-500">{{ $balita['age'] }}</span>
                         <span class="w-0.5 h-0.5 rounded-full bg-slate-300 flex-shrink-0"></span>
-                        <span class="text-[11.5px] text-slate-400 truncate">{{ Str::title($balita['mother']) }}</span>
+                        <span class="text-slate-400 truncate">Ibu: <strong class="font-medium text-slate-600">{{ Str::title($balita['mother']) }}</strong></span>
                     </div>
                 </div>
             </div>
+
+            {{-- ── INFORMATIVE METRICS STRIP ── --}}
+            <div class="mt-3 p-2 sm:p-2.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-center justify-between text-xs">
+                @if(!empty($balita['weight']) || !empty($balita['height']))
+                    <div class="flex items-center gap-3">
+                        {{-- Berat Badan --}}
+                        <div class="flex items-center gap-1">
+                            <span class="text-[10px] font-semibold text-slate-400 uppercase">BB:</span>
+                            <span class="text-xs font-bold text-slate-700">{{ $balita['weight'] ?? '-' }} kg</span>
+                        </div>
+                        <span class="text-slate-200">|</span>
+                        {{-- Tinggi Badan --}}
+                        <div class="flex items-center gap-1">
+                            <span class="text-[10px] font-semibold text-slate-400 uppercase">TB:</span>
+                            <span class="text-xs font-bold text-slate-700">{{ $balita['height'] ?? '-' }} cm</span>
+                        </div>
+                    </div>
+                    {{-- Tanggal / Status Pengukuran --}}
+                    <span class="text-[10.5px] font-medium text-slate-400 truncate text-right">
+                        {{ $balita['last_measure'] ?? 'Tercatat' }}
+                    </span>
+                @else
+                    <div class="flex items-center justify-between w-full text-slate-400 text-[11px] font-medium">
+                        <span>Belum ada data penimbangan</span>
+                        <span class="text-teal-600 font-semibold">Siap Ukur</span>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Rejection Context Note (If flagged by Puskesmas) --}}
+            @if(isset($balita['status_validasi']) && $balita['status_validasi'] === 'rejected')
+                <div class="mt-2 px-2.5 py-1.5 rounded-lg bg-rose-50/80 border border-rose-200/70 flex items-center gap-1.5 text-[10.5px] text-rose-800">
+                    <svg class="w-3 h-3 text-rose-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
+                    <span class="truncate font-medium">{{ $balita['rejection_note'] ?? 'Puskesmas meminta timbang ulang.' }}</span>
+                </div>
+            @endif
         </div>
 
-        {{-- Bottom Section: Divider + Badges + Actions --}}
-        <div class="mt-3.5 pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+        {{-- Bottom Section: Badges + Actions --}}
+        <div class="pt-2.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
 
             {{-- Status Badges --}}
-            <div class="flex flex-wrap items-center gap-1.5 min-h-[24px]">
+            <div class="flex flex-wrap items-center gap-1.5">
                 {{-- Status Gizi Badge --}}
-                <div class="flex items-center gap-1.5 {{ $colors['badge_bg'] }} {{ $colors['badge_text'] }} px-2.5 py-0.5 rounded-full border border-slate-200/50">
+                <div class="inline-flex items-center gap-1.5 {{ $colors['badge_bg'] }} {{ $colors['badge_text'] }} px-2.5 py-0.5 rounded-full border border-slate-200/50">
                     <span class="w-1.5 h-1.5 rounded-full {{ $colors['badge_dot'] }} flex-shrink-0"></span>
-                    <span class="text-[10.5px] font-semibold tracking-tight">{{ $balita['status'] }}</span>
+                    <span class="text-[10px] font-semibold tracking-tight">{{ $balita['status'] }}</span>
                 </div>
                 
                 {{-- Status Validasi Badge --}}
@@ -128,15 +168,15 @@
             </div>
 
             {{-- Actions --}}
-            <div class="flex items-center justify-end gap-1.5 mt-0.5">
+            <div class="flex items-center justify-end gap-1.5 shrink-0">
                 {{-- Outline: Detail --}}
                 <a href="{{ route('balita.show', $balita['id'] ?? '') }}"
-                   class="h-[34px] px-3 flex items-center justify-center text-[12px] font-bold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 rounded-xl shadow-xs transition-all duration-150 cursor-pointer">
+                   class="h-[32px] px-3 flex items-center justify-center text-[11.5px] font-semibold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 rounded-xl shadow-2xs transition-all duration-150 cursor-pointer">
                     Detail
                 </a>
                 {{-- Primary: Ukur --}}
                 <a href="{{ route('balita.show', ['id' => $balita['id'] ?? '', 'action' => 'ukur']) }}"
-                   class="h-[34px] px-3.5 flex items-center justify-center bg-teal-600 hover:bg-teal-500 text-white text-[12px] font-bold rounded-xl shadow-[0_1px_3px_rgba(13,148,136,0.2)] hover:shadow-[0_2px_8px_rgba(13,148,136,0.3)] transition-all duration-150 cursor-pointer">
+                   class="h-[32px] px-3.5 flex items-center justify-center bg-teal-600 hover:bg-teal-700 active:scale-[0.99] text-white text-[11.5px] font-semibold rounded-xl shadow-2xs transition-all duration-150 cursor-pointer">
                     Ukur
                 </a>
             </div>

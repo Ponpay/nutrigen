@@ -111,7 +111,7 @@
                                 </label>
                                 <div class="relative flex items-center group">
                                     <input
-                                        type="number" step="any"
+                                        type="text" inputmode="decimal"
                                         id="berat" name="berat_badan"
                                         value="{{ old('berat_badan') }}" required
                                         placeholder="Contoh: 7.90"
@@ -138,7 +138,7 @@
                                 </label>
                                 <div class="relative flex items-center group">
                                     <input
-                                        type="number" step="any"
+                                        type="text" inputmode="decimal"
                                         id="tinggi" name="tinggi_badan"
                                         value="{{ old('tinggi_badan') }}" required
                                         placeholder="Contoh: 68.7"
@@ -158,7 +158,7 @@
                                 </label>
                                 <div class="relative flex items-center group">
                                     <input
-                                        type="number" step="any"
+                                        type="text" inputmode="decimal"
                                         id="lingkar" name="lingkar_kepala"
                                         value="{{ old('lingkar_kepala') }}"
                                         placeholder="Contoh: 42.5"

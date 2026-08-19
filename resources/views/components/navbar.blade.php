@@ -57,20 +57,138 @@
     @endif
     
     <!-- Right: Utilities & Profile -->
-    <div class="flex items-center gap-2 lg:gap-4 ml-auto">
-        <!-- Notification -->
-        <button class="relative w-10 h-10 flex items-center justify-center text-slate-500 hover:text-[#10B981] hover:bg-[#ECFDF5] rounded-xl transition-colors group" aria-label="Notifikasi">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-[22px] h-[22px] group-hover:animate-[wiggle_1s_ease-in-out_infinite]">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-            </svg>
-            <!-- Badge -->
-            <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-        </button>
+    <div x-data="{ openNotif: false, openProfile: false }" class="flex items-center gap-2 lg:gap-4 ml-auto">
+        
+        <!-- Notification Dropdown / Modal Trigger -->
+        <div class="relative">
+            <button @click="openNotif = !openNotif" @click.outside="openNotif = false" class="relative w-10 h-10 flex items-center justify-center text-slate-600 hover:text-teal-600 hover:bg-teal-50/80 rounded-xl transition-all duration-200 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500/20" aria-label="Notifikasi">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-[22px] h-[22px] group-hover:animate-[wiggle_1s_ease-in-out_infinite]">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                </svg>
+
+                {{-- Notification Badge (Red dot with count) --}}
+                @if(isset($revisiNotifsCount) && $revisiNotifsCount > 0)
+                    <span class="absolute top-1.5 right-1.5 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-extrabold rounded-full flex items-center justify-center border-2 border-white shadow-xs animate-pulse">
+                        {{ $revisiNotifsCount }}
+                    </span>
+                @endif
+            </button>
+
+            <!-- Modern Elegant Notification Pop-up Modal / Panel -->
+            <div x-show="openNotif"
+                 x-transition:enter="transition ease-[cubic-bezier(0.16,1,0.3,1)] duration-250"
+                 x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
+                 style="display: none;"
+                 class="absolute right-0 mt-3 w-[340px] sm:w-[410px] max-w-[calc(100vw-2rem)] bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.18)] ring-1 ring-slate-200/80 overflow-hidden z-50">
+                
+                {{-- Panel Header --}}
+                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white px-5 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400">
+                            <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-white leading-tight">Revisi dari Puskesmas</h3>
+                            <p class="text-[11px] text-slate-300 font-normal mt-0.5">Catatan perbaikan data balita</p>
+                        </div>
+                    </div>
+                    
+                    @if(isset($revisiNotifsCount) && $revisiNotifsCount > 0)
+                        <span class="bg-rose-500/25 border border-rose-400/40 text-rose-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                            {{ $revisiNotifsCount }} PERLU REVISI
+                        </span>
+                    @endif
+                </div>
+
+                {{-- Notification Content List --}}
+                <div class="max-h-[360px] overflow-y-auto divide-y divide-slate-100 bg-slate-50/50">
+                    @if(isset($revisiNotifs) && count($revisiNotifs) > 0)
+                        @foreach($revisiNotifs as $notif)
+                            <a href="{{ route('balita.show', ['id' => $notif['balita_id'], 'action' => 'ukur']) }}"
+                               class="p-4 bg-white hover:bg-slate-50/90 transition-all flex items-start gap-3 group relative cursor-pointer block border-l-4 border-rose-500">
+                                
+                                {{-- Avatar Initial --}}
+                                <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 border border-rose-200/60 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-2xs">
+                                    {{ strtoupper(substr($notif['balita_nama'], 0, 2)) }}
+                                </div>
+
+                                {{-- Details --}}
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <h4 class="text-[13.5px] font-bold text-slate-900 group-hover:text-rose-600 transition-colors truncate">
+                                            {{ Str::title($notif['balita_nama']) }}
+                                        </h4>
+                                        <span class="text-[10.5px] font-semibold text-slate-400 shrink-0">
+                                            {{ $notif['tanggal'] }}
+                                        </span>
+                                    </div>
+
+                                    <p class="text-[11px] font-medium text-slate-500 mt-0.5">
+                                        Pengukuran: <span class="font-bold text-slate-700">BB {{ $notif['bb'] }} kg / TB {{ $notif['tb'] }} cm</span>
+                                    </p>
+
+                                    {{-- Catatan Puskesmas Bubble --}}
+                                    <div class="mt-2 p-2.5 rounded-xl bg-rose-50/80 border border-rose-100/90 text-[11.5px] text-rose-900 leading-relaxed font-medium">
+                                        <div class="flex items-start gap-1.5">
+                                            <svg class="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="line-clamp-2">{{ $notif['catatan'] }}</span>
+                                        </div>
+                                    </div>
+
+                                    {{-- Action prompt --}}
+                                    <div class="flex items-center gap-1 text-[11px] font-bold text-teal-600 group-hover:text-teal-700 mt-2">
+                                        <span>Buka Halaman Revisi</span>
+                                        <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    @else
+                        {{-- Empty State (Clean & Elegant) --}}
+                        <div class="p-8 text-center bg-white">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto mb-3 shadow-2xs">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                </svg>
+                            </div>
+                            <h4 class="text-[13.5px] font-bold text-slate-800">Semua Data Valid</h4>
+                            <p class="text-xs text-slate-500 font-normal mt-1 max-w-[240px] mx-auto leading-relaxed">
+                                Tidak ada catatan revisi balita dari Puskesmas saat ini.
+                            </p>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Panel Footer --}}
+                <div class="bg-slate-50 px-4 py-3 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] font-medium text-slate-500">
+                        NutriGen Posyandu
+                    </span>
+                    <a href="{{ route('balita.index', ['filter' => 'ditolak']) }}" class="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1 transition-colors">
+                        <span>Lihat Semua Revisi</span>
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </div>
         
         <div class="w-px h-6 bg-[#E2E8F0] hidden lg:block mx-1"></div>
 
         <!-- Desktop Profile Dropdown -->
-        <div x-data="{ openProfile: false }" class="relative hidden lg:block">
+        <div class="relative hidden lg:block">
             <button @click="openProfile = !openProfile" @click.outside="openProfile = false" class="flex items-center gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition-all duration-200 group text-left border border-transparent hover:border-slate-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
                 <div class="w-9 h-9 rounded-full bg-gradient-to-br {{ request()->is('puskesmas*') ? 'from-sky-400 to-blue-600' : 'from-teal-400 to-emerald-600' }} flex items-center justify-center text-white shrink-0 shadow-sm border-2 border-white group-hover:scale-105 group-hover:shadow-md transition-all duration-300 overflow-hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">

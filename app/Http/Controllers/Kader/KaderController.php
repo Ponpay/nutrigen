@@ -256,19 +256,24 @@ class KaderController extends Controller
 
             if ($rejectedMeasurement) {
                 $statusType = 'danger';
-                $contextTag = 'Revisi Puskesmas: ' . ($rejectedMeasurement->catatan_validator ? \Illuminate\Support\Str::limit($rejectedMeasurement->catatan_validator, 35) : 'Periksa kembali data ukur');
+                $contextTag = $rejectedMeasurement->catatan_validator ? \Illuminate\Support\Str::limit($rejectedMeasurement->catatan_validator, 45) : 'Periksa kembali data ukur';
             }
 
             return [
                 'id' => $b->id,
                 'name' => $b->nama,
-                'age' => $age->y . ' Thn ' . $age->m . ' Bln',
+                'gender' => $b->jenis_kelamin,
+                'age' => $age->y > 0 ? $age->y . ' Thn ' . $age->m . ' Bln' : $age->m . ' Bulan',
                 'mother' => $b->orangTua->nama_ibu ?? '-',
                 'nik' => $b->nik,
-                'last_measure' => $latest ? Carbon::parse($latest->tanggal_ukur)->translatedFormat('d M Y') : 'Belum Diukur',
+                'last_measure' => $latest ? Carbon::parse($latest->tanggal_ukur)->translatedFormat('d M Y') : ($b->berat_lahir ? 'Saat Lahir' : 'Belum Diukur'),
+                'weight' => $latest ? $latest->berat_badan : $b->berat_lahir,
+                'height' => $latest ? $latest->tinggi_badan : $b->panjang_lahir,
+                'is_birth_measure' => !$latest && ($b->berat_lahir || $b->panjang_lahir),
                 'status' => $this->formatDisplayStatus($status, $status_validasi),
                 'status_type' => $statusType,
                 'status_validasi' => $status_validasi,
+                'rejection_note' => $rejectedMeasurement?->catatan_validator,
                 'avatar' => null,
                 'context_tag' => $contextTag
             ];

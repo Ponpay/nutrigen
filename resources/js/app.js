@@ -201,48 +201,20 @@ window.NutriAlert = {
 window.formatSmartDecimal = function(value, fieldType = 'generic') {
     if (!value) return value;
     let str = String(value).trim().replace(/,/g, '.');
+    
+    // Jika sudah ada titik desimal, pertahankan apa adanya
     if (str.includes('.')) return str;
 
     const num = parseFloat(str);
     if (isNaN(num)) return str;
 
-    const type = fieldType.toLowerCase();
-
-    // 1. Berat Badan (BB / berat_badan / berat_lahir) — Normal range balita 1.5 - 35 kg
-    if (type.includes('berat') || type.includes('bb')) {
-        if (str.length === 2 && num >= 30) {
-            return (num / 10).toFixed(1); // 79 -> 7.9, 68 -> 6.8
-        } else if (str.length === 3) {
-            // 687 -> 68.7, 790 -> 7.90 (or 79.0), 125 -> 12.5, 325 -> 3.25
-            if (type.includes('lahir') && num >= 150) {
-                return (num / 100).toFixed(2); // 325 -> 3.25 kg
-            } else if (num >= 300) {
-                return (num / 10).toFixed(1); // 687 -> 68.7
-            } else {
-                return (num / 10).toFixed(1); // 125 -> 12.5
-            }
-        } else if (str.length === 4 && num >= 1000) {
-            // 2850 -> 2.85 kg, 3200 -> 3.20 kg
-            if (type.includes('lahir') || num <= 5000) {
-                return (num / 1000).toFixed(2);
-            } else {
-                return (num / 100).toFixed(2);
-            }
-        }
+    // 4 digit tanpa titik (misal 4520 -> 45.20, 4501 -> 45.01, 1055 -> 10.55)
+    if (str.length === 4) {
+        return (num / 100).toFixed(2);
     }
-    // 2. Tinggi Badan (TB / tinggi_badan / panjang_lahir) — Normal range 40 - 130 cm
-    else if (type.includes('tinggi') || type.includes('panjang') || type.includes('tb')) {
-        if (str.length === 3) {
-            return (num / 10).toFixed(1); // 687 -> 68.7, 495 -> 49.5, 850 -> 85.0
-        } else if (str.length === 4 && num >= 1000) {
-            return (num / 10).toFixed(1); // 1055 -> 105.5
-        }
-    }
-    // 3. Lingkar Kepala (lingkar_kepala / lingkar_kepala_lahir) — Normal range 25 - 55 cm
-    else if (type.includes('lingkar')) {
-        if (str.length === 3) {
-            return (num / 10).toFixed(1); // 345 -> 34.5, 420 -> 42.0
-        }
+    // 3 digit tanpa titik (misal 687 -> 68.7, 495 -> 49.5, 325 -> 32.5)
+    else if (str.length === 3) {
+        return (num / 10).toFixed(1);
     }
 
     return str;

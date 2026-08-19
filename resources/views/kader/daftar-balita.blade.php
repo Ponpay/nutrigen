@@ -148,23 +148,31 @@
         @if($priorityBalitas->isNotEmpty())
         <section class="mb-8 lg:mb-10 motion-card opacity-0">
 
-            {{-- Section surface: subtle warm tint to distinguish from queue --}}
-            <div class="bg-slate-100/60 border border-slate-200/50 rounded-[32px] px-4 pt-5 pb-5 lg:px-6 lg:pt-6 lg:pb-6 shadow-sm">
+            {{-- Section surface --}}
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-5 lg:p-6 shadow-xs">
 
                 {{-- Section Header --}}
-                <div class="flex items-center gap-2.5 mb-4">
-                    {{-- Left accent bar on heading --}}
-                    <div class="w-1 h-5 rounded-full bg-rose-400 flex-shrink-0"></div>
-                    <h2 class="text-[15px] font-bold text-slate-800 leading-none tracking-tight">Prioritas Hari Ini</h2>
-                    <span class="ml-auto bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">{{ $priorityBalitas->count() }} anak</span>
+                <div class="flex items-center justify-between mb-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0 border border-amber-200/60 shadow-2xs">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900 leading-snug">Prioritas Hari Ini</h2>
+                            <p class="text-xs text-slate-500 font-normal mt-0.5">{{ $priorityBalitas->count() }} anak perlu dipantau hari ini</p>
+                        </div>
+                    </div>
+                    <span class="bg-rose-50 text-rose-600 border border-rose-100 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase shadow-2xs">
+                        {{ $priorityBalitas->count() }} ANAK
+                    </span>
                 </div>
 
                 {{-- Horizontal scroll cards --}}
                 <div class="relative">
-                    <div class="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-slate-100 to-transparent pointer-events-none z-10 lg:hidden rounded-r-[24px]"></div>
-                    <div class="flex overflow-x-auto gap-3 pb-2.5 snap-x hide-scrollbar -mx-2 px-2 items-stretch">
+                    <div class="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent pointer-events-none z-10 lg:hidden rounded-r-[24px]"></div>
+                    <div class="flex overflow-x-auto gap-3.5 pb-2 snap-x hide-scrollbar -mx-1 px-1 items-stretch">
                         @foreach($priorityBalitas as $balita)
-                            <div class="w-[280px] lg:w-[300px] shrink-0 snap-start flex">
+                            <div class="w-[290px] sm:w-[310px] shrink-0 snap-start flex">
                                 <x-child-card :balita="$balita" />
                             </div>
                         @endforeach
@@ -177,36 +185,42 @@
         {{-- ── SECTION 2: ANTRIAN PENGUKURAN ───────────────────────────────── --}}
         <section class="motion-card opacity-0">
 
-            <div class="bg-slate-100/60 border border-slate-200/50 rounded-[32px] px-4 pt-5 pb-5 lg:px-6 lg:pt-6 lg:pb-6 shadow-sm">
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-5 lg:p-6 shadow-xs">
                 {{-- Section Header --}}
-                <div class="flex items-center gap-2.5 mb-5 px-0.5">
-                    <div class="w-1 h-5 rounded-full bg-slate-300 flex-shrink-0"></div>
-                    <h2 class="text-[15px] font-bold text-slate-800 leading-none tracking-tight">Antrian Pengukuran</h2>
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200/60 shadow-2xs">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900 leading-snug">Antrian Pengukuran</h2>
+                        <p class="text-xs text-slate-500 font-normal mt-0.5">Kelola antrian anak berdasarkan status</p>
+                    </div>
                 </div>
 
-                {{-- Filter Chips --}}
-                <div class="relative mb-5">
-                    <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-100 to-transparent pointer-events-none z-10 lg:hidden"></div>
-                    <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar -mx-0.5 px-0.5 pb-1">
+                {{-- Filter Chips with Count Badges --}}
+                <div class="relative mb-6">
+                    <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none z-10 lg:hidden"></div>
+                    <div class="flex items-center gap-2.5 overflow-x-auto hide-scrollbar -mx-0.5 px-0.5 pb-1">
                         @php
                             $filters = [
-                                'belum_diukur'    => 'Belum Diukur',
-                                'absen_bulan_lalu'=> 'Absen Bulan Lalu',
-                                'bayi_6_bln'      => 'Bayi < 6 Bln',
-                                'selesai'         => 'Sudah Selesai',
-                                'ditolak'         => 'Perlu Revisi',
+                                'belum_diukur'    => ['label' => 'Belum Diukur',     'count' => $filterCounts['belum_diukur'] ?? 0],
+                                'absen_bulan_lalu'=> ['label' => 'Absen Bulan Lalu', 'count' => $filterCounts['absen_bulan_lalu'] ?? 0],
+                                'bayi_6_bln'      => ['label' => 'Bayi < 6 Bln',      'count' => $filterCounts['bayi_6_bln'] ?? 0],
+                                'selesai'         => ['label' => 'Sudah Selesai',    'count' => $filterCounts['selesai'] ?? 0],
+                                'ditolak'         => ['label' => 'Perlu Revisi',     'count' => $filterCounts['ditolak'] ?? 0],
                             ];
                         @endphp
-                        @foreach($filters as $key => $label)
+                        @foreach($filters as $key => $f)
                             @php
-                                $isActive = request('filter') === $key;
-                                $href = $isActive
-                                    ? route('balita.index')
-                                    : route('balita.index', ['filter' => $key]);
+                                $isActive = request('filter') === $key || (!request('filter') && $key === 'belum_diukur');
+                                $href = $isActive ? route('balita.index') : route('balita.index', ['filter' => $key]);
                             @endphp
                             <a href="{{ $href }}"
-                               class="shrink-0 flex items-center justify-center px-4 h-[38px] rounded-[14px] text-[12.5px] font-bold transition-all duration-200 {{ $isActive ? 'bg-slate-800 text-white shadow-md' : 'bg-white text-slate-500 border border-slate-200/80 shadow-sm hover:border-slate-300 hover:text-slate-700 hover:shadow-md' }}">
-                                {{ $label }}
+                               class="shrink-0 flex items-center gap-2 px-3.5 h-[38px] rounded-xl text-xs font-bold transition-all duration-150 {{ $isActive ? 'bg-white border-2 border-emerald-500 text-emerald-800 shadow-xs' : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50' }}">
+                                <span>{{ $f['label'] }}</span>
+                                <span class="px-2 py-0.5 rounded-full text-[11px] font-bold {{ $isActive ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600' }}">
+                                    {{ $f['count'] }}
+                                </span>
                             </a>
                         @endforeach
                     </div>

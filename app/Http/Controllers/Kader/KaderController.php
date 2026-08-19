@@ -236,7 +236,30 @@ class KaderController extends Controller
             }
         }
 
-        $balitas = $query->get();
+        $basePosyanduQuery = Balita::where('posyandu_id', $posyanduId);
+        $thisMonth = Carbon::now()->month;
+        $thisMonthYear = Carbon::now()->year;
+        $lastMonth = Carbon::now()->subMonth()->month;
+        $lastMonthYear = Carbon::now()->subMonth()->year;
+        $sixMonthsAgo = Carbon::now()->subMonths(6);
+
+        $filterCounts = [
+            'belum_diukur'     => (clone $basePosyanduQuery)->whereDoesntHave('pengukurans', function ($subq) use ($thisMonth, $thisMonthYear) {
+                $subq->whereMonth('tanggal_ukur', $thisMonth)->whereYear('tanggal_ukur', $thisMonthYear);
+            })->count(),
+            'absen_bulan_lalu' => (clone $basePosyanduQuery)->whereDoesntHave('pengukurans', function ($subq) use ($lastMonth, $lastMonthYear) {
+                $subq->whereMonth('tanggal_ukur', $lastMonth)->whereYear('tanggal_ukur', $lastMonthYear);
+            })->count(),
+            'bayi_6_bln'       => (clone $basePosyanduQuery)->where('tanggal_lahir', '>=', $sixMonthsAgo)->count(),
+            'selesai'          => (clone $basePosyanduQuery)->whereHas('pengukurans', function ($subq) use ($thisMonth, $thisMonthYear) {
+                $subq->whereMonth('tanggal_ukur', $thisMonth)->whereYear('tanggal_ukur', $thisMonthYear);
+            })->count(),
+            'ditolak'          => (clone $basePosyanduQuery)->whereHas('pengukurans', function ($subq) {
+                $subq->where('status_validasi', 'rejected');
+            })->count(),
+        ];
+
+        $balitas = $query->with(['orangTua', 'pengukurans'])->get();
 
         $formattedBalitas = $balitas->map(function($b) {
             $latest = $b->latestPengukuran;
@@ -251,26 +274,44 @@ class KaderController extends Controller
             };
 
             $rejectedMeasurement = $b->pengukurans->where('status_validasi', 'rejected')->first();
-            $status_validasi = $rejectedMeasurement ? 'rejected' : ($latest ? $latest->status_validasi : null);
-            $contextTag = null;
+            $status_validasi = $rejectedMeasurement ? 'rejected' : ($latest ? $latest->status_validasi : 'pending');
 
             if ($rejectedMeasurement) {
                 $statusType = 'danger';
-                $contextTag = 'Revisi Puskesmas: ' . ($rejectedMeasurement->catatan_validator ? \Illuminate\Support\Str::limit($rejectedMeasurement->catatan_validator, 35) : 'Periksa kembali data ukur');
+            }
+
+            $isGirl = in_array(strtolower($b->jenis_kelamin ?? ''), ['p', 'perempuan', 'female']);
+            $genderLabel = $isGirl ? 'Perempuan' : 'Laki-laki';
+
+            $maskedNik = $b->nik;
+            if ($b->nik && strlen($b->nik) >= 12) {
+                $maskedNik = substr($b->nik, 0, 6) . '*********' . substr($b->nik, -4);
+            }
+
+            $bbTbText = '-';
+            if ($latest && $latest->berat_badan > 0 && $latest->tinggi_badan > 0) {
+                $bbTbText = number_format($latest->berat_badan, 1, ',', '.') . ' kg / ' . number_format($latest->tinggi_badan, 1, ',', '.') . ' cm';
+            } elseif ($latest && $latest->berat_badan > 0) {
+                $bbTbText = number_format($latest->berat_badan, 1, ',', '.') . ' kg';
+            } elseif ($b->berat_lahir > 0) {
+                $bbTbText = number_format($b->berat_lahir, 1, ',', '.') . ' kg';
             }
 
             return [
                 'id' => $b->id,
                 'name' => $b->nama,
-                'age' => $age->y . ' Thn ' . $age->m . ' Bln',
-                'mother' => $b->orangTua->nama_ibu ?? '-',
+                'age' => $age->y > 0 ? $age->y . ' Thn ' . $age->m . ' Bln' : $age->m . ' Bln',
+                'gender' => $b->jenis_kelamin,
+                'gender_label' => $genderLabel,
                 'nik' => $b->nik,
-                'last_measure' => $latest ? Carbon::parse($latest->tanggal_ukur)->translatedFormat('d M Y') : 'Belum Diukur',
+                'masked_nik' => $maskedNik,
+                'mother' => $b->orangTua->nama_ibu ?? '-',
+                'last_measure' => $latest ? Carbon::parse($latest->tanggal_ukur)->translatedFormat('d M Y') : 'Belum Ada',
+                'bb_tb' => $bbTbText,
                 'status' => $this->formatDisplayStatus($status, $status_validasi),
                 'status_type' => $statusType,
                 'status_validasi' => $status_validasi,
-                'avatar' => null,
-                'context_tag' => $contextTag
+                'rejection_note' => $rejectedMeasurement?->catatan_validator,
             ];
         });
 
@@ -279,6 +320,7 @@ class KaderController extends Controller
         return view('kader.daftar-balita', [
             'balitas' => $formattedBalitas,
             'filters' => $request->all(),
+            'filterCounts' => $filterCounts,
             'statSelesai' => $ds['bulan_ini'],
             'statBelum' => $ds['total_balita'] - $ds['bulan_ini'],
             'posyanduName' => Auth::user()?->kader?->posyandu?->nama ?? 'Posyandu'

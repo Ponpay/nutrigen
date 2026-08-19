@@ -8,27 +8,30 @@
     $theme = match($statusType) {
         'success' => [
             'bar'       => 'bg-emerald-500',
-            'avatar'    => 'bg-emerald-50 text-emerald-500 ring-4 ring-emerald-50/60',
+            'avatar'    => 'bg-emerald-50 text-emerald-600 ring-4 ring-emerald-50/60',
             'badge_bg'  => 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+            'text'      => 'text-emerald-700',
             'dot'       => 'bg-emerald-500',
         ],
         'danger' => [
             'bar'       => 'bg-rose-500',
-            'avatar'    => 'bg-rose-50 text-rose-500 ring-4 ring-rose-50/60',
+            'avatar'    => 'bg-rose-50 text-rose-600 ring-4 ring-rose-50/60',
             'badge_bg'  => 'bg-rose-50 text-rose-700 border-rose-200/60',
+            'text'      => 'text-rose-700',
             'dot'       => 'bg-rose-500',
         ],
         default => [
             'bar'       => 'bg-amber-400',
-            'avatar'    => 'bg-amber-50 text-amber-500 ring-4 ring-amber-50/60',
+            'avatar'    => 'bg-amber-50 text-amber-600 ring-4 ring-amber-50/60',
             'badge_bg'  => 'bg-amber-50 text-amber-700 border-amber-200/60',
+            'text'      => 'text-amber-700',
             'dot'       => 'bg-amber-400',
         ],
     };
 
     $isGirl = in_array(strtolower($balita['gender'] ?? ''), ['p', 'perempuan', 'female']);
     $genderText = $balita['gender_label'] ?? ($isGirl ? 'Perempuan' : 'Laki-laki');
-    $maskedNik = $balita['masked_nik'] ?? ($balita['nik'] ? (strlen($balita['nik']) >= 12 ? substr($balita['nik'], 0, 6) . '*********' . substr($balita['nik'], -4) : $balita['nik']) : '-');
+    $nik = $balita['nik'] ?? '-';
 @endphp
 
 <div class="group relative flex flex-col justify-between bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-slate-300 transition-all duration-150 h-full w-full">
@@ -37,9 +40,9 @@
     <div class="absolute left-0 top-0 bottom-0 w-1 {{ $theme['bar'] }}"></div>
 
     {{-- Card Body --}}
-    <div class="p-3.5 sm:p-4 pl-4 sm:pl-5 flex flex-col justify-between h-full gap-3">
+    <div class="p-4 sm:p-4.5 pl-4.5 sm:pl-5 flex flex-col justify-between h-full gap-3.5">
 
-        <div class="space-y-2.5">
+        <div class="space-y-3">
             
             {{-- 1. HEADER: AVATAR + NAMA + USIA/GENDER + NIK --}}
             <div class="flex items-start gap-3">
@@ -50,15 +53,15 @@
                     </svg>
                 </div>
 
-                {{-- Info Anak --}}
+                {{-- Info Anak (Kontras Dipertegas, NIK Full) --}}
                 <div class="flex-1 min-w-0">
-                    <a href="{{ route('balita.show', $balita['id'] ?? '') }}" class="font-bold text-slate-800 text-[14.5px] leading-snug truncate block group-hover:text-teal-700 transition-colors">
+                    <a href="{{ route('balita.show', $balita['id'] ?? '') }}" class="font-bold text-slate-900 text-[14.5px] leading-snug truncate block group-hover:text-teal-700 transition-colors">
                         {{ Str::title($balita['name']) }}
                     </a>
                     
-                    {{-- Usia & Gender --}}
-                    <p class="text-[11.5px] text-slate-500 font-medium truncate flex items-center gap-1 mt-0.5">
-                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    {{-- Usia & Gender (Kontras Lebih Jelas) --}}
+                    <p class="text-[12px] text-slate-700 font-semibold truncate flex items-center gap-1.5 mt-0.5">
+                        <svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                         </svg>
                         <span>{{ $balita['age'] }}</span>
@@ -66,9 +69,9 @@
                         <span>{{ $genderText }}</span>
                     </p>
 
-                    {{-- NIK --}}
-                    <p class="text-[11.5px] text-slate-400 font-medium truncate mt-0.5">
-                        NIK: {{ $maskedNik }}
+                    {{-- NIK (Full, Tanpa Sensor, Kontras Dipertegas) --}}
+                    <p class="text-[12px] text-slate-600 font-medium tracking-wide truncate mt-0.5">
+                        NIK: {{ $nik }}
                     </p>
                 </div>
             </div>
@@ -97,8 +100,9 @@
                     </span>
                 </div>
             @else
-                <div class="space-y-1 pt-0.5">
-                    <div class="flex items-center gap-1.5 text-xs font-bold text-amber-700">
+                {{-- Status Pending: Bullet dan Teks Status SELALU Sinkron Sesuai $theme['text'] --}}
+                <div class="space-y-1.5 pt-0.5">
+                    <div class="flex items-center gap-1.5 text-xs font-bold {{ $theme['text'] }}">
                         <span class="w-2 h-2 rounded-full {{ $theme['dot'] }} shrink-0"></span>
                         <span class="truncate">{{ $balita['status'] }}</span>
                     </div>
@@ -110,16 +114,16 @@
             @endif
 
             {{-- 3. CONTAINER PENGUKURAN TERAKHIR (BB / TB) --}}
-            <div class="p-2.5 rounded-xl {{ $valStatus === 'rejected' ? 'bg-rose-50/70 border border-rose-100' : 'bg-slate-50/80 border border-slate-100' }} flex items-center justify-between">
+            <div class="p-2.5 sm:p-3 rounded-xl {{ $valStatus === 'rejected' ? 'bg-rose-50/70 border border-rose-100' : 'bg-slate-50/90 border border-slate-100' }} flex items-center justify-between">
                 {{-- Tanggal Ukur --}}
                 <div class="flex-1 min-w-0 pr-2">
-                    <div class="flex items-center gap-1 text-[10px] font-medium text-slate-400">
+                    <div class="flex items-center gap-1 text-[10px] font-semibold text-slate-400">
                         <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                         </svg>
                         <span class="truncate">Pengukuran terakhir</span>
                     </div>
-                    <p class="text-xs font-bold text-slate-700 mt-0.5 truncate">{{ $balita['last_measure'] }}</p>
+                    <p class="text-xs sm:text-[12.5px] font-bold text-slate-800 mt-0.5 truncate">{{ $balita['last_measure'] }}</p>
                 </div>
 
                 {{-- Divider Vertikal --}}
@@ -127,8 +131,8 @@
 
                 {{-- BB / TB --}}
                 <div class="flex-1 min-w-0 pl-3">
-                    <span class="text-[10px] font-medium text-slate-400 block">BB / TB</span>
-                    <p class="text-xs font-bold text-slate-700 mt-0.5 truncate">{{ $balita['bb_tb'] ?? '-' }}</p>
+                    <span class="text-[10px] font-semibold text-slate-400 block">BB / TB</span>
+                    <p class="text-xs sm:text-[12.5px] font-bold text-slate-800 mt-0.5 truncate">{{ $balita['bb_tb'] ?? '-' }}</p>
                 </div>
             </div>
 
@@ -142,8 +146,8 @@
             </a>
             <a href="{{ route('balita.show', ['id' => $balita['id'] ?? '', 'action' => 'ukur']) }}"
                class="h-[36px] flex-1 flex items-center justify-center bg-teal-700 hover:bg-teal-800 active:scale-[0.99] text-white text-xs font-bold rounded-xl transition-all shadow-2xs cursor-pointer flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                <svg class="w-3.5 h-3.5 fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
                 <span>Ukur</span>
             </a>

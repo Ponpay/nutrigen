@@ -91,69 +91,69 @@
         </div>
         @endif
 
-        {{-- ── 3. LIVELY KEY METRICS KPI GRID (High Contrast & Clear Fonts) ── --}}
+        {{-- ── 3. ELEGANT & UNIFIED KEY METRICS KPI GRID ── --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
             
             {{-- 1. Total Terdaftar --}}
-            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs transition-all">
+            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Balita</span>
-                    <div class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shadow-2xs">
-                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <span class="text-xs font-semibold text-slate-500">Total Balita</span>
+                    <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                         </svg>
                     </div>
                 </div>
-                <div class="mt-3">
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{{ $total }}</span>
-                        <span class="text-xs text-slate-500 font-semibold">anak</span>
+                <div class="mt-3.5">
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ $total }}</span>
+                        <span class="text-xs font-medium text-slate-400">anak</span>
                     </div>
-                    <span class="text-[11px] text-slate-500 font-medium mt-1 block">Populasi balita binaan</span>
+                    <span class="text-[11.5px] text-slate-500 font-normal mt-1 block">Populasi binaan aktif</span>
                 </div>
             </div>
 
             {{-- 2. Selesai Ditimbang --}}
-            <div class="bg-white border border-emerald-200/90 hover:border-emerald-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs transition-all">
+            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Sudah Diukur</span>
-                    <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shadow-2xs">
-                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <span class="text-xs font-semibold text-slate-500">Sudah Diukur</span>
+                    <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                 </div>
-                <div class="mt-3">
+                <div class="mt-3.5">
                     <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-extrabold text-emerald-800 tracking-tight">{{ $sudah }}</span>
-                        <span class="text-xs font-bold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">
+                        <span class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ $sudah }}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80">
                             {{ $percent }}% Selesai
                         </span>
                     </div>
-                    <div class="w-full bg-emerald-100/80 h-2 rounded-full overflow-hidden mt-2.5">
-                        <div class="bg-emerald-600 h-full rounded-full transition-all duration-500 shadow-2xs" style="width: {{ $percent }}%"></div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-2.5">
+                        <div class="bg-emerald-500 h-full rounded-full transition-all duration-500 shadow-2xs" style="width: {{ $percent }}%"></div>
                     </div>
                 </div>
             </div>
 
             {{-- 3. Belum Hadir --}}
-            <div class="bg-white border border-amber-200/90 hover:border-amber-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs transition-all">
+            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-900">Belum Diukur</span>
-                    <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shadow-2xs">
-                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <span class="text-xs font-semibold text-slate-500">Belum Diukur</span>
+                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                 </div>
-                <div class="mt-3">
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-2xl sm:text-3xl font-extrabold text-amber-900 tracking-tight">{{ $belum }}</span>
-                        <span class="text-xs text-amber-800 font-semibold">balita</span>
+                <div class="mt-3.5">
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ $belum }}</span>
+                        <span class="text-xs font-medium text-slate-400">anak</span>
                     </div>
-                    <a href="{{ route('balita.index', ['filter' => 'belum_diukur']) }}" class="text-[11.5px] font-bold text-amber-800 hover:text-amber-900 mt-1.5 inline-flex items-center gap-1">
+                    <a href="{{ route('balita.index', ['filter' => 'belum_diukur']) }}" class="text-[11.5px] font-semibold text-teal-700 hover:text-teal-800 mt-1 inline-flex items-center gap-1">
                         <span>Buka antrean hadir</span>
-                        <svg class="w-3 h-3 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <svg class="w-3 h-3 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                     </a>
@@ -161,23 +161,23 @@
             </div>
 
             {{-- 4. Prioritas Pengawasan Gizi --}}
-            <div class="bg-white border border-rose-200/90 hover:border-rose-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs transition-all">
+            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-rose-800">Perlu Pantauan</span>
-                    <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center shadow-2xs">
-                        <svg class="w-4.5 h-4.5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                    <span class="text-xs font-semibold text-slate-500">Perlu Pantauan</span>
+                    <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-700 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                         </svg>
                     </div>
                 </div>
-                <div class="mt-3">
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-2xl sm:text-3xl font-extrabold text-rose-800 tracking-tight">{{ $statPerlu ?? count($priorityChildren ?? []) }}</span>
-                        <span class="text-xs text-rose-700 font-semibold">balita</span>
+                <div class="mt-3.5">
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ $statPerlu ?? count($priorityChildren ?? []) }}</span>
+                        <span class="text-xs font-medium text-slate-400">anak</span>
                     </div>
-                    <a href="{{ route('balita.index', ['filter' => 'absen_bulan_lalu']) }}" class="text-[11.5px] font-bold text-rose-800 hover:text-rose-900 mt-1.5 inline-flex items-center gap-1">
+                    <a href="{{ route('balita.index', ['filter' => 'absen_bulan_lalu']) }}" class="text-[11.5px] font-semibold text-rose-700 hover:text-rose-800 mt-1 inline-flex items-center gap-1">
                         <span>Lihat daftar pantauan</span>
-                        <svg class="w-3 h-3 text-rose-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <svg class="w-3 h-3 text-rose-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                     </a>
@@ -196,8 +196,8 @@
                 <div class="p-4 sm:p-5 pb-3.5 border-b border-slate-100 flex items-center justify-between">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                             </svg>
                         </div>
                         <div>

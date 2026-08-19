@@ -1,137 +1,152 @@
 @props(['balita'])
 
-{{--
-|--------------------------------------------------------------------------
-| x-child-card
-|--------------------------------------------------------------------------
-| Expected $balita array shape (from controller or dummy data):
-|   id          (int)    — used for route generation
-|   name        (string) — child's full name
-|   age         (string) — human-readable age, e.g. "2 Tahun 3 Bulan"
-|   mother      (string) — mother's name
-|   status      (string) — display label, e.g. "Stunting", "Normal"
-|   status_type (string) — one of: 'danger' | 'warning' | 'success' | 'slate'
-|   context_tag (string) — optional badge, e.g. "[!] Absen bulan lalu"
---}}
-
 @php
-    // Left-accent color system — card stays white, only the accent strip changes.
-    // This is the Linear/Stripe approach: neutral surface, colored signal.
-    $colorMap = [
+    $statusType = $balita['status_type'] ?? 'warning';
+    $valStatus = $balita['status_validasi'] ?? 'pending';
+
+    // Theme color mapping based on status
+    $theme = match($statusType) {
         'success' => [
-            'accent'      => 'bg-emerald-500',
-            'badge_bg'    => 'bg-emerald-50',
-            'badge_text'  => 'text-emerald-700',
-            'badge_dot'   => 'bg-emerald-500',
-            'avatar_text' => 'text-emerald-500',
-            'avatar_ring' => 'ring-emerald-100',
-        ],
-        'warning' => [
-            'accent'      => 'bg-amber-400',
-            'badge_bg'    => 'bg-amber-50',
-            'badge_text'  => 'text-amber-700',
-            'badge_dot'   => 'bg-amber-400',
-            'avatar_text' => 'text-amber-500',
-            'avatar_ring' => 'ring-amber-100',
+            'bar'       => 'bg-emerald-500',
+            'avatar'    => 'bg-emerald-50 text-emerald-500 ring-4 ring-emerald-50/60',
+            'badge_bg'  => 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+            'dot'       => 'bg-emerald-500',
         ],
         'danger' => [
-            'accent'      => 'bg-rose-500',
-            'badge_bg'    => 'bg-rose-50',
-            'badge_text'  => 'text-rose-700',
-            'badge_dot'   => 'bg-rose-500',
-            'avatar_text' => 'text-rose-500',
-            'avatar_ring' => 'ring-rose-100',
+            'bar'       => 'bg-rose-500',
+            'avatar'    => 'bg-rose-50 text-rose-500 ring-4 ring-rose-50/60',
+            'badge_bg'  => 'bg-rose-50 text-rose-700 border-rose-200/60',
+            'dot'       => 'bg-rose-500',
         ],
-    ];
+        default => [
+            'bar'       => 'bg-amber-400',
+            'avatar'    => 'bg-amber-50 text-amber-500 ring-4 ring-amber-50/60',
+            'badge_bg'  => 'bg-amber-50 text-amber-700 border-amber-200/60',
+            'dot'       => 'bg-amber-400',
+        ],
+    };
 
-    $colors = $colorMap[$balita['status_type']] ?? [
-        'accent'      => 'bg-slate-300',
-        'badge_bg'    => 'bg-slate-50',
-        'badge_text'  => 'text-slate-500',
-        'badge_dot'   => 'bg-slate-400',
-        'avatar_text' => 'text-slate-400',
-        'avatar_ring' => 'ring-slate-100',
-    ];
+    $isGirl = in_array(strtolower($balita['gender'] ?? ''), ['p', 'perempuan', 'female']);
+    $genderText = $balita['gender_label'] ?? ($isGirl ? 'Perempuan' : 'Laki-laki');
+    $maskedNik = $balita['masked_nik'] ?? ($balita['nik'] ? (strlen($balita['nik']) >= 12 ? substr($balita['nik'], 0, 6) . '*********' . substr($balita['nik'], -4) : $balita['nik']) : '-');
 @endphp
 
-{{-- Child Card: White surface + left accent strip. Clean, scannable, uniform height. --}}
-<div class="group relative flex flex-col justify-between bg-white border border-slate-200/70 rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.03),0_4px_16px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.07)] hover:border-slate-300 transition-all duration-200 ease-out h-full w-full">
+<div class="group relative flex flex-col justify-between bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-slate-300 transition-all duration-150 h-full w-full">
 
-    {{-- Status Accent Strip (left edge) — 4px, standard Tailwind w-1 --}}
-    <div class="absolute left-0 top-0 bottom-0 w-1 {{ $colors['accent'] }}"></div>
+    {{-- Accent Bar Kiri --}}
+    <div class="absolute left-0 top-0 bottom-0 w-1 {{ $theme['bar'] }}"></div>
 
     {{-- Card Body --}}
-    <div class="p-3.5 lg:p-4 pl-4 lg:pl-5 flex flex-col justify-between h-full">
+    <div class="p-3.5 sm:p-4 pl-4 sm:pl-5 flex flex-col justify-between h-full gap-3">
 
-        {{-- Top Section: Avatar + Info --}}
-        <div>
-            <div class="flex items-center gap-3">
-                {{-- Avatar --}}
-                <div class="w-10 h-10 rounded-full bg-slate-50 ring-2 {{ $colors['avatar_ring'] }} flex-shrink-0 flex items-center justify-center {{ $colors['avatar_text'] }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 opacity-70">
-                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+        <div class="space-y-2.5">
+            
+            {{-- 1. HEADER: AVATAR + NAMA + USIA/GENDER + NIK --}}
+            <div class="flex items-start gap-3">
+                {{-- Avatar Icon --}}
+                <div class="w-10 h-10 rounded-full {{ $theme['avatar'] }} flex items-center justify-center shrink-0 mt-0.5">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                     </svg>
                 </div>
 
-                {{-- Name + Meta --}}
+                {{-- Info Anak --}}
                 <div class="flex-1 min-w-0">
-                    <p class="font-bold text-slate-800 text-[13.5px] leading-snug truncate group-hover:text-teal-700 transition-colors">{{ Str::title($balita['name']) }}</p>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                        <span class="text-[11.5px] font-semibold text-slate-500">{{ $balita['age'] }}</span>
-                        <span class="w-0.5 h-0.5 rounded-full bg-slate-300 flex-shrink-0"></span>
-                        <span class="text-[11.5px] text-slate-400 truncate">{{ Str::title($balita['mother']) }}</span>
-                    </div>
+                    <a href="{{ route('balita.show', $balita['id'] ?? '') }}" class="font-bold text-slate-800 text-[14.5px] leading-snug truncate block group-hover:text-teal-700 transition-colors">
+                        {{ Str::title($balita['name']) }}
+                    </a>
+                    
+                    {{-- Usia & Gender --}}
+                    <p class="text-[11.5px] text-slate-500 font-medium truncate flex items-center gap-1 mt-0.5">
+                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                        </svg>
+                        <span>{{ $balita['age'] }}</span>
+                        <span class="text-slate-300">•</span>
+                        <span>{{ $genderText }}</span>
+                    </p>
+
+                    {{-- NIK --}}
+                    <p class="text-[11.5px] text-slate-400 font-medium truncate mt-0.5">
+                        NIK: {{ $maskedNik }}
+                    </p>
                 </div>
             </div>
+
+            {{-- 2. BADGE STATUS GIZI & VALIDASI --}}
+            @if($valStatus === 'approved')
+                <div class="flex items-center gap-2 flex-wrap pt-0.5">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-bold {{ $theme['badge_bg'] }}">
+                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                        <span>{{ $balita['status'] }}</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold uppercase tracking-wide bg-emerald-50 text-emerald-700 border-emerald-200/60">
+                        <svg class="w-3.5 h-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
+                        <span>APPROVED</span>
+                    </span>
+                </div>
+            @elseif($valStatus === 'rejected')
+                <div class="flex items-center gap-2 flex-wrap pt-0.5">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-bold bg-rose-50 text-rose-700 border-rose-200/60">
+                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        <span>Perlu Revisi Kader</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold uppercase tracking-wide bg-rose-50 text-rose-600 border-rose-200/60">
+                        <svg class="w-3.5 h-3.5 text-rose-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                        <span>REJECTED</span>
+                    </span>
+                </div>
+            @else
+                <div class="space-y-1 pt-0.5">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-amber-700">
+                        <span class="w-2 h-2 rounded-full {{ $theme['dot'] }} shrink-0"></span>
+                        <span class="truncate">{{ $balita['status'] }}</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-[11px] font-bold text-amber-600 uppercase tracking-wider">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>
+                        <span>PENDING</span>
+                    </div>
+                </div>
+            @endif
+
+            {{-- 3. CONTAINER PENGUKURAN TERAKHIR (BB / TB) --}}
+            <div class="p-2.5 rounded-xl {{ $valStatus === 'rejected' ? 'bg-rose-50/70 border border-rose-100' : 'bg-slate-50/80 border border-slate-100' }} flex items-center justify-between">
+                {{-- Tanggal Ukur --}}
+                <div class="flex-1 min-w-0 pr-2">
+                    <div class="flex items-center gap-1 text-[10px] font-medium text-slate-400">
+                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                        </svg>
+                        <span class="truncate">Pengukuran terakhir</span>
+                    </div>
+                    <p class="text-xs font-bold text-slate-700 mt-0.5 truncate">{{ $balita['last_measure'] }}</p>
+                </div>
+
+                {{-- Divider Vertikal --}}
+                <div class="w-px h-7 bg-slate-200 shrink-0"></div>
+
+                {{-- BB / TB --}}
+                <div class="flex-1 min-w-0 pl-3">
+                    <span class="text-[10px] font-medium text-slate-400 block">BB / TB</span>
+                    <p class="text-xs font-bold text-slate-700 mt-0.5 truncate">{{ $balita['bb_tb'] ?? '-' }}</p>
+                </div>
+            </div>
+
         </div>
 
-        {{-- Bottom Section: Divider + Badges + Actions --}}
-        <div class="mt-3.5 pt-3 border-t border-slate-100 flex flex-col gap-2.5">
-
-            {{-- Status Badges --}}
-            <div class="flex flex-wrap items-center gap-1.5 min-h-[24px]">
-                {{-- Status Gizi Badge --}}
-                <div class="flex items-center gap-1.5 {{ $colors['badge_bg'] }} {{ $colors['badge_text'] }} px-2.5 py-0.5 rounded-full">
-                    <span class="w-1.5 h-1.5 rounded-full {{ $colors['badge_dot'] }} flex-shrink-0"></span>
-                    <span class="text-[10.5px] font-extrabold tracking-wide">{{ $balita['status'] }}</span>
-                </div>
-                
-                {{-- Status Validasi Badge --}}
-                @if(isset($balita['status_validasi']) && $balita['status_validasi'])
-                    @php
-                        $valColors = match($balita['status_validasi']) {
-                            'pending' => 'bg-amber-50 text-amber-700 border-amber-200/60',
-                            'approved' => 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
-                            'rejected' => 'bg-rose-50 text-rose-700 border-rose-200/60',
-                            default => 'bg-slate-50 text-slate-700 border-slate-200'
-                        };
-                        $valIcon = match($balita['status_validasi']) {
-                            'pending' => '<svg class="w-3 h-3 text-amber-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>',
-                            'approved' => '<svg class="w-3 h-3 text-emerald-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>',
-                            'rejected' => '<svg class="w-3 h-3 text-rose-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" /></svg>',
-                            default => ''
-                        };
-                    @endphp
-                    <div class="inline-flex items-center gap-1 {{ $valColors }} px-2 py-0.5 rounded-full border shadow-2xs">
-                        {!! $valIcon !!}
-                        <span class="text-[9.5px] font-extrabold uppercase tracking-wider">{{ $balita['status_validasi'] }}</span>
-                    </div>
-                @endif
-            </div>
-
-            {{-- Actions --}}
-            <div class="flex items-center justify-end gap-1.5 mt-0.5">
-                {{-- Outline: Detail --}}
-                <a href="{{ route('balita.show', $balita['id'] ?? '') }}"
-                   class="h-[34px] px-3 flex items-center justify-center text-[12px] font-bold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 rounded-xl shadow-xs transition-all duration-150 cursor-pointer">
-                    Detail
-                </a>
-                {{-- Primary: Ukur --}}
-                <a href="{{ route('balita.show', ['id' => $balita['id'] ?? '', 'action' => 'ukur']) }}"
-                   class="h-[34px] px-3.5 flex items-center justify-center bg-teal-600 hover:bg-teal-500 text-white text-[12px] font-bold rounded-xl shadow-[0_1px_3px_rgba(13,148,136,0.2)] hover:shadow-[0_2px_8px_rgba(13,148,136,0.3)] transition-all duration-150 cursor-pointer">
-                    Ukur
-                </a>
-            </div>
+        {{-- 4. TOMBOL AKSI KADER (Detail + Ukur) --}}
+        <div class="flex items-center gap-2 pt-1">
+            <a href="{{ route('balita.show', $balita['id'] ?? '') }}"
+               class="h-[36px] flex-1 flex items-center justify-center text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 rounded-xl transition-all shadow-2xs cursor-pointer">
+                Detail
+            </a>
+            <a href="{{ route('balita.show', ['id' => $balita['id'] ?? '', 'action' => 'ukur']) }}"
+               class="h-[36px] flex-1 flex items-center justify-center bg-teal-700 hover:bg-teal-800 active:scale-[0.99] text-white text-xs font-bold rounded-xl transition-all shadow-2xs cursor-pointer flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                <span>Ukur</span>
+            </a>
         </div>
 
     </div>

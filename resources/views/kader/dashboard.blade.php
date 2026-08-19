@@ -162,16 +162,16 @@
 
         </div>
 
-        {{-- ── 4. TWO-COLUMN OPERATIONAL WORKSPACE (Elevated with Design Taste) ── --}}
+        {{-- ── 4. TWO-COLUMN OPERATIONAL WORKSPACE (Elevated with Clear Row Separation) ── --}}
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
             
             {{-- Left Column (7-col): Prioritas Pemantauan Gizi --}}
             <div class="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl shadow-2xs overflow-hidden flex flex-col">
                 
                 {{-- Header --}}
-                <div class="p-5 pb-4 border-b border-slate-100 flex items-center justify-between">
+                <div class="p-5 pb-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/40">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100/90 shadow-2xs text-lg">
+                        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100 shadow-2xs text-lg">
                             <x-icon name="heartbeat" weight="bold" />
                         </div>
                         <div>
@@ -179,7 +179,7 @@
                                 <h2 class="text-base font-extrabold text-slate-900 tracking-tight">
                                     Prioritas Pemantauan Gizi
                                 </h2>
-                                <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">
                                     {{ count($priorityChildren ?? []) }} Balita
                                 </span>
                             </div>
@@ -192,8 +192,8 @@
                     </a>
                 </div>
 
-                {{-- Child List --}}
-                <div class="divide-y divide-slate-100 flex-1 p-2 sm:p-3">
+                {{-- Child List (Distinct Structured Card Tiles with Clear Separation) --}}
+                <div class="flex-1 p-3.5 sm:p-4 flex flex-col gap-2.5">
                     @forelse($priorityChildren ?? [] as $child)
                         @php
                             $isDanger = ($child->statusType ?? 'warning') === 'danger';
@@ -201,52 +201,52 @@
                             $initials = strtoupper(substr($child->name ?? 'AN', 0, 2));
                         @endphp
                         <a href="{{ route('balita.show', $child->id) }}" 
-                           class="group p-3 sm:p-3.5 rounded-xl flex items-center justify-between gap-3 hover:bg-slate-50/90 transition-all cursor-pointer">
+                           class="group bg-slate-50/70 hover:bg-teal-50/40 border border-slate-200/90 hover:border-teal-300 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between gap-3.5 transition-all shadow-2xs hover:shadow-xs cursor-pointer">
                             
                             {{-- Info Balita --}}
-                            <div class="flex items-center gap-3 min-w-0">
+                            <div class="flex items-center gap-3.5 min-w-0">
                                 
                                 {{-- Gender-Aware Avatar with Status Dot --}}
                                 <div class="relative shrink-0">
-                                    <div class="w-10 h-10 rounded-xl font-extrabold text-xs flex items-center justify-center shadow-2xs {{ $isBoy ? 'bg-sky-50 text-sky-800 border border-sky-200/90' : 'bg-pink-50 text-pink-800 border border-pink-200/90' }}">
+                                    <div class="w-11 h-11 rounded-xl font-black text-xs flex items-center justify-center shadow-2xs {{ $isBoy ? 'bg-sky-100 text-sky-900 border border-sky-200' : 'bg-pink-100 text-pink-900 border border-pink-200' }}">
                                         {{ $initials }}
                                     </div>
-                                    <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white {{ $isDanger ? 'bg-rose-600' : 'bg-amber-500' }}"></span>
+                                    <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white {{ $isDanger ? 'bg-rose-600' : 'bg-amber-500' }}"></span>
                                 </div>
 
                                 <div class="flex flex-col min-w-0">
                                     <div class="flex items-center gap-2">
-                                        <span class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-teal-800 transition-colors truncate">
+                                        <span class="text-sm font-bold text-slate-900 group-hover:text-teal-800 transition-colors truncate">
                                             {{ Str::title($child->name) }}
                                         </span>
-                                        <span class="text-[10.5px] font-semibold text-slate-400 uppercase hidden sm:inline-block">
-                                            {{ $isBoy ? 'L' : 'P' }}
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white text-slate-500 border border-slate-200 uppercase hidden sm:inline-block shadow-2xs">
+                                            {{ $isBoy ? 'Laki-laki' : 'Perempuan' }}
                                         </span>
                                     </div>
-                                    <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium truncate mt-0.5">
-                                        <span class="text-slate-600 font-semibold truncate">Ibu {{ $child->mother ?? '-' }}</span>
+                                    <div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium truncate mt-1">
+                                        <span class="text-slate-700 font-semibold truncate">Ibu {{ $child->mother ?? '-' }}</span>
                                         <span class="text-slate-300">&bull;</span>
                                         <span class="text-slate-500 shrink-0">{{ $child->age }}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            {{-- Status Badge & Action Arrow --}}
+                            {{-- Status Badge & Action Button --}}
                             <div class="flex items-center gap-2.5 shrink-0">
                                 @if($isDanger)
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-rose-50 text-rose-800 border border-rose-200 shadow-2xs">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse"></span>
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-300 shadow-2xs">
+                                        <span class="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span>
                                         <span>{{ $child->shortStatus ?? 'Konfirmasi TB' }}</span>
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-200 shadow-2xs">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs">
+                                        <span class="w-2 h-2 rounded-full bg-amber-600"></span>
                                         <span>{{ $child->shortStatus ?? 'Pantauan Gizi' }}</span>
                                     </span>
                                 @endif
 
-                                <div class="w-7 h-7 rounded-lg bg-transparent group-hover:bg-teal-50 group-hover:text-teal-700 flex items-center justify-center text-slate-400 transition-all">
-                                    <x-icon name="caret-right" weight="bold" class="text-sm" />
+                                <div class="w-8 h-8 rounded-xl bg-white border border-slate-200 group-hover:border-teal-300 group-hover:bg-teal-600 group-hover:text-white flex items-center justify-center text-slate-400 transition-all shadow-2xs">
+                                    <x-icon name="caret-right" weight="bold" class="text-xs" />
                                 </div>
                             </div>
                         </a>

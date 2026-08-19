@@ -236,14 +236,10 @@ class KaderController extends Controller
             }
         }
 
-        $balitas = $query->with(['orangTua', 'pengukurans' => function($q) {
-            $q->orderBy('tanggal_ukur', 'desc');
-        }])->get();
+        $balitas = $query->get();
 
         $formattedBalitas = $balitas->map(function($b) {
-            $sortedMeasurements = $b->pengukurans->sortByDesc('tanggal_ukur')->values();
-            $latest = $sortedMeasurements->first();
-            $previous = $sortedMeasurements->count() > 1 ? $sortedMeasurements->get(1) : null;
+            $latest = $b->latestPengukuran;
             $age = Carbon::parse($b->tanggal_lahir)->diff(Carbon::now());
             
             $status = $latest ? $latest->status_gizi : 'Belum Ada';
@@ -260,45 +256,19 @@ class KaderController extends Controller
 
             if ($rejectedMeasurement) {
                 $statusType = 'danger';
-                $contextTag = $rejectedMeasurement->catatan_validator ? \Illuminate\Support\Str::limit($rejectedMeasurement->catatan_validator, 45) : 'Periksa kembali data ukur';
-            }
-
-            // Hitung tren pertumbuhan historis HANYA jika ada pengukuran sebelumnya
-            $trendWeight = null;
-            $trendHeight = null;
-            if ($latest && $previous && $previous->berat_badan > 0) {
-                $diffWeight = round($latest->berat_badan - $previous->berat_badan, 2);
-                $diffHeight = round($latest->tinggi_badan - $previous->tinggi_badan, 1);
-                
-                $trendWeight = [
-                    'diff' => $diffWeight,
-                    'label' => ($diffWeight > 0 ? '+' : '') . $diffWeight,
-                    'direction' => $diffWeight > 0 ? 'up' : ($diffWeight < 0 ? 'down' : 'flat')
-                ];
-                $trendHeight = [
-                    'diff' => $diffHeight,
-                    'label' => ($diffHeight > 0 ? '+' : '') . $diffHeight,
-                    'direction' => $diffHeight > 0 ? 'up' : ($diffHeight < 0 ? 'down' : 'flat')
-                ];
+                $contextTag = 'Revisi Puskesmas: ' . ($rejectedMeasurement->catatan_validator ? \Illuminate\Support\Str::limit($rejectedMeasurement->catatan_validator, 35) : 'Periksa kembali data ukur');
             }
 
             return [
                 'id' => $b->id,
                 'name' => $b->nama,
-                'gender' => $b->jenis_kelamin,
-                'age' => $age->y > 0 ? $age->y . ' Thn ' . $age->m . ' Bln' : $age->m . ' Bulan',
+                'age' => $age->y . ' Thn ' . $age->m . ' Bln',
                 'mother' => $b->orangTua->nama_ibu ?? '-',
                 'nik' => $b->nik,
-                'last_measure' => $latest ? Carbon::parse($latest->tanggal_ukur)->translatedFormat('d M Y') : ($b->berat_lahir ? 'Saat Lahir' : 'Belum Diukur'),
-                'weight' => $latest ? $latest->berat_badan : $b->berat_lahir,
-                'height' => $latest ? $latest->tinggi_badan : $b->panjang_lahir,
-                'is_birth_measure' => !$latest && ($b->berat_lahir || $b->panjang_lahir),
-                'trend_weight' => $trendWeight,
-                'trend_height' => $trendHeight,
+                'last_measure' => $latest ? Carbon::parse($latest->tanggal_ukur)->translatedFormat('d M Y') : 'Belum Diukur',
                 'status' => $this->formatDisplayStatus($status, $status_validasi),
                 'status_type' => $statusType,
                 'status_validasi' => $status_validasi,
-                'rejection_note' => $rejectedMeasurement?->catatan_validator,
                 'avatar' => null,
                 'context_tag' => $contextTag
             ];

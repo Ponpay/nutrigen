@@ -13,38 +13,36 @@
 <div class="w-full min-h-screen bg-[#F8FAFC] pb-24 lg:pb-16 text-slate-800 antialiased font-sans">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7 flex flex-col gap-5 sm:gap-6">
         
-        {{-- ── 1. PROFESSIONAL APP HEADER (Clean, High-Contrast & No Emojis) ── --}}
-        <div class="bg-white border-t-4 border-t-teal-600 border-x border-b border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-5">
+        {{-- ── 1. WELCOME HEADER (Soft NutriGen Tint, Clean & Informative) ── --}}
+        <div class="bg-gradient-to-r from-teal-50/90 via-emerald-50/40 to-slate-50 border border-teal-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-5">
             
             {{-- Left: Sapaan & Konteks Posyandu --}}
             <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-2 mb-2">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 border border-teal-200/90 text-teal-800 rounded-full text-xs font-bold uppercase tracking-wider shadow-2xs">
-                        <span class="w-2 h-2 rounded-full bg-teal-600"></span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-100/80 border border-teal-300/80 text-teal-900 rounded-full text-xs font-bold uppercase tracking-wider shadow-2xs">
+                        <span class="w-2 h-2 rounded-full bg-teal-600 animate-pulse"></span>
                         {{ $activityLocation ?? ($posyanduName ?? 'Posyandu') }}
                     </span>
-                    <span class="inline-flex items-center gap-1 text-xs text-slate-600 font-medium">
-                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <span class="inline-flex items-center gap-1 text-xs text-slate-600 font-semibold bg-white/80 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
                         {{ $todayFormatted }}
                     </span>
                 </div>
 
-                <div class="flex items-center gap-2.5">
-                    <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
-                        Selamat bertugas, {{ $kaderName ?? 'Ibu Kader' }}
-                    </h1>
-                </div>
+                <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                    Selamat bertugas, {{ $kaderName ?? 'Ibu Kader' }}
+                </h1>
                 <p class="text-xs sm:text-sm text-slate-600 font-medium mt-1 leading-relaxed max-w-xl">
                     Pusat pemantauan tumbuh kembang balita, deteksi dini status KMS, dan sinkronisasi data antropometri Puskesmas.
                 </p>
             </div>
 
-            {{-- Right: Primary Quick Action Hub --}}
+            {{-- Right: Quick Action Hub --}}
             <div class="flex items-center gap-3 shrink-0">
                 <a href="{{ route('balita.create') }}" 
-                   class="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-50/80 hover:bg-teal-100 active:scale-[0.98] border border-teal-200/90 text-teal-900 rounded-xl text-xs sm:text-sm font-bold shadow-2xs transition-all">
+                   class="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 active:scale-[0.98] border border-slate-300 text-slate-800 rounded-xl text-xs sm:text-sm font-bold shadow-2xs transition-all">
                     <svg class="w-4 h-4 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
                     </svg>
@@ -60,7 +58,7 @@
             </div>
         </div>
 
-        {{-- ── 2. ALERT PERLU REVISI (High-Contrast & Professional) ── --}}
+        {{-- ── 2. ALERT PERLU REVISI (Jika Ada Catatan Puskesmas) ── --}}
         @if(isset($statRevisi) && $statRevisi > 0)
         <div class="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-4 sm:p-4.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
             <div class="flex items-start sm:items-center gap-3.5 min-w-0">
@@ -91,15 +89,15 @@
         </div>
         @endif
 
-        {{-- ── 3. ELEGANT & UNIFIED KEY METRICS KPI GRID ── --}}
+        {{-- ── 3. FOUR HARMONIOUS KPI CARDS (Soft Colored Accents & Clear Numbers) ── --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
             
             {{-- 1. Total Terdaftar --}}
-            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
+            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4.5 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold text-slate-500">Total Balita</span>
-                    <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Balita</span>
+                    <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center border border-teal-100/80 shadow-2xs">
+                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                         </svg>
                     </div>
@@ -107,18 +105,18 @@
                 <div class="mt-3.5">
                     <div class="flex items-baseline gap-1.5">
                         <span class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ $total }}</span>
-                        <span class="text-xs font-medium text-slate-400">anak</span>
+                        <span class="text-xs font-semibold text-slate-500">anak</span>
                     </div>
-                    <span class="text-[11.5px] text-slate-500 font-normal mt-1 block">Populasi binaan aktif</span>
+                    <span class="text-[11.5px] text-slate-500 font-medium mt-1 block">Populasi binaan aktif</span>
                 </div>
             </div>
 
             {{-- 2. Selesai Ditimbang --}}
-            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
+            <div class="bg-white border border-emerald-200/90 hover:border-emerald-300 rounded-2xl p-4.5 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold text-slate-500">Sudah Diukur</span>
-                    <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Sudah Diukur</span>
+                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100/80 shadow-2xs">
+                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
@@ -126,34 +124,34 @@
                 <div class="mt-3.5">
                     <div class="flex items-baseline gap-2">
                         <span class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ $sudah }}</span>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
                             {{ $percent }}% Selesai
                         </span>
                     </div>
-                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-2.5">
-                        <div class="bg-emerald-500 h-full rounded-full transition-all duration-500 shadow-2xs" style="width: {{ $percent }}%"></div>
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mt-2.5">
+                        <div class="bg-emerald-600 h-full rounded-full transition-all duration-500 shadow-2xs" style="width: {{ $percent }}%"></div>
                     </div>
                 </div>
             </div>
 
             {{-- 3. Belum Hadir --}}
-            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
+            <div class="bg-white border border-amber-200/90 hover:border-amber-300 rounded-2xl p-4.5 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold text-slate-500">Belum Diukur</span>
-                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <span class="text-xs font-bold text-amber-900 uppercase tracking-wider">Belum Diukur</span>
+                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-100/80 shadow-2xs">
+                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                 </div>
                 <div class="mt-3.5">
                     <div class="flex items-baseline gap-1.5">
-                        <span class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ $belum }}</span>
-                        <span class="text-xs font-medium text-slate-400">anak</span>
+                        <span class="text-3xl font-extrabold text-amber-900 tracking-tight">{{ $belum }}</span>
+                        <span class="text-xs font-bold text-amber-700">anak</span>
                     </div>
-                    <a href="{{ route('balita.index', ['filter' => 'belum_diukur']) }}" class="text-[11.5px] font-semibold text-teal-700 hover:text-teal-800 mt-1 inline-flex items-center gap-1">
+                    <a href="{{ route('balita.index', ['filter' => 'belum_diukur']) }}" class="text-[11.5px] font-bold text-amber-800 hover:text-amber-950 mt-1 inline-flex items-center gap-1">
                         <span>Buka antrean hadir</span>
-                        <svg class="w-3 h-3 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <svg class="w-3 h-3 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                     </a>
@@ -161,23 +159,23 @@
             </div>
 
             {{-- 4. Prioritas Pengawasan Gizi --}}
-            <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
+            <div class="bg-white border border-rose-200/90 hover:border-rose-300 rounded-2xl p-4.5 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold text-slate-500">Perlu Pantauan</span>
-                    <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-700 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <span class="text-xs font-bold text-rose-800 uppercase tracking-wider">Perlu Pantauan</span>
+                    <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100/80 shadow-2xs">
+                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                         </svg>
                     </div>
                 </div>
                 <div class="mt-3.5">
                     <div class="flex items-baseline gap-1.5">
-                        <span class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ $statPerlu ?? count($priorityChildren ?? []) }}</span>
-                        <span class="text-xs font-medium text-slate-400">anak</span>
+                        <span class="text-3xl font-extrabold text-rose-800 tracking-tight">{{ $statPerlu ?? count($priorityChildren ?? []) }}</span>
+                        <span class="text-xs font-bold text-rose-700">anak</span>
                     </div>
-                    <a href="{{ route('balita.index', ['filter' => 'absen_bulan_lalu']) }}" class="text-[11.5px] font-semibold text-rose-700 hover:text-rose-800 mt-1 inline-flex items-center gap-1">
+                    <a href="{{ route('balita.index', ['filter' => 'absen_bulan_lalu']) }}" class="text-[11.5px] font-bold text-rose-800 hover:text-rose-950 mt-1 inline-flex items-center gap-1">
                         <span>Lihat daftar pantauan</span>
-                        <svg class="w-3 h-3 text-rose-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5">
+                        <svg class="w-3 h-3 text-rose-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                     </a>
@@ -190,18 +188,18 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
             
             {{-- Left Column (7-col): Prioritas Pemantauan Gizi --}}
-            <div class="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl shadow-2xs overflow-hidden flex flex-col">
+            <div class="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl shadow-2xs overflow-hidden flex flex-col">
                 
                 {{-- Header --}}
                 <div class="p-4 sm:p-5 pb-3.5 border-b border-slate-100 flex items-center justify-between">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100">
+                        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100 shadow-2xs">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                             </svg>
                         </div>
                         <div>
-                            <h2 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
+                            <h2 class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
                                 Prioritas Pemantauan Gizi
                             </h2>
                             <p class="text-xs text-slate-500 font-medium">Balita yang memerlukan perhatian gizi berkala</p>
@@ -224,7 +222,7 @@
                             
                             {{-- Info Balita --}}
                             <div class="flex items-center gap-3.5 min-w-0">
-                                <div class="w-10 h-10 rounded-full font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs {{ $isDanger ? 'bg-rose-100 text-rose-800 ring-2 ring-rose-200' : 'bg-amber-100 text-amber-900 ring-2 ring-amber-200' }}">
+                                <div class="w-10 h-10 rounded-full font-extrabold text-xs flex items-center justify-center shrink-0 shadow-2xs {{ $isDanger ? 'bg-rose-100 text-rose-800 border border-rose-200' : 'bg-amber-100 text-amber-900 border border-amber-200' }}">
                                     {{ $initials }}
                                 </div>
                                 <div class="flex flex-col min-w-0">
@@ -274,16 +272,16 @@
             <div class="lg:col-span-5 flex flex-col gap-4 sm:gap-5">
                 
                 {{-- Agenda Terdekat --}}
-                <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-2xs flex flex-col justify-between">
+                <div class="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-5 shadow-2xs flex flex-col justify-between">
                     <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
                         <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center border border-teal-100">
+                            <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center border border-teal-100 shadow-2xs">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
                             </div>
                             <div>
-                                <h2 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
+                                <h2 class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
                                     Agenda Posyandu
                                 </h2>
                                 <p class="text-[11px] text-slate-500 font-medium">Jadwal sesi penimbangan terdekat</p>
@@ -332,9 +330,9 @@
                 </div>
 
                 {{-- Quick Export Card --}}
-                <div class="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4">
+                <div class="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center shrink-0 border border-teal-100">
+                        <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center shrink-0 border border-teal-100 shadow-2xs">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                             </svg>

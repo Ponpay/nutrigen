@@ -114,10 +114,10 @@
                                         type="number" step="any"
                                         id="berat" name="berat_badan"
                                         value="{{ old('berat_badan') }}" required
-                                        placeholder="0.0"
+                                        placeholder="Contoh: 7.90"
                                         oninput="validateWeight(this.value)"
-                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base sm:text-lg font-black text-slate-900 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-xs sm:text-sm font-extrabold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">kg</span>
+                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-xs sm:text-sm font-bold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">kg</span>
                                 </div>
                                 @error('berat_badan')
                                     <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
@@ -141,9 +141,9 @@
                                         type="number" step="any"
                                         id="tinggi" name="tinggi_badan"
                                         value="{{ old('tinggi_badan') }}" required
-                                        placeholder="0.0"
-                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base sm:text-lg font-black text-slate-900 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-xs sm:text-sm font-extrabold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">cm</span>
+                                        placeholder="Contoh: 68.7"
+                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-xs sm:text-sm font-bold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">cm</span>
                                 </div>
                                 @error('tinggi_badan')
                                     <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
@@ -161,9 +161,9 @@
                                         type="number" step="any"
                                         id="lingkar" name="lingkar_kepala"
                                         value="{{ old('lingkar_kepala') }}"
-                                        placeholder="0.0"
-                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base sm:text-lg font-black text-slate-900 placeholder:text-slate-300 transition-all outline-none">
-                                    <span class="absolute right-4 text-xs sm:text-sm font-extrabold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">cm</span>
+                                        placeholder="Contoh: 42.5"
+                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 group-hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-12 text-base font-semibold text-slate-800 placeholder:text-slate-300 transition-all outline-none">
+                                    <span class="absolute right-4 text-xs sm:text-sm font-bold text-slate-400 group-focus-within:text-teal-600 transition-colors pointer-events-none uppercase">cm</span>
                                 </div>
                                 @error('lingkar_kepala')
                                     <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
@@ -179,7 +179,7 @@
                                 <div class="relative flex items-center">
                                     <select
                                         id="status_kenaikan" name="status_kenaikan"
-                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-10 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none appearance-none cursor-pointer">
+                                        class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl pl-4 pr-10 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none appearance-none cursor-pointer">
                                         <option value="" {{ old('status_kenaikan') == '' ? 'selected' : '' }}>-- Pilih Status KMS --</option>
                                         <option value="N" {{ old('status_kenaikan') == 'N' ? 'selected' : '' }}>N — Naik sesuai garis kurva</option>
                                         <option value="T" {{ old('status_kenaikan') == 'T' ? 'selected' : '' }}>T — Tidak naik / Tetap / Turun</option>
@@ -200,14 +200,14 @@
                                     Pemberian ASI Eksklusif
                                 </label>
                                 <div class="grid grid-cols-2 gap-2.5 h-12 sm:h-13">
-                                    <label class="relative flex items-center justify-center px-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-all has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 has-[:checked]:text-teal-900 font-bold text-xs sm:text-sm text-slate-600 shadow-2xs">
+                                    <label class="relative flex items-center justify-center px-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-all has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 has-[:checked]:text-teal-900 font-semibold text-xs sm:text-sm text-slate-600 shadow-2xs">
                                         <input type="radio" name="asi_eksklusif" value="1" {{ old('asi_eksklusif', '1') == '1' ? 'checked' : '' }} class="sr-only">
                                         <span class="flex items-center gap-1.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
                                             Ya (ASI Saja)
                                         </span>
                                     </label>
-                                    <label class="relative flex items-center justify-center px-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-all has-[:checked]:border-slate-500 has-[:checked]:bg-slate-100 has-[:checked]:text-slate-900 font-bold text-xs sm:text-sm text-slate-600 shadow-2xs">
+                                    <label class="relative flex items-center justify-center px-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-all has-[:checked]:border-slate-500 has-[:checked]:bg-slate-100 has-[:checked]:text-slate-900 font-semibold text-xs sm:text-sm text-slate-600 shadow-2xs">
                                         <input type="radio" name="asi_eksklusif" value="0" {{ old('asi_eksklusif') === '0' ? 'checked' : '' }} class="sr-only">
                                         <span>Tidak</span>
                                     </label>
@@ -223,7 +223,7 @@
                                     type="date"
                                     id="tanggal" name="tanggal_ukur"
                                     value="{{ old('tanggal_ukur', now()->format('Y-m-d')) }}" required
-                                    class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer">
+                                    class="w-full h-12 sm:h-13 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none cursor-pointer">
                                 @error('tanggal_ukur')
                                     <p class="text-xs text-rose-500 font-semibold mt-0.5">{{ $message }}</p>
                                 @enderror

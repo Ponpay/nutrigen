@@ -16,6 +16,37 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/refresh-database-nutrigen', function () {
+    try {
+        Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+        $tables = ['pengukurans', 'jadwals', 'balitas', 'orang_tuas', 'kaders', 'puskesmas', 'posyandus', 'users'];
+        foreach ($tables as $table) {
+            if (Illuminate\Support\Facades\Schema::hasTable($table)) {
+                Illuminate\Support\Facades\DB::table($table)->truncate();
+            }
+        }
+        Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
+
+        Illuminate\Support\Facades\Artisan::call('db:seed', [
+            '--class' => 'Database\\Seeders\\DatabaseSeeder',
+            '--force' => true,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Database successfully refreshed and reseeded with 80 realistic balitas and posyandu data!',
+            'balita_count' => Illuminate\Support\Facades\DB::table('balitas')->count(),
+            'user_count' => Illuminate\Support\Facades\DB::table('users')->count(),
+            'output' => Illuminate\Support\Facades\Artisan::output(),
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
+
 Route::get('/team', function () {
     return view('team');
 })->name('team');

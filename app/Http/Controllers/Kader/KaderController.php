@@ -272,12 +272,12 @@ class KaderController extends Controller
                 
                 $trendWeight = [
                     'diff' => $diffWeight,
-                    'label' => ($diffWeight > 0 ? '+' : '') . $diffWeight . ' kg',
+                    'label' => ($diffWeight > 0 ? '+' : '') . $diffWeight,
                     'direction' => $diffWeight > 0 ? 'up' : ($diffWeight < 0 ? 'down' : 'flat')
                 ];
                 $trendHeight = [
                     'diff' => $diffHeight,
-                    'label' => ($diffHeight > 0 ? '+' : '') . $diffHeight . ' cm',
+                    'label' => ($diffHeight > 0 ? '+' : '') . $diffHeight,
                     'direction' => $diffHeight > 0 ? 'up' : ($diffHeight < 0 ? 'down' : 'flat')
                 ];
             }

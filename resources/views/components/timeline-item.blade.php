@@ -62,24 +62,19 @@
         default => [
             'badge' => 'bg-slate-50 text-slate-600 border-slate-200/80',
             'label' => 'Menunggu Validasi',
-            'icon'  => '<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>'
-        ]
-    };
-@endphp
-
-<div x-data="{ open: false }" class="relative pl-8 sm:pl-10 pb-4 group">
+            'icon'  => '<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg><div x-data="{ open: {{ ($measurement['status_validasi'] ?? '') === 'rejected' ? 'true' : 'false' }} }" class="relative pl-8 sm:pl-10 pb-4 group">
     <!-- Timeline Track Line -->
     @unless($isLast)
         <div class="absolute left-[13px] sm:left-[15px] top-6 bottom-0 w-[2px] bg-slate-200/80 group-hover:bg-teal-200/80 transition-colors"></div>
     @endunless
     
-    <!-- Timeline Node Indicator (Refined Minimalist) -->
-    <div class="absolute left-0 top-3 w-[26px] h-[26px] sm:w-[30px] sm:h-[30px] rounded-full bg-white border {{ $colors['ring'] }} shadow-2xs flex items-center justify-center transition-all group-hover:scale-105">
-        <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full {{ $colors['dot'] }}"></div>
+    <!-- Timeline Node Indicator -->
+    <div class="absolute left-0 top-3 w-[26px] h-[26px] sm:w-[30px] sm:h-[30px] rounded-full bg-white border {{ $statusValidasi === 'rejected' ? 'border-rose-400 text-rose-600 ring-4 ring-rose-100' : $colors['ring'] }} shadow-2xs flex items-center justify-center transition-all group-hover:scale-105">
+        <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full {{ $statusValidasi === 'rejected' ? 'bg-rose-500 animate-pulse' : $colors['dot'] }}"></div>
     </div>
     
     <!-- Collapsible Card Container -->
-    <div class="bg-white border {{ $isLatest ? 'border-teal-200/90 shadow-[0_4px_16px_rgba(13,148,136,0.05)]' : 'border-slate-200/70 shadow-2xs' }} rounded-2xl transition-all duration-200 overflow-hidden hover:border-slate-300/80">
+    <div class="bg-white border {{ $statusValidasi === 'rejected' ? 'border-rose-300 border-l-4 border-l-rose-500 shadow-[0_4px_20px_-4px_rgba(244,63,94,0.12)]' : ($isLatest ? 'border-teal-200/90 shadow-[0_4px_16px_rgba(13,148,136,0.05)]' : 'border-slate-200/70 shadow-2xs') }} rounded-2xl transition-all duration-200 overflow-hidden hover:border-slate-300/80">
         
         <!-- Summary Header Bar (Always Visible & Clickable) -->
         <button type="button" @click="open = !open" class="w-full text-left p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 hover:bg-slate-50/60 transition-colors cursor-pointer select-none">
@@ -112,16 +107,23 @@
             <!-- Right Side: Status Badges & Toggle Chevron Button -->
             <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto pt-1 sm:pt-0 border-t border-slate-100 sm:border-0">
                 <div class="flex items-center flex-wrap gap-1.5">
-                    <!-- Status Gizi Badge -->
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border {{ $colors['badge'] }}">
-                        {{ $measurement['status'] }}
-                    </span>
-                    
-                    <!-- Status Validasi Badge -->
-                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border {{ $valConfig['badge'] }}">
-                        {!! $valConfig['icon'] !!}
-                        <span>{{ $valConfig['label'] }}</span>
-                    </span>
+                    @if($statusValidasi === 'rejected')
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-200 shadow-2xs">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+                            Perlu Revisi Kader
+                        </span>
+                    @else
+                        <!-- Status Gizi Badge -->
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border {{ $colors['badge'] }}">
+                            {{ $measurement['status'] }}
+                        </span>
+                        
+                        <!-- Status Validasi Badge -->
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border {{ $valConfig['badge'] }}">
+                            {!! $valConfig['icon'] !!}
+                            <span>{{ $valConfig['label'] }}</span>
+                        </span>
+                    @endif
                 </div>
 
                 <!-- Animated Chevron -->
@@ -138,10 +140,13 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
                 
                 <!-- Berat Badan (BB) -->
-                <div class="bg-white border border-slate-200/70 rounded-xl p-3 flex flex-col justify-between shadow-xs">
+                @php
+                    $isWeightAnomaly = isset($measurement['weight_trend']) && abs($measurement['weight_trend']) >= 2.0;
+                @endphp
+                <div class="bg-white border {{ $isWeightAnomaly ? 'border-rose-300 ring-2 ring-rose-100 bg-rose-50/30' : 'border-slate-200/70' }} rounded-xl p-3 flex flex-col justify-between shadow-xs">
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Berat Badan</span>
-                        <div class="w-5 h-5 rounded-md bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                        <div class="w-5 h-5 rounded-md {{ $isWeightAnomaly ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600' }} flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3"><path fill-rule="evenodd" d="M10 2a.75.75 0 01.75.75v1.543a6.502 6.502 0 014.71 4.71h1.54a.75.75 0 010 1.5h-1.54a6.502 6.502 0 01-4.71 4.71v1.543a.75.75 0 01-1.5 0v-1.543a6.502 6.502 0 01-4.71-4.71H2.75a.75.75 0 010-1.5h1.54a6.502 6.502 0 014.71-4.71V2.75A.75.75 0 0110 2zm0 3.5a5 5 0 100 10 5 5 0 000-10z" clip-rule="evenodd" /></svg>
                         </div>
                     </div>
@@ -151,7 +156,7 @@
                     </div>
                     <div class="mt-1.5 flex items-center">
                         @if(isset($measurement['weight_trend']) && $measurement['weight_trend'] > 0)
-                            <span class="inline-flex items-center gap-0.5 text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/50">
+                            <span class="inline-flex items-center gap-0.5 text-[11px] font-semibold {{ $isWeightAnomaly ? 'text-rose-700 bg-rose-100/90 border border-rose-200 font-bold' : 'text-emerald-600 bg-emerald-50 border border-emerald-200/50' }} px-1.5 py-0.5 rounded">
                                 <svg class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z" clip-rule="evenodd" /></svg>
                                 +{{ $measurement['weight_trend'] }} kg
                             </span>
@@ -254,93 +259,130 @@
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
                     </svg>
                     <div class="flex-1">
-                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">Catatan Kader:</span>
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">Catatan Kader Saat Pengukuran:</span>
                         <p class="text-[12.5px] font-medium text-slate-800 leading-relaxed">{{ $measurement['catatan_kader'] }}</p>
                     </div>
                 </div>
             @endif
 
             @if(isset($measurement['status_validasi']) && $measurement['status_validasi'] === 'rejected')
-                <!-- Rejection Alert -->
-                <div class="mt-3.5 p-3.5 bg-rose-50 border border-rose-200/80 rounded-xl relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-rose-500"></div>
-                    <div class="flex items-start gap-3 pl-1">
-                        <svg class="w-5 h-5 text-rose-500 mt-0.5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                        <div class="flex-1">
-                            <span class="text-[12px] font-bold text-rose-700 block mb-0.5">Catatan Revisi dari Puskesmas:</span>
-                            <p class="text-[13px] text-rose-600 leading-relaxed font-medium">{{ $measurement['catatan_validator'] ?? 'Tidak ada catatan khusus.' }}</p>
+                <!-- ── ADVANCED REVISION COMMAND CARD FOR KADER ── -->
+                <div class="mt-3.5 bg-gradient-to-br from-rose-50/90 via-rose-50/50 to-amber-50/40 border border-rose-200 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xs">
+                    <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                        <div class="flex items-start gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-rose-100 border border-rose-200 text-rose-600 flex items-center justify-center shrink-0 shadow-2xs">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-rose-800 bg-rose-100/90 px-2 py-0.5 rounded-md border border-rose-200">
+                                        Arahan Petugas Gizi Puskesmas
+                                    </span>
+                                </div>
+                                <div class="p-3 bg-white/90 border border-rose-100 rounded-xl mt-1.5 shadow-2xs">
+                                    <p class="text-[13px] text-rose-950 font-semibold leading-relaxed">
+                                        "{{ $measurement['catatan_validator'] ?? 'Terdapat anomali data ukur. Mohon verifikasi atau timbang ulang balita.' }}"
+                                    </p>
+                                </div>
+                                
+                                {{-- SOP Panduan Tindakan Kader --}}
+                                <div class="mt-2.5 flex items-center gap-2 text-[11.5px] text-slate-600 font-medium">
+                                    <span class="text-rose-600 font-bold">Langkah Kader:</span>
+                                    <span>Timbang ulang balita atau koreksi salah ketik, lalu klik tombol perbaikan.</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mt-3 flex justify-end">
-                        <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.remove('hidden')" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-[12px] font-bold rounded-lg shadow-sm transition-colors flex items-center gap-2 focus:outline-none cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
-                            Revisi Pengukuran
-                        </button>
+
+                        {{-- Direct Action Button --}}
+                        <div class="shrink-0 flex sm:flex-col justify-end">
+                            <button type="button" 
+                                    onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.remove('hidden')" 
+                                    class="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white text-xs font-bold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
+                                <span>Perbaiki Data Ukur</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Edit Modal for this specific measurement -->
+                <!-- ── REFINED REVISION MODAL POPUP ── -->
                 <div id="editModal-{{ $measurement['id'] }}" class="fixed inset-0 z-[110] hidden opacity-100 transition-opacity duration-300">
-                    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')"></div>
+                    <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')"></div>
                     <div class="absolute inset-0 flex items-center justify-center p-4 md:p-6 pointer-events-none">
-                        <div class="w-full max-w-lg bg-white rounded-2xl sm:rounded-[24px] shadow-2xl flex flex-col pointer-events-auto overflow-hidden">
+                        <div class="w-full max-w-lg bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 flex flex-col pointer-events-auto overflow-hidden">
                             
-                            <div class="px-6 pt-6 pb-4 border-b border-slate-100 flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-xl font-bold tracking-tight text-slate-800">Revisi Pengukuran</h3>
-                                    <p class="text-sm text-slate-500 mt-1">Perbaiki data sesuai arahan Puskesmas</p>
+                            {{-- Modal Header --}}
+                            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-base font-bold tracking-tight text-slate-800">Perbaikan Data Pengukuran</h3>
+                                        <p class="text-[11px] text-slate-500 font-medium">Revisi hasil penimbangan dan kirim ulang ke Puskesmas</p>
+                                    </div>
                                 </div>
-                                <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')" class="p-2 -mr-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors focus:outline-none cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                                <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')" class="w-8 h-8 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                                 </button>
                             </div>
                             
-                            <div class="p-6">
-                                <form action="{{ route('pengukuran.update', $measurement['id']) }}" method="POST">
+                            {{-- Form Body --}}
+                            <div class="p-6 overflow-y-auto max-h-[75vh]">
+                                {{-- Catatan Puskesmas Reminder --}}
+                                <div class="mb-4 p-3 bg-rose-50/80 border border-rose-200/80 rounded-xl text-xs">
+                                    <span class="text-[10.5px] font-bold text-rose-800 uppercase tracking-wider block mb-0.5">Catatan Puskesmas:</span>
+                                    <p class="text-rose-900 font-semibold">{{ $measurement['catatan_validator'] ?? 'Periksa kembali angka penimbangan.' }}</p>
+                                </div>
+
+                                <form action="{{ route('pengukuran.update', $measurement['id']) }}" method="POST" class="space-y-4 text-xs">
                                     @csrf
                                     @method('PUT')
                                     
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                                         <div class="flex flex-col gap-1.5 sm:col-span-2">
-                                            <label class="text-sm font-semibold text-slate-700">Tanggal Pengukuran</label>
-                                            <input type="date" name="tanggal_ukur" value="{{ $measurement['raw_date'] ?? '' }}" required class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                            <label class="text-xs font-semibold text-slate-700">Tanggal Pengukuran <span class="text-rose-500">*</span></label>
+                                            <input type="date" name="tanggal_ukur" value="{{ $measurement['raw_date'] ?? '' }}" required class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
                                         </div>
                                         
                                         <div class="flex flex-col gap-1.5">
-                                            <label class="text-sm font-semibold text-slate-700">Berat Badan (kg)</label>
-                                            <input type="text" inputmode="decimal" name="berat_badan" value="{{ $measurement['weight'] }}" required class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                            <label class="text-xs font-semibold text-slate-700">Berat Badan (kg) <span class="text-rose-500">*</span></label>
+                                            <input type="text" inputmode="decimal" name="berat_badan" value="{{ $measurement['weight'] }}" required placeholder="Contoh: 7.90" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
                                         </div>
                                         
                                         <div class="flex flex-col gap-1.5">
-                                            <label class="text-sm font-semibold text-slate-700">Tinggi Badan (cm)</label>
-                                            <input type="text" inputmode="decimal" name="tinggi_badan" value="{{ $measurement['height'] }}" required class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                            <label class="text-xs font-semibold text-slate-700">Tinggi Badan (cm) <span class="text-rose-500">*</span></label>
+                                            <input type="text" inputmode="decimal" name="tinggi_badan" value="{{ $measurement['height'] }}" required placeholder="Contoh: 68.7" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
                                         </div>
 
                                         <div class="flex flex-col gap-1.5 sm:col-span-2">
-                                            <label class="text-sm font-semibold text-slate-700">Lingkar Kepala (cm)</label>
-                                            <input type="text" inputmode="decimal" name="lingkar_kepala" value="{{ $measurement['head_circ'] ?? '' }}" placeholder="Opsional" class="w-full h-12 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 text-sm font-medium text-slate-800 transition-all outline-none">
+                                            <label class="text-xs font-semibold text-slate-700">Lingkar Kepala (cm) <span class="text-slate-400 font-normal">(Opsional)</span></label>
+                                            <input type="text" inputmode="decimal" name="lingkar_kepala" value="{{ $measurement['head_circ'] ?? '' }}" placeholder="Contoh: 42.5" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
                                         </div>
 
                                         <div class="flex flex-col gap-1.5 sm:col-span-2">
-                                            <label class="text-sm font-semibold text-slate-700">Catatan Perbaikan Kader</label>
-                                            <textarea name="catatan_kader" rows="2" placeholder="Catatan respons atau konfirmasi untuk Puskesmas..." class="w-full bg-slate-50 border border-slate-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-800 transition-all outline-none resize-none">{{ $measurement['catatan_kader'] ?? '' }}</textarea>
+                                            <label class="text-xs font-semibold text-slate-700">Catatan Perbaikan Kader <span class="text-slate-400 font-normal">(Tanggapan untuk Puskesmas)</span></label>
+                                            <textarea name="catatan_kader" rows="2" placeholder="Contoh: Sudah ditimbang ulang di Posyandu dengan timbangan digital, berat valid." class="w-full bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-800 transition-all outline-none resize-none">{{ $measurement['catatan_kader'] ?? '' }}</textarea>
                                         </div>
                                     </div>
                                     
-                                    <div class="mt-6 flex justify-end gap-3">
-                                        <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')" class="px-3 py-2 min-h-[44px] text-sm font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors focus:outline-none cursor-pointer">Batal</button>
-                                        <button type="submit" class="px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold text-sm shadow-sm hover:shadow-sm border border-slate-200/60 transition-all focus:outline-none cursor-pointer">Simpan Perbaikan</button>
+                                    <div class="mt-6 pt-3 border-t border-slate-100 flex justify-end gap-2.5">
+                                        <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')" class="h-10 sm:h-11 px-5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-semibold text-xs transition-colors cursor-pointer">Batal</button>
+                                        <button type="submit" class="h-10 sm:h-11 px-6 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold text-xs shadow-xs hover:shadow-sm transition-all focus:outline-none cursor-pointer flex items-center gap-1.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                                            <span>Simpan & Kirim Perbaikan</span>
+                                        </button>
                                     </div>
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
             @endif
 
         </div>
-
     </div>
 </div>

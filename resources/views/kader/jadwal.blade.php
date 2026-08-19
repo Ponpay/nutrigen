@@ -272,19 +272,24 @@
             </div>
 
             {{-- Sticky Header --}}
-            <div class="px-5 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
-                <div>
-                    <h2 id="modal-title" class="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-tight">
-                        Edit Jadwal Posyandu
-                    </h2>
-                    <p class="text-xs text-slate-500 font-medium mt-0.5 hidden sm:block">
-                        Kelola agenda kegiatan pemeriksaan posyandu.
-                    </p>
+            <div class="px-5 sm:px-7 py-3.5 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-teal-50 border border-teal-100 text-teal-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125" /></svg>
+                    </div>
+                    <div>
+                        <h2 id="modal-title" class="text-base sm:text-lg font-bold text-slate-800 tracking-tight leading-tight">
+                            Edit Jadwal Posyandu
+                        </h2>
+                        <p class="text-[11px] text-slate-500 font-medium mt-0.5 hidden sm:block">
+                            Kelola agenda kegiatan pemeriksaan posyandu.
+                        </p>
+                    </div>
                 </div>
 
                 <button type="button" 
                         onclick="closeJadwalModal()"
-                        class="w-9 h-9 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                        class="w-8 h-8 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer shrink-0"
                         aria-label="Tutup popup">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -292,64 +297,64 @@
                 </button>
             </div>
 
-            {{-- Scrollable Form Body with Generous Spacing --}}
-            <form id="form-jadwal-modal" action="" method="POST" class="p-5 sm:p-8 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-4 sm:space-y-5 text-xs">
+            {{-- Scrollable Form Body with Clean Spacing --}}
+            <form id="form-jadwal-modal" action="" method="POST" class="p-5 sm:p-7 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-4 text-xs">
                 @csrf
                 <input type="hidden" id="form-method" name="_method" value="POST">
 
                 {{-- Posyandu Info Strip --}}
-                <div class="flex items-center gap-3 p-3 bg-teal-50/50 rounded-2xl border border-teal-100">
-                    <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-2xs font-bold text-sm">
+                <div class="flex items-center gap-3 p-3 bg-teal-50/50 rounded-xl border border-teal-100/80">
+                    <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-2xs font-semibold text-xs">
                         P
                     </div>
                     <div class="flex-1 min-w-0">
-                        <span class="text-[10px] text-teal-800 font-bold uppercase tracking-wider block">Posyandu Penyelenggara</span>
-                        <span class="text-xs sm:text-[13px] font-extrabold text-slate-900 truncate block mt-0.5">{{ $posyanduName ?? 'Posyandu Kader' }}</span>
+                        <span class="text-[10px] text-teal-700 font-semibold uppercase tracking-wider block">Posyandu Penyelenggara</span>
+                        <span class="text-xs sm:text-[13px] font-semibold text-slate-800 truncate block mt-0.5">{{ $posyanduName ?? 'Posyandu Kader' }}</span>
                     </div>
                 </div>
 
                 {{-- Judul Kegiatan --}}
                 <div class="flex flex-col gap-1.5">
-                    <label for="modal-input-judul" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label for="modal-input-judul" class="text-xs font-semibold text-slate-700">
                         Nama / Judul Kegiatan <span class="text-rose-500">*</span>
                     </label>
                     <input type="text" id="modal-input-judul" name="judul" required
                            placeholder="Contoh: Layanan Penimbangan Rutin Balita & Imunisasi"
-                           class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none">
+                           class="w-full h-11 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 placeholder:text-slate-400 transition-all outline-none">
                 </div>
 
                 {{-- Lokasi / Tempat --}}
                 <div class="flex flex-col gap-1.5">
-                    <label for="modal-input-lokasi" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label for="modal-input-lokasi" class="text-xs font-semibold text-slate-700">
                         Tempat / Lokasi Pelaksanaan <span class="text-rose-500">*</span>
                     </label>
                     <input type="text" id="modal-input-lokasi" name="lokasi" required
                            placeholder="Contoh: Balai Posyandu RW 01, Jl. Melati"
-                           class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none">
+                           class="w-full h-11 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 placeholder:text-slate-400 transition-all outline-none">
                 </div>
 
                 {{-- Tanggal & Waktu Grid --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     {{-- Tanggal --}}
                     <div class="flex flex-col gap-1.5">
-                        <label for="modal-input-tanggal" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        <label for="modal-input-tanggal" class="text-xs font-semibold text-slate-700">
                             Tanggal Kegiatan <span class="text-rose-500">*</span>
                         </label>
                         <input type="date" id="modal-input-tanggal" name="tanggal" required
-                               class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer">
+                               class="w-full h-11 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none cursor-pointer">
                     </div>
 
                     {{-- Jam Mulai & Selesai --}}
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        <label class="text-xs font-semibold text-slate-700">
                             Rentang Waktu <span class="text-rose-500">*</span>
                         </label>
-                        <div class="grid grid-cols-2 gap-2.5">
+                        <div class="grid grid-cols-2 gap-2">
                             <input type="time" id="modal-input-mulai" name="waktu_mulai" required
-                                   class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-3 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer"
+                                   class="w-full h-11 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-2.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none cursor-pointer"
                                    title="Jam Mulai">
                             <input type="time" id="modal-input-selesai" name="waktu_selesai" required
-                                   class="w-full h-12 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-3 text-xs sm:text-sm font-bold text-slate-800 transition-all outline-none cursor-pointer"
+                                   class="w-full h-11 bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-2.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none cursor-pointer"
                                    title="Jam Selesai">
                         </div>
                     </div>
@@ -357,26 +362,26 @@
 
                 {{-- Catatan Tambahan --}}
                 <div class="flex flex-col gap-1.5">
-                    <label for="modal-input-catatan" class="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label for="modal-input-catatan" class="flex items-center justify-between text-xs font-semibold text-slate-700">
                         <span>Catatan untuk Ibu Balita</span>
-                        <span class="text-[10px] font-semibold text-slate-400 normal-case tracking-normal">Opsional</span>
+                        <span class="text-[10px] font-normal text-slate-400">Opsional</span>
                     </label>
                     <textarea id="modal-input-catatan" name="catatan" rows="2"
                               placeholder="Contoh: Harap membawa Buku KIA dan kartu identitas anak."
-                              class="w-full bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-4 focus:ring-teal-500/15 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 transition-all outline-none resize-none"></textarea>
+                              class="w-full bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 transition-all outline-none resize-none"></textarea>
                 </div>
             </form>
 
             {{-- Sticky Footer --}}
-            <div class="px-5 sm:px-8 py-3.5 sm:py-4 border-t border-slate-100 flex items-center justify-end gap-3 bg-white/95 backdrop-blur-md shrink-0">
+            <div class="px-5 sm:px-7 py-3.5 border-t border-slate-100 flex items-center justify-end gap-2.5 bg-slate-50/50 shrink-0">
                 <button type="button" 
                         onclick="closeJadwalModal()"
-                        class="h-11 sm:h-12 px-5 sm:px-6 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                        class="h-10 sm:h-11 px-5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-semibold text-xs sm:text-[13px] transition-colors cursor-pointer">
                     Batal
                 </button>
                 <button type="button" 
                         onclick="document.getElementById('form-jadwal-modal').submit()"
-                        class="flex-1 sm:flex-initial h-11 sm:h-12 px-6 sm:px-8 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-700 hover:from-teal-500 hover:to-emerald-600 active:scale-[0.99] text-white font-black text-xs sm:text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        class="h-10 sm:h-11 px-6 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-[0.99] text-white font-semibold text-xs sm:text-[13px] shadow-xs hover:shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>

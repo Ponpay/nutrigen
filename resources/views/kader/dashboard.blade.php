@@ -23,11 +23,9 @@
                         <span class="w-2 h-2 rounded-full bg-teal-600 animate-pulse"></span>
                         {{ $activityLocation ?? ($posyanduName ?? 'Posyandu') }}
                     </span>
-                    <span class="inline-flex items-center gap-1 text-xs text-slate-600 font-semibold bg-white/80 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
-                        <svg class="w-3.5 h-3.5 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        {{ $todayFormatted }}
+                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-600 font-semibold bg-white/80 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
+                        <x-icon name="calendar" class="text-teal-700 text-sm" />
+                        <span>{{ $todayFormatted }}</span>
                     </span>
                 </div>
 
@@ -43,16 +41,12 @@
             <div class="flex items-center gap-3 shrink-0">
                 <a href="{{ route('balita.create') }}" 
                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 active:scale-[0.98] border border-slate-300 text-slate-800 rounded-xl text-xs sm:text-sm font-bold shadow-2xs transition-all">
-                    <svg class="w-4 h-4 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
-                    </svg>
+                    <x-icon name="user-plus" weight="bold" class="text-teal-700 text-base" />
                     <span>Daftar Balita</span>
                 </a>
                 <a href="{{ route('balita.index') }}" 
                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-teal-700/30 hover:shadow transition-all">
-                    <svg class="w-4 h-4 text-teal-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.469 10.106c.122.499.106 1.028.589 1.202a5.989 5.989 0 002.031.352 5.989 5.989 0 002.031-.352c.483-.174.711-.703.59-1.202L5.25 4.971z" />
-                    </svg>
+                    <x-icon name="scales" weight="bold" class="text-white text-base" />
                     <span>Mulai Penimbangan</span>
                 </a>
             </div>
@@ -62,10 +56,8 @@
         @if(isset($statRevisi) && $statRevisi > 0)
         <div class="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-4 sm:p-4.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
             <div class="flex items-start sm:items-center gap-3.5 min-w-0">
-                <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs ring-4 ring-amber-100">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                    </svg>
+                <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs ring-4 ring-amber-100 text-xl">
+                    <x-icon name="warning-circle" weight="bold" />
                 </div>
                 <div class="flex flex-col min-w-0">
                     <div class="flex items-center gap-2">
@@ -82,24 +74,20 @@
             <a href="{{ route('balita.index', ['filter' => 'ditolak']) }}" 
                class="w-full sm:w-auto shrink-0 h-9 px-4 bg-amber-700 hover:bg-amber-800 active:bg-amber-900 text-white rounded-xl text-xs font-bold shadow-2xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                 <span>Tinjau Catatan</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
+                <x-icon name="arrow-right" weight="bold" class="text-xs" />
             </a>
         </div>
         @endif
 
-        {{-- ── 3. FOUR HARMONIOUS KPI CARDS (Soft Colored Accents & Clear Numbers) ── --}}
+        {{-- ── 3. FOUR HARMONIOUS KPI CARDS (Icon Library Based & Clear Numbers) ── --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
             
             {{-- 1. Total Terdaftar --}}
             <div class="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4.5 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Balita</span>
-                    <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center border border-teal-100/80 shadow-2xs">
-                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                        </svg>
+                    <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center border border-teal-100/80 shadow-2xs text-lg">
+                        <x-icon name="users" weight="bold" />
                     </div>
                 </div>
                 <div class="mt-3.5">
@@ -115,10 +103,8 @@
             <div class="bg-white border border-emerald-200/90 hover:border-emerald-300 rounded-2xl p-4.5 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Sudah Diukur</span>
-                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100/80 shadow-2xs">
-                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100/80 shadow-2xs text-lg">
+                        <x-icon name="check-circle" weight="bold" />
                     </div>
                 </div>
                 <div class="mt-3.5">
@@ -138,10 +124,8 @@
             <div class="bg-white border border-amber-200/90 hover:border-amber-300 rounded-2xl p-4.5 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-amber-900 uppercase tracking-wider">Belum Diukur</span>
-                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-100/80 shadow-2xs">
-                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-100/80 shadow-2xs text-lg">
+                        <x-icon name="clock" weight="bold" />
                     </div>
                 </div>
                 <div class="mt-3.5">
@@ -151,9 +135,7 @@
                     </div>
                     <a href="{{ route('balita.index', ['filter' => 'belum_diukur']) }}" class="text-[11.5px] font-bold text-amber-800 hover:text-amber-950 mt-1 inline-flex items-center gap-1">
                         <span>Buka antrean hadir</span>
-                        <svg class="w-3 h-3 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
+                        <x-icon name="caret-right" weight="bold" class="text-xs text-amber-700" />
                     </a>
                 </div>
             </div>
@@ -162,10 +144,8 @@
             <div class="bg-white border border-rose-200/90 hover:border-rose-300 rounded-2xl p-4.5 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-rose-800 uppercase tracking-wider">Perlu Pantauan</span>
-                    <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100/80 shadow-2xs">
-                        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                        </svg>
+                    <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100/80 shadow-2xs text-lg">
+                        <x-icon name="heartbeat" weight="bold" />
                     </div>
                 </div>
                 <div class="mt-3.5">
@@ -175,9 +155,7 @@
                     </div>
                     <a href="{{ route('balita.index', ['filter' => 'absen_bulan_lalu']) }}" class="text-[11.5px] font-bold text-rose-800 hover:text-rose-950 mt-1 inline-flex items-center gap-1">
                         <span>Lihat daftar pantauan</span>
-                        <svg class="w-3 h-3 text-rose-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
+                        <x-icon name="caret-right" weight="bold" class="text-xs text-rose-700" />
                     </a>
                 </div>
             </div>
@@ -193,10 +171,8 @@
                 {{-- Header --}}
                 <div class="p-4 sm:p-5 pb-3.5 border-b border-slate-100 flex items-center justify-between">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100 shadow-2xs">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                            </svg>
+                        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-100 shadow-2xs text-base">
+                            <x-icon name="heartbeat" weight="bold" />
                         </div>
                         <div>
                             <h2 class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
@@ -249,17 +225,13 @@
                                     </span>
                                 @endif
 
-                                <svg class="w-4 h-4 text-slate-400 group-hover:text-teal-700 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                                </svg>
+                                <x-icon name="caret-right" weight="bold" class="text-xs text-slate-400 group-hover:text-teal-700 group-hover:translate-x-0.5 transition-all" />
                             </div>
                         </a>
                     @empty
                         <div class="p-8 text-center text-slate-500">
-                            <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-2 border border-emerald-100 shadow-2xs">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-2 border border-emerald-100 shadow-2xs text-xl">
+                                <x-icon name="check-circle" weight="bold" />
                             </div>
                             <p class="text-xs font-bold text-slate-800">Seluruh balita terpantau baik</p>
                             <p class="text-[11px] text-slate-500 mt-0.5">Tidak ada balita yang memerlukan tindakan darurat.</p>
@@ -275,10 +247,8 @@
                 <div class="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-5 shadow-2xs flex flex-col justify-between">
                     <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
                         <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center border border-teal-100 shadow-2xs">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
+                            <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center border border-teal-100 shadow-2xs text-base">
+                                <x-icon name="calendar-blank" weight="bold" />
                             </div>
                             <div>
                                 <h2 class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
@@ -332,10 +302,8 @@
                 {{-- Quick Export Card --}}
                 <div class="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center shrink-0 border border-teal-100 shadow-2xs">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                            </svg>
+                        <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center shrink-0 border border-teal-100 shadow-2xs text-xl">
+                            <x-icon name="file-text" weight="bold" />
                         </div>
                         <div class="flex flex-col min-w-0">
                             <h3 class="text-xs sm:text-sm font-bold text-slate-900">Rekap Laporan Bulanan</h3>

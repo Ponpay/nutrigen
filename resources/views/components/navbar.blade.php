@@ -73,11 +73,11 @@
             @endif
         </button>
 
-        <!-- Modern Centered Pop-up Modal (Persis Sesuai Screenshot Referensi) -->
+        <!-- Modern Centered Pop-up Modal (Persis Sesuai Screenshot Referensi & Responsif Mobile) -->
         <template x-teleport="body">
             <div x-show="openNotif"
                  x-cloak
-                 class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+                 class="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6"
                  style="display: none;"
                  role="dialog"
                  aria-modal="true"
@@ -94,7 +94,7 @@
                      @click="openNotif = false"
                      class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
 
-                {{-- Modal Box Container --}}
+                {{-- Modal Box Container (Max height & scrollable on mobile) --}}
                 <div x-show="openNotif"
                      x-transition:enter="transition ease-out duration-300"
                      x-transition:enter-start="opacity-0 scale-95 translate-y-3"
@@ -103,38 +103,38 @@
                      x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                      x-transition:leave-end="opacity-0 scale-95 translate-y-3"
                      @click.stop
-                     class="relative w-full max-w-[560px] bg-white rounded-[28px] shadow-[0_25px_70px_-15px_rgba(0,0,0,0.25)] border border-slate-100 overflow-hidden flex flex-col z-10">
+                     class="relative w-full max-w-[560px] max-h-[90vh] sm:max-h-[85vh] bg-white rounded-2xl sm:rounded-[28px] shadow-[0_25px_70px_-15px_rgba(0,0,0,0.25)] border border-slate-100 overflow-hidden flex flex-col z-10">
                     
                     {{-- 1. Modal Header --}}
-                    <div class="px-6 pt-6 pb-4 flex items-center justify-between border-b border-slate-100/80">
-                        <div class="flex items-center gap-3">
-                            <div class="w-11 h-11 rounded-full bg-rose-50 border border-rose-100 text-rose-500 flex items-center justify-center shrink-0 shadow-2xs">
-                                <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                    <div class="px-4 pt-4 pb-3 sm:px-6 sm:pt-6 sm:pb-4 flex items-center justify-between border-b border-slate-100/80 shrink-0">
+                        <div class="flex items-center gap-2.5 sm:gap-3">
+                            <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-rose-50 border border-rose-100 text-rose-500 flex items-center justify-center shrink-0 shadow-2xs">
+                                <svg class="w-4.5 h-4.5 sm:w-5 sm:h-5 fill-current" viewBox="0 0 20 20">
                                     <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-[17px] font-bold text-slate-900 tracking-tight leading-tight">Revisi dari Puskesmas</h3>
-                                <p class="text-xs text-slate-400 font-medium mt-0.5">Catatan perbaikan data balita</p>
+                                <h3 class="text-sm sm:text-[17px] font-bold text-slate-900 tracking-tight leading-tight">Revisi dari Puskesmas</h3>
+                                <p class="text-[10.5px] sm:text-xs text-slate-400 font-medium mt-0.5">Catatan perbaikan data balita</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-2.5">
+                        <div class="flex items-center gap-2 sm:gap-2.5">
                             @if(isset($revisiNotifsCount) && $revisiNotifsCount > 0)
-                                <span class="bg-rose-50 text-rose-600 border border-rose-200/60 text-[10.5px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-2xs">
-                                    {{ $revisiNotifsCount }} PERLU REVISI
+                                <span class="bg-rose-50 text-rose-600 border border-rose-200/60 text-[9.5px] sm:text-[10.5px] font-bold px-2.5 py-0.5 sm:px-3.5 sm:py-1 rounded-full uppercase tracking-wider shadow-2xs">
+                                    {{ $revisiNotifsCount }} REVISI
                                 </span>
                             @endif
-                            <button @click="openNotif = false" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer" aria-label="Tutup modal">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <button @click="openNotif = false" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer" aria-label="Tutup modal">
+                                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
                     </div>
 
-                    {{-- 2. Modal Body (List Revisi) --}}
-                    <div class="px-6 py-4 space-y-4 max-h-[420px] overflow-y-auto hide-scrollbar divide-y divide-slate-100">
+                    {{-- 2. Modal Body (List Revisi dengan scroll halus di mobile) --}}
+                    <div class="px-4 py-3 sm:px-6 sm:py-4 space-y-3 sm:space-y-4 max-h-[calc(90vh-140px)] sm:max-h-[420px] overflow-y-auto hide-scrollbar divide-y divide-slate-100">
                         @if(isset($revisiNotifs) && count($revisiNotifs) > 0)
                             @foreach($revisiNotifs as $notif)
                                 @php
@@ -146,36 +146,36 @@
                                     $pal = $palettes[$loop->index % 3];
                                 @endphp
                                 <a href="{{ route('balita.show', ['id' => $notif['balita_id'], 'action' => 'ukur']) }}"
-                                   class="flex items-start gap-3.5 group pt-3.5 first:pt-0 pb-1 cursor-pointer block">
+                                   class="flex items-start gap-2.5 sm:gap-3.5 group pt-3 sm:pt-3.5 first:pt-0 pb-1 cursor-pointer block">
                                     
                                     {{-- Avatar Inisial --}}
-                                    <div class="w-10 h-10 rounded-full {{ $pal['avatar'] }} ring-2 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-2xs">
+                                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full {{ $pal['avatar'] }} ring-2 flex items-center justify-center shrink-0 mt-0.5 font-bold text-[11px] sm:text-xs shadow-2xs">
                                         {{ strtoupper(substr($notif['balita_nama'], 0, 2)) }}
                                     </div>
 
                                     {{-- Info Detail & Catatan --}}
                                     <div class="flex-1 min-w-0">
-                                        <div class="flex items-center justify-between gap-2">
-                                            <h4 class="text-sm font-bold text-slate-900 group-hover:text-teal-700 transition-colors truncate">
+                                        <div class="flex items-center justify-between gap-1.5 sm:gap-2">
+                                            <h4 class="text-[13px] sm:text-sm font-bold text-slate-900 group-hover:text-teal-700 transition-colors truncate">
                                                 {{ Str::title($notif['balita_nama']) }}
                                             </h4>
-                                            <div class="flex items-center gap-1 text-xs font-semibold text-slate-400 group-hover:text-teal-600 transition-colors shrink-0">
+                                            <div class="flex items-center gap-1 text-[10.5px] sm:text-xs font-semibold text-slate-400 group-hover:text-teal-600 transition-colors shrink-0">
                                                 <span>{{ $notif['tanggal'] }}</span>
-                                                <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                                                 </svg>
                                             </div>
                                         </div>
 
                                         {{-- BB / TB --}}
-                                        <p class="text-xs font-bold text-slate-700 mt-0.5">
+                                        <p class="text-[11.5px] sm:text-xs font-bold text-slate-700 mt-0.5">
                                             BB {{ $notif['bb'] }} kg / TB {{ $notif['tb'] }} cm
                                         </p>
 
                                         {{-- Note Bubble Box (Persis Screenshot) --}}
-                                        <div class="mt-2.5 p-3 rounded-2xl {{ $pal['bubble'] }} border text-xs leading-relaxed font-medium">
-                                            <div class="flex items-start gap-2">
-                                                <svg class="w-4 h-4 {{ $pal['icon'] }} shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <div class="mt-2 sm:mt-2.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl {{ $pal['bubble'] }} border text-[11px] sm:text-xs leading-relaxed font-medium">
+                                            <div class="flex items-start gap-1.5 sm:gap-2">
+                                                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 {{ $pal['icon'] }} shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                                                 </svg>
                                                 <span class="line-clamp-2">{{ $notif['catatan'] }}</span>
@@ -186,14 +186,14 @@
                             @endforeach
                         @else
                             {{-- Empty State (Clean & Elegant) --}}
-                            <div class="p-8 text-center bg-white">
-                                <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto mb-3 shadow-2xs">
-                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                            <div class="p-6 sm:p-8 text-center bg-white">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto mb-2.5 sm:mb-3 shadow-2xs">
+                                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                     </svg>
                                 </div>
-                                <h4 class="text-[13.5px] font-bold text-slate-800">Semua Data Valid</h4>
-                                <p class="text-xs text-slate-500 font-normal mt-1 max-w-[260px] mx-auto leading-relaxed">
+                                <h4 class="text-sm font-bold text-slate-800">Semua Data Valid</h4>
+                                <p class="text-[11px] sm:text-xs text-slate-500 font-normal mt-1 max-w-[260px] mx-auto leading-relaxed">
                                     Tidak ada catatan revisi balita dari Puskesmas saat ini.
                                 </p>
                             </div>
@@ -201,17 +201,17 @@
                     </div>
 
                     {{-- 3. Modal Footer --}}
-                    <div class="bg-slate-50/70 border-t border-slate-100 px-6 py-4 flex items-center justify-between">
-                        <div class="flex items-center gap-2 text-xs text-slate-600 font-medium">
-                            <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <div class="bg-slate-50/70 border-t border-slate-100 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between gap-2 shrink-0">
+                        <div class="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-slate-600 font-medium min-w-0">
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
-                            <span class="hidden sm:inline">Pastikan data sudah diperbaiki agar laporan lebih akurat</span>
-                            <span class="sm:hidden">Perbaiki data balita</span>
+                            <span class="hidden sm:inline truncate">Pastikan data sudah diperbaiki agar laporan lebih akurat</span>
+                            <span class="sm:hidden text-[10.5px] truncate">Perbaiki data balita</span>
                         </div>
-                        <a href="{{ route('balita.index', ['filter' => 'ditolak']) }}" class="h-9 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer">
-                            <span>Lihat Semua Revisi</span>
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <a href="{{ route('balita.index', ['filter' => 'ditolak']) }}" class="h-8 sm:h-9 px-3 sm:px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] sm:text-xs flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer shrink-0">
+                            <span>Lihat Semua</span>
+                            <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                             </svg>
                         </a>

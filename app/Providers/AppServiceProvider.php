@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pengukuran;
+use App\Services\StatisticsService;
 use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
@@ -64,6 +65,18 @@ class AppServiceProvider extends ServiceProvider
                 'revisiNotifs' => $revisiList,
                 'revisiNotifsCount' => $revisiCount,
             ]);
+        });
+
+        View::composer('components.puskesmas-sidebar', function ($view) {
+            $user = Auth::user();
+            $pendingValidationCount = 0;
+
+            if ($user && $user->role === 'puskesmas' && $user->puskesmas?->id) {
+                $pendingValidationCount = app(StatisticsService::class)
+                    ->getValidationQueueStats($user->puskesmas->id)['pending'];
+            }
+
+            $view->with('pendingValidationCount', $pendingValidationCount);
         });
     }
 }

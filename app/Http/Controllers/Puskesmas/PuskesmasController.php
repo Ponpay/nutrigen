@@ -12,6 +12,8 @@ use App\Models\Pengukuran;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class PuskesmasController extends Controller
 {
@@ -423,6 +425,52 @@ class PuskesmasController extends Controller
         }
 
         return view('puskesmas.posyandu', ['posyandus' => $posyandus, 'selectedPosyandu' => $selectedPosyandu, 'filters' => $request->all()]);
+    }
+
+    public function storePosyandu(Request $request)
+    {
+        $puskesmasId = $this->getPuskesmasId();
+
+        $validated = $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'desa_kelurahan' => ['required', 'string', 'max:255'],
+            'alamat' => ['nullable', 'string'],
+        ]);
+
+        Posyandu::create(array_merge($validated, ['puskesmas_id' => $puskesmasId]));
+
+        return redirect()->route('puskesmas.posyandu')->with('success', 'Posyandu berhasil ditambahkan.');
+    }
+
+    public function storeKader(Request $request, $id)
+    {
+        $puskesmasId = $this->getPuskesmasId();
+
+        $posyandu = Posyandu::where('puskesmas_id', $puskesmasId)->findOrFail($id);
+        $validated = $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'no_hp' => ['nullable', 'string', 'max:30'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+
+        DB::transaction(function () use ($validated, $posyandu) {
+            $user = User::create([
+                'name' => $validated['nama'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role' => 'kader',
+            ]);
+
+            $posyandu->kaders()->create([
+                'user_id' => $user->id,
+                'nama' => $validated['nama'],
+                'no_hp' => $validated['no_hp'] ?? null,
+            ]);
+        });
+
+        return redirect()->route('puskesmas.posyandu', ['id' => $posyandu->id])
+            ->with('success', 'Kader berhasil ditambahkan.');
     }
 
     public function laporan(Request $request)

@@ -94,6 +94,8 @@ Route::prefix('puskesmas')->name('puskesmas.')->middleware(['web', 'auth', 'prev
     Route::put('/pengaturan',[PuskesmasController::class, 'updatePengaturan'])->name('pengaturan.update');
     Route::get('/pengaturan/petugas',[PuskesmasController::class, 'petugas'])->name('pengaturan.petugas');
     Route::put('/pengaturan/petugas',[PuskesmasController::class, 'updatePetugas'])->name('pengaturan.petugas.update');
+    Route::post('/posyandu', [PuskesmasController::class, 'storePosyandu'])->name('posyandu.store');
+    Route::post('/posyandu/{id}/kader', [PuskesmasController::class, 'storeKader'])->name('posyandu.kader.store');
 });
 
 // ==========================================================================

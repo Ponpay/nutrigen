@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pengukuran;
+use App\Services\StatisticsService;
 use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,11 +23,13 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // Share notification data for Kader to Navbar & Layout
-        View::composer(['components.navbar', 'layouts.app', 'layouts.puskesmas'], function ($view) {
+        // Share notification data for Kader and Puskesmas navigation.
+        View::composer(['components.navbar', 'components.puskesmas-footer', 'layouts.app', 'layouts.puskesmas'], function ($view) {
             $user = Auth::user();
             $revisiList = collect();
             $revisiCount = 0;
+            $validationNotifs = collect();
+            $validationNotifsCount = 0;
 
             if ($user && $user->role === 'kader') {
                 $posyanduId = $user->kader?->posyandu_id;
@@ -60,10 +63,53 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
+            if ($user && $user->role === 'puskesmas' && $user->puskesmas?->id) {
+                $validationNotifs = Pengukuran::with(['balita', 'kader'])
+                    ->whereHas('balita.posyandu', function ($query) use ($user) {
+                        $query->where('puskesmas_id', $user->puskesmas->id);
+                    })
+                    ->where('status_validasi', 'pending')
+                    ->orderByDesc('tanggal_ukur')
+                    ->take(10)
+                    ->get()
+                    ->map(function ($measurement) {
+                        return [
+                            'id' => $measurement->id,
+                            'balita_id' => $measurement->balita_id,
+                            'balita_nama' => $measurement->balita->nama ?? 'Balita',
+                            'kader_nama' => $measurement->kader->nama ?? 'Kader',
+                            'tanggal' => $measurement->tanggal_ukur
+                                ? Carbon::parse($measurement->tanggal_ukur)->translatedFormat('d M Y')
+                                : '-',
+                            'bb' => number_format((float) $measurement->berat_badan, 1, ',', '.'),
+                            'tb' => number_format((float) $measurement->tinggi_badan, 1, ',', '.'),
+                        ];
+                    });
+
+                $validationNotifsCount = Pengukuran::whereHas('balita.posyandu', function ($query) use ($user) {
+                    $query->where('puskesmas_id', $user->puskesmas->id);
+                })->where('status_validasi', 'pending')->count();
+            }
+
             $view->with([
                 'revisiNotifs' => $revisiList,
                 'revisiNotifsCount' => $revisiCount,
+                'validationNotifs' => $validationNotifs,
+                'validationNotifsCount' => $validationNotifsCount,
+                'notificationRole' => $user?->role,
             ]);
+        });
+
+        View::composer('components.puskesmas-sidebar', function ($view) {
+            $user = Auth::user();
+            $pendingValidationCount = 0;
+
+            if ($user && $user->role === 'puskesmas' && $user->puskesmas?->id) {
+                $pendingValidationCount = app(StatisticsService::class)
+                    ->getValidationQueueStats($user->puskesmas->id)['pending'];
+            }
+
+            $view->with('pendingValidationCount', $pendingValidationCount);
         });
     }
 }

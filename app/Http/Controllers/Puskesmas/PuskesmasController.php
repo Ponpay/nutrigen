@@ -95,7 +95,10 @@ class PuskesmasController extends Controller
         $allPengukurans = $query->get();
 
         // Use StatisticsService for aggregated queue stats
-        $queueStats = $this->statisticsService->getValidationQueueStats($puskesmasId);
+        $queueStats = $this->statisticsService->getValidationQueueStats(
+            $puskesmasId,
+            $filters['posyandu_id'] ?: null
+        );
 
         $children = [];
         foreach ($allPengukurans as $p) {
@@ -104,6 +107,7 @@ class PuskesmasController extends Controller
             $statusLabel = 'Normal';
             $isAnomali = false;
             $isBerisiko = false;
+            $isNormal = $statusGizi === 'normal';
             if (in_array($statusGizi, ['stunting'])) {
                 $statusType = 'danger';
                 $statusLabel = 'Stunting';
@@ -114,6 +118,7 @@ class PuskesmasController extends Controller
                 $isAnomali = true;
             }
             // Apply tab filter
+            if ($filters['tab'] === 'normal' && !$isNormal) continue;
             if ($filters['tab'] === 'anomali' && !$isAnomali) continue;
             if ($filters['tab'] === 'berisiko' && !$isBerisiko) continue;
             if ($filters['tab'] === 'selesai') continue; // placeholder
@@ -196,8 +201,6 @@ class PuskesmasController extends Controller
 
         // Merge queue stats into view data
         $stats = $queueStats;
-        $stats['selesai'] = 0; // not used currently
-
         return view('puskesmas.validasi', [
             'children' => $children,
             'filters' => $filters,
@@ -244,7 +247,10 @@ class PuskesmasController extends Controller
         $signedUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute('portal-ibu.home', now()->addDays(7), ['balita' => $pengukuran->balita_id]);
 
         // Get updated stats to pass back to frontend
-        $stats = $this->statisticsService->getValidationQueueStats($puskesmasId);
+        $stats = $this->statisticsService->getValidationQueueStats(
+            $puskesmasId,
+            $request->input('posyandu_id') ?: null
+        );
 
         return response()->json([
             'success' => true,
@@ -268,7 +274,10 @@ class PuskesmasController extends Controller
         ]);
 
         // Get updated stats to pass back to frontend
-        $stats = $this->statisticsService->getValidationQueueStats($puskesmasId);
+        $stats = $this->statisticsService->getValidationQueueStats(
+            $puskesmasId,
+            $request->input('posyandu_id') ?: null
+        );
 
         return response()->json([
             'success' => true,

@@ -14,6 +14,7 @@
         ];
 
         $c_pending = $stats['pending'] ?? 0;
+        $c_normal = $stats['normal'] ?? 0;
         $c_anomali = $stats['anomali'] ?? 0;
         $c_berisiko = $stats['berisiko'] ?? 0;
         $c_selesai = 12; // Dummy for now since DB logic isn't there
@@ -68,7 +69,7 @@
                 @endphp
 
                 @foreach ($kpis as $kpi)
-                    <a href="?tab={{ $kpi['id'] }}"
+                    <a href="?tab={{ $kpi['id'] }}&posyandu_id={{ urlencode($filters['posyandu_id']) }}"
                         class="flex-1 {{ $kpi['bg'] }} rounded-xl p-3 flex items-center gap-3 transition-all border border-transparent hover:border-{{ $kpi['color'] }}-200">
                         <div
                             class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-{{ $kpi['color'] }}-500 shrink-0 shadow-sm">
@@ -118,15 +119,15 @@
                     @php
                         $tabs = [
                             ['id' => 'pending', 'label' => 'Semua', 'count' => $c_pending],
-                            ['id' => 'normal', 'label' => 'Normal', 'count' => 6], // Placeholder from mockup
+                            ['id' => 'normal', 'label' => 'Normal', 'count' => $c_normal],
                             ['id' => 'anomali', 'label' => 'Risiko', 'count' => $c_anomali],
                             ['id' => 'berisiko', 'label' => 'Stunting', 'count' => $c_berisiko],
                         ];
                     @endphp
                     @foreach ($tabs as $t)
-                        <a href="?tab={{ $t['id'] }}"
+                        <a href="?tab={{ $t['id'] }}&posyandu_id={{ urlencode($filters['posyandu_id']) }}"
                             class="px-3 pb-2.5 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap {{ $filters['tab'] === $t['id'] ? 'text-[#00A9C0] border-b-2 border-[#00A9C0]' : 'text-slate-500 hover:text-slate-700 border-b-2 border-transparent' }}">
-                            {{ $t['label'] }} <span
+                            {{ $t['label'] }} <span id="tab-count-{{ $t['id'] }}"
                                 class="text-[10px] {{ $filters['tab'] === $t['id'] ? 'text-[#00A9C0]' : 'text-slate-400' }}">({{ $t['count'] }})</span>
                         </a>
                     @endforeach
@@ -243,7 +244,8 @@
                                             @endif
 
                                             <h3 class="text-sm font-bold tracking-tight text-slate-800">Riwayat Pengukuran
-                                                (Terakhir)</h3>
+                                                (Terakhir)
+                                            </h3>
                                             <x-validation.timeline :history="$child['history']" :measurement-id="$child['id']" />
                                         </div>
 
@@ -847,7 +849,8 @@
                                         .getAttribute('content')
                                 },
                                 body: JSON.stringify({
-                                    catatan_validator: catatan
+                                    catatan_validator: catatan,
+                                    posyandu_id: @json($filters['posyandu_id'])
                                 })
                             });
 
@@ -881,7 +884,8 @@
                                         .getAttribute('content')
                                 },
                                 body: JSON.stringify({
-                                    catatan_validator: catatan
+                                    catatan_validator: catatan,
+                                    posyandu_id: @json($filters['posyandu_id'])
                                 })
                             });
 
@@ -952,10 +956,18 @@
                     const elPending = document.getElementById('count-pending');
                     const elAnomali = document.getElementById('count-anomali');
                     const elBerisiko = document.getElementById('count-berisiko');
+                    const elNormalTab = document.getElementById('tab-count-normal');
+                    const elPendingTab = document.getElementById('tab-count-pending');
+                    const elAnomaliTab = document.getElementById('tab-count-anomali');
+                    const elBerisikoTab = document.getElementById('tab-count-berisiko');
 
                     if (elPending) elPending.innerText = stats.pending;
                     if (elAnomali) elAnomali.innerText = stats.anomali;
                     if (elBerisiko) elBerisiko.innerText = stats.berisiko;
+                    if (elNormalTab) elNormalTab.innerText = `(${stats.normal})`;
+                    if (elPendingTab) elPendingTab.innerText = `(${stats.pending})`;
+                    if (elAnomaliTab) elAnomaliTab.innerText = `(${stats.anomali})`;
+                    if (elBerisikoTab) elBerisikoTab.innerText = `(${stats.berisiko})`;
                 }
 
                 // Initialize first active card style

@@ -2,8 +2,9 @@ TODOs
 1. Menjalankan riwayat lengkap : done
 2. Menjalankan counter di Sidebar pada Antrian Validasi : done
 4. Memperbaiki counter pada left panel mengikuti filter posyandu : done
-5. Menghapus titik tiga di daftar kader : 
-6. Mengaktifkan tombole tambah kader dan posyandu
+5. Memperbaiki filter pada daftar balita dan memperbaiki kesalahan desain : done
+6. Menghapus titik tiga di daftar kader :
+7. Mengaktifkan tombole tambah kader dan posyandu
 
 
 

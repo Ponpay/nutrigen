@@ -311,21 +311,20 @@ class PuskesmasController extends Controller
 
         if ($posyanduFilter) {
             $query->whereHas('posyandu', function($subq) use ($posyanduFilter) {
-                // Because blade sends posyandu['nama'] in value
-                $subq->where('nama', $posyanduFilter);
+                $subq->whereKey($posyanduFilter);
             });
         }
 
         $balitas = $query->when($statusGizi, function($q) use ($statusGizi) {
             $statusMap = [
                 'normal' => 'Normal',
-                'kurang' => 'Risiko',
+                'kurang' => 'Kurang',
+                'risiko' => 'Risiko',
                 'stunting' => 'Stunting'
             ];
             $expected = $statusMap[strtolower($statusGizi)] ?? $statusGizi;
-            return $q->whereHas('pengukurans', function($subq) use ($expected) {
-                $subq->where('status_gizi', $expected)
-                     ->whereRaw('tanggal_ukur = (select max(tanggal_ukur) from pengukurans p2 where p2.balita_id = balita_id)');
+            return $q->whereHas('latestPengukuran', function($subq) use ($expected) {
+                $subq->whereRaw('LOWER(status_gizi) = ?', [strtolower($expected)]);
             });
         })->get();
 

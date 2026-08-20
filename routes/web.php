@@ -53,7 +53,7 @@ Route::get('/team', function () {
 
 Route::get('/dashboard', function () {
     $user = auth()->user();
-    
+
     if ($user->role === 'kader') {
         return redirect()->route('kader.dashboard');
     } elseif ($user->role === 'puskesmas') {
@@ -61,7 +61,7 @@ Route::get('/dashboard', function () {
     } elseif ($user->role === 'ibu') {
         return redirect()->route('portal-ibu.home');
     }
-    
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -82,9 +82,10 @@ Route::prefix('puskesmas')->name('puskesmas.')->middleware(['web', 'auth', 'prev
     Route::get('/dashboard', [PuskesmasController::class, 'dashboard'])->name('dashboard');
     Route::get('/balita',    [PuskesmasController::class, 'balita'])->name('balita');
     Route::get('/laporan',   [PuskesmasController::class, 'laporan'])->name('laporan');
-    
+
     // Legacy mapping (to prevent UI breaking)
     Route::get('/validasi', [PuskesmasController::class, 'validasi'])->name('validasi');
+    Route::get('/validasi/{id}/riwayat', [PuskesmasController::class, 'riwayat'])->name('validasi.riwayat');
     Route::post('/validasi/{id}/approve', [PuskesmasController::class, 'approve'])->name('validasi.approve');
     Route::post('/validasi/{id}/reject', [PuskesmasController::class, 'reject'])->name('validasi.reject');
     Route::get('/posyandu',  [PuskesmasController::class, 'posyandu'])->name('posyandu');
@@ -93,6 +94,8 @@ Route::prefix('puskesmas')->name('puskesmas.')->middleware(['web', 'auth', 'prev
     Route::put('/pengaturan',[PuskesmasController::class, 'updatePengaturan'])->name('pengaturan.update');
     Route::get('/pengaturan/petugas',[PuskesmasController::class, 'petugas'])->name('pengaturan.petugas');
     Route::put('/pengaturan/petugas',[PuskesmasController::class, 'updatePetugas'])->name('pengaturan.petugas.update');
+    Route::post('/posyandu', [PuskesmasController::class, 'storePosyandu'])->name('posyandu.store');
+    Route::post('/posyandu/{id}/kader', [PuskesmasController::class, 'storeKader'])->name('posyandu.kader.store');
 });
 
 // ==========================================================================
@@ -102,7 +105,7 @@ use App\Http\Controllers\Kader\KaderController;
 
 Route::prefix('kader')->middleware(['web', 'auth', 'prevent-back-history', 'role:kader'])->group(function () {
     Route::get('/dashboard', [KaderController::class, 'dashboard'])->name('kader.dashboard');
-    
+
     // Balita CRUD
     Route::get('/balita', [KaderController::class, 'daftarBalita'])->name('balita.index');
     Route::get('/balita/baru', [KaderController::class, 'createBalita'])->name('balita.create');
@@ -111,12 +114,12 @@ Route::prefix('kader')->middleware(['web', 'auth', 'prevent-back-history', 'role
     Route::get('/balita/{id}/edit', [KaderController::class, 'editBalita'])->name('balita.edit');
     Route::put('/balita/{id}', [KaderController::class, 'updateBalita'])->name('balita.update');
     Route::delete('/balita/{id}', [KaderController::class, 'hapusBalita'])->name('balita.destroy');
-    
+
     // Pengukuran CRUD
     Route::get('/pengukuran', [KaderController::class, 'pengukuran'])->name('pengukuran.create');
     Route::post('/pengukuran', [KaderController::class, 'simpanPengukuran'])->name('pengukuran.store');
     Route::put('/pengukuran/{id}', [KaderController::class, 'updatePengukuran'])->name('pengukuran.update');
-    
+
     // Jadwal CRUD
     Route::get('/jadwal', [KaderController::class, 'jadwal'])->name('jadwal.index');
     Route::get('/jadwal/baru', [KaderController::class, 'tambahJadwal'])->name('jadwal.create');
@@ -142,7 +145,7 @@ use App\Http\Controllers\PortalIbu\PortalIbuController;
 Route::prefix('portal-ibu')->name('portal-ibu.')->middleware(['web', 'prevent-back-history', 'signed'])->group(function () {
     // URL mapped to user's requested routes, but Name strictly preserved for UI
     Route::get('/dashboard', [PortalIbuController::class, 'home'])->name('home');
-    Route::get('/profil-anak', [PortalIbuController::class, 'posyandu'])->name('posyandu'); 
+    Route::get('/profil-anak', [PortalIbuController::class, 'posyandu'])->name('posyandu');
     Route::get('/riwayat', [PortalIbuController::class, 'growth'])->name('growth');
     Route::get('/grafik', [PortalIbuController::class, 'nutrition'])->name('nutrition');
 });

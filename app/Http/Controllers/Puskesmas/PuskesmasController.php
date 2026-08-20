@@ -35,7 +35,7 @@ class PuskesmasController extends Controller
     public function dashboard()
     {
         $puskesmasId = $this->getPuskesmasId();
-        
+
         // Retrieve all dashboard statistics from SSOT service
         $stats = $this->statisticsService->getDashboardStats($puskesmasId);
 
@@ -66,37 +66,37 @@ class PuskesmasController extends Controller
     public function validasi(Request $request)
     {
         $puskesmasId = $this->getPuskesmasId();
-        
+
         $filters = [
             'tab' => $request->input('tab', 'pending'),
             'posyandu_id' => $request->input('posyandu_id', '')
         ];
-        
+
         $posyandus = Posyandu::where('puskesmas_id', $puskesmasId)->get(['id', 'nama'])->toArray();
-        
+
         // Base query for pending validations
         $query = Pengukuran::with(['balita.orangTua', 'balita.posyandu', 'kader.user'])
             ->whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
                 $q->where('puskesmas_id', $puskesmasId);
             })
             ->where('status_validasi', 'pending');
-        
+
         if ($filters['posyandu_id']) {
             $query->whereHas('balita.posyandu', function ($q) use ($filters) {
                 $q->where('nama', $filters['posyandu_id']);
             });
         }
-        
+
         // Limit to recent two months
         $recentDate = Carbon::now()->subMonths(2)->startOfMonth();
         $query->where('tanggal_ukur', '>=', $recentDate)
               ->orderBy('tanggal_ukur', 'desc');
-        
+
         $allPengukurans = $query->get();
-        
+
         // Use StatisticsService for aggregated queue stats
         $queueStats = $this->statisticsService->getValidationQueueStats($puskesmasId);
-        
+
         $children = [];
         foreach ($allPengukurans as $p) {
             $statusGizi = strtolower($p->status_gizi);
@@ -117,7 +117,7 @@ class PuskesmasController extends Controller
             if ($filters['tab'] === 'anomali' && !$isAnomali) continue;
             if ($filters['tab'] === 'berisiko' && !$isBerisiko) continue;
             if ($filters['tab'] === 'selesai') continue; // placeholder
-            
+
             $history = Pengukuran::where('balita_id', $p->balita_id)
                 ->where('tanggal_ukur', '<', $p->tanggal_ukur)
                 ->orderBy('tanggal_ukur', 'desc')
@@ -136,7 +136,7 @@ class PuskesmasController extends Controller
                     ];
                 })
                 ->toArray();
-            
+
             $zTbu = (float) $p->z_score_tbu;
             $indicator = 'TB/U';
             $valText = $zTbu;
@@ -146,7 +146,7 @@ class PuskesmasController extends Controller
             $allMeasurements = Pengukuran::where('balita_id', $p->balita_id)
                 ->orderBy('tanggal_ukur', 'asc')
                 ->get();
-                
+
             $chartData = [
                 'labels' => [],
                 'tb' => [],
@@ -154,7 +154,7 @@ class PuskesmasController extends Controller
                 'tbu' => [],
                 'bbu' => []
             ];
-            
+
             foreach ($allMeasurements as $m) {
                 $chartData['labels'][] = $m->umur_bulan . ' bln';
                 $chartData['tb'][] = (float) $m->tinggi_badan;
@@ -193,11 +193,11 @@ class PuskesmasController extends Controller
                 'chartData' => $chartData,
             ];
         }
-        
+
         // Merge queue stats into view data
         $stats = $queueStats;
         $stats['selesai'] = 0; // not used currently
-        
+
         return view('puskesmas.validasi', [
             'children' => $children,
             'filters' => $filters,
@@ -206,10 +206,31 @@ class PuskesmasController extends Controller
         ]);
     }
 
+    public function riwayat($id)
+    {
+        $puskesmasId = $this->getPuskesmasId();
+
+        $currentMeasurement = Pengukuran::with(['balita.posyandu'])
+            ->whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
+                $q->where('puskesmas_id', $puskesmasId);
+            })
+            ->findOrFail($id);
+
+        $measurements = Pengukuran::where('balita_id', $currentMeasurement->balita_id)
+            ->orderBy('tanggal_ukur', 'desc')
+            ->get();
+
+        return view('puskesmas.riwayat-validasi', [
+            'child' => $currentMeasurement->balita,
+            'posyandu' => $currentMeasurement->balita->posyandu->nama ?? '-',
+            'measurements' => $measurements,
+        ]);
+    }
+
     public function approve(Request $request, $id)
     {
         $puskesmasId = $this->getPuskesmasId();
-        
+
         $pengukuran = Pengukuran::whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
             $q->where('puskesmas_id', $puskesmasId);
         })->findOrFail($id);
@@ -218,10 +239,10 @@ class PuskesmasController extends Controller
             'status_validasi' => 'approved',
             'catatan_validator' => $request->input('catatan_validator')
         ]);
-        
+
         // Generate signed URL for Portal Ibu (valid for 7 days to prevent permanent access)
         $signedUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute('portal-ibu.home', now()->addDays(7), ['balita' => $pengukuran->balita_id]);
-        
+
         // Get updated stats to pass back to frontend
         $stats = $this->statisticsService->getValidationQueueStats($puskesmasId);
 
@@ -236,7 +257,7 @@ class PuskesmasController extends Controller
     public function reject(Request $request, $id)
     {
         $puskesmasId = $this->getPuskesmasId();
-        
+
         $pengukuran = Pengukuran::whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
             $q->where('puskesmas_id', $puskesmasId);
         })->findOrFail($id);
@@ -245,7 +266,7 @@ class PuskesmasController extends Controller
             'status_validasi' => 'rejected',
             'catatan_validator' => $request->input('catatan_validator', 'Data tidak valid, mohon perbaiki.')
         ]);
-        
+
         // Get updated stats to pass back to frontend
         $stats = $this->statisticsService->getValidationQueueStats($puskesmasId);
 
@@ -259,7 +280,7 @@ class PuskesmasController extends Controller
     public function balita(Request $request)
     {
         $puskesmasId = $this->getPuskesmasId();
-        
+
         // Eager Loading: Hindari N+1 untuk orangTua, posyandu, dan pengukurans
         $posyandus = Posyandu::where('puskesmas_id', $puskesmasId)->get(['id', 'nama'])->toArray();
 
@@ -282,7 +303,7 @@ class PuskesmasController extends Controller
         if ($posyanduFilter) {
             $query->whereHas('posyandu', function($subq) use ($posyanduFilter) {
                 // Because blade sends posyandu['nama'] in value
-                $subq->where('nama', $posyanduFilter); 
+                $subq->where('nama', $posyanduFilter);
             });
         }
 
@@ -301,7 +322,7 @@ class PuskesmasController extends Controller
 
         $children = $balitas->map(function($b) {
             $posyanduName = $b->posyandu->nama ?? '-';
-            
+
             $formattedPengukurans = $b->pengukurans->sortByDesc('tanggal_ukur')->map(function($p) {
                 return [
                     'id'              => $p->id,
@@ -310,7 +331,7 @@ class PuskesmasController extends Controller
                     'tinggi_badan'    => $p->tinggi_badan,
                     'z_score_bb_u'    => $p->z_score_bbu,
                     'z_score_tb_u'    => $p->z_score_tbu,
-                    'status_gizi'     => $p->status_gizi, 
+                    'status_gizi'     => $p->status_gizi,
                     'status_validasi' => $p->status_validasi,
                     'created_at'      => Carbon::parse($p->tanggal_ukur)->format('Y-m-d H:i:s'),
                 ];
@@ -399,21 +420,21 @@ class PuskesmasController extends Controller
     public function laporan(Request $request)
     {
         $puskesmasId = $this->getPuskesmasId();
-        
+
         $bulan = $request->input('bulan', Carbon::now()->format('m'));
         $tahun = $request->input('tahun', Carbon::now()->format('Y'));
         $posyanduId = $request->input('posyandu_id', 'semua');
-        
+
         $posyandus = Posyandu::where('puskesmas_id', $puskesmasId)->get(['id', 'nama'])->toArray();
-        
+
         // Retrieve base stats via StatisticsService (approved data only)
         $reportStats = $this->statisticsService->getReportStats($puskesmasId, (int)$bulan, (int)$tahun);
-        
+
         // Additional pending validation count (still uses pending status)
         $pendingValidasi = Pengukuran::whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
             $q->where('puskesmas_id', $puskesmasId);
         })->where('status_validasi', 'pending')->count();
-        
+
         $stats = [
             'total_balita' => $reportStats['total'],
             'normal' => $reportStats['normal'],
@@ -421,7 +442,7 @@ class PuskesmasController extends Controller
             'pending_validasi' => $pendingValidasi,
             'sudah_validasi' => $reportStats['total'], // approved count equals total approved for month
         ];
-        
+
         $reports = [];
         if ($posyanduId === 'semua') {
             foreach ($posyandus as $p) {
@@ -445,7 +466,7 @@ class PuskesmasController extends Controller
                 'persentase_hadir' => $stats['total_balita'] > 0 ? round(($reportStats['total']/$stats['total_balita'])*100).'%' : '0%'
             ];
         }
-        
+
         // Distribution already provided by reportStats
         $distTotal = $reportStats['normal'] + $reportStats['risiko'] + $reportStats['stunting'];
         $distribution = [
@@ -454,16 +475,16 @@ class PuskesmasController extends Controller
             'stunting' => $reportStats['risiko'] + $reportStats['stunting'], // treated as risk total
             'pct_stunting' => $distTotal > 0 ? round((($reportStats['risiko'] + $reportStats['stunting']) / $distTotal) * 100) : 0,
         ];
-        
+
         $topBerisiko = $this->dashboardService->getTopBerisiko($puskesmasId, $posyanduId, (int) $bulan, (int) $tahun);
         $trends = $this->dashboardService->getTrend6Bulan($puskesmasId, $posyanduId, (int) $bulan, (int) $tahun);
-        
+
         $filters = [
             'bulan' => str_pad($bulan, 2, '0', STR_PAD_LEFT),
             'tahun' => $tahun,
             'posyandu_id' => $posyanduId
         ];
-        
+
         return view('puskesmas.laporan', compact('stats', 'reports', 'distribution', 'trends', 'filters', 'posyandus', 'topBerisiko'));
     }
 
@@ -484,7 +505,7 @@ class PuskesmasController extends Controller
                 'nama'   => Auth::user()->name ?? 'Admin',
                 'nip'    => '-', // Dihilangkan dari arsitektur V2
                 'email'  => Auth::user()->email ?? '-',
-                'no_hp'  => '-', 
+                'no_hp'  => '-',
             ]
         ]);
     }

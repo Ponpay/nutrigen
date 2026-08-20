@@ -1,0 +1,9 @@
+TODOs
+1. Menjalankan riwayat lengkap
+2. Menjalankan counter di Sidebar pada Antrian Validasi
+4. Memperbaiki counter pada left panel mengikuti filter posyandu
+5. Menghapus titik tiga di daftar kader
+6. Mengaktifkan tombole tambah kader dan posyandu
+
+
+

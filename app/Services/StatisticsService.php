@@ -98,28 +98,35 @@ class StatisticsService
     /**
      * Get validation queue statistics (Antrean Validasi).
      */
-    public function getValidationQueueStats(int $puskesmasId): array
+    public function getValidationQueueStats(int $puskesmasId, ?string $posyanduNama = null): array
     {
-        $pending = Pengukuran::whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
+        $baseQuery = function () use ($puskesmasId, $posyanduNama) {
+            return Pengukuran::whereHas('balita.posyandu', function ($q) use ($puskesmasId, $posyanduNama) {
             $q->where('puskesmas_id', $puskesmasId);
-        })->where('status_validasi', 'pending')->count();
+                if ($posyanduNama) {
+                    $q->where('nama', $posyanduNama);
+                }
+            })->where('status_validasi', 'pending');
+        };
 
-        $anomali = Pengukuran::whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
-            $q->where('puskesmas_id', $puskesmasId);
-        })->where('status_validasi', 'pending')
+        $pending = $baseQuery()->count();
+        $anomali = $baseQuery()
             ->whereIn('status_gizi', ['Risiko', 'Kurang'])
             ->count();
 
-        $berisiko = Pengukuran::whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
-            $q->where('puskesmas_id', $puskesmasId);
-        })->where('status_validasi', 'pending')
+        $berisiko = $baseQuery()
             ->where('status_gizi', 'Stunting')
+            ->count();
+
+        $normal = $baseQuery()
+            ->whereRaw('LOWER(status_gizi) = ?', ['normal'])
             ->count();
 
         return [
             'pending' => $pending,
             'anomali' => $anomali,
-            'berisiko'=> $berisiko,
+            'berisiko' => $berisiko,
+            'normal' => $normal,
         ];
     }
 
@@ -173,7 +180,7 @@ class StatisticsService
     public function getKaderDashboardStats(int $posyanduId, ?int $month = null, ?int $year = null): array
     {
         $totalBalita = Balita::where('posyandu_id', $posyanduId)->count();
-        
+
         $targetMonth = $month ?: Carbon::now()->month;
         $targetYear = $year ?: Carbon::now()->year;
 

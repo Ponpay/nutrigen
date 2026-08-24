@@ -165,10 +165,10 @@ class DashboardService
     /**
      * Mendapatkan data tren gizi 6 bulan terakhir dengan respect terhadap posyandu filter.
      */
-    public function getTrend6Bulan(int $puskesmasId, $posyanduId, int $month, int $year): array
+    public function getTrend6Bulan(int $puskesmasId, $posyanduId, int $month, int $year, int $monthsCount = 6): array
     {
         $trends = [];
-        for ($i = 5; $i >= 0; $i--) {
+        for ($i = $monthsCount - 1; $i >= 0; $i--) {
             $date = Carbon::createFromDate($year, $month, 1)->subMonths($i);
             $m = $date->month;
             $y = $date->year;

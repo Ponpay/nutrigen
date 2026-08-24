@@ -29,25 +29,51 @@
         </a>
     </div>
 
-    <!-- Center: Search Bar (Puskesmas Only) -->
     @if (request()->is('puskesmas*'))
-        <div class="hidden lg:flex flex-1 max-w-xl mx-8">
-            <div
-                class="flex items-center gap-2.5 bg-slate-50 border border-transparent hover:bg-white hover:border-slate-200 px-4 h-11 rounded-xl text-slate-400 text-sm focus-within:bg-white focus-within:border-[#10B981] focus-within:ring-2 focus-within:ring-[#A7F3D0] transition-all duration-300 w-full group shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                    stroke="currentColor" class="w-4 h-4 group-focus-within:text-[#10B981] transition-colors">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-                <input type="text" placeholder="Cari balita, posyandu, kader, atau data..."
-                    class="bg-transparent border-none focus:ring-0 text-slate-900 w-full p-0 text-[13px] font-medium placeholder-[#94A3B8] outline-none">
-                <div class="flex items-center gap-1">
-                    <kbd
-                        class="hidden xl:inline-block font-sans text-[9px] font-bold text-slate-400 bg-white border border-slate-200 rounded px-1.5 py-0.5 shadow-sm">⌘</kbd>
-                    <kbd
-                        class="hidden xl:inline-block font-sans text-[9px] font-bold text-slate-400 bg-white border border-slate-200 rounded px-1.5 py-0.5 shadow-sm">K</kbd>
+        <!-- Center: Desktop Navigation (Puskesmas) -->
+        <div class="hidden lg:flex items-center justify-center flex-1 gap-3 xl:gap-6 h-full px-4">
+            <a href="{{ route('puskesmas.dashboard') }}"
+                class="group relative flex items-center h-full px-2 text-[13px] xl:text-[14px] font-bold transition-all {{ request()->routeIs('puskesmas.dashboard') ? 'text-sky-600' : 'text-slate-500 hover:text-sky-600' }}">
+                Dashboard
+                <div
+                    class="absolute bottom-0 left-0 right-0 h-1 bg-sky-500 rounded-t-full transition-transform duration-300 origin-left {{ request()->routeIs('puskesmas.dashboard') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}">
                 </div>
-            </div>
+            </a>
+            <a href="{{ route('puskesmas.validasi') }}"
+                class="group relative flex items-center h-full px-2 text-[13px] xl:text-[14px] font-bold transition-all {{ request()->routeIs('puskesmas.validasi') ? 'text-sky-600' : 'text-slate-500 hover:text-sky-600' }}">
+                Antrean Validasi
+                <div
+                    class="absolute bottom-0 left-0 right-0 h-1 bg-sky-500 rounded-t-full transition-transform duration-300 origin-left {{ request()->routeIs('puskesmas.validasi') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}">
+                </div>
+            </a>
+            <a href="{{ route('puskesmas.balita') }}"
+                class="group relative flex items-center h-full px-2 text-[13px] xl:text-[14px] font-bold transition-all {{ request()->routeIs('puskesmas.balita') ? 'text-sky-600' : 'text-slate-500 hover:text-sky-600' }}">
+                Data Balita
+                <div
+                    class="absolute bottom-0 left-0 right-0 h-1 bg-sky-500 rounded-t-full transition-transform duration-300 origin-left {{ request()->routeIs('puskesmas.balita') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}">
+                </div>
+            </a>
+            <a href="{{ route('puskesmas.posyandu') ?? '/puskesmas/posyandu' }}"
+                class="group relative flex items-center h-full px-2 text-[13px] xl:text-[14px] font-bold transition-all {{ request()->is('puskesmas/posyandu*') ? 'text-sky-600' : 'text-slate-500 hover:text-sky-600' }}">
+                Posyandu & Kader
+                <div
+                    class="absolute bottom-0 left-0 right-0 h-1 bg-sky-500 rounded-t-full transition-transform duration-300 origin-left {{ request()->is('puskesmas/posyandu*') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}">
+                </div>
+            </a>
+            <a href="{{ route('puskesmas.laporan') ?? '/puskesmas/laporan' }}"
+                class="group relative flex items-center h-full px-2 text-[13px] xl:text-[14px] font-bold transition-all {{ request()->is('puskesmas/laporan*') ? 'text-sky-600' : 'text-slate-500 hover:text-sky-600' }}">
+                Laporan
+                <div
+                    class="absolute bottom-0 left-0 right-0 h-1 bg-sky-500 rounded-t-full transition-transform duration-300 origin-left {{ request()->is('puskesmas/laporan*') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}">
+                </div>
+            </a>
+            <a href="{{ route('puskesmas.pengaturan') ?? '/puskesmas/pengaturan' }}"
+                class="group relative flex items-center h-full px-2 text-[13px] xl:text-[14px] font-bold transition-all {{ request()->is('puskesmas/pengaturan*') ? 'text-sky-600' : 'text-slate-500 hover:text-sky-600' }}">
+                Pengaturan
+                <div
+                    class="absolute bottom-0 left-0 right-0 h-1 bg-sky-500 rounded-t-full transition-transform duration-300 origin-left {{ request()->is('puskesmas/pengaturan*') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' }}">
+                </div>
+            </a>
         </div>
     @else
         <!-- Center: Desktop Navigation (Kader Only) -->
@@ -85,6 +111,15 @@
 
     <!-- Right: Utilities & Profile -->
     <div x-data="{ openNotif: false, openProfile: false }" class="flex items-center gap-2 lg:gap-4 ml-auto">
+
+        @if (request()->is('puskesmas*'))
+            <!-- Search Button (Puskesmas Only) -->
+            <button
+                class="relative w-10 h-10 hidden sm:flex items-center justify-center text-slate-600 hover:text-sky-600 hover:bg-sky-50/80 rounded-xl transition-all duration-200 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+                aria-label="Cari">
+                <i class="ph-bold ph-magnifying-glass text-[20px] group-hover:scale-110 transition-transform"></i>
+            </button>
+        @endif
 
         <!-- Notification Modal Trigger -->
         <button @click="openNotif = true"

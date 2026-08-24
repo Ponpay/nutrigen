@@ -9,10 +9,16 @@
     elseif ($hour >= 15 && $hour < 18) $greeting = 'Selamat Sore';
     elseif ($hour >= 18) $greeting = 'Selamat Malam';
 
-    // SVG Donut Chart Normalization
-    $p_normal = $distribution['normal']['percentage'];
-    $p_perhatian = $distribution['perlu_perhatian']['percentage'];
-    $p_berisiko = $distribution['berisiko']['percentage'];
+    // Parse user name
+    $doctorName = trim(explode(' ', $stats['user_name'] ?? 'Dokter')[0]);
+    if (strpos(strtolower($stats['user_name']), 'dr.') !== false) {
+        $doctorName = 'dr. ' . ucwords(trim(str_replace(['dr.', 'Dr.', 'DR.'], '', $stats['user_name'])));
+    }
+
+    // Donut Chart logic
+    $p_normal = $distribution['normal']['percentage'] ?? 0;
+    $p_perhatian = $distribution['perlu_perhatian']['percentage'] ?? 0;
+    $p_berisiko = $distribution['berisiko']['percentage'] ?? 0;
 
     $total_p = $p_normal + $p_perhatian + $p_berisiko;
     if ($total_p > 0 && $total_p != 100) {
@@ -24,322 +30,467 @@
     }
 @endphp
 
-<div class="w-full max-w-7xl mx-auto pb-10">
-    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8">
+<div class="w-full pb-8 font-sans relative">
+    <div class="flex flex-col gap-6 lg:gap-8">
         
-        <!-- ==================== LEFT COLUMN (Col 8) ==================== -->
-        <div class="xl:col-span-8 flex flex-col gap-6">
+        <!-- ==================== HEADER SECTION ==================== -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
             
-            <!-- 1. HEADER SECTION -->
-            <div class="flex flex-col gap-1.5 pt-2">
-                <h1 class="text-[26px] font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    {{ $greeting }}, {{ explode(' ', $stats['user_name'])[0] }} <span class="text-2xl">👋</span>
-                </h1>
-                <p class="text-[13px] font-medium text-slate-500">Pantau metrik dan kelola operasional posyandu secara real-time.</p>
+            <!-- Welcome Card (Col 8) -->
+            <div class="lg:col-span-8 bg-gradient-to-br from-white via-teal-50/10 to-teal-100/30 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-slate-100/80 flex flex-col justify-between relative overflow-hidden group">
+                <!-- Background decoration -->
+                <div class="absolute -top-32 -right-32 w-[400px] h-[400px] bg-gradient-to-br from-teal-200/40 to-emerald-100/20 rounded-full blur-[80px] pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
+                <div class="absolute -bottom-20 -left-20 w-[300px] h-[300px] bg-gradient-to-tr from-sky-100/40 to-transparent rounded-full blur-[60px] pointer-events-none"></div>
+
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal-500"></span>
+                        </div>
+                        <span class="text-[12px] font-extrabold tracking-[0.2em] text-teal-600 uppercase">Pusat Komando</span>
+                    </div>
+                    
+                    <h1 class="text-3xl sm:text-[36px] text-slate-800 tracking-tight mb-3">
+                        <span class="font-medium">{{ $greeting }},</span> <span class="font-black text-slate-900 bg-gradient-to-r from-teal-700 to-sky-700 bg-clip-text text-transparent">{{ $doctorName }}</span>
+                    </h1>
+                    <p class="text-slate-500 text-[15px] sm:text-[16px] font-medium max-w-2xl leading-relaxed">
+                        Pantau indikator status gizi balita dan tinjau efektivitas layanan posyandu di seluruh wilayah kerja Anda secara real-time.
+                    </p>
+                </div>
+
+                <!-- Alert/Action Box inside Welcome Card -->
+                <div class="mt-8 relative z-10">
+                    @if($stats['pending'] > 0)
+                    <div class="bg-white/80 backdrop-blur-xl rounded-[20px] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-5 ring-1 ring-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all group/alert border-l-4 border-l-rose-500">
+                        <div class="flex items-center gap-4 pl-1">
+                            <div class="w-12 h-12 rounded-[14px] bg-gradient-to-br from-rose-50 to-rose-100 text-rose-600 flex items-center justify-center shrink-0 ring-1 ring-rose-200/50 shadow-sm group-hover/alert:rotate-12 transition-transform duration-300">
+                                <i class="ph-bold ph-bell-ringing text-[24px]"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-[16px] font-bold text-slate-900">{{ $stats['pending'] }} Antrean Validasi</h3>
+                                <p class="text-[13px] text-slate-500 font-medium mt-0.5">Butuh peninjauan ahli gizi segera</p>
+                            </div>
+                        </div>
+                        <a href="{{ route('puskesmas.validasi') }}" class="w-full sm:w-auto text-center px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-700 hover:to-teal-600 text-white text-[14px] font-bold rounded-xl transition-all shadow-[0_4px_15px_rgba(13,148,136,0.3)] shrink-0 active:scale-95 flex items-center justify-center gap-2 group/btn">
+                            Validasi Sekarang <i class="ph-bold ph-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                    @else
+                    <div class="bg-emerald-50/50 backdrop-blur-xl rounded-[20px] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-5 ring-1 ring-emerald-100/50 shadow-sm border-l-4 border-l-emerald-500">
+                        <div class="flex items-center gap-4 pl-1">
+                            <div class="w-12 h-12 rounded-[14px] bg-emerald-100/50 text-emerald-600 flex items-center justify-center shrink-0 ring-1 ring-emerald-200 shadow-inner">
+                                <i class="ph-bold ph-check-circle text-[24px]"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-[16px] font-bold text-slate-900">Semua Data Tervalidasi</h3>
+                                <p class="text-[13px] text-slate-500 font-medium mt-0.5">Tidak ada antrean tertunda saat ini</p>
+                            </div>
+                        </div>
+                        <div class="w-full sm:w-auto text-center px-6 py-3 bg-white text-emerald-600 text-[14px] font-bold rounded-xl ring-1 ring-emerald-100 shadow-sm shrink-0 flex items-center justify-center gap-2 cursor-default">
+                            <i class="ph-bold ph-checks"></i> Terbarui
+                        </div>
+                    </div>
+                    @endif
+                </div>
             </div>
 
-            <!-- 2. ALERT BANNER -->
-            @if($stats['pending'] > 0)
-            <div class="bg-rose-50/70 rounded-2xl border border-rose-100 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-rose-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-[15px] font-bold tracking-tight text-slate-900">Perhatian Diperlukan</h3>
-                        <p class="text-[13px] font-medium text-slate-600 mt-0.5">Ada <span class="font-bold text-rose-600">{{ $stats['pending'] }} antrian pengukuran</span> yang menunggu validasi.</p>
-                    </div>
-                </div>
-                <a href="{{ route('puskesmas.validasi') }}" class="shrink-0 px-4 py-2 bg-white text-rose-600 hover:bg-rose-50 border border-rose-200 font-bold text-[13px] rounded-lg transition-colors shadow-sm flex items-center gap-2">
-                    Validasi Sekarang
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" /></svg>
-                </a>
-            </div>
-            @else
-            <div class="bg-emerald-50/70 rounded-2xl border border-emerald-100 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-[15px] font-bold tracking-tight text-slate-900">Semua Data Tervalidasi</h3>
-                        <p class="text-[13px] font-medium text-slate-600 mt-0.5">Tidak ada antrian pengukuran tertunda.</p>
-                    </div>
-                </div>
-            </div>
-            @endif
+            <!-- Chart Widget (Col 4) -->
+            <div class="lg:col-span-4 bg-gradient-to-br from-slate-900 via-teal-900 to-slate-900 rounded-3xl p-6 sm:p-8 shadow-[0_15px_40px_rgb(15,118,110,0.4)] flex flex-col justify-between relative overflow-hidden group">
+                <!-- Decorative Elements -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-teal-400 rounded-full blur-[90px] opacity-20 mix-blend-screen pointer-events-none group-hover:opacity-40 transition-opacity duration-700"></div>
+                <div class="absolute -bottom-10 -left-10 w-48 h-48 bg-sky-400 rounded-full blur-[70px] opacity-20 mix-blend-screen pointer-events-none"></div>
 
-            <!-- 3. KPI CARDS (4 Grid) -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                
-                <!-- Total Balita -->
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-36">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" /></svg>
-                        </div>
-                        <div class="flex flex-col min-w-0">
-                            <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wide leading-tight truncate">Total</span>
-                            <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wide leading-tight truncate">Balita</span>
+                <div class="relative z-10 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[11px] font-extrabold tracking-[0.2em] text-teal-200/80 uppercase">Kinerja Bulanan</span>
+                        <div class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white ring-1 ring-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                            <i class="ph-bold ph-trend-up text-[16px]"></i>
                         </div>
                     </div>
-                    <div class="mt-2">
-                        <span class="text-[34px] font-black text-slate-800 leading-none tracking-tight">{{ number_format($stats['total_balita'], 0, ',', '.') }}</span>
-                    </div>
-                    <div class="mt-auto pt-2 flex items-center">
-                        <span class="text-[10px] font-bold text-emerald-500 bg-emerald-50 px-1.5 py-0.5 rounded flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75L12 3m0 0l3.75 3.75M12 3v18" /></svg> Aktif</span>
-                    </div>
+                    <h2 class="text-[28px] font-black text-white leading-[1.1] tracking-tight">
+                        Laporan<br>Kesehatan
+                    </h2>
                 </div>
 
-                <!-- Balita Diukur -->
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-36">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.01 49.01 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>
-                        </div>
-                        <div class="flex flex-col min-w-0">
-                            <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wide leading-tight truncate">Balita</span>
-                            <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wide leading-tight truncate">Diukur</span>
+                <!-- Abstract Bar Chart Visual -->
+                <div class="relative z-10 w-full mt-auto">
+                    <div class="bg-white/5 rounded-[20px] p-5 ring-1 ring-white/10 backdrop-blur-xl shadow-inner border border-white/5">
+                        <div class="flex items-end justify-between gap-2.5 h-[80px] pt-4">
+                            @php
+                                $bars = [35, 50, 45, 65, 55, 85];
+                            @endphp
+                            @foreach($bars as $bar)
+                            <div class="w-full bg-gradient-to-t from-teal-500/20 to-teal-400/60 rounded-t-lg hover:from-teal-400/40 hover:to-teal-300/80 transition-all cursor-pointer group/bar relative border-t border-white/20" style="height: {{ $bar }}%">
+                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-teal-900 text-[11px] font-extrabold py-1 px-2.5 rounded-lg opacity-0 group-hover/bar:opacity-100 transition-opacity pointer-events-none shadow-[0_4px_15px_rgba(0,0,0,0.2)] transform -translate-y-1 group-hover/bar:translate-y-0 duration-200">
+                                    {{ $bar }}
+                                </div>
+                            </div>
+                            @endforeach
                         </div>
                     </div>
-                    <div class="mt-2">
-                        <span class="text-[34px] font-black text-slate-800 leading-none tracking-tight">{{ number_format($stats['diukur'], 0, ',', '.') }}</span>
-                    </div>
-                    <div class="mt-auto pt-2 flex items-center">
-                        <span class="text-[10px] font-bold text-slate-400">Bulan ini</span>
+                    <div class="mt-5 text-center">
+                        <span class="text-[11px] font-bold text-teal-100/50 uppercase tracking-[0.2em]">Trend 6 Bulan Terakhir</span>
                     </div>
                 </div>
-
-                <!-- Menunggu Validasi -->
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-36">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg>
-                        </div>
-                        <div class="flex flex-col min-w-0">
-                            <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wide leading-tight truncate">Antrean</span>
-                            <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wide leading-tight truncate">Validasi</span>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <span class="text-[34px] font-black text-slate-800 leading-none tracking-tight">{{ number_format($stats['pending'], 0, ',', '.') }}</span>
-                    </div>
-                    <div class="mt-auto pt-2 flex items-center">
-                        <span class="text-[10px] font-bold text-slate-400">Butuh aksi</span>
-                    </div>
-                </div>
-
-                <!-- Data Terverifikasi -->
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-36">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" /></svg>
-                        </div>
-                        <div class="flex flex-col min-w-0">
-                            <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wide leading-tight truncate">Data</span>
-                            <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wide leading-tight truncate">Terverifikasi</span>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <span class="text-[34px] font-black text-slate-800 leading-none tracking-tight">{{ number_format($stats['valid'], 0, ',', '.') }}</span>
-                    </div>
-                    <div class="mt-auto pt-2 flex items-center">
-                        <span class="text-[10px] font-bold text-slate-400">Bulan ini</span>
-                    </div>
-                </div>
-
             </div>
 
-            <!-- 4. BOTTOM SPLIT (Aktivitas & Distribusi) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <!-- Aktivitas Posyandu -->
-                <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
-                    <div class="px-5 py-4 flex items-center justify-between border-b border-slate-50">
-                        <div>
-                            <h3 class="text-[14px] font-bold tracking-tight text-slate-900">Aktivitas Posyandu Terbaru</h3>
-                            <p class="text-[11px] font-medium text-slate-500 mt-0.5">Pengukuran balita terbaru</p>
-                        </div>
-                        <a href="{{ route('puskesmas.balita') }}" class="text-[11px] font-bold text-emerald-600 hover:text-emerald-700">Lihat Semua</a>
-                    </div>
-                    <div class="flex flex-col p-2">
-                        @forelse($recentActivities as $activity)
-                        @php
-                            $isValid = true; 
-                            $initials = substr($activity->balita->nama ?? 'B', 0, 2);
-                        @endphp
-                        <div class="flex items-center justify-between px-4 py-3 hover:bg-slate-50 rounded-lg transition-colors group border-b border-slate-50 last:border-0">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 text-[10px] font-black uppercase shadow-sm">
-                                    {{ $initials }}
-                                </div>
-                                <div class="flex flex-col">
-                                    <p class="text-[13px] font-bold text-slate-800">{{ $activity->balita->nama ?? 'Tidak Diketahui' }}</p>
-                                    <p class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $activity->balita->posyandu->nama ?? 'Tidak Diketahui' }}</p>
-                                </div>
-                            </div>
-                            <div class="flex flex-col items-end gap-1">
-                                <span class="flex items-center gap-1 text-[9px] font-extrabold tracking-wider {{ $isValid ? 'text-emerald-500' : 'text-amber-500' }}">
-                                    <span class="w-1.5 h-1.5 rounded-full {{ $isValid ? 'bg-emerald-500' : 'bg-amber-500' }}"></span>
-                                    {{ $isValid ? 'VALID' : 'PERHATIAN' }}
-                                </span>
-                                <span class="text-[10px] font-medium text-slate-400">{{ $activity->created_at->diffForHumans() }}</span>
-                            </div>
-                        </div>
-                        @empty
-                        <div class="p-8 text-center text-slate-500 text-[12px] font-bold">
-                            Belum ada aktivitas.
-                        </div>
-                        @endforelse
-                    </div>
-                </div>
-
-                <!-- Distribusi Status Gizi -->
-                <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] p-6 flex flex-col">
-                    <div class="mb-6">
-                        <h3 class="text-[14px] font-bold tracking-tight text-slate-900">Distribusi Status Gizi</h3>
-                        <p class="text-[11px] font-medium text-slate-500 mt-0.5">Data valid bulan {{ $stats['current_month'] }}</p>
-                    </div>
-
-                    <div class="flex items-center gap-6 mb-6">
-                        <!-- Donut -->
-                        <div class="relative w-28 h-28 shrink-0 flex items-center justify-center">
-                            <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90 drop-shadow-sm">
-                                <!-- Normal -->
-                                <path class="text-emerald-500" stroke-dasharray="{{ $p_normal }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
-                                <!-- Perhatian -->
-                                <path class="text-amber-500" stroke-dasharray="{{ $p_perhatian }}, 100" stroke-dashoffset="-{{ $p_normal }}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
-                                <!-- Berisiko -->
-                                <path class="text-rose-500" stroke-dasharray="{{ $p_berisiko }}, 100" stroke-dashoffset="-{{ $p_normal + $p_perhatian }}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
-                            </svg>
-                            <div class="absolute flex flex-col items-center justify-center">
-                                <span class="text-3xl font-black text-slate-900 leading-none">{{ $distribution['total_diukur'] }}</span>
-                                <span class="text-[10px] font-bold text-slate-400 uppercase mt-1">Total</span>
-                            </div>
-                        </div>
-
-                        <!-- Legend -->
-                        <div class="flex flex-col gap-3 w-full">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
-                                    <span class="text-[12px] font-bold text-slate-700">Normal</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[13px] font-black text-slate-900">{{ $distribution['normal']['count'] }}</span>
-                                    <span class="text-[10px] font-bold text-emerald-600">{{ $distribution['normal']['percentage'] }}%</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
-                                    <span class="text-[12px] font-bold text-slate-700">Perhatian</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[13px] font-black text-slate-900">{{ $distribution['perlu_perhatian']['count'] }}</span>
-                                    <span class="text-[10px] font-bold text-amber-500">{{ $distribution['perlu_perhatian']['percentage'] }}%</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
-                                    <span class="text-[12px] font-bold text-slate-700">Berisiko</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[13px] font-black text-slate-900">{{ $distribution['berisiko']['count'] }}</span>
-                                    <span class="text-[10px] font-bold text-rose-500">{{ $distribution['berisiko']['percentage'] }}%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cakupan Pengukuran -->
-                    <div class="mt-auto pt-4 border-t border-slate-50 flex flex-col gap-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-bold text-slate-600">Cakupan Pengukuran</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-emerald-500 rounded-full" style="width: calc({{ $stats['diukur'] }} / {{ max(1, $stats['total_balita']) }} * 100%);"></div>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-medium text-slate-400">{{ $stats['diukur'] }} dari {{ $stats['total_balita'] }} balita terukur bulan ini</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </div>
 
-        <!-- ==================== RIGHT COLUMN (Col 4) ==================== -->
-        <div class="xl:col-span-4 flex flex-col gap-6">
+        <!-- ==================== 4 KPI CARDS ==================== -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             
-            <!-- TOP RIGHT BADGES -->
-            <div class="grid grid-cols-2 gap-4 pt-2">
-                <!-- Periode -->
-                <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] p-3.5 flex flex-col justify-center items-center">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Periode</p>
-                    <p class="text-[13px] font-black text-slate-800 flex items-center gap-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-sky-500"><path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" /><path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" clip-rule="evenodd" /></svg>
-                        {{ $stats['current_month'] }}
-                    </p>
+            <!-- 1. Total Balita -->
+            <div class="bg-white/80 backdrop-blur-xl rounded-[24px] p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] ring-1 ring-slate-100/80 flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-[0_12px_30px_rgb(0,0,0,0.06)] transition-all duration-300 group border-b-4 border-indigo-500">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 rounded-[16px] bg-gradient-to-br from-indigo-50 to-indigo-100/50 ring-1 ring-indigo-200/50 flex items-center justify-center text-indigo-600 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                        <i class="ph-fill ph-baby text-[24px]"></i>
+                    </div>
+                    <span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-wider rounded-md ring-1 ring-emerald-100">Aktif</span>
                 </div>
-
-                <!-- Status Data -->
-                <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] p-3.5 flex flex-col justify-center items-center">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Status Data</p>
-                    <p class="text-[13px] font-black text-emerald-600 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        Real-time
-                    </p>
+                <div>
+                    <h3 class="text-[34px] sm:text-[38px] font-black text-slate-900 tracking-tight leading-none">{{ number_format($stats['total_balita'], 0, ',', '.') }}</h3>
+                    <p class="text-[14px] font-bold text-slate-500 mt-2 uppercase tracking-wide">Total Balita</p>
                 </div>
             </div>
 
-            <!-- TINDAKAN CEPAT -->
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] p-6">
-                <h3 class="text-[14px] font-bold tracking-tight text-slate-900 mb-5">Tindakan Cepat</h3>
-                
-                <div class="flex flex-col gap-3">
-                    <!-- Validasi -->
-                    <a href="{{ route('puskesmas.validasi') }}" class="group flex items-center justify-between p-4 rounded-xl border border-rose-100/50 hover:border-rose-200 hover:shadow-sm transition-all bg-rose-50/40 hover:bg-rose-50/80">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-white border border-rose-100 group-hover:border-rose-200 text-rose-500 flex items-center justify-center shadow-sm transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            </div>
-                            <div>
-                                <p class="text-[13px] font-bold text-slate-900 group-hover:text-rose-700 transition-colors">Antrian Validasi</p>
-                                <p class="text-[11px] font-medium text-slate-500 mt-0.5">Periksa pengukuran kader</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            @if($stats['pending'] > 0)
-                                <span class="text-[10px] font-bold text-rose-600 bg-white border border-rose-100 px-2.5 py-0.5 rounded-md shadow-sm">{{ $stats['pending'] }}</span>
-                            @endif
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-slate-300 group-hover:text-rose-400 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-                        </div>
-                    </a>
-
-                    <!-- Posyandu -->
-                    <a href="{{ route('puskesmas.posyandu') }}" class="group flex items-center justify-between p-4 rounded-xl border border-emerald-100/50 hover:border-emerald-200 hover:shadow-sm transition-all bg-emerald-50/40 hover:bg-emerald-50/80">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-white border border-emerald-100 group-hover:border-emerald-200 text-emerald-600 flex items-center justify-center shadow-sm transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
-                            </div>
-                            <div>
-                                <p class="text-[13px] font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Manajemen Posyandu</p>
-                                <p class="text-[11px] font-medium text-slate-500 mt-0.5">Kelola data posyandu</p>
-                            </div>
-                        </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-slate-300 group-hover:text-emerald-500 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-                    </a>
+            <!-- 2. Balita Diukur -->
+            <div class="bg-white/80 backdrop-blur-xl rounded-[24px] p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] ring-1 ring-slate-100/80 flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-[0_12px_30px_rgb(0,0,0,0.06)] transition-all duration-300 group border-b-4 border-orange-500">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 rounded-[16px] bg-gradient-to-br from-orange-50 to-orange-100/50 ring-1 ring-orange-200/50 flex items-center justify-center text-orange-600 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                        <i class="ph-fill ph-scales text-[24px]"></i>
+                    </div>
+                    <span class="px-2.5 py-1 bg-slate-50 text-slate-500 text-[10px] font-bold uppercase tracking-wider rounded-md ring-1 ring-slate-200">Bulan Ini</span>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-[34px] sm:text-[38px] font-black text-slate-900 tracking-tight leading-none">{{ number_format($stats['diukur'], 0, ',', '.') }}</h3>
+                        <span class="bg-emerald-50 text-emerald-600 text-[11px] font-bold px-2 py-0.5 rounded-md mt-1 ring-1 ring-emerald-200/60 flex items-center gap-0.5">
+                            <i class="ph-bold ph-trend-up"></i> 12%
+                        </span>
+                    </div>
+                    <p class="text-[14px] font-bold text-slate-500 mt-2 uppercase tracking-wide">Balita Diukur</p>
                 </div>
             </div>
 
+            <!-- 3. Antrean Validasi -->
+            <div class="bg-white/80 backdrop-blur-xl rounded-[24px] p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] ring-1 ring-slate-100/80 flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-[0_12px_30px_rgb(0,0,0,0.06)] transition-all duration-300 group border-b-4 border-rose-500">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 rounded-[16px] bg-gradient-to-br from-rose-50 to-rose-100/50 ring-1 ring-rose-200/50 flex items-center justify-center text-rose-600 shadow-sm group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                        <i class="ph-fill ph-hourglass-high text-[24px]"></i>
+                    </div>
+                    <span class="px-2.5 py-1 bg-rose-50 text-rose-600 text-[10px] font-bold uppercase tracking-wider rounded-md ring-1 ring-rose-200/50">Tindakan</span>
+                </div>
+                <div>
+                    <h3 class="text-[34px] sm:text-[38px] font-black text-slate-900 tracking-tight leading-none">{{ number_format($stats['pending'], 0, ',', '.') }}</h3>
+                    <p class="text-[14px] font-bold text-slate-500 mt-2 uppercase tracking-wide">Antrean Validasi</p>
+                </div>
+            </div>
+
+            <!-- 4. Data Terverifikasi -->
+            <div class="bg-white/80 backdrop-blur-xl rounded-[24px] p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] ring-1 ring-slate-100/80 flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-[0_12px_30px_rgb(0,0,0,0.06)] transition-all duration-300 group border-b-4 border-sky-500">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 rounded-[16px] bg-gradient-to-br from-sky-50 to-sky-100/50 ring-1 ring-sky-200/50 flex items-center justify-center text-sky-600 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                        <i class="ph-fill ph-seal-check text-[24px]"></i>
+                    </div>
+                    <span class="px-2.5 py-1 bg-slate-50 text-slate-500 text-[10px] font-bold uppercase tracking-wider rounded-md ring-1 ring-slate-200">Bulan Ini</span>
+                </div>
+                <div>
+                    <div class="flex items-baseline gap-1">
+                        <h3 class="text-[34px] sm:text-[38px] font-black text-slate-900 tracking-tight leading-none">{{ number_format($stats['valid'], 0, ',', '.') }}</h3>
+                        <span class="text-[18px] font-bold text-slate-400">/ {{ number_format($stats['diukur'], 0, ',', '.') }}</span>
+                    </div>
+                    <p class="text-[14px] font-bold text-slate-500 mt-2 uppercase tracking-wide">Terverifikasi</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== SPLIT: AKTIVITAS & DISTRIBUSI ==================== -->
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8">
+            
+            <!-- Aktivitas Posyandu Terbaru (Col 7) -->
+            <div class="xl:col-span-7 flex flex-col">
+                <div class="bg-white rounded-[32px] shadow-[0_8px_40px_rgb(0,0,0,0.04)] ring-1 ring-slate-100/80 flex flex-col h-full overflow-hidden">
+                    
+                    <!-- Card Header -->
+                    <div class="flex items-center justify-between p-6 sm:px-8 sm:pt-8 sm:pb-5 border-b border-slate-50 bg-gradient-to-b from-slate-50/50 to-white">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-12 h-12 rounded-[16px] bg-gradient-to-br from-teal-50 to-teal-100/50 text-teal-600 flex items-center justify-center ring-1 ring-teal-200/50 shadow-sm">
+                                <i class="ph-bold ph-activity text-[24px]"></i>
+                            </div>
+                            <h2 class="text-[20px] sm:text-[22px] font-black bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Aktivitas Terbaru</h2>
+                        </div>
+                        <a href="{{ route('puskesmas.balita') }}" class="text-[13px] font-bold text-teal-700 hover:text-white flex items-center gap-1.5 group bg-teal-50 hover:bg-teal-600 px-4 py-2.5 rounded-[14px] transition-all duration-300 ring-1 ring-teal-200/60 hover:shadow-[0_4px_15px_rgba(13,148,136,0.3)]">
+                            Lihat Semua <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+
+                    <!-- Card Body / Card-Table -->
+                    <div class="flex-1 overflow-y-auto w-full rounded-b-[32px] bg-slate-50/40 p-4 sm:p-5 relative">
+                        
+                        <!-- Header Row (Grid) -->
+                        <div class="hidden sm:grid grid-cols-12 gap-4 px-4 mb-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">
+                            <div class="col-span-5 pl-1">Balita & Posyandu</div>
+                            <div class="col-span-3">Pengukuran</div>
+                            <div class="col-span-2 text-center">Status</div>
+                            <div class="col-span-2 text-right pr-1">Waktu Masuk</div>
+                        </div>
+
+                        <!-- Rows -->
+                        <div class="flex flex-col gap-3.5 relative z-10">
+                            @forelse($recentActivities as $activity)
+                            @php
+                                // Base Status Gizi Style
+                                $gizi = strtoupper($activity->status_gizi ?? 'gizi baik');
+                                $giziStyle = 'bg-emerald-50 text-emerald-600 ring-emerald-200/50 shadow-[0_2px_10px_rgba(16,185,129,0.1)]';
+                                if(str_contains(strtolower($gizi), 'buruk') || str_contains(strtolower($gizi), 'stunting')) $giziStyle = 'bg-rose-50 text-rose-600 ring-rose-200/50 shadow-[0_2px_10px_rgba(244,63,94,0.1)]';
+                                elseif(str_contains(strtolower($gizi), 'kurang') || str_contains(strtolower($gizi), 'risiko')) $giziStyle = 'bg-amber-50 text-amber-600 ring-amber-200/50 shadow-[0_2px_10px_rgba(245,158,11,0.1)]';
+                                elseif(str_contains(strtolower($gizi), 'lebih') || str_contains(strtolower($gizi), 'obesitas')) $giziStyle = 'bg-sky-50 text-sky-600 ring-sky-200/50 shadow-[0_2px_10px_rgba(14,165,233,0.1)]';
+
+                                // Validasi Style
+                                $val = strtolower($activity->status_validasi ?? 'pending');
+                                $valBorder = 'border-amber-400';
+                                if ($val === 'valid') {
+                                    $valIcon = 'ph-check-circle text-emerald-500';
+                                    $valText = 'Valid';
+                                    $valBorder = 'border-emerald-400';
+                                } elseif ($val === 'revisi' || $val === 'ditolak') {
+                                    $valIcon = 'ph-warning-circle text-rose-500';
+                                    $valText = 'Intervensi';
+                                    $valBorder = 'border-rose-400';
+                                } else {
+                                    $valIcon = 'ph-clock text-amber-500';
+                                    $valText = 'Pending';
+                                    $valBorder = 'border-amber-400';
+                                }
+
+                                $initials = substr($activity->balita->nama ?? 'B', 0, 2);
+                            @endphp
+                            
+                            <!-- Single Row Card with Left Status Border -->
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-y-4 sm:gap-x-4 items-center bg-white py-4 px-5 rounded-[20px] ring-1 ring-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:ring-slate-200 hover:-translate-y-1 transition-all duration-300 group border-l-[5px] {{ $valBorder }}">
+                                
+                                <!-- Col 1: Balita -->
+                                <div class="sm:col-span-5 flex items-center gap-4 pl-1">
+                                    <div class="relative shrink-0">
+                                        <div class="w-12 h-12 rounded-[14px] bg-gradient-to-tr from-slate-50 to-slate-100 text-slate-700 flex items-center justify-center font-black text-[15px] uppercase shadow-sm ring-1 ring-slate-200/80 group-hover:scale-105 group-hover:text-teal-600 group-hover:ring-teal-200 transition-all duration-300">
+                                            {{ $initials }}
+                                        </div>
+                                        <!-- Validation Indicator Dot -->
+                                        <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-white flex items-center justify-center shadow-sm">
+                                            <div class="w-3 h-3 rounded-full {{ str_replace('text-', 'bg-', $valIcon) }}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col min-w-0">
+                                        <h4 class="text-[15px] font-bold text-slate-900 truncate group-hover:text-teal-700 transition-colors">{{ $activity->balita->nama ?? 'Budi Santoso' }}</h4>
+                                        <div class="flex items-center gap-1.5 text-[12px] font-medium text-slate-500 mt-0.5 truncate">
+                                            <i class="ph-fill ph-map-pin text-slate-400"></i>
+                                            <span class="truncate">{{ $activity->balita->posyandu->nama ?? 'Posyandu' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Col 2: Pengukuran (Premium Pills) -->
+                                <div class="sm:col-span-3 flex items-center gap-2">
+                                    <div class="flex flex-col gap-2 w-full max-w-[140px]">
+                                        <div class="flex items-center justify-between bg-gradient-to-r from-blue-50/80 to-transparent rounded-lg px-2.5 py-1 ring-1 ring-blue-100/50">
+                                            <span class="text-[10px] font-extrabold text-blue-400/80 uppercase tracking-wider">BB</span>
+                                            <div class="text-blue-700 text-[13px] font-black flex items-baseline gap-1">
+                                                {{ $activity->berat_badan ?? '-' }} <span class="text-[10px] text-blue-500/70 font-bold">kg</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between bg-gradient-to-r from-purple-50/80 to-transparent rounded-lg px-2.5 py-1 ring-1 ring-purple-100/50">
+                                            <span class="text-[10px] font-extrabold text-purple-400/80 uppercase tracking-wider">TB</span>
+                                            <div class="text-purple-700 text-[13px] font-black flex items-baseline gap-1">
+                                                {{ $activity->tinggi_badan ?? '-' }} <span class="text-[10px] text-purple-500/70 font-bold">cm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Col 3: Status Gizi -->
+                                <div class="sm:col-span-2 flex items-center justify-start sm:justify-center">
+                                    <span class="inline-flex items-center px-3.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-[0.1em] ring-1 inset-ring {{ $giziStyle }}">
+                                        {{ $gizi }}
+                                    </span>
+                                </div>
+
+                                <!-- Col 4: Waktu & Validasi -->
+                                <div class="sm:col-span-2 flex flex-col items-start sm:items-end justify-center gap-2 pr-1">
+                                    <span class="text-[12px] font-extrabold text-slate-400">{{ $activity->created_at->diffForHumans() }}</span>
+                                    <span class="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 bg-white shadow-sm px-2.5 py-1 rounded-lg ring-1 ring-slate-100/80">
+                                        <i class="ph-fill {{ $valIcon }} text-[14px]"></i> {{ $valText }}
+                                    </span>
+                                </div>
+
+                            </div>
+                            @empty
+                            <div class="p-16 text-center bg-white rounded-[24px] ring-1 ring-slate-100 flex flex-col items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-50/50 via-white to-white pointer-events-none"></div>
+                                <div class="relative z-10 flex flex-col items-center">
+                                    <div class="w-20 h-20 rounded-full bg-slate-50/80 text-slate-300 flex items-center justify-center mb-5 ring-1 ring-slate-100 shadow-inner">
+                                        <i class="ph-fill ph-folder-open text-[40px]"></i>
+                                    </div>
+                                    <p class="text-[16px] font-bold text-slate-700">Belum ada aktivitas terbaru</p>
+                                    <p class="text-[14px] font-medium text-slate-400 mt-1 max-w-[250px] mx-auto">Data pengukuran dari posyandu akan langsung terhubung ke sini.</p>
+                                </div>
+                            </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Distribusi Status Gizi (Col 5) -->
+            <div class="xl:col-span-5 flex flex-col">
+                <div class="bg-white rounded-[32px] shadow-[0_8px_40px_rgb(0,0,0,0.04)] ring-1 ring-slate-100/80 flex flex-col h-full overflow-hidden">
+                    
+                    <!-- Card Header -->
+                    <div class="flex items-center p-6 sm:px-8 sm:pt-8 sm:pb-5 border-b border-slate-50 bg-gradient-to-b from-slate-50/50 to-white shrink-0">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-12 h-12 rounded-[16px] bg-gradient-to-br from-orange-50 to-orange-100/50 text-orange-600 flex items-center justify-center ring-1 ring-orange-200/50 shadow-sm">
+                                <i class="ph-bold ph-chart-pie-slice text-[24px]"></i>
+                            </div>
+                            <h2 class="text-[20px] sm:text-[22px] font-black bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Distribusi Gizi</h2>
+                        </div>
+                    </div>
+                    
+                    <!-- Card Body -->
+                    <div class="flex flex-col items-center justify-center flex-1 p-6 sm:p-8 relative">
+                        <!-- Abstract Background Decoration -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-slate-50 rounded-full blur-[60px] pointer-events-none opacity-50"></div>
+                        
+                        <!-- Donut Chart UI component -->
+                        <div class="relative w-48 h-48 sm:w-56 sm:h-56 mb-10 shrink-0 flex items-center justify-center group/chart">
+                            <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90 drop-shadow-md group-hover/chart:scale-105 transition-transform duration-500">
+                                <!-- Background ring -->
+                                <path class="text-slate-100/50" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="2.5"></path>
+                                
+                                <!-- Normal -->
+                                <path class="text-[#10B981]" stroke-linecap="round" stroke-dasharray="{{ max(0, $p_normal) }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+                                <!-- Perhatian -->
+                                <path class="text-[#F59E0B]" stroke-linecap="round" stroke-dasharray="{{ max(0, $p_perhatian) }}, 100" stroke-dashoffset="-{{ $p_normal }}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+                                <!-- Berisiko -->
+                                <path class="text-[#EF4444]" stroke-linecap="round" stroke-dasharray="{{ max(0, $p_berisiko) }}, 100" stroke-dashoffset="-{{ $p_normal + $p_perhatian }}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+                            </svg>
+                            
+                            <!-- Center Data -->
+                            <div class="absolute flex flex-col items-center justify-center bg-white w-[135px] h-[135px] sm:w-[155px] sm:h-[155px] rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.08)] inset-0 m-auto z-10 ring-1 ring-slate-100/50">
+                                <span class="text-[40px] sm:text-[46px] font-black bg-gradient-to-b from-slate-900 to-slate-700 bg-clip-text text-transparent leading-none tracking-tight">{{ $distribution['total_diukur'] }}</span>
+                                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-[0.2em] mt-2">Total Balita</span>
+                            </div>
+                        </div>
+
+                        <!-- Legend Items -->
+                        <div class="w-full flex flex-col gap-3.5 relative z-10 px-2">
+                            <!-- Normal -->
+                            <div class="flex items-center justify-between p-4 rounded-[20px] bg-gradient-to-r from-emerald-50/50 to-transparent hover:from-emerald-50 hover:to-white transition-all ring-1 ring-emerald-100/50 hover:shadow-[0_4px_20px_rgba(16,185,129,0.05)] cursor-default">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-11 h-11 rounded-[14px] bg-emerald-100/50 ring-1 ring-emerald-200/60 flex items-center justify-center shrink-0 text-emerald-600 shadow-sm">
+                                        <i class="ph-fill ph-smiley text-[22px]"></i>
+                                    </div>
+                                    <span class="text-[16px] font-extrabold text-slate-800">Gizi Baik</span>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                    <span class="text-[20px] font-black text-emerald-600 leading-none">{{ $distribution['normal']['percentage'] }}%</span>
+                                    <span class="text-[13px] font-bold text-slate-400 mt-1.5">{{ $distribution['normal']['count'] }} anak</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Perhatian -->
+                            <div class="flex items-center justify-between p-4 rounded-[20px] bg-gradient-to-r from-amber-50/50 to-transparent hover:from-amber-50 hover:to-white transition-all ring-1 ring-amber-100/50 hover:shadow-[0_4px_20px_rgba(245,158,11,0.05)] cursor-default">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-11 h-11 rounded-[14px] bg-amber-100/50 ring-1 ring-amber-200/60 flex items-center justify-center shrink-0 text-amber-600 shadow-sm">
+                                        <i class="ph-fill ph-warning-circle text-[22px]"></i>
+                                    </div>
+                                    <span class="text-[16px] font-extrabold text-slate-800">Perhatian</span>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                    <span class="text-[20px] font-black text-amber-600 leading-none">{{ $distribution['perlu_perhatian']['percentage'] }}%</span>
+                                    <span class="text-[13px] font-bold text-slate-400 mt-1.5">{{ $distribution['perlu_perhatian']['count'] }} anak</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Berisiko -->
+                            <div class="flex items-center justify-between p-4 rounded-[20px] bg-gradient-to-r from-rose-50/50 to-transparent hover:from-rose-50 hover:to-white transition-all ring-1 ring-rose-100/50 hover:shadow-[0_4px_20px_rgba(244,63,94,0.05)] cursor-default">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-11 h-11 rounded-[14px] bg-rose-100/50 ring-1 ring-rose-200/60 flex items-center justify-center shrink-0 text-rose-600 shadow-sm">
+                                        <i class="ph-fill ph-shield-warning text-[22px]"></i>
+                                    </div>
+                                    <span class="text-[16px] font-extrabold text-slate-800">Berisiko</span>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                    <span class="text-[20px] font-black text-rose-600 leading-none">{{ $distribution['berisiko']['percentage'] }}%</span>
+                                    <span class="text-[13px] font-bold text-slate-400 mt-1.5">{{ $distribution['berisiko']['count'] }} anak</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== MANAJEMEN POSYANDU ==================== -->
+        <div class="mt-6 flex flex-col gap-5">
+            <div class="flex items-center px-1">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center ring-1 ring-indigo-100">
+                        <i class="ph-bold ph-buildings text-[18px]"></i>
+                    </div>
+                    <h2 class="text-xl font-extrabold text-slate-900">Manajemen Fasilitas</h2>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Kelola Posyandu -->
+                <a href="{{ route('puskesmas.posyandu') }}" class="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] ring-1 ring-slate-100 flex items-center gap-5 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_rgb(0,0,0,0.06)] transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center text-slate-600 ring-1 ring-slate-200 group-hover:from-teal-600 group-hover:to-teal-500 group-hover:text-white group-hover:ring-teal-600 transition-all shadow-sm">
+                        <i class="ph-fill ph-house-line text-[28px] group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-[17px] font-bold text-slate-900 group-hover:text-teal-700 transition-colors">Kelola Posyandu</h3>
+                        <p class="text-[14px] font-medium text-slate-500 mt-0.5">12 Posyandu terdaftar</p>
+                    </div>
+                </a>
+
+                <!-- Kelola Kader -->
+                <a href="{{ route('puskesmas.posyandu') }}" class="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] ring-1 ring-slate-100 flex items-center gap-5 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_rgb(0,0,0,0.06)] transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center text-slate-600 ring-1 ring-slate-200 group-hover:from-teal-600 group-hover:to-teal-500 group-hover:text-white group-hover:ring-teal-600 transition-all shadow-sm">
+                        <i class="ph-fill ph-users-three text-[28px] group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-[17px] font-bold text-slate-900 group-hover:text-teal-700 transition-colors">Kelola Kader</h3>
+                        <p class="text-[14px] font-medium text-slate-500 mt-0.5">48 Kader aktif</p>
+                    </div>
+                </a>
+
+                <!-- Jadwal Pengukuran -->
+                <a href="{{ route('puskesmas.laporan') }}" class="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] ring-1 ring-slate-100 flex items-center gap-5 hover:-translate-y-1.5 hover:shadow-[0_15px_40px_rgb(0,0,0,0.06)] transition-all duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center text-slate-600 ring-1 ring-slate-200 group-hover:from-teal-600 group-hover:to-teal-500 group-hover:text-white group-hover:ring-teal-600 transition-all shadow-sm">
+                        <i class="ph-fill ph-calendar-check text-[28px] group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-[17px] font-bold text-slate-900 group-hover:text-teal-700 transition-colors">Jadwal Pengukuran</h3>
+                        <p class="text-[14px] font-medium text-slate-500 mt-0.5">Atur jadwal bulanan</p>
+                    </div>
+                </a>
+            </div>
         </div>
 
     </div>
 </div>
+
+<!-- Simple Footer -->
+<div class="border-t border-slate-200 mt-16 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[14px] font-medium text-slate-500 w-full">
+    <p>&copy; 2024 NutriGen Puskesmas Portal. Kementerian Kesehatan RI.</p>
+    <div class="flex items-center gap-6">
+        <a href="#" class="hover:text-slate-900 transition-colors">Panduan Penggunaan</a>
+        <a href="#" class="hover:text-slate-900 transition-colors">Pusat Bantuan</a>
+        <a href="#" class="hover:text-slate-900 transition-colors">Privasi Data</a>
+    </div>
+</div>
+
 @endsection

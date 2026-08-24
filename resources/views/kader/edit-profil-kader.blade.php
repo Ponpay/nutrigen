@@ -12,23 +12,50 @@
             
             animate('.motion-card', 
                 { opacity: [0, 1], y: [20, 0] }, 
-                { delay: stagger(0.1), duration: 0.5, easing: "ease-out" }
+                { delay: stagger(0.08), duration: 0.45, easing: "ease-out" }
             );
+
+            document.querySelectorAll('.motion-hover').forEach(el => {
+                hover(el, () => {
+                    animate(el, { scale: 1.01, y: -2 }, { duration: 0.2 });
+                    return () => animate(el, { scale: 1, y: 0 }, { duration: 0.2 });
+                });
+            });
         }
     });
 </script>
 
-<div class="w-full min-h-screen bg-slate-50/50 pb-20 lg:pb-12">
-    <!-- HERO SECTION (Teal Gradient) -->
+@php
+    $kader = Auth::user()?->kader;
+    $posyandu = $kader?->posyandu;
+    $puskesmas = $posyandu?->puskesmas;
+    
+    $alamatRaw = $posyandu?->alamat ?? '';
+    $alamatData = json_decode($alamatRaw, true);
+    if (json_last_error() === JSON_ERROR_NONE && is_array($alamatData)) {
+        $desa = $alamatData['desa'] ?? $posyandu?->desa ?? '-';
+        $kecamatan = $alamatData['kecamatan'] ?? '-';
+    } else {
+        $desa = $posyandu?->desa ?? '-';
+        $kecamatan = '-';
+    }
+    $posyanduName = $posyandu?->nama ?? 'Posyandu Kader';
+    $puskesmasName = $puskesmas?->nama ?? 'Puskesmas Pembina';
+@endphp
+
+<div class="w-full min-h-screen bg-slate-50/50 pb-20 lg:pb-12 selection:bg-teal-100 selection:text-teal-900">
+    
+    <!-- ── HERO SECTION (Identik dengan Halaman Profil Kader) ── -->
     <div class="relative bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800 pt-8 pb-20 lg:pt-12 lg:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden lg:rounded-b-[40px] shadow-sm border-b border-teal-900/10">
         <div class="absolute -right-10 -top-10 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute left-0 bottom-0 w-40 h-40 bg-teal-900/40 rounded-full blur-2xl pointer-events-none"></div>
         <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
         
         <div class="max-w-6xl mx-auto relative z-10 motion-card opacity-0 flex flex-col sm:flex-row gap-6 sm:gap-8 items-center sm:items-start text-center sm:text-left">
-            <!-- Avatar Upload Area -->
+            
+            <!-- Avatar Ring Preview -->
             <div class="relative group/avatar shrink-0">
-                <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full p-1.5 bg-white/20 backdrop-blur-sm shadow-md flex items-center justify-center transition-transform duration-500 hover:scale-105 relative z-10 cursor-pointer">
+                <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full p-1.5 bg-white/20 backdrop-blur-sm shadow-md flex items-center justify-center transition-transform duration-500 hover:scale-105 relative z-10">
                     <div class="w-full h-full rounded-full overflow-hidden bg-white text-slate-300 relative flex items-center justify-center">
                         @if(isset($avatarUrl))
                             <img src="{{ $avatarUrl }}" alt="Foto Kader" class="w-full h-full object-cover">
@@ -37,209 +64,253 @@
                                 <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
                             </svg>
                         @endif
-                        <!-- Camera Overlay (Edit Mode) -->
-                        <div class="absolute inset-0 bg-slate-900/40 flex flex-col items-center justify-center opacity-0 group-hover/avatar:opacity-100 transition-opacity backdrop-blur-[2px]">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white mb-1"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" /></svg>
-                            <span class="text-[10px] font-bold text-white uppercase tracking-widest drop-shadow-md">Ubah</span>
+                        <div class="absolute inset-0 bg-slate-900/35 flex items-center justify-center backdrop-blur-[1px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-7 h-7 text-white">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                            </svg>
                         </div>
                     </div>
                 </div>
-                <!-- Editing Indicator -->
+                <!-- Status Indicator -->
                 <div class="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 z-20">
-                    <div class="bg-amber-400 w-6 h-6 rounded-full shadow-sm relative border-2 border-teal-700 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 text-white"><path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.158 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" /></svg>
+                    <div class="bg-emerald-400 w-5 h-5 rounded-full shadow-sm relative border-2 border-teal-700 ring-2 ring-emerald-400/30">
+                        <div class="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Header Info -->
-            <div class="flex flex-col flex-1 mt-2 sm:mt-6">
-                <div>
-                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight drop-shadow-sm leading-tight">Edit Profil Saya</h1>
-                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-[13px] font-bold text-amber-600 shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.158 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" /></svg>
-                            Mode Edit Aktif
-                        </span>
+            <!-- Profile Info & Back Button -->
+            <div class="flex flex-col flex-1 mt-2 sm:mt-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 border border-white/25 text-white text-[12px] font-medium mb-2 tracking-wide backdrop-blur-sm">
+                            <span class="w-2 h-2 rounded-full bg-teal-300 animate-pulse"></span>
+                            Pengaturan Profil Kader
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight drop-shadow-sm leading-tight">
+                            Edit Data Akun
+                        </h1>
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-[13px] font-semibold text-teal-800 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" /></svg>
+                                Kader Posyandu
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-[13px] font-semibold text-teal-800 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd" /></svg>
+                                {{ $posyanduName }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Kembali ke Profil -->
+                    <div class="flex-shrink-0 mt-2 sm:mt-0">
+                        <a href="{{ route('kader.profil') }}" 
+                           class="group inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-teal-800 px-5 py-2.5 rounded-xl text-[14px] font-semibold shadow-md transition-all focus:outline-none focus:ring-4 focus:ring-white/30 active:scale-95">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-teal-600 group-hover:-translate-x-1 transition-transform">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                            </svg>
+                            Kembali ke Profil
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- FORM WORKSPACE -->
+    <!-- ── MAIN WORKSPACE (Overlapping Floating Grid) ── -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 lg:-mt-14 relative z-20 flex flex-col gap-6 lg:gap-8">
         
-        <form action="{{ route('kader.profil.update') }}" method="POST" class="flex flex-col gap-6 lg:gap-8 motion-card opacity-0">
-            @csrf
-            @method('PUT')
-
-            <!-- Card 1: Data Pribadi -->
-            <div class="flex flex-col bg-white p-6 lg:p-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/60">
-                <h2 class="text-[15px] font-semibold tracking-tight text-slate-800 flex items-center gap-2 px-1 mb-6">
-                    <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" /></svg>
-                    </div>
-                    Data Pribadi
-                </h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                    <!-- Input Nama Lengkap -->
-                    <div class="flex flex-col gap-2 group/input">
-                        <label for="nama" class="text-xs font-medium text-slate-500 tracking-wide uppercase flex items-center ml-1">
-                            NAMA LENGKAP <sup class="text-rose-400 font-bold ml-1 text-[14px] top-[-2px]">*</sup>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-teal-600 transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
-                            </div>
-                            <input type="text" id="nama" name="nama" value="{{ old('nama', $name ?? 'Ibu Siti Aminah') }}" required
-                                class="w-full bg-slate-50/80 border border-slate-200 text-slate-900 rounded-2xl pl-12 pr-4 py-3.5 focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 focus:bg-white hover:bg-slate-50 transition-all duration-300 text-[15px] font-medium placeholder-slate-400 outline-none"
-                                placeholder="Masukkan nama lengkap">
-                        </div>
-                        @error('nama')
-                            <p class="text-rose-500 text-[12px] font-medium mt-1 ml-1 flex items-center gap-1.5">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Input Nomor WhatsApp -->
-                    <div class="flex flex-col gap-2 group/input">
-                        <label for="no_hp" class="text-xs font-medium text-slate-500 tracking-wide uppercase flex items-center ml-1">
-                            NOMOR WHATSAPP <sup class="text-rose-400 font-bold ml-1 text-[14px] top-[-2px]">*</sup>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-teal-600 transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                                </svg>
-                            </div>
-                            <div class="absolute inset-y-0 left-12 flex items-center pointer-events-none border-r border-slate-200 pr-4 my-2">
-                                <span class="text-slate-800 font-medium text-[15px] pl-0.5">+62</span>
-                            </div>
-                            <input type="tel" id="no_hp" name="no_hp" value="{{ str_starts_with(old('no_hp', $phone ?? ''), '+62') ? substr(old('no_hp', $phone ?? ''), 3) : (str_starts_with(old('no_hp', $phone ?? ''), '0') ? substr(old('no_hp', $phone ?? ''), 1) : old('no_hp', $phone ?? '')) }}" required
-                                   class="w-full bg-slate-50/80 border border-slate-200 text-slate-900 rounded-2xl pl-[104px] pr-4 py-3.5 focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 focus:bg-white hover:bg-slate-50 transition-all duration-300 text-[15px] font-medium placeholder-slate-400 outline-none"
-                                   placeholder="81234567890">
-                        </div>
-                        @error('no_hp')
-                            <p class="text-rose-500 text-[12px] font-medium mt-1 ml-1 flex items-center gap-1.5">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card: Area Penugasan (Read Only) -->
-            <div class="flex flex-col bg-white p-6 lg:p-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/60">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-[15px] font-semibold tracking-tight text-slate-800 flex items-center gap-2 px-1">
-                        <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
-                        </div>
-                        Area Penugasan
-                    </h2>
-                    <span class="px-2.5 py-1 bg-slate-100 text-slate-500 rounded-lg text-[11px] font-bold uppercase tracking-wider">Tidak Dapat Diubah</span>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                    <!-- Input Wilayah -->
-                    <div class="flex flex-col gap-2 group/input">
-                        <label class="text-xs font-medium text-slate-500 tracking-wide uppercase ml-1">CAKUPAN WILAYAH</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-teal-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6.75h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>
-                            </div>
-                            <input type="text" value="{{ $desa ?? 'Desa Lampeuneurut' }}, Kec. {{ $kecamatan ?? 'Darul Imarah' }}" disabled readonly
-                                   class="w-full bg-slate-100/50 border border-slate-200/80 text-slate-900 rounded-2xl pl-12 pr-4 py-3.5 text-[15px] font-medium cursor-not-allowed opacity-80 outline-none shadow-inner">
-                        </div>
-                    </div>
-                    
-                    <!-- Input Fasilitas Rujukan -->
-                    <div class="flex flex-col gap-2 group/input">
-                        <label class="text-xs font-medium text-slate-500 tracking-wide uppercase ml-1">FASILITAS RUJUKAN UTAMA</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-teal-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
-                            </div>
-                            <input type="text" value="{{ $puskesmas ?? 'Puskesmas Darul Imarah' }}" disabled readonly
-                                   class="w-full bg-slate-100/50 border border-slate-200/80 text-slate-900 rounded-2xl pl-12 pr-4 py-3.5 text-[15px] font-medium cursor-not-allowed opacity-80 outline-none shadow-inner">
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4 inline-flex items-center gap-1.5 px-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
-                    <span class="text-[12px] font-medium text-slate-500">Hubungi Admin Bidan untuk pengajuan pindah tugas atau mutasi wilayah.</span>
-                </div>
-            </div>
-
-            <!-- Card 3: Kredensial Keamanan -->
-            <div class="flex flex-col bg-white p-6 lg:p-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/60">
-                <h2 class="text-[15px] font-semibold tracking-tight text-slate-800 flex items-center gap-2 px-1 mb-6">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd" /></svg>
-                    </div>
-                    Keamanan Sesi
-                </h2>
-                
-                <div class="flex flex-col gap-2 group/input max-w-2xl">
-                    <label for="email" class="text-xs font-medium text-slate-500 tracking-wide uppercase ml-1">ALAMAT EMAIL UTAMA</label>
-                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                        <div class="relative flex-1">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-teal-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                                </svg>
-                            </div>
-                            <input type="email" id="email" value="{{ $email ?? '' }}" disabled readonly
-                                   class="w-full bg-slate-100/50 border border-slate-200/80 text-slate-900 rounded-2xl pl-12 pr-4 py-3.5 text-[15px] font-medium cursor-not-allowed opacity-80 outline-none shadow-inner">
-                        </div>
-                        <button type="button" class="w-full sm:w-auto px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl font-bold text-[14px] transition-all duration-300 ring-1 ring-slate-200 shadow-sm whitespace-nowrap focus:outline-none focus:ring-4 focus:ring-slate-200/50 active:scale-[0.98]" onclick="window.NutriAlert.warning('Fitur Dalam Pengembangan', 'Fitur penggantian email dengan verifikasi OTP sedang dalam pengembangan (Future Development).')">
-                            Ubah Email
-                        </button>
-                    </div>
-                </div>
-                
-                <hr class="border-slate-100 my-6">
-                
-                <div class="flex flex-col gap-2 group/input max-w-2xl">
-                    <label class="text-xs font-medium text-slate-500 tracking-wide uppercase ml-1">PASSWORD & AUTENTIKASI</label>
-                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                        <div class="relative flex-1">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-teal-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-                            </div>
-                            <input type="password" value="********" disabled readonly
-                                   class="w-full bg-slate-100/50 border border-slate-200/80 text-slate-900 rounded-2xl pl-12 pr-4 py-3.5 text-[15px] font-medium tracking-widest cursor-not-allowed opacity-80 outline-none shadow-inner">
-                        </div>
-                        <button type="button" class="w-full sm:w-auto px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl font-bold text-[14px] transition-all duration-300 ring-1 ring-slate-200 shadow-sm whitespace-nowrap focus:outline-none focus:ring-4 focus:ring-slate-200/50 active:scale-[0.98]" onclick="window.NutriAlert.warning('Fitur Dalam Pengembangan', 'Fitur penggantian password sedang dalam tahap pengembangan.')">
-                            Ubah Password
-                        </button>
-                    </div>
-                    <div class="mt-1.5 inline-flex items-center gap-1.5 self-start px-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-emerald-500 flex-shrink-0"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" /></svg>
-                        <span class="text-[12px] font-bold text-slate-500">Terakhir diubah 2 bulan yang lalu</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Bar -->
-            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 sm:gap-4 mt-2 mb-8">
-                <a href="{{ route('kader.profil') }}" class="w-full sm:w-auto px-6 py-4 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl font-bold text-[15px] transition-all duration-300 focus:outline-none text-center shadow-sm border border-slate-200">
-                    Batal Edit
-                </a>
-                <button type="submit" class="w-full sm:w-auto px-10 py-4 bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white rounded-2xl font-bold text-[15px] transition-all duration-300 shadow-[0_8px_16px_-6px_rgba(20,184,166,0.3)] hover:shadow-[0_12px_20px_-8px_rgba(20,184,166,0.4)] hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-teal-500/30 active:scale-[0.98] flex items-center justify-center gap-2.5 group">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-teal-50 group-hover:scale-110 transition-transform duration-300">
-                        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+        @if(session('success'))
+            <div class="motion-card opacity-0 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center gap-3 shadow-sm">
+                <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
-                    Simpan Perubahan
-                </button>
+                </div>
+                <div class="text-[14px] font-medium">{{ session('success') }}</div>
             </div>
+        @endif
+
+        @if($errors->any())
+            <div class="motion-card opacity-0 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 flex items-start gap-3 shadow-sm">
+                <div class="w-9 h-9 rounded-xl bg-rose-100 flex items-center justify-center flex-shrink-0 text-rose-600 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>
+                </div>
+                <div class="text-[13px] font-medium">
+                    <p class="font-semibold mb-1">Periksa kembali data yang dimasukkan:</p>
+                    <ul class="list-disc list-inside space-y-0.5 text-xs text-rose-700">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             
-        </form>
+            <!-- ── KOLOM FORMULIR EDIT (2 Kolom di Desktop) ── -->
+            <div class="lg:col-span-2">
+                <div class="bg-white p-6 sm:p-8 lg:p-10 rounded-[28px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-200/70 motion-card opacity-0 relative overflow-hidden">
+                    
+                    <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800 tracking-tight">Formulir Informasi Kader</h2>
+                                <p class="text-xs font-medium text-slate-500">Perbarui identitas nama dan kontak resmi operasional Anda.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="{{ route('kader.profil.update') }}" method="POST" class="flex flex-col gap-6">
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Input Nama Lengkap -->
+                        <div class="flex flex-col gap-2">
+                            <label for="nama" class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-teal-600">
+                                    <path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.23 0 00.41 1.412A9.957 9.957 0 0010 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 00-13.074.003z" />
+                                </svg>
+                                Nama Lengkap Kader <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="nama" name="nama" 
+                                   value="{{ old('nama', $name ?? Auth::user()->name) }}" 
+                                   required
+                                   placeholder="Contoh: Ibu Siti Aminah"
+                                   class="w-full bg-slate-50 border border-slate-200 hover:border-teal-300 text-slate-900 text-[14px] font-medium rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all placeholder:text-slate-400">
+                            @error('nama') 
+                                <p class="text-xs text-rose-500 font-semibold">{{ $message }}</p> 
+                            @enderror
+                        </div>
+
+                        <!-- Input Nomor WhatsApp -->
+                        <div class="flex flex-col gap-2">
+                            <label for="no_hp" class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-emerald-600">
+                                    <path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z" clip-rule="evenodd" />
+                                </svg>
+                                Nomor Telepon / WhatsApp <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="tel" id="no_hp" name="no_hp" 
+                                   value="{{ old('no_hp', $phone ?? '') }}" 
+                                   required
+                                   placeholder="Contoh: 081234567890"
+                                   class="w-full bg-slate-50 border border-slate-200 hover:border-teal-300 text-slate-900 text-[14px] font-medium rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all placeholder:text-slate-400">
+                            <span class="text-[11.5px] text-slate-400 font-medium">Digunakan untuk notifikasi jadwal posyandu dan koordinasi dengan ibu balita.</span>
+                            @error('no_hp') 
+                                <p class="text-xs text-rose-500 font-semibold">{{ $message }}</p> 
+                            @enderror
+                        </div>
+
+                        <!-- Email (Terkunci / Read-Only) -->
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-center justify-between">
+                                <label class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-slate-400">
+                                        <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+                                        <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+                                    </svg>
+                                    Alamat Email Akun
+                                </label>
+                                <span class="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3 text-slate-500"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" /></svg>
+                                    Terkunci
+                                </span>
+                            </div>
+                            <input type="email" value="{{ $email ?? Auth::user()->email }}" readonly disabled
+                                   class="w-full bg-slate-100/80 border border-slate-200 text-slate-500 text-[14px] font-medium rounded-2xl px-4 py-3.5 cursor-not-allowed select-none outline-none">
+                            <span class="text-[11.5px] text-slate-400 font-medium">Alamat email login dikelola secara resmi oleh admin Puskesmas demi keamanan data.</span>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pt-6 mt-2 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-end gap-3">
+                            <a href="{{ route('kader.profil') }}" 
+                               class="w-full sm:w-auto px-6 py-3.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold text-[14px] transition-all text-center">
+                                Batal
+                            </a>
+                            <button type="submit" 
+                                    class="w-full sm:w-auto px-8 py-3.5 bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white rounded-2xl font-semibold text-[14px] shadow-sm shadow-teal-500/25 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                </svg>
+                                <span>Simpan Perubahan</span>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- ── KOLOM KANAN: Detail Penugasan & Keamanan (Identik dengan Card Profile) ── -->
+            <div class="flex flex-col gap-4 lg:gap-6">
+                
+                <!-- Area Penugasan Card -->
+                <div class="flex flex-col bg-white p-6 lg:p-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-200/70 motion-card opacity-0">
+                    <h2 class="text-[15px] font-semibold tracking-tight text-slate-800 flex items-center gap-2 px-1 mb-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-teal-600">
+                            <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                        </svg>
+                        Area Penugasan Resmi
+                    </h2>
+                    
+                    <div class="flex flex-col gap-4">
+                        <!-- Posyandu & Wilayah -->
+                        <div class="flex items-center gap-4 bg-slate-50/70 p-3.5 rounded-2xl border border-slate-100">
+                            <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm4.5 7.5a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zm3.75-1.5a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V12zm3-3a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0V9.75A.75.75 0 0114.25 9z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-[12px] font-medium text-slate-500 mb-0.5">Posyandu Induk</span>
+                                <span class="text-[14px] font-semibold text-slate-800 tracking-tight truncate">{{ $posyanduName }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Puskesmas Pembina -->
+                        <div class="flex items-center gap-4 bg-slate-50/70 p-3.5 rounded-2xl border border-slate-100">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-[12px] font-medium text-slate-500 mb-0.5">Puskesmas Pembina</span>
+                                <span class="text-[14px] font-semibold text-slate-800 tracking-tight truncate">{{ $puskesmasName }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Box Card -->
+                <div class="flex flex-col bg-gradient-to-br from-teal-800 to-teal-950 p-6 lg:p-7 rounded-[24px] text-white shadow-sm motion-card opacity-0 relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-teal-400/10 rounded-full blur-xl pointer-events-none"></div>
+                    
+                    <div class="flex items-center gap-2.5 mb-3">
+                        <div class="w-8 h-8 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-teal-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                            </svg>
+                        </div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-teal-200">Bantuan Perubahan Data</span>
+                    </div>
+
+                    <p class="text-[12.5px] text-teal-100/90 leading-relaxed font-medium mb-3">
+                        Perubahan wilayah posyandu tugas dan alamat email induk hanya dapat dilakukan melalui koordinator Bidan Pembina di Puskesmas.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
 </div>
 @endsection

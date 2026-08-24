@@ -271,11 +271,127 @@
             @endif
 
             @if(isset($measurement['status_validasi']) && $measurement['status_validasi'] === 'rejected')
-                <!-- ── ADVANCED REVISION COMMAND CARD FOR KADER ── -->
-                <div class="mt-3.5 bg-gradient-to-br from-rose-50/90 via-rose-50/50 to-amber-50/40 border border-rose-200 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xs">
-                    <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                @if(auth()->check() && auth()->user()->role === 'kader')
+                    <!-- ── ADVANCED REVISION COMMAND CARD FOR KADER ── -->
+                    <div class="mt-3.5 bg-gradient-to-br from-rose-50/90 via-rose-50/50 to-amber-50/40 border border-rose-200 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xs">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                            <div class="flex items-start gap-3 min-w-0">
+                                <div class="w-9 h-9 rounded-xl bg-rose-100 border border-rose-200 text-rose-600 flex items-center justify-center shrink-0 shadow-2xs">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-[11px] font-bold uppercase tracking-wider text-rose-800 bg-rose-100/90 px-2 py-0.5 rounded-md border border-rose-200">
+                                            Arahan Petugas Gizi Puskesmas
+                                        </span>
+                                    </div>
+                                    <div class="p-3 bg-white/90 border border-rose-100 rounded-xl mt-1.5 shadow-2xs">
+                                        <p class="text-[13px] text-rose-950 font-semibold leading-relaxed">
+                                            "{{ $measurement['catatan_validator'] ?? 'Terdapat anomali data ukur. Mohon verifikasi atau timbang ulang balita.' }}"
+                                        </p>
+                                    </div>
+                                    
+                                    {{-- SOP Panduan Tindakan Kader --}}
+                                    <div class="mt-2.5 flex items-center gap-2 text-[11.5px] text-slate-600 font-medium">
+                                        <span class="text-rose-600 font-bold">Langkah Kader:</span>
+                                        <span>Timbang ulang balita atau koreksi salah ketik, lalu klik tombol perbaikan.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Direct Action Button --}}
+                            <div class="shrink-0 flex sm:flex-col justify-end">
+                                <button type="button" 
+                                        onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.remove('hidden')" 
+                                        class="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white text-xs font-bold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
+                                    <span>Perbaiki Data Ukur</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── REFINED REVISION MODAL POPUP ── -->
+                    <div id="editModal-{{ $measurement['id'] }}" class="fixed inset-0 z-[110] hidden opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')"></div>
+                        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-6 pointer-events-none">
+                            <div class="w-full max-w-lg bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 flex flex-col pointer-events-auto overflow-hidden">
+                                
+                                {{-- Modal Header --}}
+                                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-base font-bold tracking-tight text-slate-800">Perbaikan Data Pengukuran</h3>
+                                            <p class="text-[11px] text-slate-500 font-medium">Revisi hasil penimbangan dan kirim ulang ke Puskesmas</p>
+                                        </div>
+                                    </div>
+                                    <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')" class="w-8 h-8 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
+                                </div>
+                                
+                                {{-- Form Body --}}
+                                <div class="p-6 overflow-y-auto max-h-[75vh]">
+                                    {{-- Catatan Puskesmas Reminder --}}
+                                    <div class="mb-4 p-3 bg-rose-50/80 border border-rose-200/80 rounded-xl text-xs">
+                                        <span class="text-[10.5px] font-bold text-rose-800 uppercase tracking-wider block mb-0.5">Catatan Puskesmas:</span>
+                                        <p class="text-rose-900 font-semibold">{{ $measurement['catatan_validator'] ?? 'Periksa kembali angka penimbangan.' }}</p>
+                                    </div>
+
+                                    <form action="{{ route('pengukuran.update', $measurement['id']) }}" method="POST" class="space-y-4 text-xs">
+                                        @csrf
+                                        @method('PUT')
+                                        
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                            <div class="flex flex-col gap-1.5 sm:col-span-2">
+                                                <label class="text-xs font-semibold text-slate-700">Tanggal Pengukuran <span class="text-rose-500">*</span></label>
+                                                <input type="date" name="tanggal_ukur" value="{{ $measurement['raw_date'] ?? '' }}" required class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
+                                            </div>
+                                            
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-semibold text-slate-700">Berat Badan (kg) <span class="text-rose-500">*</span></label>
+                                                <input type="text" inputmode="decimal" name="berat_badan" value="{{ $measurement['weight'] }}" required placeholder="Contoh: 7.90" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
+                                            </div>
+                                            
+                                            <div class="flex flex-col gap-1.5">
+                                                <label class="text-xs font-semibold text-slate-700">Tinggi Badan (cm) <span class="text-rose-500">*</span></label>
+                                                <input type="text" inputmode="decimal" name="tinggi_badan" value="{{ $measurement['height'] }}" required placeholder="Contoh: 68.7" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
+                                            </div>
+
+                                            <div class="flex flex-col gap-1.5 sm:col-span-2">
+                                                <label class="text-xs font-semibold text-slate-700">Lingkar Kepala (cm) <span class="text-slate-400 font-normal">(Opsional)</span></label>
+                                                <input type="text" inputmode="decimal" name="lingkar_kepala" value="{{ $measurement['head_circ'] ?? '' }}" placeholder="Contoh: 42.5" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
+                                            </div>
+
+                                            <div class="flex flex-col gap-1.5 sm:col-span-2">
+                                                <label class="text-xs font-semibold text-slate-700">Catatan Perbaikan Kader <span class="text-slate-400 font-normal">(Tanggapan untuk Puskesmas)</span></label>
+                                                <textarea name="catatan_kader" rows="2" placeholder="Contoh: Sudah ditimbang ulang di Posyandu dengan timbangan digital, berat valid." class="w-full bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-800 transition-all outline-none resize-none">{{ $measurement['catatan_kader'] ?? '' }}</textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-6 pt-3 border-t border-slate-100 flex justify-end gap-2.5">
+                                            <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')" class="h-10 sm:h-11 px-5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-semibold text-xs transition-colors cursor-pointer">Batal</button>
+                                            <button type="submit" class="h-10 sm:h-11 px-6 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold text-xs shadow-xs hover:shadow-sm transition-all focus:outline-none cursor-pointer flex items-center gap-1.5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                                                <span>Simpan & Kirim Perbaikan</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <!-- ── PUSKESMAS/AHLI GIZI VIEW FOR REJECTED MEASUREMENT ── -->
+                    <div class="mt-3.5 bg-rose-50/80 border border-rose-200/80 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xs">
                         <div class="flex items-start gap-3 min-w-0">
-                            <div class="w-9 h-9 rounded-xl bg-rose-100 border border-rose-200 text-rose-600 flex items-center justify-center shrink-0 shadow-2xs">
+                            <div class="w-9 h-9 rounded-xl bg-white border border-rose-200 text-rose-600 flex items-center justify-center shrink-0 shadow-2xs">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                                 </svg>
@@ -283,7 +399,7 @@
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 mb-1">
                                     <span class="text-[11px] font-bold uppercase tracking-wider text-rose-800 bg-rose-100/90 px-2 py-0.5 rounded-md border border-rose-200">
-                                        Arahan Petugas Gizi Puskesmas
+                                        Menunggu Revisi Kader
                                     </span>
                                 </div>
                                 <div class="p-3 bg-white/90 border border-rose-100 rounded-xl mt-1.5 shadow-2xs">
@@ -291,101 +407,14 @@
                                         "{{ $measurement['catatan_validator'] ?? 'Terdapat anomali data ukur. Mohon verifikasi atau timbang ulang balita.' }}"
                                     </p>
                                 </div>
-                                
-                                {{-- SOP Panduan Tindakan Kader --}}
                                 <div class="mt-2.5 flex items-center gap-2 text-[11.5px] text-slate-600 font-medium">
-                                    <span class="text-rose-600 font-bold">Langkah Kader:</span>
-                                    <span>Timbang ulang balita atau koreksi salah ketik, lalu klik tombol perbaikan.</span>
+                                    <span class="text-rose-600 font-bold">Status:</span>
+                                    <span>Menunggu Kader menimbang ulang balita atau mengoreksi data.</span>
                                 </div>
                             </div>
-                        </div>
-
-                        {{-- Direct Action Button --}}
-                        <div class="shrink-0 flex sm:flex-col justify-end">
-                            <button type="button" 
-                                    onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.remove('hidden')" 
-                                    class="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white text-xs font-bold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
-                                <span>Perbaiki Data Ukur</span>
-                            </button>
                         </div>
                     </div>
-                </div>
-
-                <!-- ── REFINED REVISION MODAL POPUP ── -->
-                <div id="editModal-{{ $measurement['id'] }}" class="fixed inset-0 z-[110] hidden opacity-100 transition-opacity duration-300">
-                    <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')"></div>
-                    <div class="absolute inset-0 flex items-center justify-center p-4 md:p-6 pointer-events-none">
-                        <div class="w-full max-w-lg bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 flex flex-col pointer-events-auto overflow-hidden">
-                            
-                            {{-- Modal Header --}}
-                            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center shrink-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-base font-bold tracking-tight text-slate-800">Perbaikan Data Pengukuran</h3>
-                                        <p class="text-[11px] text-slate-500 font-medium">Revisi hasil penimbangan dan kirim ulang ke Puskesmas</p>
-                                    </div>
-                                </div>
-                                <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')" class="w-8 h-8 rounded-full bg-slate-200/70 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                                </button>
-                            </div>
-                            
-                            {{-- Form Body --}}
-                            <div class="p-6 overflow-y-auto max-h-[75vh]">
-                                {{-- Catatan Puskesmas Reminder --}}
-                                <div class="mb-4 p-3 bg-rose-50/80 border border-rose-200/80 rounded-xl text-xs">
-                                    <span class="text-[10.5px] font-bold text-rose-800 uppercase tracking-wider block mb-0.5">Catatan Puskesmas:</span>
-                                    <p class="text-rose-900 font-semibold">{{ $measurement['catatan_validator'] ?? 'Periksa kembali angka penimbangan.' }}</p>
-                                </div>
-
-                                <form action="{{ route('pengukuran.update', $measurement['id']) }}" method="POST" class="space-y-4 text-xs">
-                                    @csrf
-                                    @method('PUT')
-                                    
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                        <div class="flex flex-col gap-1.5 sm:col-span-2">
-                                            <label class="text-xs font-semibold text-slate-700">Tanggal Pengukuran <span class="text-rose-500">*</span></label>
-                                            <input type="date" name="tanggal_ukur" value="{{ $measurement['raw_date'] ?? '' }}" required class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
-                                        </div>
-                                        
-                                        <div class="flex flex-col gap-1.5">
-                                            <label class="text-xs font-semibold text-slate-700">Berat Badan (kg) <span class="text-rose-500">*</span></label>
-                                            <input type="text" inputmode="decimal" name="berat_badan" value="{{ $measurement['weight'] }}" required placeholder="Contoh: 7.90" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
-                                        </div>
-                                        
-                                        <div class="flex flex-col gap-1.5">
-                                            <label class="text-xs font-semibold text-slate-700">Tinggi Badan (cm) <span class="text-rose-500">*</span></label>
-                                            <input type="text" inputmode="decimal" name="tinggi_badan" value="{{ $measurement['height'] }}" required placeholder="Contoh: 68.7" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
-                                        </div>
-
-                                        <div class="flex flex-col gap-1.5 sm:col-span-2">
-                                            <label class="text-xs font-semibold text-slate-700">Lingkar Kepala (cm) <span class="text-slate-400 font-normal">(Opsional)</span></label>
-                                            <input type="text" inputmode="decimal" name="lingkar_kepala" value="{{ $measurement['head_circ'] ?? '' }}" placeholder="Contoh: 42.5" class="w-full h-11 bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 text-xs sm:text-sm font-semibold text-slate-800 transition-all outline-none">
-                                        </div>
-
-                                        <div class="flex flex-col gap-1.5 sm:col-span-2">
-                                            <label class="text-xs font-semibold text-slate-700">Catatan Perbaikan Kader <span class="text-slate-400 font-normal">(Tanggapan untuk Puskesmas)</span></label>
-                                            <textarea name="catatan_kader" rows="2" placeholder="Contoh: Sudah ditimbang ulang di Posyandu dengan timbangan digital, berat valid." class="w-full bg-slate-50/80 border border-slate-200 focus:bg-white focus:border-teal-600 focus:ring-3 focus:ring-teal-500/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-800 transition-all outline-none resize-none">{{ $measurement['catatan_kader'] ?? '' }}</textarea>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mt-6 pt-3 border-t border-slate-100 flex justify-end gap-2.5">
-                                        <button type="button" onclick="document.getElementById('editModal-{{ $measurement['id'] }}').classList.add('hidden')" class="h-10 sm:h-11 px-5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-semibold text-xs transition-colors cursor-pointer">Batal</button>
-                                        <button type="submit" class="h-10 sm:h-11 px-6 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold text-xs shadow-xs hover:shadow-sm transition-all focus:outline-none cursor-pointer flex items-center gap-1.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                                            <span>Simpan & Kirim Perbaikan</span>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+                @endif
             @endif
 
         </div>

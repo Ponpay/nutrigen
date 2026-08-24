@@ -3,382 +3,429 @@
 @section('page-title', 'Pusat Laporan Posyandu')
 
 @section('content')
-<div class="flex flex-col w-full bg-slate-50/80 min-h-screen relative mx-auto pb-28 lg:pb-16 font-sans">
+<div class="flex flex-col w-full bg-[#f8fafc] min-h-screen relative mx-auto pb-28 lg:pb-16 font-sans">
     
-    <!-- 1. Executive Top Header -->
-    <div class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                
-                <!-- Title & Back Navigation -->
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('dashboard') }}" class="w-9 h-9 flex items-center justify-center bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl border border-slate-200 transition-colors shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                        </svg>
-                    </a>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">Pusat Laporan Posyandu</h1>
-                            <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 text-[10.5px] font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                Terintegrasi
-                            </span>
-                        </div>
-                        <p class="text-xs text-slate-600 font-medium mt-0.5">Rekapitulasi data penimbangan bulanan siap kirim ke Puskesmas</p>
+    <!-- 1. Header Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6 w-full">
+        <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            
+            <!-- Title & Description -->
+            <div class="max-w-2xl relative z-10">
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                    <h1 class="text-2xl sm:text-[28px] font-bold text-slate-900 tracking-tight">Pusat Laporan Posyandu</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-600 uppercase tracking-widest mt-1 sm:mt-0">
+                        INTEGRATED
+                    </span>
+                </div>
+                <p class="text-[14px] text-slate-500 font-normal leading-relaxed max-w-xl">
+                    Tinjau metrik penimbangan bulanan, pantau status perkembangan balita, dan ekspor laporan resmi untuk arsip desa dan puskesmas.
+                </p>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-10 w-full lg:w-auto mt-4 lg:mt-0">
+                <!-- Location Filter -->
+                <div class="bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl px-4 py-3 flex flex-col w-full sm:w-auto min-w-[220px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all cursor-default">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">LOKASI POSYANDU</span>
+                    <div class="flex items-center gap-2.5 text-slate-800 font-medium text-[14px]">
+                        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <span class="truncate">{{ $posyanduAktif ?? 'Posyandu Bunga Tanjung VII' }}</span>
                     </div>
                 </div>
-
-                <!-- Filter Controls Toolbar -->
-                <form id="form-laporan-filter" action="{{ route('laporan.index') }}" method="GET" class="flex items-center gap-2 w-full sm:w-auto">
-                    <!-- Location Pill -->
-                    <div class="flex items-center gap-1.5 px-3 py-2 bg-teal-50 rounded-xl border border-teal-200 text-teal-950 text-xs font-bold shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-teal-700">
-                            <path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd" />
-                        </svg>
-                        <span class="truncate max-w-[130px] sm:max-w-none">{{ $posyanduAktif ?? 'Posyandu' }}</span>
+                
+                <!-- Period Filter (Interactive) -->
+                <style>
+                    .periode-picker-overlay::-webkit-calendar-picker-indicator {
+                        position: absolute;
+                        top: 0; left: 0; right: 0; bottom: 0;
+                        width: 100%; height: 100%;
+                        opacity: 0;
+                        cursor: pointer;
+                    }
+                </style>
+                <form id="form-laporan-filter" action="{{ route('laporan.index') }}" method="GET" class="relative group w-full sm:w-auto">
+                    <div class="bg-white border border-slate-200/70 group-hover:border-[#086a7c]/40 rounded-2xl px-4 py-3 flex flex-col w-full sm:w-auto min-w-[180px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] group-hover:shadow-md transition-all cursor-pointer">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">PERIODE</span>
+                        <div class="flex items-center gap-2.5 text-slate-800 font-medium text-[14px]">
+                            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <span>{{ $periode ?? 'Agustus 2026' }}</span>
+                            <svg class="w-4 h-4 ml-auto text-slate-400 group-hover:text-[#086a7c] transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                     </div>
-
-                    <!-- Month Picker Input -->
-                    <div class="relative flex-1 sm:w-44">
-                        <input type="month" id="periode" name="periode" value="{{ $periodeValue }}" onchange="this.form.submit()" class="w-full bg-white hover:bg-slate-50 text-slate-900 text-xs font-bold rounded-xl px-3 py-2 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600 cursor-pointer shadow-2xs transition-all">
-                    </div>
+                    <input type="month" name="periode" value="{{ $periodeValue }}" onchange="this.form.submit()" class="periode-picker-overlay absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Ubah Periode">
                 </form>
-
             </div>
+
         </div>
     </div>
 
-    <!-- 2. Main Workspace Canvas -->
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-5 sm:mt-6 w-full flex flex-col gap-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col gap-8">
 
         @if(isset($dataKosong) && $dataKosong)
-            <!-- Clean, Startup-Grade Minimalist Empty State -->
-            <div class="bg-white rounded-3xl p-8 sm:p-14 border border-slate-200/90 shadow-2xs flex flex-col items-center justify-center text-center max-w-2xl mx-auto w-full my-4">
-                
-                <!-- Icon with Ambient Ring -->
-                <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100/90 flex items-center justify-center text-teal-600 mb-5 shadow-2xs">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-7 h-7">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                    </svg>
+            <!-- Empty State -->
+            <div class="bg-white rounded-3xl p-14 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center max-w-3xl mx-auto w-full my-8 relative overflow-hidden">
+                <div class="absolute inset-0 pointer-events-none">
+                    <div class="absolute left-10 top-10 w-24 h-24 bg-slate-50 rounded-full blur-xl"></div>
+                    <div class="absolute right-10 bottom-10 w-32 h-32 bg-sky-50/50 rounded-full blur-2xl"></div>
                 </div>
-
-                <!-- Period Pill -->
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-800 rounded-full border border-teal-200/80 text-[11px] font-bold uppercase tracking-wider mb-3">
-                    <span>Periode {{ $periode }}</span>
-                    <span class="text-teal-400">&bull;</span>
-                    <span>{{ $posyanduAktif }}</span>
+                <div class="relative z-10 w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 mb-5">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"></path></svg>
                 </div>
-
-                <!-- Heading & Description -->
-                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                    Belum Ada Data Penimbangan
-                </h2>
-                <p class="text-xs sm:text-[13px] text-slate-500 font-medium max-w-md mt-2 mb-7 leading-relaxed">
-                    Tidak ada riwayat pengukuran balita yang tercatat pada periode ini. Mulai input penimbangan balita untuk mengaktifkan export laporan resmi (PDF & Excel).
-                </p>
-
-                <!-- Clean Dual Actions -->
-                <div class="flex flex-wrap items-center justify-center gap-3 w-full sm:w-auto">
-                    <a href="{{ route('balita.index') }}" class="w-full sm:w-auto h-11 px-6 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white rounded-xl font-bold text-xs shadow-xs hover:shadow transition-all flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-                        <span>Input Pengukuran Balita</span>
-                    </a>
-
-                    <a href="{{ route('jadwal.index') }}" class="w-full sm:w-auto h-11 px-5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold text-xs border border-slate-200 transition-all flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 text-teal-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                        </svg>
-                        <span>Lihat Jadwal Posyandu</span>
-                    </a>
-                </div>
-
+                <h2 class="relative z-10 text-xl font-bold text-slate-900">Belum Ada Data Penimbangan</h2>
+                <p class="relative z-10 text-[14px] text-slate-500 font-normal max-w-md mt-2 mb-6">Tidak ada riwayat pengukuran balita yang tercatat pada periode ini. Silakan input penimbangan balita terlebih dahulu.</p>
+                <a href="{{ route('balita.index') }}" class="relative z-10 h-10 px-6 bg-[#086a7c] hover:bg-[#065b6b] text-white rounded-xl font-semibold text-[14px] shadow-sm flex items-center gap-2">
+                    Input Pengukuran Balita
+                </a>
             </div>
         @else
 
-            <!-- Section A: Elegant Soft-Teal Overview Card (Balanced & Gentle on the Eyes) -->
-            <div class="bg-gradient-to-br from-teal-50/90 via-emerald-50/60 to-slate-50 rounded-3xl p-5 sm:p-7 shadow-xs border border-teal-200/80 relative overflow-hidden">
-                <!-- Ambient Subtle Glow -->
-                <div class="absolute -right-16 -top-16 w-56 h-56 bg-teal-300/15 rounded-full blur-3xl pointer-events-none"></div>
-
-                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <!-- 2. Metrics Grid Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                
+                <!-- Main Progress Card -->
+                <div class="group lg:col-span-4 bg-white hover:bg-slate-50/30 rounded-3xl p-6 sm:p-7 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between relative overflow-hidden cursor-default">
                     
-                    <!-- Left: Coverage & Headline -->
-                    <div class="flex-1 max-w-xl">
-                        <div class="flex items-center gap-2 mb-1.5">
-                            <span class="text-[10.5px] font-bold text-teal-800 bg-teal-100/90 border border-teal-200 px-2.5 py-0.5 rounded-lg uppercase tracking-wider">
-                                Periode {{ $periode }}
-                            </span>
-                            <span class="text-slate-500 text-xs font-medium truncate">&bull; {{ $posyanduAktif }}</span>
-                        </div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-tight">
-                            Rekapitulasi Penimbangan Balita
-                        </h2>
-                        <p class="text-xs sm:text-[13px] text-slate-600 font-medium mt-1">
-                            Sebanyak <strong>{{ $sudahDiukur ?? 0 }}</strong> dari total <strong>{{ $totalBalita ?? 0 }}</strong> balita terdaftar telah selesai diukur.
-                        </p>
+                    <!-- Decorative Background for Main Card -->
+                    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                        <!-- Abstract soft blurs -->
+                        <div class="absolute -right-16 -top-16 w-64 h-64 bg-slate-100/60 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-110"></div>
+                        <div class="absolute right-10 -bottom-10 w-40 h-40 bg-[#086a7c]/[0.05] rounded-full blur-2xl transition-transform duration-700 group-hover:-translate-y-4"></div>
+                        <!-- Little Beads (Manik-manik) -->
+                        <div class="absolute right-12 top-8 w-4 h-4 border-[3px] border-slate-200/80 rounded-full"></div>
+                        <div class="absolute right-6 top-20 w-2 h-2 bg-slate-300/80 rounded-full"></div>
+                        <div class="absolute right-24 top-24 w-2.5 h-2.5 bg-[#086a7c]/20 rounded-full"></div>
+                    </div>
 
-                        <!-- Sleek Progress Bar -->
-                        <div class="mt-4 flex items-center gap-3">
-                            <div class="flex-1 h-3 bg-slate-200/90 rounded-full overflow-hidden border border-slate-300/60 p-0.5">
-                                <div class="h-full bg-teal-600 rounded-full transition-all duration-700" style="width: {{ $persentase ?? 0 }}%"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-[17px] sm:text-[18px] font-bold text-slate-900 tracking-tight">Rekapitulasi Penimbangan</h3>
+                        <p class="text-[14px] font-medium text-slate-500 mt-1">{{ $periode ?? 'Agustus 2026' }}</p>
+                    </div>
+                    
+                    <div class="relative z-10 mt-8">
+                        <div class="flex items-end justify-between mb-4">
+                            <div class="flex items-baseline">
+                                <span class="text-[48px] sm:text-[56px] font-extrabold text-[#086a7c] leading-none tracking-tight">{{ $persentase ?? 0 }}</span>
+                                <span class="text-2xl sm:text-3xl font-bold text-[#086a7c] ml-1">%</span>
                             </div>
-                            <span class="text-sm font-extrabold text-teal-900 shrink-0">{{ $persentase ?? 0 }}%</span>
+                            <span class="text-[14px] font-semibold text-slate-700 mb-1">{{ $sudahDiukur ?? 0 }} / {{ $totalBalita ?? 0 }} Balita</span>
+                        </div>
+                        <div class="h-3.5 w-full bg-slate-100/80 rounded-full overflow-hidden shadow-inner">
+                            <div class="h-full bg-gradient-to-r from-[#086a7c] to-[#0ba3c0] rounded-full relative overflow-hidden shadow-[inset_0_2px_4px_rgba(255,255,255,0.2)]" style="width: {{ $persentase ?? 0 }}%">
+                                <!-- Shimmer effect -->
+                                <div class="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"></div>
+                            </div>
+                        </div>
+                        <p class="text-right text-[12px] font-medium text-[#086a7c] mt-3">Sesuai Target Kunjungan</p>
+                    </div>
+                </div>
+
+                <!-- 4 Sub Metric Cards -->
+                <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    
+                    <!-- Terukur -->
+                    <div class="group bg-white hover:bg-slate-50/30 rounded-3xl p-5 sm:p-6 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between cursor-default">
+                        
+                        <!-- Decorative Beads & Blobs -->
+                        <div class="absolute inset-0 pointer-events-none">
+                            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-full opacity-80 group-hover:scale-[1.3] transition-transform duration-700 ease-out"></div>
+                            <div class="absolute right-6 bottom-6 w-14 h-14 border-[3px] border-emerald-200/50 rounded-full opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 delay-75"></div>
+                            <div class="absolute right-4 top-8 w-2 h-2 bg-emerald-300/60 rounded-full"></div>
+                            <div class="absolute right-10 top-12 w-3 h-3 border-2 border-emerald-300/80 rounded-full"></div>
+                        </div>
+
+                        <div class="absolute left-0 top-0 bottom-0 w-[6px] bg-gradient-to-b from-emerald-400 to-emerald-500 z-10"></div>
+                        <div class="relative z-10 flex justify-between items-start mb-5 sm:mb-6">
+                            <div class="w-10 h-10 rounded-full bg-emerald-50 group-hover:bg-emerald-100 group-hover:scale-110 transition-all duration-300 flex items-center justify-center text-emerald-500 shadow-sm shrink-0">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="text-[11px] font-extrabold text-slate-600 uppercase tracking-widest group-hover:text-slate-800 transition-colors">TOTAL</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h4 class="text-[40px] sm:text-[44px] font-extrabold text-slate-900 leading-none tracking-tight group-hover:text-emerald-700 transition-colors">{{ $sudahDiukur ?? 0 }}</h4>
+                            <p class="text-[15px] font-semibold text-slate-600 mt-2">Terukur</p>
                         </div>
                     </div>
 
-                    <!-- Right: 4 Clean White Floating Metric Tiles -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 lg:w-[480px] shrink-0">
-                        <!-- Terukur -->
-                        <div class="bg-white/95 rounded-2xl p-3 sm:p-3.5 border border-teal-200/80 shadow-2xs flex flex-col">
-                            <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-teal-600"></span> Terukur
-                            </span>
-                            <span class="text-2xl font-black text-slate-900 mt-1">{{ $sudahDiukur ?? 0 }}</span>
+                    <!-- Belum Hadir -->
+                    <div class="group bg-white hover:bg-slate-50/30 rounded-3xl p-5 sm:p-6 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between cursor-default">
+                        
+                        <!-- Decorative Beads & Blobs -->
+                        <div class="absolute inset-0 pointer-events-none">
+                            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-full opacity-80 group-hover:scale-[1.3] transition-transform duration-700 ease-out"></div>
+                            <div class="absolute right-6 bottom-6 w-14 h-14 border-[3px] border-amber-200/50 rounded-full opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 delay-75"></div>
+                            <div class="absolute right-4 top-8 w-2 h-2 bg-amber-300/60 rounded-full"></div>
+                            <div class="absolute right-10 top-12 w-3 h-3 border-2 border-amber-300/80 rounded-full"></div>
                         </div>
 
-                        <!-- Belum Diukur -->
-                        <div class="bg-white/95 rounded-2xl p-3 sm:p-3.5 border border-slate-200 shadow-2xs flex flex-col">
-                            <span class="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-slate-400"></span> Belum
-                            </span>
-                            <span class="text-2xl font-black text-slate-800 mt-1">{{ $belumDiukur ?? 0 }}</span>
+                        <div class="absolute left-0 top-0 bottom-0 w-[6px] bg-gradient-to-b from-amber-400 to-amber-500 z-10"></div>
+                        <div class="relative z-10 flex justify-between items-start mb-5 sm:mb-6">
+                            <div class="w-10 h-10 rounded-full bg-amber-50 group-hover:bg-amber-100 group-hover:scale-110 transition-all duration-300 flex items-center justify-center text-amber-500 shadow-sm shrink-0">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                            </div>
+                            <span class="text-[11px] font-extrabold text-slate-600 uppercase tracking-widest group-hover:text-slate-800 transition-colors">SISA</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h4 class="text-[40px] sm:text-[44px] font-extrabold text-slate-900 leading-none tracking-tight group-hover:text-amber-600 transition-colors">{{ $belumDiukur ?? 0 }}</h4>
+                            <p class="text-[15px] font-semibold text-slate-600 mt-2">Belum Hadir</p>
+                        </div>
+                    </div>
+
+                    <!-- Pantauan Gizi -->
+                    <div class="group bg-white hover:bg-slate-50/30 rounded-3xl p-5 sm:p-6 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between cursor-default">
+                        
+                        <!-- Decorative Beads & Blobs -->
+                        <div class="absolute inset-0 pointer-events-none">
+                            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-gradient-to-br from-sky-50 to-sky-100/50 rounded-full opacity-80 group-hover:scale-[1.3] transition-transform duration-700 ease-out"></div>
+                            <div class="absolute right-6 bottom-6 w-14 h-14 border-[3px] border-sky-200/50 rounded-full opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 delay-75"></div>
+                            <div class="absolute right-4 top-8 w-2 h-2 bg-sky-300/60 rounded-full"></div>
+                            <div class="absolute right-10 top-12 w-3 h-3 border-2 border-sky-300/80 rounded-full"></div>
                         </div>
 
-                        <!-- Pantauan Gizi -->
-                        <div class="bg-white/95 rounded-2xl p-3 sm:p-3.5 border border-amber-200 shadow-2xs flex flex-col">
-                            <span class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-amber-500"></span> Pantauan
-                            </span>
-                            <span class="text-2xl font-black text-amber-950 mt-1">{{ $perluPerhatian ?? 0 }}</span>
+                        <div class="absolute left-0 top-0 bottom-0 w-[6px] bg-gradient-to-b from-sky-400 to-sky-500 z-10"></div>
+                        <div class="relative z-10 flex justify-between items-start mb-5 sm:mb-6">
+                            <div class="w-10 h-10 rounded-full bg-sky-50 group-hover:bg-sky-100 group-hover:scale-110 transition-all duration-300 flex items-center justify-center text-sky-500 shadow-sm shrink-0">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+                            </div>
+                            <span class="text-[11px] font-extrabold text-slate-600 uppercase tracking-widest group-hover:text-slate-800 transition-colors">TINDAKAN</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h4 class="text-[40px] sm:text-[44px] font-extrabold text-slate-900 leading-none tracking-tight group-hover:text-sky-600 transition-colors">{{ $perluPerhatian ?? 0 }}</h4>
+                            <p class="text-[15px] font-semibold text-slate-600 mt-2">Pantauan Gizi</p>
+                        </div>
+                    </div>
+
+                    <!-- Perlu Konfirmasi -->
+                    <div class="group bg-white hover:bg-slate-50/30 rounded-3xl p-5 sm:p-6 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between cursor-default">
+                        
+                        <!-- Decorative Beads & Blobs -->
+                        <div class="absolute inset-0 pointer-events-none">
+                            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-gradient-to-br from-rose-50 to-rose-100/50 rounded-full opacity-80 group-hover:scale-[1.3] transition-transform duration-700 ease-out"></div>
+                            <div class="absolute right-6 bottom-6 w-14 h-14 border-[3px] border-rose-200/50 rounded-full opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 delay-75"></div>
+                            <div class="absolute right-4 top-8 w-2 h-2 bg-rose-300/60 rounded-full"></div>
+                            <div class="absolute right-10 top-12 w-3 h-3 border-2 border-rose-300/80 rounded-full"></div>
                         </div>
 
-                        <!-- Konfirmasi TB -->
-                        <div class="bg-white/95 rounded-2xl p-3 sm:p-3.5 border border-rose-200 shadow-2xs flex flex-col">
-                            <span class="text-xs font-bold text-rose-800 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-rose-500"></span> Konfirmasi
-                            </span>
-                            <span class="text-2xl font-black text-rose-950 mt-1">{{ $berisiko ?? 0 }}</span>
+                        <div class="absolute left-0 top-0 bottom-0 w-[6px] bg-gradient-to-b from-rose-400 to-rose-500 z-10"></div>
+                        <div class="relative z-10 flex justify-between items-start mb-5 sm:mb-6">
+                            <div class="w-10 h-10 rounded-full bg-rose-50 group-hover:bg-rose-100 group-hover:scale-110 transition-all duration-300 flex items-center justify-center text-rose-500 shadow-sm shrink-0">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="text-[11px] font-extrabold text-slate-600 uppercase tracking-widest group-hover:text-slate-800 transition-colors">URGENT</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h4 class="text-[40px] sm:text-[44px] font-extrabold text-slate-900 leading-none tracking-tight group-hover:text-rose-600 transition-colors">{{ $berisiko ?? 0 }}</h4>
+                            <p class="text-[15px] font-semibold text-slate-600 mt-2">Perlu Konfirmasi</p>
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- Section B: Dual Action Export Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-
-                <!-- 1. PDF Official Export Card -->
-                <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:border-teal-300 transition-all flex flex-col justify-between group">
-                    <div>
-                        <div class="flex items-start justify-between gap-3 mb-4">
-                            <div class="w-11 h-11 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                </svg>
-                            </div>
-                            <span class="text-[10.5px] font-bold text-rose-700 bg-rose-50 border border-rose-200/70 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                                Format Kedinasan
-                            </span>
-                        </div>
-
-                        <h3 class="text-base font-bold text-slate-900 tracking-tight">Laporan Resmi Posyandu (PDF)</h3>
-                        <p class="text-xs text-slate-500 font-medium mt-1.5 leading-relaxed">
-                            Dokumen resmi format A4 Landscape dengan Kop Surat Dinas Kesehatan / Puskesmas, rekapitulasi data KMS, dan kolom tanda tangan ganda Kader & Tenaga Gizi.
-                        </p>
-
-                        <!-- Feature Chips -->
-                        <div class="flex flex-wrap gap-2 my-4">
-                            <span class="text-[11.5px] font-medium text-slate-600 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">Kop Surat Resmi</span>
-                            <span class="text-[11.5px] font-medium text-slate-600 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">Tanda Tangan Ganda</span>
-                            <span class="text-[11.5px] font-medium text-slate-600 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">A4 Landscape</span>
-                        </div>
-                    </div>
-
-                    <form action="{{ route('laporan.generate') }}" method="POST" class="w-full mt-2">
-                        @csrf
-                        <input type="hidden" name="posyandu_id" value="{{ request('posyandu_id') }}">
-                        <input type="hidden" name="periode" value="{{ $periodeValue }}">
-                        <button type="submit" class="w-full h-11 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white rounded-xl font-bold text-xs shadow-xs hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h10.5M6.75 17.25h10.5M4.5 10.5h15M6.75 3h10.5a2.25 2.25 0 012.25 2.25v13.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18.75V5.25A2.25 2.25 0 016.75 3z" />
-                            </svg>
-                            <span>Cetak PDF Resmi</span>
-                        </button>
-                    </form>
+            <!-- 3. Ekspor & Pelaporan Section -->
+            <div class="mt-4">
+                <div class="flex items-center gap-2 mb-4">
+                    <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <h2 class="text-[17px] font-bold text-slate-900">Ekspor & Pelaporan</h2>
                 </div>
 
-                <!-- 2. Excel Spreadsheet Export Card -->
-                <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:border-emerald-300 transition-all flex flex-col justify-between group">
-                    <div>
-                        <div class="flex items-start justify-between gap-3 mb-4">
-                            <div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 1.5c0 .621.504 1.125 1.125 1.125M12 17.25h1.125m-1.125 0c-.621 0-1.125-.504-1.125-1.125" />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    
+                    <!-- PDF Card -->
+                    <div class="group bg-white hover:bg-slate-50/30 rounded-3xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all duration-300 p-5 sm:p-6 relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+                        <!-- Large Soft Circle Background Shape -->
+                        <div class="absolute right-0 top-0 translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-full group-hover:scale-110 transition-transform duration-700"></div>
+                        
+                        <div class="relative z-10 flex justify-between items-start">
+                            <div class="max-w-[75%]">
+                                <h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Laporan Resmi Posyandu (PDF)</h3>
+                                <p class="text-[13px] text-slate-500 font-normal mt-2 leading-relaxed">
+                                    Dokumen lengkap siap cetak untuk diserahkan ke Puskesmas dan Kelurahan.
+                                </p>
+                                
+                                <div class="flex flex-wrap gap-2 mt-5 mb-5">
+                                    <span class="text-[11px] font-medium text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-sm">Kop Surat</span>
+                                    <span class="text-[11px] font-medium text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-sm">Tanda Tangan</span>
+                                    <span class="text-[11px] font-medium text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-sm">A4 Landscape</span>
+                                </div>
+                            </div>
+                            
+                            <div class="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 shrink-0">
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <rect x="8" y="12" width="8" height="5" rx="1" />
+                                    <path d="M10 14.5h4" />
                                 </svg>
                             </div>
-                            <span class="text-[10.5px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                                Excel (.xls)
-                            </span>
                         </div>
 
-                        <h3 class="text-base font-bold text-slate-900 tracking-tight">Data Tabel Pengukuran (Excel)</h3>
-                        <p class="text-xs text-slate-500 font-medium mt-1.5 leading-relaxed">
-                            Dataset 16 kolom komprehensif mencakup NIK, identitas orang tua, tanggal ukur, BB/TB/LK, status kenaikan KMS, dan catatan medis untuk Puskesmas.
-                        </p>
-
-                        <!-- Feature Chips -->
-                        <div class="flex flex-wrap gap-2 my-4">
-                            <span class="text-[11.5px] font-medium text-slate-600 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">16 Kolom Lengkap</span>
-                            <span class="text-[11.5px] font-medium text-slate-600 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">Format Spreadsheet</span>
-                            <span class="text-[11.5px] font-medium text-slate-600 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">Arsip Digital</span>
-                        </div>
+                        <form action="{{ route('laporan.generate') }}" method="POST" class="relative z-10 w-full mt-auto">
+                            @csrf
+                            <input type="hidden" name="posyandu_id" value="{{ request('posyandu_id') }}">
+                            <input type="hidden" name="periode" value="{{ $periodeValue }}">
+                            <button type="submit" class="w-full h-[44px] bg-[#086a7c] hover:bg-[#065b6b] text-white rounded-xl font-semibold text-[14px] shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                                <span>Cetak PDF Resmi</span>
+                            </button>
+                        </form>
                     </div>
 
-                    <a href="{{ route('laporan.export.excel', ['periode' => $periodeValue]) }}" class="w-full h-11 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl font-bold text-xs shadow-xs hover:shadow transition-all flex items-center justify-center gap-2 mt-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
-                        <span>Export ke Excel (.xls)</span>
+                    <!-- Excel Card -->
+                    <div class="group bg-white hover:bg-slate-50/30 rounded-3xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all duration-300 p-5 sm:p-6 relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+                        <!-- Large Soft Circle Background Shape -->
+                        <div class="absolute right-0 top-0 translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-emerald-50/50 to-emerald-100/30 rounded-full group-hover:scale-110 transition-transform duration-700"></div>
+                        
+                        <div class="relative z-10 flex justify-between items-start">
+                            <div class="max-w-[75%]">
+                                <h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Data Tabel Pengukuran (Excel)</h3>
+                                <p class="text-[13px] text-slate-500 font-normal mt-2 leading-relaxed">
+                                    Spreadsheet mentah untuk analisis data lebih lanjut atau rekapitulasi mandiri.
+                                </p>
+                                
+                                <div class="flex flex-wrap gap-2 mt-5 mb-5">
+                                    <span class="text-[11px] font-medium text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-sm">16 Kolom Lengkap</span>
+                                    <span class="text-[11px] font-medium text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-sm">Format Spreadsheet</span>
+                                    <span class="text-[11px] font-medium text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-sm">Arsip Digital</span>
+                                </div>
+                            </div>
+                            
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <path d="M6 13h12" />
+                                    <path d="M6 17h12" />
+                                    <path d="M10 13v8" />
+                                    <path d="M14 13v8" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('laporan.export.excel', ['periode' => $periodeValue]) }}" class="w-full h-[44px] bg-white border-2 border-[#086a7c] text-[#086a7c] hover:bg-slate-50 rounded-xl font-bold text-[14px] shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 relative z-10 mt-auto">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            <span>Export ke Excel (.xls)</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 4. Pratinjau Data Penimbangan Section -->
+            <div class="mt-8 mb-6 relative z-10">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        <h2 class="text-[17px] font-bold text-slate-900">Pratinjau Data Penimbangan <span class="font-normal text-slate-500">({{ $periode ?? 'Agustus 2026' }})</span></h2>
+                    </div>
+                    <a href="{{ route('balita.index') }}" class="text-[14px] font-bold text-[#086a7c] hover:underline flex items-center gap-1">
+                        Lihat Semua Data
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                 </div>
 
+                @if(isset($previewBalitas) && $previewBalitas->isNotEmpty())
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-extrabold text-slate-500 uppercase tracking-widest">
+                                    <tr>
+                                        <th class="py-4 px-5">BALITA & NIK</th>
+                                        <th class="py-4 px-4">NAMA IBU</th>
+                                        <th class="py-4 px-4">TGL UKUR</th>
+                                        <th class="py-4 px-4 text-center">BB (KG)</th>
+                                        <th class="py-4 px-4 text-center">TB (CM)</th>
+                                        <th class="py-4 px-4 text-center">KMS</th>
+                                        <th class="py-4 px-5 text-center">STATUS/DIAGNOSA</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-[14px] font-medium text-slate-700">
+                                    @foreach($previewBalitas as $b)
+                                        @php
+                                            $m = $b->pengukurans->first();
+                                            $statusGizi = $m ? $m->status_gizi : '-';
+                                            $statusValidasi = $m ? $m->status_validasi : null;
+                                            $isApproved = $statusValidasi === 'approved';
+                                            $kms = $m ? ($m->status_kenaikan ?? '-') : '-';
+                                            
+                                            // Mock logic to match screenshot colors if needed, 
+                                            // but using actual data logic is better.
+                                            $isWarning = false;
+                                            if ($m && (strtolower($statusGizi) != 'normal' || str_contains(strtolower($statusGizi), 'kurang'))) {
+                                                $isWarning = true;
+                                            }
+                                            if ($kms === 'T' || str_contains($kms, 'Turun')) {
+                                                $isWarning = true;
+                                            }
+                                        @endphp
+                                        <tr class="hover:bg-slate-50/50 transition-colors">
+                                            <td class="py-3 px-5">
+                                                <div class="flex items-center gap-3">
+                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($b->nama) }}&background=f1f5f9&color=64748b&bold=true&rounded=true" alt="Avatar" class="w-9 h-9 rounded-full object-cover">
+                                                    <div class="flex flex-col">
+                                                        <span class="font-bold text-slate-900">{{ $b->nama }}</span>
+                                                        <span class="text-[12px] text-slate-400 font-medium mt-0.5">{{ $b->nik ?? '-' }}</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="py-3 px-4 text-slate-500">{{ $b->orangTua->nama_ibu ?? '-' }}</td>
+                                            <td class="py-3 px-4 text-slate-500">{{ $m ? \Carbon\Carbon::parse($m->tanggal_ukur)->translatedFormat('d M Y') : '-' }}</td>
+                                            <td class="py-3 px-4 text-center">
+                                                <span class="{{ $isWarning ? 'text-amber-500 font-normal' : 'text-slate-600' }}">
+                                                    {{ $m ? number_format((float)$m->berat_badan, 1) : '-' }}
+                                                </span>
+                                            </td>
+                                            <td class="py-3 px-4 text-center text-slate-600">{{ $m ? number_format((float)$m->tinggi_badan, 1) : '-' }}</td>
+                                            <td class="py-3 px-4 text-center">
+                                                @if($kms === 'N' || str_contains($kms, 'Naik'))
+                                                    <svg class="w-4 h-4 mx-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                                @elseif($kms === 'T' || str_contains($kms, 'Tetap'))
+                                                    <svg class="w-4 h-4 mx-auto text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                                                @else
+                                                    <svg class="w-4 h-4 mx-auto text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
+                                                @endif
+                                            </td>
+                                            <td class="py-3 px-5 text-center">
+                                                @if($isApproved)
+                                                    @if(strtolower($statusGizi) === 'normal')
+                                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-bold bg-white text-slate-600 border border-slate-200 shadow-sm">
+                                                            Normal
+                                                        </span>
+                                                    @else
+                                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-bold bg-orange-50 text-orange-600 border border-orange-200 shadow-sm">
+                                                            {{ ucfirst($statusGizi) }}
+                                                        </span>
+                                                    @endif
+                                                @else
+                                                    @if($isWarning)
+                                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-bold bg-orange-50 text-orange-600 border border-orange-200 shadow-sm">
+                                                            Pantauan Gizi
+                                                        </span>
+                                                    @else
+                                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-bold bg-slate-50 text-slate-600 border border-slate-200 shadow-sm">
+                                                            Menunggu Validasi
+                                                        </span>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endif
             </div>
 
-            <!-- Section C: Live Data Preview Table (Clean, Modern & Elegant) -->
-            @if(isset($previewBalitas) && $previewBalitas->isNotEmpty())
-                <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden">
-                    
-                    <!-- Table Header Toolbar -->
-                    <div class="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-700 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 011.875 1.875v11.25a1.875 1.875 0 01-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V6.375A1.875 1.875 0 015.625 4.5z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-bold text-slate-900">Pratinjau Data Penimbangan ({{ $periode }})</h3>
-                                <p class="text-[11.5px] text-slate-500 font-medium">Cuplikan data balita terukur yang akan disertakan pada laporan</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-teal-800 bg-teal-50 border border-teal-200/80 px-3 py-1 rounded-full">
-                                {{ $sudahDiukur ?? count($previewBalitas) }} Balita Terukur
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Modern Table -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-slate-600">
-                            <thead class="bg-slate-100/90 text-[11px] font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200">
-                                <tr>
-                                    <th class="py-3 px-4 sm:px-5">Balita</th>
-                                    <th class="py-3 px-4">Nama Ibu</th>
-                                    <th class="py-3 px-4">Tgl Ukur</th>
-                                    <th class="py-3 px-4 text-center">BB (kg)</th>
-                                    <th class="py-3 px-4 text-center">TB (cm)</th>
-                                    <th class="py-3 px-4 text-center">KMS</th>
-                                    <th class="py-3 px-4 text-center">Status / Diagnosa</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 font-medium">
-                                @foreach($previewBalitas as $b)
-                                    @php
-                                        $m = $b->pengukurans->first();
-                                        $statusGizi = $m ? $m->status_gizi : '-';
-                                        $statusValidasi = $m ? $m->status_validasi : null;
-                                        $isApproved = $statusValidasi === 'approved';
-                                        $isMale = ($b->jenis_kelamin ?? 'L') === 'L';
-                                        $kms = $m ? ($m->status_kenaikan ?? '-') : '-';
-                                    @endphp
-                                    <tr class="hover:bg-teal-50/20 transition-colors">
-                                        <!-- Balita Info -->
-                                        <td class="py-3 px-4 sm:px-5">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-extrabold shrink-0 {{ $isMale ? 'bg-cyan-50 text-cyan-700 border border-cyan-200/70' : 'bg-rose-50 text-rose-700 border border-rose-200/70' }}">
-                                                    {{ $isMale ? 'L' : 'P' }}
-                                                </div>
-                                                <div class="flex flex-col">
-                                                    <span class="font-bold text-slate-900 text-xs">{{ $b->nama }}</span>
-                                                    <span class="text-[10.5px] text-slate-400 font-mono">{{ $b->nik ?? '-' }}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <!-- Ibu -->
-                                        <td class="py-3 px-4 text-slate-700 text-xs font-medium">{{ $b->orangTua->nama_ibu ?? '-' }}</td>
-
-                                        <!-- Tanggal Ukur -->
-                                        <td class="py-3 px-4 text-slate-500 text-xs">
-                                            {{ $m ? \Carbon\Carbon::parse($m->tanggal_ukur)->translatedFormat('d M Y') : '-' }}
-                                        </td>
-
-                                        <!-- BB -->
-                                        <td class="py-3 px-4 text-center">
-                                            <span class="font-bold text-slate-900 text-xs">{{ $m ? number_format((float)$m->berat_badan, 1) : '-' }}</span>
-                                            <span class="text-[10px] text-slate-400 ml-0.5">kg</span>
-                                        </td>
-
-                                        <!-- TB -->
-                                        <td class="py-3 px-4 text-center">
-                                            <span class="font-bold text-slate-900 text-xs">{{ $m ? number_format((float)$m->tinggi_badan, 1) : '-' }}</span>
-                                            <span class="text-[10px] text-slate-400 ml-0.5">cm</span>
-                                        </td>
-
-                                        <!-- KMS -->
-                                        <td class="py-3 px-4 text-center">
-                                            @if($kms === 'N' || str_contains($kms, 'Naik'))
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80">
-                                                    Naik (N)
-                                                </span>
-                                            @elseif($kms === 'T' || str_contains($kms, 'Tetap'))
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-amber-50 text-amber-700 border border-amber-200/80">
-                                                    Tetap (T)
-                                                </span>
-                                            @else
-                                                <span class="text-slate-400 text-xs font-semibold">{{ $kms }}</span>
-                                            @endif
-                                        </td>
-
-                                        <!-- Status Diagnosa -->
-                                        <td class="py-3 px-4 text-center">
-                                            @if($isApproved)
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                                    {{ ucfirst($statusGizi) }}
-                                                </span>
-                                            @else
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                                    Menunggu Validasi
-                                                </span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Table Footer Link -->
-                    <div class="p-3 sm:p-4 bg-slate-50/80 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-                        <span>Menampilkan 5 data balita teratas &bull; Berkas ekspor memuat seluruh {{ $sudahDiukur ?? count($previewBalitas) }} balita terukur</span>
-                        <a href="{{ route('balita.index') }}" class="font-bold text-teal-700 hover:text-teal-800 flex items-center gap-1 transition-colors">
-                            <span>Buka Daftar Semua Balita</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
-                                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            @endif
-
         @endif
+    </div>
 
+    <!-- Footer Space -->
+    <div class="mt-auto max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-6 flex flex-col sm:flex-row justify-between items-center text-[12px] text-slate-500 font-medium border-t border-slate-200 relative z-10">
+        <p>&copy; {{ date('Y') }} NutriGen Digital Healthcare. All rights reserved.</p>
+        <div class="flex gap-4 mt-2 sm:mt-0">
+            <a href="#" class="hover:text-slate-700">Privacy Policy</a>
+            <a href="#" class="hover:text-slate-700">Support</a>
+        </div>
     </div>
 
 </div>

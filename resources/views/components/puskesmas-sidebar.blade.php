@@ -3,7 +3,7 @@
     class="fixed inset-0 bg-slate-900/50 z-40 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
 
 <aside id="sidebar"
-    class="fixed inset-y-0 left-0 w-72 bg-white z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col h-screen overflow-hidden shadow-2xl lg:shadow-none border-r border-slate-200">
+    class="fixed inset-y-0 left-0 w-72 bg-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col h-screen overflow-hidden shadow-2xl border-r border-slate-200">
 
     <!-- Header: Logo -->
     <div class="flex items-center justify-between px-6 py-6 border-b border-slate-200 bg-white flex-shrink-0">

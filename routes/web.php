@@ -81,10 +81,12 @@ use App\Http\Controllers\Puskesmas\PuskesmasController;
 Route::prefix('puskesmas')->name('puskesmas.')->middleware(['web', 'auth', 'prevent-back-history', 'role:puskesmas'])->group(function () {
     Route::get('/dashboard', [PuskesmasController::class, 'dashboard'])->name('dashboard');
     Route::get('/balita',    [PuskesmasController::class, 'balita'])->name('balita');
+    Route::get('/balita/{id}', [PuskesmasController::class, 'showBalita'])->name('balita.show');
     Route::get('/laporan',   [PuskesmasController::class, 'laporan'])->name('laporan');
 
     // Legacy mapping (to prevent UI breaking)
     Route::get('/validasi', [PuskesmasController::class, 'validasi'])->name('validasi');
+    Route::get('/validasi/{id}/review', [PuskesmasController::class, 'reviewValidasi'])->name('validasi.review');
     Route::get('/validasi/{id}/riwayat', [PuskesmasController::class, 'riwayat'])->name('validasi.riwayat');
     Route::post('/validasi/{id}/approve', [PuskesmasController::class, 'approve'])->name('validasi.approve');
     Route::post('/validasi/{id}/reject', [PuskesmasController::class, 'reject'])->name('validasi.reject');
@@ -94,6 +96,10 @@ Route::prefix('puskesmas')->name('puskesmas.')->middleware(['web', 'auth', 'prev
     Route::put('/pengaturan',[PuskesmasController::class, 'updatePengaturan'])->name('pengaturan.update');
     Route::get('/pengaturan/petugas',[PuskesmasController::class, 'petugas'])->name('pengaturan.petugas');
     Route::put('/pengaturan/petugas',[PuskesmasController::class, 'updatePetugas'])->name('pengaturan.petugas.update');
+    Route::get('/pengaturan/keamanan',[PuskesmasController::class, 'keamanan'])->name('pengaturan.keamanan');
+    Route::put('/pengaturan/keamanan',[PuskesmasController::class, 'updateKeamanan'])->name('pengaturan.keamanan.update');
+    Route::get('/pengaturan/notifikasi',[PuskesmasController::class, 'notifikasi'])->name('pengaturan.notifikasi');
+    Route::put('/pengaturan/notifikasi',[PuskesmasController::class, 'updateNotifikasi'])->name('pengaturan.notifikasi.update');
     Route::post('/posyandu', [PuskesmasController::class, 'storePosyandu'])->name('posyandu.store');
     Route::post('/posyandu/{id}/kader', [PuskesmasController::class, 'storeKader'])->name('posyandu.kader.store');
 });

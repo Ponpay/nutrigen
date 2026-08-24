@@ -3,71 +3,97 @@
 @php
     $pctNormal = $distribution['pct_normal'] ?? 0;
     $pctStunting = $distribution['pct_stunting'] ?? 0;
-    
-    // Normal starts at 0. Stunting starts after Normal
-    $stuntingOffset = -$pctNormal;
     $totalDiukur = ($distribution['normal'] ?? 0) + ($distribution['stunting'] ?? 0);
 @endphp
 
-<div class="w-full h-full flex flex-col">
-    <div class="px-6 py-5 border-b border-slate-100 flex flex-col justify-center bg-white shrink-0">
-        <h3 class="font-extrabold text-slate-800 text-[15px]">Ringkasan Status Gizi</h3>
-        <p class="text-[12px] text-slate-500 mt-1">Distribusi status gizi dari total yang diukur</p>
+<div class="w-full h-full flex flex-col relative">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <h3 class="font-extrabold text-slate-900 text-[18px]">Status Gizi</h3>
+        <button class="text-slate-400 hover:text-slate-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+        </button>
     </div>
     
-    <div class="flex-1 p-6 flex flex-col justify-center items-center">
-        <!-- Donut Container -->
-        <div class="relative w-40 h-40 shrink-0 mb-6">
-            <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
-                <!-- Background Ring (Optional, if we want full circle) -->
-                <path class="text-slate-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
-                <!-- Normal -->
-                <path class="text-emerald-500 transition-all duration-1000 ease-out" stroke-dasharray="{{ $pctNormal }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
-                <!-- Berisiko -->
-                <path class="text-rose-500 transition-all duration-1000 ease-out" stroke-dasharray="{{ $pctStunting }}, 100" stroke-dashoffset="{{ $stuntingOffset }}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
-            </svg>
+    <div class="flex-1 flex flex-col justify-center items-center">
+        <!-- Donut Container using Chart.js -->
+        <div class="relative w-56 h-56 shrink-0 mb-10 flex items-center justify-center">
+            <canvas id="statusGiziChart" class="w-full h-full drop-shadow-md z-10"></canvas>
+            
             <!-- Inner Text -->
-            <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span class="text-3xl font-extrabold text-slate-800">{{ number_format($totalDiukur) }}</span>
-                <span class="text-[10px] font-medium text-slate-500 mt-1">Total Diukur</span>
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-0">
+                <span class="text-[36px] font-bold text-slate-900 leading-none tracking-tight">{{ number_format($totalDiukur) }}</span>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Total<br>Diukur</span>
             </div>
         </div>
 
-        <!-- Legend -->
-        <div class="flex flex-col gap-4 w-full px-2">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
-                    <span class="text-[13px] font-bold text-slate-700">Normal</span>
-                </div>
-                <div class="text-[13px] font-medium text-slate-500">
-                    <span class="font-extrabold text-slate-800 mr-1">{{ $distribution['normal'] ?? 0 }}</span>
-                    ({{ $pctNormal }}%)
+        <!-- Legend (Combined Pill) -->
+        <div class="bg-slate-50/80 border border-slate-100 rounded-2xl py-3 px-6 flex items-center justify-center gap-6 w-full max-w-[280px]">
+            <!-- Normal -->
+            <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded bg-[#06667A]"></div>
+                <div class="text-[13px] font-medium text-slate-700">
+                    Normal <span class="font-bold">({{ $pctNormal }}%)</span>
                 </div>
             </div>
             
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
-                    <span class="text-[13px] font-bold text-slate-700">Berisiko</span>
-                </div>
-                <div class="text-[13px] font-medium text-slate-500">
-                    <span class="font-extrabold text-slate-800 mr-1">{{ $distribution['stunting'] ?? 0 }}</span>
-                    ({{ $pctStunting }}%)
+            <!-- Berisiko -->
+            <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded bg-[#E11D48]"></div>
+                <div class="text-[13px] font-medium text-slate-700">
+                    Berisiko <span class="font-bold">({{ $pctStunting }}%)</span>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="p-6 pt-0 shrink-0">
-        <div class="flex items-start gap-2 bg-blue-50/50 p-3 rounded-xl border border-blue-100/50">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-blue-500 shrink-0 mt-0.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-            </svg>
-            <p class="text-[11px] font-medium text-slate-500 leading-relaxed">
-                Persentase dihitung dari total sasaran. <br>
-                Bukan dari total yang diukur.
-            </p>
-        </div>
-    </div>
 </div>
+
+<!-- Load Chart.js locally or via CDN, we'll assume it's available or load it -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('statusGiziChart').getContext('2d');
+        const normalVal = {{ $distribution['normal'] ?? 0 }};
+        const berisikoVal = {{ $distribution['stunting'] ?? 0 }};
+        
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Normal', 'Berisiko'],
+                datasets: [{
+                    data: [normalVal, berisikoVal],
+                    backgroundColor: [
+                        '#06667A', // Teal
+                        '#E11D48'  // Rose/Red
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        display: false // We use custom HTML legend
+                    },
+                    tooltip: {
+                        backgroundColor: '#1E293B',
+                        padding: 12,
+                        titleFont: { size: 13, family: "'Inter', sans-serif" },
+                        bodyFont: { size: 14, weight: 'bold', family: "'Inter', sans-serif" },
+                        displayColors: true,
+                        cornerRadius: 8,
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        });
+    });
+</script>

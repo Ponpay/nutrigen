@@ -1,58 +1,66 @@
 @props(['child'])
 
 @php
-    $rekomendasi = '';
-    
-    if ($child['statusType'] === 'danger') {
-        $rekomendasi = "Data menunjukkan deviasi dari standar. Mohon periksa kembali hasil pengukuran.";
-    } elseif ($child['statusType'] === 'warning') {
-        $rekomendasi = "Terdapat indikator yang memerlukan perhatian khusus dari petugas.";
-    } else {
-        $rekomendasi = "Data indikator pertumbuhan terpantau berada pada rentang normal.";
-    }
+    $alertConfig = [
+        'danger'  => ['bg' => 'bg-rose-50',    'border' => 'border-rose-100',    'text' => 'text-rose-600',   'icon' => 'text-rose-400',   'msg' => 'Data menunjukkan deviasi dari standar. Periksa kembali sebelum menyetujui.'],
+        'warning' => ['bg' => 'bg-amber-50',   'border' => 'border-amber-100',   'text' => 'text-amber-700',  'icon' => 'text-amber-400',  'msg' => 'Ada indikator yang perlu perhatian khusus dari petugas.'],
+        'success' => ['bg' => 'bg-emerald-50', 'border' => 'border-emerald-100', 'text' => 'text-emerald-700','icon' => 'text-emerald-500','msg' => 'Semua indikator dalam rentang normal. Data siap divalidasi.'],
+    ];
+    $ac = $alertConfig[$child['statusType']] ?? $alertConfig['success'];
+
+    $headerBg = match($child['statusType']) {
+        'danger'  => 'from-rose-500 to-rose-400',
+        'warning' => 'from-amber-500 to-orange-400',
+        default   => 'from-[#0097B0] to-[#00C4E0]',
+    };
+
+    $initials = collect(explode(' ', $child['name']))->map(fn($n) => substr($n, 0, 1))->take(2)->join('');
 @endphp
 
-<div class="px-5 lg:px-6 py-4 lg:py-5 bg-[#00A9C0] shrink-0 rounded-t-xl lg:rounded-none">
-    <div class="flex items-start justify-between">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#00A9C0] font-black text-lg shrink-0">
-                {{ collect(explode(' ', $child['name']))->map(fn($n) => substr($n, 0, 1))->take(2)->join('') }}
-            </div>
-            <div>
-                <h1 class="text-xl font-bold tracking-tight text-white leading-tight mb-1">{{ $child['name'] }}</h1>
-                <div class="flex items-center gap-2 text-white/90 text-xs font-medium">
-                    <span>{{ $child['age'] }}</span>
-                    <span>&bull;</span>
-                    <span>Laki-laki</span> <!-- Placeholder gender since it's in mockup -->
-                    <span>&bull;</span>
-                    <span>Posyandu {{ $child['posyandu'] }}</span>
-                    <span>&bull;</span>
-                    <span>Kader {{ $child['kader'] }}</span>
+{{-- Compact workspace header --}}
+<div class="shrink-0">
+
+    {{-- Gradient identity bar --}}
+    <div class="relative overflow-hidden bg-gradient-to-r {{ $headerBg }} px-5 py-4">
+        <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+
+        <div class="relative flex items-center justify-between gap-3">
+            {{-- Name + meta --}}
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm ring-1 ring-white/30 flex items-center justify-center text-white font-black text-sm shrink-0">
+                    {{ strtoupper($initials) }}
+                </div>
+                <div class="min-w-0">
+                    <h2 class="text-[15px] font-bold text-white tracking-tight leading-tight truncate">{{ $child['name'] }}</h2>
+                    <p class="text-[10.5px] text-white/70 font-medium truncate mt-0.5">
+                        {{ $child['age'] }} · Posyandu {{ $child['posyandu'] }} · Kader {{ $child['kader'] }}
+                    </p>
                 </div>
             </div>
-        </div>
-        <div class="text-right flex flex-col items-end gap-1.5">
-            @php
-                $badgeColors = [
-                    'danger' => 'bg-[#FF3B30] text-white border-transparent',
-                    'warning' => 'bg-[#FF9500] text-white border-transparent',
-                    'success' => 'bg-[#34C759] text-white border-transparent'
-                ];
-                $color = $badgeColors[$child['statusType']] ?? $badgeColors['success'];
-            @endphp
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border {{ $color }} uppercase tracking-wider">
-                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                {{ $child['statusLabel'] }}
-            </span>
-            <span class="text-xs text-white/90 font-medium">{{ $child['date'] }} &bull; {{ $child['time'] ?? '09:00 WIB' }}</span>
+
+            {{-- Status + date --}}
+            <div class="flex flex-col items-end gap-1 shrink-0">
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9.5px] font-bold border border-white/30 bg-white/15 text-white uppercase tracking-widest">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    {{ $child['statusLabel'] }}
+                </span>
+                <span class="text-[10px] text-white/60 font-medium">{{ $child['date'] }}</span>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Clinical Alert -->
-<div class="px-5 lg:px-6 py-3 {{ $child['statusType'] === 'danger' ? 'bg-[#FFF2F2] text-[#FF3B30]' : ($child['statusType'] === 'warning' ? 'bg-[#FFF9F2] text-[#FF9500]' : 'bg-[#F2FFF4] text-[#34C759]') }} flex items-center gap-2 text-sm font-medium border-b {{ $child['statusType'] === 'danger' ? 'border-[#FFE5E5]' : ($child['statusType'] === 'warning' ? 'border-[#FFECCC]' : 'border-[#E5FFE9]') }}">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 shrink-0">
-        <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
-    </svg>
-    <span>{{ $rekomendasi }}</span>
+    {{-- Clinical alert — single slim line --}}
+    <div class="px-5 py-2 {{ $ac['bg'] }} {{ $ac['border'] }} border-b flex items-center gap-2">
+        @if($child['statusType'] === 'success')
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 {{ $ac['icon'] }} shrink-0">
+                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
+            </svg>
+        @else
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 {{ $ac['icon'] }} shrink-0">
+                <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+            </svg>
+        @endif
+        <p class="text-[11px] font-medium {{ $ac['text'] }} leading-none">{{ $ac['msg'] }}</p>
+    </div>
+
 </div>

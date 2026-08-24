@@ -28,38 +28,62 @@
 <!-- MAIN CANVAS -->
 <div class="bg-slate-50/50 min-h-screen relative w-full pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-16 font-sans">
     
-    {{-- Script for Framer Motion --}}
-    <script type="module">
+    {{-- Framer Motion-like Smooth Reveal Animations --}}
+    <style>
+        .reveal-init {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    </style>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            if(window.Motion) {
-                const { animate, stagger, hover } = window.Motion;
-                animate('.motion-card', 
-                    { opacity: [0, 1], y: [20, 0] }, 
-                    { delay: stagger(0.05), duration: 0.4, easing: "ease-out" }
-                );
-            }
+            const observer = new IntersectionObserver((entries) => {
+                let delay = 0;
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('reveal-active');
+                        }, delay);
+                        delay += 75; // Stagger effect
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+
+            // Apply init class and observe all elements with .motion-card
+            document.querySelectorAll('.motion-card').forEach(el => {
+                el.classList.add('reveal-init');
+                observer.observe(el);
+            });
         });
     </script>
     
     <!-- Top Header Actions -->
-    <div class="max-w-7xl mx-auto px-4 lg:px-8 pt-6 pb-4 flex items-center justify-between">
-        <a href="{{ route('balita.index') }}" class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-slate-200/80 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-all font-semibold text-[13.5px] shadow-xs">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8 pt-6 pb-6 flex items-center justify-between">
+        <a href="{{ route('balita.index') }}" class="inline-flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-all font-semibold text-[14px]">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
             Daftar Balita
         </a>
-        <div class="flex items-center gap-2 sm:gap-3">
-            <a href="{{ route('balita.edit', $balitaId) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2 rounded-xl border border-slate-200/80 bg-white hover:bg-slate-50 text-slate-700 font-bold text-[13px] shadow-xs transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-500"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg> 
-                <span>Edit</span>
+        <div class="flex items-center gap-2 sm:gap-4">
+            <a href="{{ route('balita.edit', $balitaId) }}" class="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-slate-700 font-bold text-[12px] sm:text-[13px] transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 sm:w-4 sm:h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg> 
+                <span class="hidden sm:inline">Edit Profil</span>
+                <span class="sm:hidden">Edit</span>
             </a>
             <form id="delete-balita-{{ $balitaId }}" action="{{ route('balita.destroy', $balitaId) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="button" onclick="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ window.NutriAlert.confirm('Hapus Balita?', 'Data yang dihapus tidak dapat dikembalikan!', 'Hapus', 'Batal').then((r) => { if(r.isConfirmed) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }); } else { if(confirm('Hapus balita ini?')) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }" class="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2 rounded-xl border border-rose-200/80 bg-rose-50/50 hover:bg-rose-50 text-rose-600 font-bold text-[13px] shadow-xs transition-all cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg> 
-                    <span>Hapus</span>
+                <button type="button" onclick="if(window.NutriAlert && typeof window.NutriAlert.confirm === 'function'){ window.NutriAlert.confirm('Hapus Balita?', 'Data yang dihapus tidak dapat dikembalikan!', 'Hapus', 'Batal').then((r) => { if(r.isConfirmed) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }); } else { if(confirm('Hapus balita ini?')) document.getElementById('delete-balita-{{ $balitaId }}').submit(); }" class="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-rose-100/50 hover:bg-rose-100 text-rose-600 font-bold text-[12px] sm:text-[13px] transition-all cursor-pointer border border-rose-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 sm:w-4 sm:h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg> 
+                    <span class="hidden sm:inline">Hapus Data</span>
+                    <span class="sm:hidden">Hapus</span>
                 </button>
             </form>
         </div>
@@ -68,37 +92,31 @@
     <div class="max-w-7xl mx-auto px-4 lg:px-8 space-y-7">
         
         <!-- MASTER CHILD PROFILE & HEALTH INSIGHT CARD -->
-        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_12px_35px_-8px_rgba(13,148,136,0.07),0_2px_10px_rgba(0,0,0,0.02)] border border-slate-100/90 relative overflow-hidden motion-card opacity-0">
+        <div class="bg-white rounded-[24px] p-6 lg:p-8 shadow-sm border border-slate-200 relative overflow-hidden motion-card opacity-0">
             
-            <!-- Soft Ambient Glow Aura -->
-            <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-gradient-to-bl from-teal-100/60 via-emerald-50/30 to-transparent blur-2xl pointer-events-none"></div>
-
             <!-- Top Identity & Actions Row -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 relative z-10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 
                 <!-- Avatar & Identity Details -->
-                <div class="flex items-center gap-4 sm:gap-5 min-w-0 flex-1">
+                <div class="flex items-center gap-4 sm:gap-6 min-w-0">
                     
-                    <!-- Clean Vibrant Avatar -->
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-teal-500 via-emerald-400 to-teal-400 p-[2.5px] shadow-[0_6px_18px_-3px_rgba(13,148,136,0.3)] shrink-0">
-                        <div class="w-full h-full rounded-[13.5px] bg-gradient-to-br from-white via-teal-50/60 to-emerald-50/80 flex items-center justify-center">
-                            <span class="text-2xl sm:text-3xl font-black bg-gradient-to-br from-teal-700 to-emerald-600 bg-clip-text text-transparent select-none">
-                                {{ strtoupper(substr($childName, 0, 1)) }}
-                            </span>
-                        </div>
+                    <!-- Clean Avatar -->
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-[24px] sm:rounded-[28px] bg-[#d7f4f2] text-[#006064] flex items-center justify-center shrink-0">
+                        <span class="text-[24px] sm:text-[32px] font-black select-none">
+                            {{ strtoupper(substr($childName, 0, 1)) }}
+                        </span>
                     </div>
 
                     <!-- Name, Gender & Age -->
-                    <div class="flex flex-col min-w-0 flex-1">
-                        <div class="flex items-center gap-2.5 flex-wrap">
-                            <h1 class="text-[20px] sm:text-[24px] font-bold text-slate-800 tracking-tight leading-tight truncate">{{ $childName }}</h1>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700 border border-sky-200/80' : 'bg-pink-50 text-pink-700 border border-pink-200/80' }}">
+                    <div class="flex flex-col min-w-0">
+                        <h1 class="text-[24px] sm:text-[28px] font-bold text-slate-900 tracking-tight leading-tight truncate mb-2">{{ $childName }}</h1>
+                        
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[12px] font-bold {{ $gender === 'L' ? 'bg-sky-50 text-sky-700' : 'bg-rose-50 text-rose-600' }}">
                                 {{ $gender === 'L' ? 'Laki-laki' : 'Perempuan' }}
                             </span>
-                        </div>
-
-                        <div class="flex items-center gap-2 mt-2">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100/90 text-slate-700 rounded-full text-[11.5px] font-semibold border border-slate-200/60">
+                            
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[12px] font-medium">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -109,9 +127,9 @@
 
                 </div>
 
-                <!-- Desktop CTA Button -->
-                <div class="hidden sm:flex items-center shrink-0">
-                    <button onclick="openMeasurementModal()" class="px-6 py-3 bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[13.5px] rounded-xl shadow-[0_4px_16px_-2px_rgba(13,148,136,0.4)] hover:shadow-[0_6px_20px_-2px_rgba(13,148,136,0.5)] active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer">
+                <!-- Action Button -->
+                <div class="shrink-0 w-full sm:w-auto">
+                    <button onclick="openMeasurementModal()" class="w-full sm:w-auto px-6 py-3.5 sm:py-3 bg-[#086a7c] hover:bg-[#065463] text-white font-bold text-[14px] rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
                         <span>Ukur Sekarang</span>
                     </button>
@@ -122,32 +140,41 @@
             <!-- Integrated Growth Status & Screening Banner -->
             @php
                 $statusBannerBg = $status_type == 'danger' 
-                    ? 'bg-rose-50/80 border-rose-200/80 text-rose-900' 
+                    ? 'bg-rose-50 border-rose-100' 
                     : ($status_type == 'warning' 
-                        ? 'bg-amber-50/80 border-amber-200/80 text-amber-900' 
-                        : 'bg-emerald-50/80 border-emerald-200/80 text-emerald-900');
-                $statusDot = $status_type == 'danger' ? 'bg-rose-500' : ($status_type == 'warning' ? 'bg-amber-500' : 'bg-emerald-500');
+                        ? 'bg-amber-50 border-amber-100' 
+                        : 'bg-emerald-50 border-emerald-100');
+                
+                $statusIconColor = $status_type == 'danger' ? 'text-rose-500' : ($status_type == 'warning' ? 'text-amber-500' : 'text-emerald-500');
+                $statusTextColor = $status_type == 'danger' ? 'text-rose-600' : ($status_type == 'warning' ? 'text-amber-600' : 'text-emerald-600');
+                
                 $valBadgeStyle = match($latestMeasure['status_validasi'] ?? '') {
-                    'pending' => 'bg-amber-100/80 text-amber-800 border-amber-200',
-                    'approved' => 'bg-emerald-100/80 text-emerald-800 border-emerald-200',
-                    'rejected' => 'bg-rose-100/80 text-rose-800 border-rose-200',
+                    'pending' => 'bg-amber-100 text-amber-800 border-amber-200',
+                    'approved' => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                    'rejected' => 'bg-rose-600 text-white border-rose-600 shadow-sm',
                     default => 'bg-slate-100 text-slate-700 border-slate-200'
                 };
             @endphp
-            <div class="mt-5 p-4 sm:p-4.5 rounded-2xl {{ $statusBannerBg }} border flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 relative z-10">
-                <div class="flex items-start sm:items-center gap-3 min-w-0">
-                    <span class="w-3 h-3 rounded-full {{ $statusDot }} shrink-0 mt-1 sm:mt-0 shadow-xs animate-pulse"></span>
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2.5">
-                        <span class="font-bold text-[13.5px]">Status Gizi: {{ $status }}</span>
+            <div class="mt-6 p-4 rounded-[16px] {{ $statusBannerBg }} border flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+                <div class="flex items-start sm:items-center gap-2.5 min-w-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 {{ $statusIconColor }} shrink-0 mt-0.5 sm:mt-0">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2.25m0 2.625h.008v.008H12v-.008zM12 3a9 9 0 100 18 9 9 0 000-18z" />
+                    </svg>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
+                        <span class="font-bold text-[14px] {{ $statusTextColor }}">Status Gizi: {{ $status }}</span>
                         <span class="hidden sm:inline text-slate-400">•</span>
-                        <span class="text-xs text-slate-600 font-medium leading-relaxed">{{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang anak.' }}</span>
+                        <span class="text-[13px] text-slate-600 font-medium">{{ $latestMeasure['education'] ?? 'Lakukan pengukuran rutin setiap bulan untuk memantau tumbuh kembang.' }}</span>
                     </div>
                 </div>
 
                 @if(!empty($latestMeasure['status_validasi']))
                     <div class="shrink-0 flex items-center">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border {{ $valBadgeStyle }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-[10px] text-[12px] font-bold border {{ $valBadgeStyle }}">
+                            @if($latestMeasure['status_validasi'] === 'rejected')
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            @endif
                             <span>{{ $latestMeasure['status_validasi'] === 'approved' ? 'Terverifikasi Puskesmas' : ($latestMeasure['status_validasi'] === 'rejected' ? 'Ditolak Puskesmas' : 'Menunggu Validasi') }}</span>
                         </span>
                     </div>
@@ -155,46 +182,52 @@
             </div>
 
             <!-- Key Bio Information Strip -->
-            <div class="mt-5 pt-4 border-t border-slate-100/90 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-[13px] relative z-10">
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
                 
                 <!-- Ibu -->
-                <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-7 h-7 rounded-lg bg-teal-50 border border-teal-100/80 text-teal-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                <div class="flex flex-col p-4 rounded-2xl border border-slate-200 bg-white">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[#f0f9fa] text-[#086a7c] flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                        </div>
+                        <div class="flex flex-col overflow-hidden w-full">
+                            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">IBU</span>
+                            <span class="font-bold text-slate-800 text-[14px] truncate" title="{{ $motherName }}">{{ $motherName }}</span>
+                        </div>
                     </div>
-                    <span class="text-slate-700 font-semibold text-xs shrink-0">Ibu:</span>
-                    <span class="font-semibold text-slate-800 text-xs sm:text-[13px] truncate">{{ $motherName }}</span>
                 </div>
 
                 <!-- NIK -->
-                <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-7 h-7 rounded-lg bg-sky-50 border border-sky-100/80 text-sky-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                <div class="flex flex-col p-4 rounded-2xl border border-slate-200 bg-white">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[#f0f9fa] text-[#086a7c] flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                        </div>
+                        <div class="flex flex-col overflow-hidden w-full relative">
+                            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">NIK</span>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-slate-800 font-mono text-[14px] tracking-wider truncate">{{ $nik }}</span>
+                                <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="text-slate-400 hover:text-slate-700 transition-colors cursor-pointer shrink-0 ml-2" title="Salin NIK">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <span class="text-slate-700 font-semibold text-xs shrink-0">NIK:</span>
-                    <span class="font-semibold text-slate-800 font-mono text-xs sm:text-[13px] tracking-wider truncate">{{ $nik }}</span>
-                    <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors cursor-pointer shrink-0" title="Salin NIK">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
-                    </button>
                 </div>
 
                 <!-- Posyandu -->
-                <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100/80 text-indigo-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                <div class="flex flex-col p-4 rounded-2xl border border-slate-200 bg-white">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[#f0f9fa] text-[#086a7c] flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                        </div>
+                        <div class="flex flex-col overflow-hidden w-full">
+                            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">POSYANDU</span>
+                            <span class="font-bold text-slate-800 text-[14px] truncate" title="{{ $posyanduName }}">{{ $posyanduName }}</span>
+                        </div>
                     </div>
-                    <span class="text-slate-700 font-semibold text-xs shrink-0">Posyandu:</span>
-                    <span class="font-semibold text-slate-800 text-xs sm:text-[13px] truncate">{{ $posyanduName }}</span>
                 </div>
 
-            </div>
-
-            <!-- Mobile Action Button (Full Width at Bottom) -->
-            <div class="mt-5 sm:hidden">
-                <button onclick="openMeasurementModal()" class="w-full py-3.5 bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-[14px] rounded-xl shadow-[0_4px_16px_-2px_rgba(13,148,136,0.4)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg> 
-                    <span>Ukur Sekarang</span>
-                </button>
             </div>
 
         </div>
@@ -205,19 +238,19 @@
     <div class="max-w-7xl mx-auto px-4 lg:px-8 mt-7 mb-7 motion-card opacity-0" id="profile-tabs">
         <div class="border-b border-slate-200">
             <nav class="flex space-x-5 sm:space-x-8 overflow-x-auto hide-scrollbar" aria-label="Tabs">
-                <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="border-teal-600 text-teal-600 border-b-2 font-bold text-[13.5px] sm:text-[14.5px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
+                <button onclick="switchTab('ringkasan')" id="tab-ringkasan" class="border-[#086a7c] text-[#086a7c] border-b-2 font-bold text-[14px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
                     <span>Ringkasan</span>
                 </button>
-                <button onclick="switchTab('detail')" id="tab-detail" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[13.5px] sm:text-[14.5px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
+                <button onclick="switchTab('detail')" id="tab-detail" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[14px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
                     <span>Detail Informasi</span>
                 </button>
-                <button onclick="switchTab('riwayat')" id="tab-riwayat" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[13.5px] sm:text-[14.5px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
+                <button onclick="switchTab('riwayat')" id="tab-riwayat" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[14px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span>Riwayat Pengukuran</span>
                 </button>
-                <button onclick="switchTab('grafik')" id="tab-grafik" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[13.5px] sm:text-[14.5px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
+                <button onclick="switchTab('grafik')" id="tab-grafik" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 font-medium text-[14px] py-3 px-1 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A2.25 2.25 0 013 18.75v-5.625zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a2.25 2.25 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a2.25 2.25 0 01-1.125-1.125V4.125z" /></svg>
                     <span>Grafik Pertumbuhan</span>
                 </button>
@@ -231,139 +264,115 @@
         <!-- TAB 1: RINGKASAN (Clean, Focused Growth Metrics) -->
         <div id="content-ringkasan" class="tab-content flex flex-col gap-6">
             
-            <div class="bg-white rounded-[28px] p-6 lg:p-8 border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+            <div class="bg-white rounded-[24px] p-6 lg:p-8 border border-slate-200 shadow-sm flex flex-col">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8 border-b border-slate-100 pb-5">
                     <div>
-                        <h2 class="text-xl font-bold text-slate-800 tracking-tight">Pengukuran Terakhir</h2>
-                        <p class="text-[13px] text-slate-500 mt-0.5 font-medium">Hasil penimbangan dan pengukuran antropometri terkini</p>
+                        <h2 class="text-[20px] font-bold text-slate-900 tracking-tight">Pengukuran Terakhir</h2>
+                        <p class="text-[13px] text-slate-500 mt-1 font-medium">Hasil penimbangan dan pengukuran antropometri terkini</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200/60 shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
-                            <span class="text-xs font-bold">{{ $latestMeasure['date'] ?? ($birthDate ? 'Saat Lahir (' . $birthDate . ')' : 'Belum ada data') }}</span>
+                        <div class="flex items-center gap-1.5 text-slate-700 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-500"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+                            <span class="text-xs font-bold font-mono tracking-widest uppercase">{{ $latestMeasure['date'] ?? ($birthDate ? $birthDate : 'BELUM ADA') }}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- 3 Metrik Utama -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
                     
                     <!-- Berat Badan -->
-                    <div class="bg-gradient-to-br from-emerald-50/70 to-emerald-100/40 border border-emerald-200/70 rounded-2xl p-6 flex flex-col justify-between shadow-sm relative overflow-hidden group">
-                        <div class="flex items-center justify-between mb-4">
+                    <div class="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col justify-between relative overflow-hidden group">
+                        <div class="flex items-start justify-between mb-8">
                             <div class="flex items-center gap-3">
-                                <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" /><path fill-rule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z" clip-rule="evenodd" /></svg>
+                                <div class="w-10 h-10 rounded-[10px] bg-[#086a7c] text-white flex items-center justify-center shadow-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2.25v19.5m0 0l-3-3m3 3l3-3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.748 3.748 0 0118 19.5H6.75z" /></svg>
                                 </div>
-                                <span class="text-sm font-bold text-slate-700">Berat Badan</span>
+                                <span class="text-[14px] font-bold text-slate-900">Berat Badan</span>
                             </div>
                             @if(!empty($latestMeasure['weight_trend']) && $latestMeasure['weight_trend'] > 0)
-                                <span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-full border border-emerald-200">
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-[#047857] bg-[#d1fae5] px-2.5 py-1 rounded-full">
                                     +{{ $latestMeasure['weight_trend'] }} kg
                                 </span>
                             @elseif(!empty($latestMeasure['weight_trend']) && $latestMeasure['weight_trend'] < 0)
-                                <span class="inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-100/80 px-2.5 py-1 rounded-full border border-rose-200">
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-rose-700 bg-rose-100 px-2.5 py-1 rounded-full">
                                     {{ $latestMeasure['weight_trend'] }} kg
-                                </span>
-                            @elseif(!$latestMeasure && $birthWeight)
-                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">
-                                    Saat Lahir
                                 </span>
                             @endif
                         </div>
-                        <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['weight'] ?? ($birthWeight ?: '-') }}</span>
-                            <span class="text-base font-bold text-slate-500">kg</span>
+                        <div class="flex items-baseline gap-1.5 mb-8">
+                            <span class="text-[36px] sm:text-[44px] font-black text-slate-900 tracking-tight leading-none">{{ $latestMeasure['weight'] ?? ($birthWeight ?: '-') }}</span>
+                            <span class="text-[18px] sm:text-[20px] font-medium text-slate-500">kg</span>
                         </div>
-                        <div class="flex items-center justify-between pt-2 border-t border-emerald-200/50 text-xs">
-                            <span class="text-slate-500 font-medium">Z-Score BB/U</span>
-                            <span class="font-bold text-slate-700">{{ isset($latestMeasure['z_score_bbu']) && $latestMeasure['z_score_bbu'] !== null ? $latestMeasure['z_score_bbu'] . ' SD' : ($birthWeight ? 'Data Awal Lahir' : '-') }}</span>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100/80">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Z-SCORE BB/U</span>
+                            <span class="font-bold text-[11px] text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md">{{ isset($latestMeasure['z_score_bbu']) && $latestMeasure['z_score_bbu'] !== null ? $latestMeasure['z_score_bbu'] . ' SD' : ($birthWeight ? 'Awal Lahir' : '-') }}</span>
                         </div>
                     </div>
                     
                     <!-- Tinggi / Panjang Badan -->
-                    <div class="bg-gradient-to-br from-amber-50/70 to-amber-100/40 border border-amber-200/70 rounded-2xl p-6 flex flex-col justify-between shadow-sm relative overflow-hidden group">
-                        <div class="flex items-center justify-between mb-4">
+                    <div class="bg-[#fffbf5] border border-[#fef0dd] rounded-[20px] p-6 flex flex-col justify-between relative overflow-hidden group">
+                        <div class="flex items-start justify-between mb-8">
                             <div class="flex items-center gap-3">
-                                <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shadow-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06l-3.22-3.22V16.5a.75.75 0 01-1.5 0V4.81L8.03 8.03a.75.75 0 01-1.06-1.06l4.5-4.5z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M3 20.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg>
+                                <div class="w-10 h-10 rounded-[10px] bg-[#f59e0b] text-white flex items-center justify-center shadow-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>
                                 </div>
-                                <span class="text-sm font-bold text-slate-700">Tinggi / Panjang</span>
+                                <span class="text-[14px] font-bold text-slate-900">Tinggi / Panjang</span>
                             </div>
                             @if(!empty($latestMeasure['height_trend']) && $latestMeasure['height_trend'] > 0)
-                                <span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-full border border-emerald-200">
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-[#047857] bg-[#d1fae5] px-2.5 py-1 rounded-full">
                                     +{{ $latestMeasure['height_trend'] }} cm
-                                </span>
-                            @elseif(!$latestMeasure && $birthLength)
-                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">
-                                    Saat Lahir
                                 </span>
                             @endif
                         </div>
-                        <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['height'] ?? ($birthLength ?: '-') }}</span>
-                            <span class="text-base font-bold text-slate-500">cm</span>
+                        <div class="flex items-baseline gap-1.5 mb-8">
+                            <span class="text-[36px] sm:text-[44px] font-black text-slate-900 tracking-tight leading-none">{{ $latestMeasure['height'] ?? ($birthLength ?: '-') }}</span>
+                            <span class="text-[18px] sm:text-[20px] font-medium text-slate-500">cm</span>
                         </div>
-                        <div class="flex items-center justify-between pt-2 border-t border-amber-200/50 text-xs">
-                            <span class="text-slate-500 font-medium">Z-Score TB/U</span>
-                            <span class="font-bold text-slate-700">{{ isset($latestMeasure['z_score_tbu']) && $latestMeasure['z_score_tbu'] !== null ? $latestMeasure['z_score_tbu'] . ' SD' : ($birthLength ? 'Data Awal Lahir' : '-') }}</span>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-200/40">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Z-SCORE TB/U</span>
+                            <span class="font-bold text-[11px] text-[#92400e] bg-[#fef3c7] px-2.5 py-1 rounded-md">{{ isset($latestMeasure['z_score_tbu']) && $latestMeasure['z_score_tbu'] !== null ? $latestMeasure['z_score_tbu'] . ' SD' : ($birthLength ? 'Awal Lahir' : '-') }}</span>
                         </div>
                     </div>
                     
                     <!-- Lingkar Kepala -->
-                    <div class="bg-gradient-to-br from-teal-50/70 to-teal-100/40 border border-teal-200/70 rounded-2xl p-6 flex flex-col justify-between shadow-sm relative overflow-hidden group">
-                        <div class="flex items-center justify-between mb-4">
+                    <div class="bg-[#f8fafc] border border-slate-200/60 rounded-[20px] p-6 flex flex-col justify-between relative overflow-hidden group">
+                        <div class="flex items-start justify-between mb-8">
                             <div class="flex items-center gap-3">
-                                <div class="w-11 h-11 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center shadow-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm0 15a5.25 5.25 0 100-10.5 5.25 5.25 0 000 10.5z" clip-rule="evenodd" /></svg>
+                                <div class="w-10 h-10 rounded-[10px] bg-[#475569] text-white flex items-center justify-center shadow-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
                                 </div>
-                                <span class="text-sm font-bold text-slate-700">Lingkar Kepala</span>
+                                <span class="text-[14px] font-bold text-slate-900">Lingkar Kepala</span>
                             </div>
-                            @if(!empty($latestMeasure['asi_eksklusif']))
-                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-teal-700 bg-teal-100/80 px-2.5 py-1 rounded-full border border-teal-200">
-                                    ASI Eksklusif
-                                </span>
-                            @elseif(!$latestMeasure && $birthHeadCirc)
-                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full border border-teal-200">
-                                    Saat Lahir
-                                </span>
-                            @endif
                         </div>
-                        <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">{{ $latestMeasure['head_circ'] ?? ($birthHeadCirc ?: '-') }}</span>
-                            <span class="text-base font-bold text-slate-500">cm</span>
+                        <div class="flex items-baseline gap-1.5 mb-8">
+                            <span class="text-[36px] sm:text-[44px] font-black text-slate-900 tracking-tight leading-none">{{ $latestMeasure['head_circ'] ?? ($birthHeadCirc ?: '-') }}</span>
+                            <span class="text-[18px] sm:text-[20px] font-medium text-slate-500">cm</span>
                         </div>
-                        <div class="flex items-center justify-between pt-2 border-t border-teal-200/50 text-xs">
-                            <span class="text-slate-500 font-medium">Status Pengukuran</span>
-                            <span class="font-bold text-teal-700">{{ !empty($latestMeasure['head_circ']) ? 'Tercatat Sesuai KIA' : ($birthHeadCirc ? 'Data Lahir KIA' : 'Belum Ada Data') }}</span>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-200/70">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">STATUS PENGUKURAN</span>
+                            <span class="font-bold text-[11px] text-[#047857] bg-[#d1fae5] px-2.5 py-1 rounded-md">{{ !empty($latestMeasure['head_circ']) ? 'Tercatat Sesuai KIA' : ($birthHeadCirc ? 'Lahir KIA' : 'Belum Ada Data') }}</span>
                         </div>
                     </div>
                 </div>
-
-                @if(!$latestMeasure && ($birthWeight || $birthLength || $birthHeadCirc))
-                    <div class="mb-6 p-3.5 sm:p-4 bg-teal-50/70 border border-teal-200/80 rounded-2xl flex items-center gap-3 text-xs text-teal-900 font-medium">
-                        <svg class="w-5 h-5 text-teal-600 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
-                        <span>Menampilkan <strong>Data Antropometri Saat Lahir (Buku KIA / KMS)</strong>. Klik tombol <strong>"Ukur Sekarang"</strong> untuk mencatat hasil penimbangan bulanan pertama di Posyandu.</span>
-                    </div>
-                @endif
-
-                <!-- Action Strip -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" /></svg>
+                
+                <!-- Action Strip: Riwayat & Analisis Pertumbuhan -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 sm:p-6 bg-white rounded-2xl border border-slate-200 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-[12px] bg-[#e0f2f1] text-[#086a7c] flex items-center justify-center font-bold shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" /></svg>
                         </div>
-                        <div>
-                            <span class="text-sm font-bold text-slate-800">Riwayat & Analisis Pertumbuhan</span>
-                            <p class="text-xs text-slate-500">Lihat grafik kenaikan berat/tinggi badan dan data historis balita ini.</p>
+                        <div class="flex flex-col">
+                            <span class="text-[16px] font-bold text-slate-900">Riwayat & Analisis Pertumbuhan</span>
+                            <p class="text-[13px] text-slate-500 mt-0.5">Lihat grafik kenaikan berat/tinggi badan dan data historis balita ini.</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                        <button onclick="switchTab('riwayat')" class="flex-1 sm:flex-none px-4 py-2.5 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-bold rounded-xl shadow-sm transition-all">
+                    <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto mt-4 sm:mt-0">
+                        <button onclick="switchTab('riwayat')" class="flex-1 sm:flex-none px-4 sm:px-5 py-3 sm:py-3 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 text-[12px] sm:text-[13px] font-bold rounded-xl transition-all shadow-sm whitespace-nowrap">
                             Buka Riwayat
                         </button>
-                        <button onclick="openMeasurementModal()" class="flex-1 sm:flex-none px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-sm shadow-teal-500/20 transition-all flex items-center justify-center gap-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                        <button onclick="openMeasurementModal()" class="flex-1 sm:flex-none px-4 sm:px-5 py-3 sm:py-3 bg-[#086a7c] hover:bg-[#065463] text-white text-[12px] sm:text-[13px] font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 sm:w-4 sm:h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                             Ukur Ulang
                         </button>
                     </div>
@@ -374,167 +383,256 @@
 
         <!-- TAB 2: DETAIL INFORMASI (Comprehensive 2-Column KMS Master View) -->
         <div id="content-detail" class="tab-content hidden flex flex-col gap-6">
-            <div class="bg-white rounded-[28px] p-6 lg:p-8 border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <!-- Section Header -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-100">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-800 tracking-tight">Detail Identitas & Standar KIA/KMS</h2>
-                        <p class="text-[13px] text-slate-500 mt-0.5 font-medium">Informasi lengkap kependudukan, data kelahiran, orang tua/wali, dan domisili</p>
-                    </div>
-                    <a href="{{ route('balita.edit', $balitaId) }}" 
-                       class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-teal-50 text-slate-700 hover:text-teal-700 border border-slate-200 hover:border-teal-200 rounded-xl text-xs font-bold transition-all shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
-                        Edit Data Balita
-                    </a>
-                </div>
-
-                <!-- 2-Column Responsive Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                <!-- COLUMN 1: LEFT SIDE (Identitas & Domisili) -->
+                <div class="flex flex-col gap-6 lg:col-span-1">
                     
-                    <!-- COLUMN 1: IDENTITAS BALITA & KELAHIRAN -->
-                    <div class="flex flex-col gap-6">
-                        
-                        <!-- Card: Identitas Balita -->
-                        <div class="bg-slate-50/70 border border-slate-200/70 rounded-2xl p-5 sm:p-6 flex flex-col">
-                            <div class="flex items-center gap-2.5 pb-4 mb-3 border-b border-slate-200/60">
-                                <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xs">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" /></svg>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-800">Identitas Diri Balita</h3>
+                    <!-- Card: Identitas Diri -->
+                    <div class="bg-white rounded-[24px] border border-slate-200/80 shadow-sm p-6 relative overflow-hidden">
+                        <!-- Left blue strip -->
+                        <div class="absolute left-0 top-6 bottom-6 w-1 bg-cyan-400 rounded-r-lg"></div>
+
+                        <div class="flex items-center gap-3 mb-6 ml-2">
+                            <div class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" /></svg>
+                            </div>
+                            <h3 class="text-[16px] font-bold text-slate-900">Identitas Diri</h3>
+                        </div>
+
+                        <div class="flex flex-col gap-5 ml-2">
+                            <!-- Nama Lengkap -->
+                            <div>
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Nama Lengkap</span>
+                                <span class="font-extrabold text-slate-900 text-[15px]">{{ $childName }}</span>
                             </div>
 
-                            <div class="space-y-3.5 text-xs">
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">Nama Lengkap</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $childName }}</span>
+                            <!-- NIK Balita -->
+                            <div class="min-w-0">
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">NIK Balita</span>
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[13px] sm:text-[14px] font-bold text-slate-800 tracking-wide font-mono truncate min-w-0 flex-1">
+                                        {{ $nik }}
+                                    </div>
+                                    <button onclick="navigator.clipboard.writeText('{{ $nik }}'); window.NutriAlert.toast('Berhasil!', 'NIK disalin', 'success');" class="p-2.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors shrink-0" title="Salin NIK">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
+                                    </button>
                                 </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">NIK Balita</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $nik }}</span>
+                            </div>
+
+                            <!-- No. BPJS -->
+                            <div>
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">No. BPJS / JKN</span>
+                                <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[14px] font-bold text-slate-800 tracking-wide font-mono inline-block">
+                                    {{ $noBpjs ?: '-' }}
                                 </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">No. BPJS / JKN</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $noBpjs ?: '-' }}</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Tanggal Lahir -->
+                                <div>
+                                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Tanggal Lahir</span>
+                                    <span class="font-semibold text-slate-800 text-[14px]">{{ $birthDate ?? '-' }}</span>
                                 </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">Jenis Kelamin</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $gender }}</span>
+
+                                <!-- Jenis Kelamin -->
+                                <div>
+                                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Jenis Kelamin</span>
+                                    <span class="font-semibold text-slate-800 text-[14px]">{{ $gender === 'L' ? 'Laki-laki' : 'Perempuan' }}</span>
                                 </div>
-                                <div class="flex items-center justify-between py-1.5">
-                                    <span class="text-slate-500 font-medium">Tanggal Lahir & Usia</span>
-                                    <div class="text-right">
-                                        <p class="font-bold text-slate-800">{{ $birthDate ?? '-' }}</p>
-                                        <span class="inline-block mt-0.5 px-2 py-0.5 bg-teal-50 text-teal-700 rounded text-[10px] font-bold">{{ $age }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Antropometri Saat Lahir (KIA) -->
+                    <div class="bg-white rounded-[24px] border border-slate-200/80 shadow-sm p-6 relative overflow-hidden">
+                        <!-- Left green strip -->
+                        <div class="absolute left-0 top-6 bottom-6 w-1 bg-emerald-400 rounded-r-lg"></div>
+
+                        <div class="flex items-center gap-3 mb-5 ml-2">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" /><path stroke-linecap="round" stroke-linejoin="round" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z" /></svg>
+                            </div>
+                            <h3 class="text-[16px] font-bold text-slate-900 leading-tight">Antropometri Lahir <br><span class="text-[12px] font-medium text-slate-500 font-normal">Data KIA</span></h3>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3 ml-2">
+                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 flex flex-col justify-center text-center">
+                                <span class="text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Berat</span>
+                                <span class="font-extrabold text-slate-900 text-[14px]">{{ $birthWeight ? $birthWeight . ' kg' : '-' }}</span>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 flex flex-col justify-center text-center">
+                                <span class="text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Panjang</span>
+                                <span class="font-extrabold text-slate-900 text-[14px]">{{ $birthLength ? $birthLength . ' cm' : '-' }}</span>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 flex flex-col justify-center text-center">
+                                <span class="text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">L. Kepala</span>
+                                <span class="font-extrabold text-slate-900 text-[14px]">{{ $birthHeadCirc ? $birthHeadCirc . ' cm' : '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Posyandu & Domisili -->
+                    <div class="bg-white rounded-[24px] border border-slate-200/80 shadow-sm relative overflow-hidden">
+                        <!-- Top Map Image -->
+                        <div class="h-32 w-full relative bg-[#e8f4f8]">
+                            <!-- A real map image background -->
+                            <img src="https://static-maps.yandex.ru/1.x/?lang=en-US&ll=95.3175,5.5500&z=13&l=map&size=600,200" alt="Map" class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                            
+                            <!-- Gradient overlay to blend with content -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/50 to-transparent"></div>
+                        </div>
+
+                        <!-- Left blue strip -->
+                        <div class="absolute left-0 top-32 bottom-6 w-1 bg-cyan-400 rounded-r-lg z-10"></div>
+
+                        <div class="p-6 pt-0 relative z-10 -mt-6">
+                            <div class="flex items-center gap-3 mb-6 ml-2">
+                                <div class="w-12 h-12 rounded-full bg-white border border-orange-100 flex items-center justify-center text-orange-500 shadow-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                                </div>
+                                <h3 class="text-[16px] font-bold text-slate-900 mt-4">Posyandu & Domisili</h3>
+                            </div>
+
+                            <div class="flex flex-col gap-5 ml-2">
+                                <!-- Posyandu -->
+                                <div>
+                                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Posyandu Binaan</span>
+                                    <div class="flex items-center gap-1.5 text-[#086a7c] font-bold text-[14px]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        {{ $posyanduName }}
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <!-- Desa -->
+                                    <div>
+                                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Desa / Kelurahan</span>
+                                        <span class="font-semibold text-slate-800 text-[14px]">{{ $address }}</span>
+                                    </div>
+
+                                    <!-- Kec -->
+                                    <div>
+                                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Kecamatan</span>
+                                        <span class="font-semibold text-slate-800 text-[14px]">{{ $addressSub ?: '-' }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Card: Antropometri Saat Lahir (Buku KIA) -->
-                        <div class="bg-slate-50/70 border border-slate-200/70 rounded-2xl p-5 sm:p-6 flex flex-col">
-                            <div class="flex items-center gap-2.5 pb-4 mb-3 border-b border-slate-200/60">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" /><path fill-rule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z" clip-rule="evenodd" /></svg>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-800">Antropometri Saat Lahir (KIA)</h3>
-                            </div>
-
-                            <div class="grid grid-cols-3 gap-3 text-center">
-                                <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
-                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Berat Lahir</span>
-                                    <span class="text-base font-extrabold text-slate-800">{{ $birthWeight ? $birthWeight . ' kg' : '-' }}</span>
-                                </div>
-                                <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
-                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Panjang Lahir</span>
-                                    <span class="text-base font-extrabold text-slate-800">{{ $birthLength ? $birthLength . ' cm' : '-' }}</span>
-                                </div>
-                                <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
-                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Lingkar Kepala</span>
-                                    <span class="text-base font-extrabold text-slate-800">{{ $birthHeadCirc ? $birthHeadCirc . ' cm' : '-' }}</span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-
-                    <!-- COLUMN 2: ORANG TUA / KELUARGA & DOMISILI -->
-                    <div class="flex flex-col gap-6">
-                        
-                        <!-- Card: Orang Tua / Keluarga -->
-                        <div class="bg-slate-50/70 border border-slate-200/70 rounded-2xl p-5 sm:p-6 flex flex-col">
-                            <div class="flex items-center gap-2.5 pb-4 mb-3 border-b border-slate-200/60">
-                                <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-xs">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 015.69 3.117C19.006 16.36 20 18.06 20 20a.75.75 0 01-.75.75H4.75a.75.75 0 01-.75-.75c0-1.94.994-3.64 2.31-4.883z" clip-rule="evenodd" /></svg>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-800">Orang Tua / Keluarga</h3>
-                            </div>
-
-                            <div class="space-y-3.5 text-xs">
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">No. Kartu Keluarga (KK)</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $noKk ?: '-' }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">Nama Ibu Kandung</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $motherName }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">NIK Ibu</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $motherNik ?: '-' }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">Pekerjaan Ibu</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $motherJob ?: '-' }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">No. WhatsApp Ibu</span>
-                                    <span class="font-bold text-teal-700 text-right">{{ $motherPhone }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">Nama Ayah</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $fatherName ?: '-' }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1.5 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">NIK Ayah</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $fatherNik ?: '-' }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1.5">
-                                    <span class="text-slate-500 font-medium">Pekerjaan Ayah</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $fatherJob ?: '-' }}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card: Lokasi & Posyandu -->
-                        <div class="bg-slate-50/70 border border-slate-200/70 rounded-2xl p-5 sm:p-6 flex flex-col">
-                            <div class="flex items-center gap-2.5 pb-4 mb-3 border-b border-slate-200/60">
-                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-800">Posyandu & Domisili</h3>
-                            </div>
-
-                            <div class="space-y-3 text-xs">
-                                <div class="flex items-center justify-between py-1 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">Posyandu Binaan</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $posyanduName }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1 border-b border-slate-100">
-                                    <span class="text-slate-500 font-medium">Desa / Kelurahan</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $address }}</span>
-                                </div>
-                                <div class="flex items-center justify-between py-1">
-                                    <span class="text-slate-500 font-medium">Kecamatan</span>
-                                    <span class="font-bold text-slate-800 text-right">{{ $addressSub ?: '-' }}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
                 </div>
 
+                <!-- COLUMN 2: RIGHT SIDE (Informasi Keluarga) -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-[24px] border border-slate-200/80 shadow-sm relative h-full">
+                        <!-- Top Gradient Border -->
+                        <div class="absolute top-0 left-4 right-4 h-1 bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 rounded-b-lg"></div>
+
+                        <div class="p-6 lg:p-8">
+                            <!-- Header Row -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+                                    </div>
+                                    <h3 class="text-[20px] font-bold text-slate-900">Informasi Keluarga</h3>
+                                </div>
+                                
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No. KK</span>
+                                    <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 flex items-center gap-2">
+                                        <span class="text-[14px] font-bold text-slate-800 font-mono tracking-wider">{{ $noKk ?: '-' }}</span>
+                                        @if($noKk)
+                                        <button onclick="navigator.clipboard.writeText('{{ $noKk }}'); window.NutriAlert.toast('Berhasil!', 'No. KK disalin', 'success');" class="text-slate-400 hover:text-slate-600 transition-colors" title="Salin No. KK">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
+                                        </button>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Inner Cards Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Ibu Kandung Card -->
+                                <div class="border border-teal-100 bg-teal-50/30 rounded-[20px] p-6 relative">
+                                    <div class="flex items-center gap-3 mb-6">
+                                        <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                                        </div>
+                                        <h4 class="text-[15px] font-bold text-slate-900">Data Ibu Kandung</h4>
+                                    </div>
+
+                                    <div class="flex flex-col gap-5">
+                                        <div>
+                                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Nama Lengkap</span>
+                                            <span class="font-extrabold text-slate-900 text-[14px]">{{ $motherName }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">NIK</span>
+                                            <span class="font-bold text-slate-800 text-[14px] font-mono tracking-wide">{{ $motherNik ?: '-' }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Pekerjaan</span>
+                                            <span class="font-semibold text-slate-800 text-[14px]">{{ $motherJob ?: '-' }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Kontak</span>
+                                            @if($motherPhone)
+                                            <a href="https://wa.me/{{ preg_replace('/^0/', '62', $motherPhone) }}" target="_blank" class="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 text-[14px] font-bold text-slate-700 hover:border-teal-300 transition-colors font-mono">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 fill-emerald-500"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157.1zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                                                {{ $motherPhone }}
+                                            </a>
+                                            @else
+                                            <div class="inline-flex items-center px-3 py-2 bg-slate-50 border border-slate-200 border-dashed rounded-lg text-slate-400 italic text-[13px]">
+                                                Tidak tersedia
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Ayah Card -->
+                                <div class="border border-slate-200 bg-white rounded-[20px] p-6 relative">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                                            </div>
+                                            <h4 class="text-[15px] font-bold text-slate-900">Data Ayah</h4>
+                                        </div>
+                                        @if($fatherName)
+                                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full block"></span>
+                                            Aktif
+                                        </span>
+                                        @endif
+                                    </div>
+
+                                    <div class="flex flex-col gap-5">
+                                        <div>
+                                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Nama Lengkap</span>
+                                            <span class="font-extrabold text-slate-900 text-[14px]">{{ $fatherName ?: '-' }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">NIK</span>
+                                            <span class="font-bold text-slate-800 text-[14px] font-mono tracking-wide">{{ $fatherNik ?: '-' }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Pekerjaan</span>
+                                            <span class="font-semibold text-slate-800 text-[14px]">{{ $fatherJob ?: '-' }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Kontak</span>
+                                            <div class="inline-flex items-center px-3 py-2 bg-slate-50 border border-slate-200 border-dashed rounded-lg text-slate-400 italic text-[13px]">
+                                                Tidak tersedia
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -567,44 +665,54 @@
                         : null;
                 @endphp
 
-                <!-- Summary Highlight Strip -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-slate-50/80 border border-slate-200/70 rounded-2xl mb-6">
+                <!-- Summary Highlight Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
                     <!-- Total Weight Progression -->
-                    <div class="flex items-center gap-3 bg-white p-3.5 rounded-xl border border-slate-100 shadow-sm">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0l-3.75-3.75M12 20.25l3.75-3.75M3 12h18" /></svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Kenaikan BB</span>
-                            <span class="text-[15px] font-bold {{ $totalWeightGain >= 0 ? 'text-emerald-600' : 'text-rose-600' }}">
-                                {{ $totalWeightGain !== null ? ($totalWeightGain > 0 ? '+' . $totalWeightGain : $totalWeightGain) . ' kg' : '-' }}
-                            </span>
+                    <div class="bg-white rounded-[16px] sm:rounded-[20px] p-4 sm:p-5 border border-slate-200/70 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+                        <div class="absolute right-0 top-0 w-24 h-24 bg-emerald-50 rounded-full blur-2xl -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+                        <div class="flex items-center gap-3 sm:gap-4 relative z-10">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0l-3.75-3.75M12 20.25l3.75-3.75M3 12h18" /></svg>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5 sm:mb-1">Total Kenaikan BB</span>
+                                <span class="text-[18px] sm:text-[20px] font-black {{ $totalWeightGain >= 0 ? 'text-slate-800' : 'text-rose-600' }} leading-none">
+                                    {{ $totalWeightGain !== null ? ($totalWeightGain > 0 ? '+' . $totalWeightGain : $totalWeightGain) . ' kg' : '-' }}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Total Height Progression -->
-                    <div class="flex items-center gap-3 bg-white p-3.5 rounded-xl border border-slate-100 shadow-sm">
-                        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 17.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Kenaikan TB</span>
-                            <span class="text-[15px] font-bold text-slate-800">
-                                {{ $totalHeightGain !== null ? ($totalHeightGain > 0 ? '+' . $totalHeightGain : $totalHeightGain) . ' cm' : '-' }}
-                            </span>
+                    <div class="bg-white rounded-[16px] sm:rounded-[20px] p-4 sm:p-5 border border-slate-200/70 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+                        <div class="absolute right-0 top-0 w-24 h-24 bg-amber-50 rounded-full blur-2xl -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+                        <div class="flex items-center gap-3 sm:gap-4 relative z-10">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 17.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5 sm:mb-1">Total Kenaikan TB</span>
+                                <span class="text-[18px] sm:text-[20px] font-black text-slate-800 leading-none">
+                                    {{ $totalHeightGain !== null ? ($totalHeightGain > 0 ? '+' . $totalHeightGain : $totalHeightGain) . ' cm' : '-' }}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Observation Period -->
-                    <div class="flex items-center gap-3 bg-white p-3.5 rounded-xl border border-slate-100 shadow-sm">
-                        <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Periode Pantau</span>
-                            <span class="text-[13px] font-bold text-slate-800">
-                                {{ $firstMeasure['date'] ?? '-' }} — {{ $latestMeasureItem['date'] ?? '-' }}
-                            </span>
+                    <div class="bg-white rounded-[16px] sm:rounded-[20px] p-4 sm:p-5 border border-slate-200/70 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+                        <div class="absolute right-0 top-0 w-24 h-24 bg-indigo-50 rounded-full blur-2xl -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+                        <div class="flex items-center gap-3 sm:gap-4 relative z-10">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-indigo-400 to-blue-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-indigo-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5 sm:mb-1">Periode Pantau</span>
+                                <span class="text-[13px] sm:text-[14px] font-black text-slate-800 leading-none mt-0.5 sm:mt-1">
+                                    {{ $firstMeasure['date'] ?? '-' }}<br>
+                                    <span class="text-[11px] sm:text-[12px] font-semibold text-slate-500">s/d {{ $latestMeasureItem['date'] ?? '-' }}</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -630,40 +738,72 @@
         </div>
 
         <!-- TAB: GRAFIK -->
-        <div id="content-grafik" class="tab-content hidden flex flex-col p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-6 gap-4">
-                <h2 class="text-[16px] font-black text-slate-900 tracking-tight">Grafik Pertumbuhan</h2>
-                @if(count($measurements) > 0)
-                <div class="max-w-xs w-full lg:w-auto">
-                    <div class="relative">
-                        <select id="growthChartType" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-[13px] font-bold rounded-xl pl-4 pr-10 h-[42px] focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-400 transition-colors shadow-sm cursor-pointer appearance-none">
-                            <option value="bb">Berat Badan per Umur (BB/U) — kg</option>
-                            <option value="tb">Tinggi Badan per Umur (TB/U) — cm</option>
-                            <option value="lk">Lingkar Kepala per Umur (LK/U) — cm</option>
-                        </select>
-                        <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+        <div id="content-grafik" class="tab-content hidden flex flex-col" x-data="{ chartType: 'bb' }" @change-chart.window="chartType = $event.detail">
+            <div class="bg-white border border-slate-200/80 rounded-[24px] shadow-sm overflow-hidden group">
+                
+                <!-- Header & Segmented Control -->
+                <div class="p-5 sm:p-6 lg:p-8 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative overflow-hidden">
+                    <!-- decorative blur background -->
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-teal-50 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-150"></div>
+                    
+                    <div class="relative z-10">
+                        <h2 class="text-[18px] sm:text-[20px] font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100/50 shadow-2xs">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+                            </div>
+                            Visualisasi Pertumbuhan
+                        </h2>
+                        <p class="text-[13px] text-slate-500 mt-1.5 font-medium ml-10">Pantau tren perkembangan fisik anak dari waktu ke waktu.</p>
+                    </div>
+
+                    @if(count($measurements) > 0)
+                    <!-- Premium Segmented Control -->
+                    <div class="relative z-10 w-full lg:w-auto overflow-x-auto hide-scrollbar rounded-xl sm:rounded-full">
+                        <div class="inline-flex w-max bg-slate-100/80 p-1 rounded-xl sm:rounded-full border border-slate-200/60 shadow-inner">
+                            <button type="button" @click="$dispatch('change-chart', 'bb')" 
+                                class="px-4 py-2 sm:py-1.5 rounded-lg sm:rounded-full text-[12px] sm:text-[13px] font-bold transition-all duration-300 whitespace-nowrap"
+                                :class="chartType === 'bb' ? 'bg-white text-emerald-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'">
+                                Berat Badan (BB/U)
+                            </button>
+                            <button type="button" @click="$dispatch('change-chart', 'tb')" 
+                                class="px-4 py-2 sm:py-1.5 rounded-lg sm:rounded-full text-[12px] sm:text-[13px] font-bold transition-all duration-300 whitespace-nowrap"
+                                :class="chartType === 'tb' ? 'bg-white text-amber-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'">
+                                Tinggi Badan (TB/U)
+                            </button>
+                            <button type="button" @click="$dispatch('change-chart', 'lk')" 
+                                class="px-4 py-2 sm:py-1.5 rounded-lg sm:rounded-full text-[12px] sm:text-[13px] font-bold transition-all duration-300 whitespace-nowrap"
+                                :class="chartType === 'lk' ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'">
+                                Lingkar Kepala (LK/U)
+                            </button>
                         </div>
                     </div>
+                    @endif
+                </div>
+
+                @if(count($measurements) > 0)
+                <!-- Chart Canvas Area -->
+                <div class="p-4 sm:p-6 lg:p-8 bg-slate-50/30 relative">
+                    <!-- Subtle Grid Pattern CSS inside container -->
+                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 24px 24px;"></div>
+                    
+                    <div class="relative h-[320px] sm:h-[400px] w-full">
+                        <canvas id="growthChart" class="w-full h-full relative z-10"></canvas>
+                    </div>
+                </div>
+                @else
+                <!-- Empty State -->
+                <div class="py-16 flex flex-col items-center text-center px-4 bg-slate-50/50">
+                    <div class="w-20 h-20 rounded-full bg-white border border-slate-100 shadow-sm flex items-center justify-center mb-5 relative">
+                        <div class="absolute inset-0 rounded-full bg-slate-100 animate-ping opacity-20"></div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-slate-300">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                        </svg>
+                    </div>
+                    <span class="text-[16px] font-black text-slate-900 tracking-tight">Belum Ada Data Grafik</span>
+                    <p class="text-[13px] text-slate-500 mt-2 max-w-[280px] mx-auto font-medium">Lakukan pengukuran pertama untuk melihat visualisasi kurva pertumbuhan anak.</p>
                 </div>
                 @endif
             </div>
-
-            @if(count($measurements) > 0)
-            <div class="relative h-[360px] w-full rounded-[20px] overflow-hidden border border-slate-100 bg-slate-50/50 p-4 lg:p-6">
-                <canvas id="growthChart" class="w-full h-full"></canvas>
-            </div>
-            @else
-            <div class="py-12 flex flex-col items-center text-center">
-                <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mb-5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-slate-300">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                    </svg>
-                </div>
-                <span class="text-[14px] font-bold text-slate-900">Belum Ada Grafik</span>
-                <p class="text-[13px] text-slate-500 mt-1 max-w-[250px] mx-auto">Lakukan pengukuran terlebih dahulu untuk melihat grafik pertumbuhan.</p>
-            </div>
-            @endif
         </div>
         
     </div>
@@ -677,7 +817,7 @@
             el.classList.add('hidden');
         });
         
-        const activeClasses = ['border-teal-600', 'text-teal-600', 'font-bold'];
+        const activeClasses = ['border-[#086a7c]', 'text-[#086a7c]', 'font-bold'];
         const inactiveClasses = ['border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300', 'font-medium'];
         
         ['ringkasan', 'detail', 'riwayat', 'grafik'].forEach(id => {
@@ -716,38 +856,55 @@
         if (!Array.isArray(rawData) || rawData.length === 0) return;
 
         const chartData = [...rawData].reverse();
-        const labels = chartData.map(d => d.date);
+        
+        // Use age for the X-axis label, fallback to date if age isn't available
+        const labels = chartData.map(d => d.age_at_measure ? d.age_at_measure : d.date);
+        
+        const ctx = document.getElementById('growthChart');
+        if (!ctx) return;
+        
+        const canvasCtx = ctx.getContext('2d');
+
+        // Helper to create beautiful gradients
+        const createGradient = (colorStart, colorEnd) => {
+            let gradient = canvasCtx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, colorStart);
+            gradient.addColorStop(1, colorEnd);
+            return gradient;
+        };
 
         const chartConfigs = {
             bb: {
-                label: 'Berat Badan (kg)',
+                label: 'Berat Badan per Umur (BB/U)',
                 data: chartData.map(d => d.weight),
                 unit: 'kg',
-                borderColor: '#10b981',
-                backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                pointColor: '#10b981'
+                borderColor: '#10b981', // emerald-500
+                backgroundColor: createGradient('rgba(16, 185, 129, 0.35)', 'rgba(16, 185, 129, 0.0)'),
+                pointColor: '#047857' // emerald-700
             },
             tb: {
-                label: 'Tinggi / Panjang Badan (cm)',
+                label: 'Tinggi Badan per Umur (TB/U)',
                 data: chartData.map(d => d.height),
                 unit: 'cm',
-                borderColor: '#0d9488',
-                backgroundColor: 'rgba(13, 148, 136, 0.12)',
-                pointColor: '#0d9488'
+                borderColor: '#f59e0b', // amber-500
+                backgroundColor: createGradient('rgba(245, 158, 11, 0.35)', 'rgba(245, 158, 11, 0.0)'),
+                pointColor: '#b45309' // amber-700
             },
             lk: {
-                label: 'Lingkar Kepala (cm)',
+                label: 'Lingkar Kepala per Umur (LK/U)',
                 data: chartData.map(d => d.head_circ),
                 unit: 'cm',
-                borderColor: '#6366f1',
-                backgroundColor: 'rgba(99, 102, 241, 0.12)',
-                pointColor: '#6366f1'
+                borderColor: '#6366f1', // indigo-500
+                backgroundColor: createGradient('rgba(99, 102, 241, 0.35)', 'rgba(99, 102, 241, 0.0)'),
+                pointColor: '#4338ca' // indigo-700
             }
         };
 
         let currentType = 'bb';
-        const ctx = document.getElementById('growthChart');
-        if (!ctx) return;
+
+        // Add soft drop shadow to the line itself
+        Chart.defaults.elements.line.borderCapStyle = 'round';
+        Chart.defaults.elements.line.borderJoinStyle = 'round';
 
         const growthChart = new Chart(ctx, {
             type: 'line',
@@ -758,14 +915,17 @@
                     data: chartConfigs[currentType].data,
                     borderColor: chartConfigs[currentType].borderColor,
                     backgroundColor: chartConfigs[currentType].backgroundColor,
-                    borderWidth: 3,
+                    borderWidth: 4,
                     pointBackgroundColor: '#ffffff',
                     pointBorderColor: chartConfigs[currentType].pointColor,
-                    pointBorderWidth: 2.5,
+                    pointBorderWidth: 3,
                     pointRadius: 5,
-                    pointHoverRadius: 7,
+                    pointHoverRadius: 8,
+                    pointHoverBackgroundColor: chartConfigs[currentType].borderColor,
+                    pointHoverBorderColor: '#ffffff',
+                    pointHoverBorderWidth: 3,
                     fill: true,
-                    tension: 0.35,
+                    tension: 0.45, // Smooth organic curve
                     spanGaps: true
                 }]
             },
@@ -778,29 +938,33 @@
                 },
                 plugins: {
                     legend: {
-                        display: true,
-                        position: 'top',
-                        align: 'end',
-                        labels: {
-                            boxWidth: 12,
-                            boxHeight: 12,
-                            usePointStyle: true,
-                            font: { family: "'Inter', sans-serif", size: 12, weight: '600' },
-                            color: '#475569'
-                        }
+                        display: false // We use our own custom UI header, so hide native legend
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.92)',
-                        titleFont: { size: 13, family: "'Inter', sans-serif", weight: 'bold' },
-                        bodyFont: { size: 14, family: "'Inter', sans-serif", weight: 'bold' },
-                        padding: 12,
-                        cornerRadius: 10,
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#64748b',
+                        bodyColor: '#0f172a',
+                        titleFont: { size: 12, family: "'Inter', sans-serif", weight: '600' },
+                        bodyFont: { size: 15, family: "'Inter', sans-serif", weight: '900' },
+                        padding: 16,
+                        cornerRadius: 16,
                         displayColors: false,
+                        borderColor: 'rgba(226, 232, 240, 1)',
+                        borderWidth: 1,
+                        caretSize: 6,
+                        caretPadding: 10,
+                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
                         callbacks: {
+                            title: function(context) {
+                                const dataIndex = context[0].dataIndex;
+                                const dataPoint = chartData[dataIndex];
+                                const ageStr = dataPoint.age_at_measure ? dataPoint.age_at_measure : '-';
+                                return 'Usia: ' + ageStr + ' (' + dataPoint.date + ')';
+                            },
                             label: function(context) {
                                 const val = context.parsed.y;
-                                if (val === null || val === undefined) return 'Data belum diukur';
-                                return `${chartConfigs[currentType].label}: ${val} ${chartConfigs[currentType].unit}`;
+                                if (val === null || val === undefined || isNaN(val)) return 'Belum diukur';
+                                return `${val} ${chartConfigs[currentType].unit}`;
                             }
                         }
                     }
@@ -808,41 +972,52 @@
                 scales: {
                     y: {
                         beginAtZero: false,
-                        grid: { color: 'rgba(226, 232, 240, 0.7)', borderDash: [4, 4], drawBorder: false },
+                        grid: { 
+                            color: 'rgba(226, 232, 240, 0.6)', 
+                            borderDash: [5, 5], 
+                            drawBorder: false,
+                            tickLength: 0
+                        },
                         ticks: {
-                            font: { family: "'Inter', sans-serif", size: 12, weight: '500' },
-                            color: '#64748b',
+                            font: { family: "'Inter', sans-serif", size: 12, weight: '600' },
+                            color: '#94a3b8',
+                            padding: 12,
                             callback: function(value) {
                                 return value + ' ' + chartConfigs[currentType].unit;
                             }
-                        }
+                        },
+                        border: { display: false }
                     },
                     x: {
                         grid: { display: false, drawBorder: false },
-                        ticks: { font: { family: "'Inter', sans-serif", size: 12, weight: '500' }, color: '#64748b' }
+                        ticks: { 
+                            font: { family: "'Inter', sans-serif", size: 12, weight: '600' }, 
+                            color: '#94a3b8',
+                            padding: 10
+                        },
+                        border: { display: false }
                     }
                 }
             }
         });
 
-        const typeSelect = document.getElementById('growthChartType');
-        if (typeSelect) {
-            typeSelect.addEventListener('change', function(e) {
-                const selectedKey = e.target.value;
-                if (!chartConfigs[selectedKey]) return;
+        // Listen for the AlpineJS custom event from our new Segmented Control
+        window.addEventListener('change-chart', function(e) {
+            const selectedKey = e.detail;
+            if (!chartConfigs[selectedKey]) return;
 
-                currentType = selectedKey;
-                const targetConfig = chartConfigs[selectedKey];
+            currentType = selectedKey;
+            const targetConfig = chartConfigs[selectedKey];
 
-                growthChart.data.datasets[0].label = targetConfig.label;
-                growthChart.data.datasets[0].data = targetConfig.data;
-                growthChart.data.datasets[0].borderColor = targetConfig.borderColor;
-                growthChart.data.datasets[0].backgroundColor = targetConfig.backgroundColor;
-                growthChart.data.datasets[0].pointBorderColor = targetConfig.pointColor;
+            growthChart.data.datasets[0].label = targetConfig.label;
+            growthChart.data.datasets[0].data = targetConfig.data;
+            growthChart.data.datasets[0].borderColor = targetConfig.borderColor;
+            growthChart.data.datasets[0].backgroundColor = targetConfig.backgroundColor;
+            growthChart.data.datasets[0].pointBorderColor = targetConfig.pointColor;
+            growthChart.data.datasets[0].pointHoverBackgroundColor = targetConfig.borderColor;
 
-                growthChart.update();
-            });
-        }
+            growthChart.update();
+        });
 
         @if(request('action') === 'ukur')
             setTimeout(() => {

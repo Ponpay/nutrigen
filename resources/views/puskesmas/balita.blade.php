@@ -1,267 +1,306 @@
 @extends('layouts.puskesmas')
-@section('page-title', 'Data Balita (Direktori)')
-@section('page-mode', 'app')
+@section('page-title', 'Data Balita')
+@section('page-mode', 'default')
 @section('content')
 
-    {{-- Backend Contract:
-    Controller: PuskesmasBalitaController@index
-    Expected Variables: $children, $posyandus, $filters
---}}
-    {{--
-    Data disuplai oleh PuskesmasController@balita
-    Variables tersedia: $children, $posyandus, $filters
+{{--
+    Backend Contract:
+    Controller: PuskesmasController@balita
+    Variables: $children (list), $posyandus, $filters['q', 'posyandu_id', 'status_gizi']
 --}}
 
+@php
+    $q           = $filters['q'] ?? '';
+    $posyanduId  = $filters['posyandu_id'] ?? '';
+    $statusGizi  = $filters['status_gizi'] ?? '';
 
+    $collection  = collect($children);
+    $prioritized = $collection->filter(fn($c) => in_array($c['statusType'] ?? '', ['danger', 'warning']));
+    $normal      = $collection->filter(fn($c) => !in_array($c['statusType'] ?? '', ['danger', 'warning']));
 
+    $isFiltered  = filled($q) || filled($posyanduId) || filled($statusGizi);
+    if ($isFiltered) {
+        $prioritized = collect([]);
+        $normal      = $collection;
+    }
 
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" class="fixed top-10 right-5 z-50 flex flex-col gap-2"></div>
+    // KPI counts
+    $totalBalita = $collection->count();
+    $totalStunting = $collection->filter(fn($c) => ($c['statusType'] ?? '') === 'danger')->count();
+    $totalRisiko   = $collection->filter(fn($c) => ($c['statusType'] ?? '') === 'warning')->count();
+    $totalNormal   = $collection->filter(fn($c) => ($c['statusType'] ?? '') === 'success')->count();
+@endphp
 
-    <!-- Full-viewport Split View: Medical Record Workspace -->
-    <div class="flex flex-col lg:flex-row lg:gap-4 flex-1 overflow-hidden">
+<div class="min-h-screen bg-slate-50/50 w-full pb-16">
 
-        <!-- LEFT PANEL: Direktori Balita — bg-slate-50/60 (Canvas base) -->
-        <div
-            class="w-full lg:w-[360px] xl:w-[380px] flex flex-col border-r border-slate-200/80 bg-slate-100/60 shrink-0 overflow-hidden relative z-10">
+    {{-- ══════════════════════════════════════════
+         HERO HEADER
+    ══════════════════════════════════════════ --}}
+    <div class="px-4 pt-5 pb-0 lg:px-6 lg:pt-6 max-w-7xl mx-auto">
+        <div class="relative overflow-hidden bg-gradient-to-br from-[#0097B0] via-[#00A9C0] to-[#00C4E0] rounded-3xl shadow-lg shadow-cyan-300/20">
 
-            <!-- Panel Header (sticky) -->
-            <div
-                class="flex flex-col border-b border-slate-200/80 sticky top-0 z-20 shrink-0 bg-slate-50/90 backdrop-blur-xl">
-                <div class="px-5 pt-5 pb-4">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Medical Records</p>
-                    <h2 class="text-base font-bold tracking-tight text-slate-800">Direktori Balita</h2>
+            {{-- Decorative background dots --}}
+            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#fff 1.5px, transparent 1.5px); background-size: 20px 20px;"></div>
+            <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                    <!-- Search & Filter Form -->
-                    <form id="filterForm" action="{{ route('puskesmas.balita') }}" method="GET"
-                        class="flex flex-col gap-3 mt-4">
-                        <div class="relative">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor"
-                                class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                            </svg>
-                            <input type="text" id="searchInput" name="q" value="{{ $filters['q'] ?? '' }}"
-                                placeholder="Cari nama balita..."
-                                class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:ring-mint-500 focus:border-mint-500 font-medium bg-white shadow-sm">
+            <div class="relative z-10 px-5 py-6 lg:px-8 lg:py-7">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+
+                    {{-- Left: Title --}}
+                    <div>
+                        <p class="text-[10.5px] font-bold text-cyan-200 uppercase tracking-widest mb-1">Portal Puskesmas</p>
+                        <h1 class="text-2xl lg:text-3xl font-extrabold text-white leading-tight tracking-tight">Direktori Balita</h1>
+                        <p class="text-cyan-100/80 text-sm mt-1 font-medium">Rekam medis dan riwayat pertumbuhan seluruh balita</p>
+                    </div>
+
+                    {{-- Right: KPI pills + search --}}
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+
+                        {{-- KPI row --}}
+                        <div class="flex items-center gap-2">
+                            @php
+                                $kpis = [
+                                    ['val' => $totalBalita,   'label' => 'Total',    'bg' => 'bg-white/15 border-white/20'],
+                                    ['val' => $totalStunting, 'label' => 'Stunting', 'bg' => 'bg-rose-400/30 border-rose-300/30'],
+                                    ['val' => $totalRisiko,   'label' => 'Risiko',   'bg' => 'bg-amber-400/30 border-amber-300/30'],
+                                    ['val' => $totalNormal,   'label' => 'Normal',   'bg' => 'bg-emerald-400/30 border-emerald-300/30'],
+                                ];
+                            @endphp
+                            @foreach($kpis as $kpi)
+                                <div class="flex flex-col items-center px-3.5 py-2 rounded-2xl border backdrop-blur-sm {{ $kpi['bg'] }}">
+                                    <span class="text-xl font-black text-white leading-none">{{ $kpi['val'] }}</span>
+                                    <span class="text-[9px] font-bold text-white/70 uppercase tracking-wider mt-0.5">{{ $kpi['label'] }}</span>
+                                </div>
+                            @endforeach
                         </div>
 
-                        <div class="flex gap-2.5">
-                            <select id="posyanduFilter" name="posyandu_id"
-                                class="flex-1 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-2 focus:ring-mint-500 focus:border-mint-500 font-medium shadow-sm"
-                                onchange="this.form.submit()">
-                                <option value="">Semua Posyandu</option>
-                                @foreach ($posyandus as $posyandu)
-                                    <option value="{{ $posyandu['id'] }}"
-                                        {{ (string) ($filters['posyandu_id'] ?? '') === (string) $posyandu['id'] ? 'selected' : '' }}>
-                                        {{ $posyandu['nama'] }}</option>
-                                @endforeach
-                            </select>
-
-                            <select id="statusFilter" name="status_gizi"
-                                class="flex-1 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-2 focus:ring-mint-500 focus:border-mint-500 font-medium shadow-sm"
-                                onchange="this.form.submit()">
-                                <option value="">Semua Status Gizi</option>
-                                <option value="normal" {{ ($filters['status_gizi'] ?? '') == 'normal' ? 'selected' : '' }}>
-                                    Normal / Gizi Baik</option>
-                                <option value="kurang" {{ ($filters['status_gizi'] ?? '') == 'kurang' ? 'selected' : '' }}>
-                                    Kurang / Kurus</option>
-                                <option value="risiko" {{ ($filters['status_gizi'] ?? '') == 'risiko' ? 'selected' : '' }}>
-                                    Risiko</option>
-                                <option value="stunting"
-                                    {{ ($filters['status_gizi'] ?? '') == 'stunting' ? 'selected' : '' }}>Stunting / Gizi
-                                    Buruk</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- List Balita (Scrollable) -->
-            <div id="balitaListContainer" class="flex-1 overflow-y-auto flex flex-col hide-scrollbar">
-                @forelse($children as $index => $child)
-                    <x-balita.list-card :child="$child" :isActive="$index === 0" />
-                @empty
-                    <div class="flex flex-col items-center justify-center h-48 text-slate-400 gap-3">
-                        <span class="text-sm font-medium">Tidak ada data balita.</span>
-                    </div>
-                @endforelse
-
-                <div id="noResultState" class="hidden flex-col items-center justify-center h-48 text-slate-400 gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-12 h-12 opacity-50">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span class="text-sm font-medium">Balita tidak ditemukan.</span>
-                </div>
-            </div>
-        </div><!-- end left panel -->
-
-        <!-- Mobile Drawer Overlay -->
-        <div id="drawerOverlay"
-            class="fixed inset-0 bg-slate-900/40 z-30 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
-
-        <!-- RIGHT PANEL: Balita Profile Workspace -->
-        <div id="workspaceDrawer"
-            class="fixed inset-x-0 bottom-0 z-40 h-[90vh] bg-white rounded-t-3xl transform translate-y-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col lg:relative lg:inset-auto lg:h-auto lg:translate-y-0 lg:rounded-tl-[2rem] lg:flex-1 lg:z-auto lg:shadow-none border-t border-slate-200 lg:border-t-0 lg:border-l lg:border-slate-200/50">
-
-            <!-- Mobile Drawer Header (Handle & Close Button) -->
-            <div id="drawerHandle"
-                class="w-full flex items-center justify-between px-5 py-3.5 bg-white rounded-t-3xl border-b border-slate-100 lg:hidden shrink-0 cursor-pointer active:bg-slate-50 transition-colors">
-                <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest w-16 flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
-                        stroke="currentColor" class="w-3.5 h-3.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                    Kembali
-                </span>
-                <div class="w-12 h-1.5 bg-slate-200 rounded-full"></div>
-                <div class="w-16 flex justify-end">
-                    <div class="bg-slate-100 p-1.5 rounded-full text-slate-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            @if (count($children) > 0)
-                <div id="workspacesContainer"
-                    class="flex-1 flex flex-col overflow-hidden relative bg-slate-50/80 lg:rounded-tl-[2rem]">
-                    @foreach ($children as $index => $child)
-                        <!-- WORKSPACE PANEL (1 per anak) -->
-                        <div id="workspace-panel-{{ $child['id'] }}"
-                            class="workspace-panel flex-1 flex flex-col h-full absolute inset-0 {{ $index === 0 ? '' : 'hidden' }} overflow-y-auto hide-scrollbar">
-
-                            <x-balita.profile-header :child="$child" />
-
-                            <!-- Main Content Flow -->
-                            <div class="p-5 lg:p-8 flex flex-col gap-8 shrink-0 pb-24 lg:pb-12 max-w-4xl mx-auto w-full">
-
-                                <!-- Flow: Grafik Pertumbuhan -->
-                                <div class="flex flex-col gap-4">
-                                    <div class="flex items-center gap-2.5 pb-2 border-b border-slate-200/80">
-                                        <div
-                                            class="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center shrink-0">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                                            </svg>
-                                        </div>
-                                        <h3 class="text-[15px] font-black text-slate-800">Grafik Pertumbuhan Antropometri
-                                        </h3>
-                                    </div>
-                                    <div
-                                        class="bg-white border border-slate-200 rounded-[2rem] p-5 sm:p-6 shadow-sm relative z-0">
-                                        <x-balita.growth-chart :child="$child" />
-                                    </div>
-                                </div>
-
-                                <!-- Flow: Riwayat Medis -->
-                                <div class="flex flex-col gap-4 mt-4">
-                                    <div class="flex items-center gap-2.5 pb-2 border-b border-slate-200/80">
-                                        <div
-                                            class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </div>
-                                        <h3 class="text-[15px] font-black text-slate-800">Riwayat Pengukuran Medis</h3>
-                                    </div>
-                                    <x-balita.measurement-history :pengukurans="$child['pengukurans']" />
-                                </div>
-
+                        {{-- Search bar --}}
+                        <form action="{{ route('puskesmas.balita') }}" method="GET" id="filterForm" class="flex gap-2 flex-1 lg:w-72">
+                            <input type="hidden" name="posyandu_id" value="{{ $posyanduId }}">
+                            <input type="hidden" name="status_gizi" value="{{ $statusGizi }}">
+                            <div class="relative flex-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                </svg>
+                                <input type="text" name="q" value="{{ $q }}"
+                                    placeholder="Cari nama balita atau NIK..."
+                                    class="w-full h-[42px] pl-10 pr-4 rounded-full bg-white text-slate-700 text-[13px] font-medium placeholder-slate-400 border-none outline-none focus:ring-4 focus:ring-white/30 shadow-sm transition-all">
                             </div>
+                        </form>
 
-                        </div>
-                    @endforeach
+                    </div>
                 </div>
-            @else
-                <div class="flex-1 flex flex-col items-center justify-center text-slate-400 p-8 bg-slate-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-16 h-16 opacity-30 mb-4">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+            </div>
+        </div>
+    </div>
+
+    {{-- ══════════════════════════════════════════
+         FILTER + CONTENT AREA
+    ══════════════════════════════════════════ --}}
+    <div class="px-4 lg:px-6 max-w-7xl mx-auto mt-5 flex flex-col gap-5">
+
+        {{-- Filter row: posyandu + status --}}
+        <div class="flex flex-wrap items-center gap-2">
+            {{-- Posyandu Custom Dropdown Filter (Alpine) --}}
+            <form action="{{ route('puskesmas.balita') }}" method="GET" class="contents" id="posyanduFilterForm">
+                <input type="hidden" name="q" value="{{ $q }}">
+                <input type="hidden" name="status_gizi" value="{{ $statusGizi }}">
+                <input type="hidden" name="posyandu_id" id="hiddenPosyanduId" value="{{ $posyanduId }}">
+
+                <div x-data="{ 
+                        open: false,
+                        selectPosyandu(id) {
+                            document.getElementById('hiddenPosyanduId').value = id;
+                            document.getElementById('posyanduFilterForm').submit();
+                        }
+                    }" 
+                    class="relative shrink-0" 
+                    @click.outside="open = false">
+                    
+                    <button type="button" @click="open = !open" 
+                        class="flex items-center justify-between h-9 pl-4 pr-3.5 rounded-full text-[12px] font-bold outline-none transition-all shadow-sm cursor-pointer border min-w-[160px]
+                        {{ $posyanduId ? 'bg-[#00A9C0] text-white border-[#0097B0] focus:ring-2 focus:ring-cyan-300' : 'bg-white text-slate-700 border-slate-200 hover:border-cyan-300 focus:ring-2 focus:ring-cyan-100' }}">
+                        <span class="mr-2 truncate max-w-[180px]">
+                            @if($posyanduId)
+                                {{ collect($posyandus)->firstWhere('id', (int)$posyanduId)['nama'] ?? 'Semua Posyandu' }}
+                            @else
+                                Semua Posyandu
+                            @endif
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 shrink-0 transition-transform duration-200" :class="{'rotate-180': open}">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+
+                    <div x-show="open" 
+                        x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        style="display: none;"
+                        class="absolute left-0 top-full mt-2 w-72 bg-white border border-slate-100 rounded-2xl shadow-xl overflow-hidden z-[60] py-1.5 flex flex-col max-h-[60vh] overflow-y-auto hide-scrollbar">
+                        
+                        <button type="button" @click="selectPosyandu('')" class="w-full text-left px-4 py-3 text-[12px] font-semibold transition-colors hover:bg-slate-50 flex items-center justify-between {{ !$posyanduId ? 'text-[#00A9C0] bg-[#f0f9fa]' : 'text-slate-700' }}">
+                            <span>Semua Posyandu</span>
+                            @if(!$posyanduId)
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg>
+                            @endif
+                        </button>
+                        
+                        @foreach($posyandus as $ps)
+                            <button type="button" @click="selectPosyandu('{{ $ps['id'] }}')" class="w-full text-left px-4 py-3 text-[12px] font-semibold transition-colors hover:bg-slate-50 flex items-center justify-between border-t border-slate-50 {{ (string)$posyanduId === (string)$ps['id'] ? 'text-[#00A9C0] bg-[#f0f9fa]' : 'text-slate-700' }}">
+                                <span>{{ $ps['nama'] }}</span>
+                                @if((string)$posyanduId === (string)$ps['id'])
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg>
+                                @endif
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+            </form>
+
+            <div class="w-px h-5 bg-slate-200 mx-1"></div>
+
+            {{-- Status gizi filter chips --}}
+            @php
+                $statusFilters = [
+                    ''         => ['label' => 'Semua Status', 'classes' => ''],
+                    'stunting' => ['label' => 'Stunting / Gizi Buruk', 'classes' => '!bg-rose-500 !text-white !border-rose-400'],
+                    'risiko'   => ['label' => 'Risiko', 'classes' => '!bg-amber-400 !text-white !border-amber-300'],
+                    'normal'   => ['label' => 'Normal', 'classes' => '!bg-emerald-500 !text-white !border-emerald-400'],
+                ];
+            @endphp
+            @foreach($statusFilters as $val => $sf)
+                <a href="{{ route('puskesmas.balita', array_filter(['q' => $q, 'posyandu_id' => $posyanduId, 'status_gizi' => $val])) }}"
+                    class="shrink-0 flex items-center gap-1.5 px-3.5 h-9 rounded-full text-[12px] font-bold transition-all
+                    {{ $statusGizi === $val && $val !== ''
+                        ? $sf['classes']
+                        : ($statusGizi === $val
+                            ? 'bg-[#00A9C0] text-white shadow-sm'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:border-cyan-300 hover:text-[#00A9C0]') }}">
+                    {{ $sf['label'] }}
+                </a>
+            @endforeach
+        </div>
+
+        {{-- ── EMPTY STATE ──────────────────────────────────────── --}}
+        @if($prioritized->isEmpty() && $normal->isEmpty())
+            <div class="flex flex-col items-center justify-center py-20 gap-3 bg-white border border-slate-200/70 rounded-3xl shadow-xs text-center">
+                <div class="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-slate-300">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
-                    <p class="font-medium text-center">Data balita tidak tersedia.</p>
                 </div>
+                <p class="text-[15px] font-bold text-slate-700">Tidak ada data ditemukan</p>
+                <p class="text-sm text-slate-400 max-w-xs leading-relaxed">Coba ubah filter atau kata kunci pencarian.</p>
+                <a href="{{ route('puskesmas.balita') }}" class="mt-1 text-sm font-bold text-[#00A9C0] hover:text-cyan-600 transition-colors">Tampilkan semua</a>
+            </div>
+
+        @else
+
+            {{-- ── SECTION 1: PRIORITAS ────────────────────────────── --}}
+            @if($prioritized->isNotEmpty())
+                <section>
+                    <div class="bg-white border border-slate-200/70 rounded-3xl p-5 lg:p-6 shadow-xs">
+
+                        {{-- Section header --}}
+                        <div class="flex items-start sm:items-center justify-between gap-3 mb-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-500 flex items-center justify-center shrink-0 border border-orange-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                        <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 class="text-[16px] font-bold text-slate-900">Perlu Perhatian</h2>
+                                    <p class="text-[11px] text-slate-500 mt-0.5 font-medium">Balita dengan status stunting atau risiko gizi</p>
+                                </div>
+                            </div>
+                            <span class="shrink-0 bg-rose-50 text-rose-600 border border-rose-200 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse"></span>
+                                {{ $prioritized->count() }} anak
+                            </span>
+                        </div>
+
+                        {{-- Horizontal scroll priority cards --}}
+                        <div class="relative">
+                            <div class="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent pointer-events-none z-10 lg:hidden rounded-r-3xl"></div>
+                            <div class="flex overflow-x-auto gap-3 pb-2 snap-x hide-scrollbar -mx-1 px-1">
+                                @foreach($prioritized as $child)
+                                    <div class="w-[260px] sm:w-[280px] shrink-0 snap-start">
+                                        <x-balita.child-card :child="$child" />
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </section>
             @endif
-        </div><!-- end right panel -->
 
-    </div><!-- end split view -->
+            {{-- ── SECTION 2: SEMUA BALITA ─────────────────────────── --}}
+            <section>
+                <div class="bg-white border border-slate-200/70 rounded-3xl p-5 lg:p-6 shadow-xs">
 
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const drawer = document.getElementById('workspaceDrawer');
-                const overlay = document.getElementById('drawerOverlay');
-                const handle = document.getElementById('drawerHandle');
+                    {{-- Section header --}}
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-10 h-10 rounded-xl bg-[#E6F8FB] text-[#00A9C0] flex items-center justify-center shrink-0 border border-[#B3E9F2]">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                <path d="M7 8a3 3 0 100-6 3 3 0 000 6zM14.5 9a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM1.615 16.428a1.224 1.224 0 01-.569-1.175 6.002 6.002 0 0111.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 017 17a9.953 9.953 0 01-5.385-1.572zM14.5 16h-.106c.07-.297.088-.611.048-.933a7.47 7.47 0 00-1.588-3.755 4.502 4.502 0 015.874 2.636.818.818 0 01-.36.98A7.465 7.465 0 0114.5 16z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-[16px] font-bold text-slate-900">
+                                {{ $isFiltered ? 'Hasil Pencarian' : 'Semua Balita' }}
+                            </h2>
+                            <p class="text-[11px] text-slate-500 mt-0.5 font-medium">
+                                {{ $normal->count() }} balita {{ $isFiltered ? 'ditemukan' : 'terdaftar' }}
+                            </p>
+                        </div>
+                    </div>
 
-                function openDrawer() {
-                    if (window.innerWidth >= 1024) return;
-                    drawer.classList.remove('translate-y-full');
-                    overlay.classList.remove('hidden');
-                    setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-                    document.body.style.overflow = 'hidden';
-                }
+                    {{-- Grid --}}
+                    @if($normal->isNotEmpty())
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            @foreach($normal as $child)
+                                <x-balita.child-card :child="$child" />
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="flex flex-col items-center justify-center py-12 gap-2 text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 text-emerald-500">
+                                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <p class="text-sm font-bold text-slate-700">Semua balita sudah di-filter ke bagian atas</p>
+                        </div>
+                    @endif
 
-                function closeDrawer() {
-                    if (window.innerWidth >= 1024) return;
-                    drawer.classList.add('translate-y-full');
-                    overlay.classList.add('opacity-0');
-                    setTimeout(() => overlay.classList.add('hidden'), 300);
-                    document.body.style.overflow = '';
-                }
+                </div>
+            </section>
+        @endif
 
-                if (overlay) overlay.addEventListener('click', closeDrawer);
-                if (handle) handle.addEventListener('click', closeDrawer);
+    </div>
+</div>
 
-                function selectBalita(id) {
-                    document.querySelectorAll('.balita-card-btn').forEach(btn => {
-                        btn.classList.remove('bg-sky-50/60', 'border-l-sky-500', 'z-10');
-                        btn.classList.add('border-l-transparent', 'bg-white', 'hover:bg-slate-50',
-                            'hover:border-l-slate-300');
-                    });
-
-                    const targetBtn = document.querySelector(`.balita-card-btn[data-balita-id="${id}"]`);
-                    if (targetBtn) {
-                        targetBtn.classList.remove('border-l-transparent', 'bg-white', 'hover:bg-slate-50',
-                            'hover:border-l-slate-300');
-                        targetBtn.classList.add('bg-sky-50/60', 'border-l-sky-500', 'z-10');
-                    }
-
-                    document.querySelectorAll('.workspace-panel').forEach(panel => {
-                        panel.classList.add('hidden');
-                    });
-
-                    const targetPanel = document.getElementById(`workspace-panel-${id}`);
-                    if (targetPanel) {
-                        targetPanel.classList.remove('hidden');
-                    }
-
-                    openDrawer();
-                }
-
-                const listContainer = document.getElementById('balitaListContainer');
-                if (listContainer) {
-                    listContainer.addEventListener('click', (e) => {
-                        const btn = e.target.closest('.balita-card-btn');
-                        if (btn) selectBalita(btn.dataset.balitaId);
-                    });
-                }
-
-                // Initialize active card
-                const firstCard = document.querySelector('.balita-card-btn');
-                if (firstCard) {
-                    selectBalita(firstCard.dataset.balitaId);
-                }
+@push('scripts')
+<script>
+    // ── CLIENT-SIDE SEARCH ───────────────────────────────────────────
+    const searchInput = document.getElementById('searchInputLive');
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.toLowerCase().trim();
+            document.querySelectorAll('.child-card-wrapper').forEach(btn => {
+                const name = (btn.dataset.name || '').toLowerCase();
+                const nik  = (btn.dataset.nik  || '').toLowerCase();
+                const show = !q || name.includes(q) || nik.includes(q);
+                btn.style.display = show ? '' : 'none';
             });
-        </script>
-    @endpush
+        });
+    }
+</script>
+@endpush
+
 @endsection

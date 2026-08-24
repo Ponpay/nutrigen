@@ -65,6 +65,108 @@ class PuskesmasController extends Controller
         return view('puskesmas.dashboard', compact('stats', 'distribution', 'recentActivities'));
     }
 
+    
+    public function reviewValidasi($id)
+    {
+        $puskesmasId = $this->getPuskesmasId();
+        
+        $p = \App\Models\Pengukuran::with(['balita.orangTua', 'balita.posyandu', 'kader.user'])
+            ->whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
+                $q->where('puskesmas_id', $puskesmasId);
+            })
+            ->findOrFail($id);
+            
+        $statusGizi = strtolower($p->status_gizi);
+        $statusType = 'success';
+        $statusLabel = 'Normal';
+        if (in_array($statusGizi, ['stunting'])) {
+            $statusType = 'danger';
+            $statusLabel = 'Stunting';
+        } elseif (in_array($statusGizi, ['risiko', 'kurang'])) {
+            $statusType = 'warning';
+            $statusLabel = 'Risiko Stunting';
+        }
+
+        $history = \App\Models\Pengukuran::where('balita_id', $p->balita_id)
+            ->where('tanggal_ukur', '<', $p->tanggal_ukur)
+            ->orderBy('tanggal_ukur', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(function ($h) {
+                return [
+                    'date' => \Carbon\Carbon::parse($h->tanggal_ukur)->translatedFormat('d M Y'),
+                    'age' => $h->umur_bulan . ' bln',
+                    'bb' => $h->berat_badan,
+                    'tb' => $h->tinggi_badan,
+                    'bbu' => $h->z_score_bbu,
+                    'tbu' => $h->z_score_tbu,
+                    'imtu' => null,
+                    'status' => $h->status_gizi,
+                ];
+            })
+            ->toArray();
+
+        $zTbu = (float) $p->z_score_tbu;
+        $indicator = 'TB/U';
+        $valText = $zTbu;
+        if ($zTbu < -2) {
+            $valText .= ' (Pendek)';
+        }
+        $allMeasurements = \App\Models\Pengukuran::where('balita_id', $p->balita_id)
+            ->orderBy('tanggal_ukur', 'asc')
+            ->get();
+
+        $chartData = [
+            'labels' => [],
+            'tb' => [],
+            'bb' => [],
+            'tbu' => [],
+            'bbu' => []
+        ];
+
+        foreach ($allMeasurements as $m) {
+            $chartData['labels'][] = $m->umur_bulan . ' bln';
+            $chartData['tb'][] = (float) $m->tinggi_badan;
+            $chartData['bb'][] = (float) $m->berat_badan;
+            $chartData['tbu'][] = (float) $m->z_score_tbu;
+            $chartData['bbu'][] = (float) $m->z_score_bbu;
+        }
+
+        $child = [
+            'id' => $p->id,
+            'name' => $p->balita->nama,
+            'nik' => $p->balita->nik,
+            'gender' => $p->balita->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan',
+            'age' => $p->umur_bulan . ' bln',
+            'indicator' => $indicator,
+            'value' => $valText,
+            'posyandu' => $p->balita->posyandu->nama ?? '-',
+            'kader' => $p->kader->nama ?? $p->kader->user->name ?? '-',
+            'time' => \Carbon\Carbon::parse($p->tanggal_ukur)->format('H:i'),
+            'date' => \Carbon\Carbon::parse($p->tanggal_ukur)->translatedFormat('d F Y'),
+            'statusType' => $statusType,
+            'statusLabel' => $statusLabel,
+            'parent' => $p->balita->orangTua->nama_ibu ?? '-',
+            'bb' => $p->berat_badan,
+            'tb' => $p->tinggi_badan,
+            'catatan_kader' => $p->catatan_kader,
+            'catatan_validator' => $p->catatan_validator,
+            'zscores' => [
+                'BB (kg)' => ['val' => number_format((float)$p->berat_badan, 1), 'status' => 'Normal', 'color' => 'slate'],
+                'TB (cm)' => ['val' => number_format((float)$p->tinggi_badan, 1), 'status' => 'Normal', 'color' => 'slate'],
+                'BB/U' => ['val' => number_format((float)$p->z_score_bbu, 2), 'status' => ((float)$p->z_score_bbu < -2 ? 'Kurang' : 'Normal'), 'color' => 'slate'],
+                'TB/U' => ['val' => number_format((float)$p->z_score_tbu, 2), 'status' => ((float)$p->z_score_tbu < -2 ? 'Pendek' : 'Normal'), 'color' => ((float)$p->z_score_tbu < -2 ? 'rose' : 'slate')],
+                'IMT/U'=> ['val' => number_format((float)$p->z_score_bbu, 2), 'status' => 'Normal', 'color' => 'slate'],
+            ],
+            'history' => $history,
+            'chartData' => $chartData,
+            'status_validasi' => $p->status_validasi,
+            'balita_id' => $p->balita_id
+        ];
+
+        return view('puskesmas.validasi-review', compact('child'));
+    }
+
     public function validasi(Request $request)
     {
         $puskesmasId = $this->getPuskesmasId();
@@ -254,12 +356,7 @@ class PuskesmasController extends Controller
             $request->input('posyandu_id') ?: null
         );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data berhasil disetujui.',
-            'signed_url' => $signedUrl,
-            'stats' => $stats
-        ]);
+        return redirect()->route('puskesmas.validasi')->with('success', 'Data balita berhasil disetujui dan divalidasi.');
     }
 
     public function reject(Request $request, $id)
@@ -281,11 +378,7 @@ class PuskesmasController extends Controller
             $request->input('posyandu_id') ?: null
         );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data berhasil ditolak dan dikembalikan ke Kader.',
-            'stats' => $stats
-        ]);
+        return redirect()->route('puskesmas.validasi')->with('success', 'Data berhasil ditolak dan dikembalikan ke Kader untuk revisi.');
     }
 
     public function balita(Request $request)
@@ -347,6 +440,16 @@ class PuskesmasController extends Controller
                 ];
             })->values()->toArray();
 
+            $latestPengukuran = count($formattedPengukurans) > 0 ? $formattedPengukurans[0] : null;
+            $rawStatus = $latestPengukuran ? $latestPengukuran['status_gizi'] : 'Belum Diukur';
+            $statusLabel = ucwords($rawStatus);
+            $checkStatus = strtolower($rawStatus);
+            
+            $statusType = 'success'; // Default normal
+            if(in_array($checkStatus, ['kurang', 'kurus', 'risiko lebih', 'risiko'])) $statusType = 'warning';
+            elseif(in_array($checkStatus, ['stunting', 'gizi buruk', 'sangat kurus', 'obesitas'])) $statusType = 'danger';
+            elseif($checkStatus === 'belum diukur') $statusType = 'slate';
+
             return [
                 'id'            => $b->id,
                 'nik'           => $b->nik,
@@ -358,6 +461,8 @@ class PuskesmasController extends Controller
                 'ibu'           => ['nama' => $b->orangTua->nama_ibu ?? '-', 'no_hp_wa' => $b->orangTua->no_hp_whatsapp ?? '-'],
                 'posyandu'      => ['nama' => $posyanduName],
                 'pengukurans'   => $formattedPengukurans,
+                'statusLabel'   => $statusLabel,
+                'statusType'    => $statusType,
             ];
         })->toArray();
 
@@ -533,12 +638,14 @@ class PuskesmasController extends Controller
         ];
 
         $topBerisiko = $this->dashboardService->getTopBerisiko($puskesmasId, $posyanduId, (int) $bulan, (int) $tahun);
-        $trends = $this->dashboardService->getTrend6Bulan($puskesmasId, $posyanduId, (int) $bulan, (int) $tahun);
+        $rentang = $request->input('rentang', 6);
+        $trends = $this->dashboardService->getTrend6Bulan($puskesmasId, $posyanduId, (int) $bulan, (int) $tahun, (int) $rentang);
 
         $filters = [
             'bulan' => str_pad($bulan, 2, '0', STR_PAD_LEFT),
             'tahun' => $tahun,
-            'posyandu_id' => $posyanduId
+            'posyandu_id' => $posyanduId,
+            'rentang' => $rentang
         ];
 
         return view('puskesmas.laporan', compact('stats', 'reports', 'distribution', 'trends', 'filters', 'posyandus', 'topBerisiko'));
@@ -604,6 +711,116 @@ class PuskesmasController extends Controller
         ]);
     }
 
+    public function showBalita($id)
+    {
+        $puskesmasId = $this->getPuskesmasId();
+        
+        $b = Balita::with(['orangTua', 'posyandu', 'latestPengukuran', 'pengukurans' => function($q) {
+            $q->orderBy('tanggal_ukur', 'desc')->orderBy('id', 'desc');
+        }])->whereHas('posyandu', function($q) use ($puskesmasId) {
+            $q->where('puskesmas_id', $puskesmasId);
+        })->findOrFail($id);
+
+        $ageDiff = Carbon::parse($b->tanggal_lahir)->diff(Carbon::now());
+        $ageStr = $ageDiff->y > 0 ? $ageDiff->y . ' Tahun ' . $ageDiff->m . ' Bulan' : $ageDiff->m . ' Bulan';
+
+        $measurementsList = $b->pengukurans->values();
+        $totalMeasures = $measurementsList->count();
+
+        $measurements = $measurementsList->map(function($p, $index) use ($measurementsList, $totalMeasures, $b) {
+            $statusType = match(strtolower($p->status_gizi)) {
+                'normal' => 'success',
+                'risiko', 'kurang', 'kurus', 'risiko lebih' => 'warning',
+                'stunting', 'gizi buruk', 'sangat kurus', 'obesitas' => 'danger',
+                default => 'success'
+            };
+
+            $weightTrend = null;
+            $heightTrend = null;
+
+            if ($index + 1 < $totalMeasures) {
+                $prev = $measurementsList[$index + 1];
+                if ($prev->berat_badan !== null && $p->berat_badan !== null) {
+                    $weightTrend = round($p->berat_badan - $prev->berat_badan, 2);
+                }
+                if ($prev->tinggi_badan !== null && $p->tinggi_badan !== null) {
+                    $heightTrend = round($p->tinggi_badan - $prev->tinggi_badan, 1);
+                }
+            }
+
+            $measureDate = Carbon::parse($p->tanggal_ukur);
+            $birthDate = Carbon::parse($b->tanggal_lahir);
+            $ageDiff = $birthDate->diff($measureDate);
+            $ageAtMeasure = $p->umur_bulan 
+                ? $p->umur_bulan . ' Bulan' 
+                : ($ageDiff->y > 0 ? $ageDiff->y . ' Thn ' . $ageDiff->m . ' Bln' : $ageDiff->m . ' Bulan');
+
+            return [
+                'id' => $p->id,
+                'date' => $measureDate->translatedFormat('d M Y'),
+                'raw_date' => $measureDate->format('Y-m-d'),
+                'age_at_measure' => $ageAtMeasure,
+                'weight' => $p->berat_badan,
+                'weight_trend' => $weightTrend,
+                'height' => $p->tinggi_badan,
+                'height_trend' => $heightTrend,
+                'z_score_bbu' => $p->z_score_bbu ? round($p->z_score_bbu, 2) : null,
+                'z_score_tbu' => $p->z_score_tbu ? round($p->z_score_tbu, 2) : null,
+                'head_circ' => $p->lingkar_kepala ? round($p->lingkar_kepala, 1) : null,
+                'asi_eksklusif' => (bool)$p->asi_eksklusif,
+                'status_kenaikan' => $p->status_kenaikan,
+                'status' => $p->status_gizi,
+                'status_type' => $statusType,
+                'status_validasi' => $p->status_validasi,
+                'catatan_validator' => $p->catatan_validator,
+                'catatan_kader' => $p->catatan_kader,
+            ];
+        })->toArray();
+
+        $latestMeasure = count($measurements) > 0 ? $measurements[0] : null;
+
+        $alamatRaw = $b->orangTua->alamat ?? '';
+        $alamatData = json_decode($alamatRaw, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($alamatData)) {
+            $desa = $alamatData['desa'] ?? '';
+            $kecamatan = $alamatData['kecamatan'] ?? ($b->orangTua->kecamatan ?? '');
+        } else {
+            $desa = $alamatRaw;
+            $kecamatan = $b->orangTua->kecamatan ?? '';
+        }
+
+        $data = [
+            'balitaId'       => $b->id,
+            'childName'      => $b->nama,
+            'gender'         => $b->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan',
+            'age'            => $ageStr,
+            'birthDate'      => Carbon::parse($b->tanggal_lahir)->translatedFormat('d F Y'),
+            'nik'            => $b->nik,
+            'noBpjs'         => $b->no_bpjs,
+            'birthWeight'    => $b->berat_lahir,
+            'birthLength'    => $b->panjang_lahir,
+            'birthHeadCirc'  => $b->lingkar_kepala_lahir,
+            'noKk'           => $b->orangTua->no_kk ?? null,
+            'motherName'     => $b->orangTua->nama_ibu ?? '-',
+            'motherNik'      => $b->orangTua->nik_ibu ?? null,
+            'motherJob'      => $b->orangTua->pekerjaan_ibu ?? null,
+            'motherPhone'    => $b->orangTua->no_hp_whatsapp ?? '-',
+            'fatherName'     => $b->orangTua->nama_ayah ?? null,
+            'fatherNik'      => $b->orangTua->nik_ayah ?? null,
+            'fatherJob'      => $b->orangTua->pekerjaan_ayah ?? null,
+            'posyanduName'   => $b->posyandu->nama ?? '-',
+            'address'        => $desa ?: '-',
+            'addressSub'     => $kecamatan ?: null,
+            'status'         => $latestMeasure ? ucwords($latestMeasure['status']) : 'Belum Ada',
+            'status_type'    => $latestMeasure ? $latestMeasure['status_type'] : 'success',
+            'measurements'   => $measurements,
+            'latestMeasure'  => $latestMeasure,
+            'child'          => $b
+        ];
+
+        return view('puskesmas.balita-show', $data);
+    }
+
     public function updatePetugas(Request $request)
     {
         $user = Auth::user();
@@ -619,5 +836,41 @@ class PuskesmasController extends Controller
         ]);
 
         return redirect()->route('puskesmas.pengaturan.petugas')->with('success', 'Profil petugas berhasil diperbarui.');
+    }
+
+    public function keamanan()
+    {
+        return view('puskesmas.pengaturan_keamanan');
+    }
+
+    public function updateKeamanan(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Kata sandi saat ini tidak cocok.']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('puskesmas.pengaturan.keamanan')->with('success', 'Kata sandi berhasil diperbarui.');
+    }
+
+    public function notifikasi()
+    {
+        return view('puskesmas.pengaturan_notifikasi');
+    }
+
+    public function updateNotifikasi(Request $request)
+    {
+        // Notifikasi is mostly a mock UI for now.
+        return redirect()->route('puskesmas.pengaturan.notifikasi')->with('success', 'Preferensi notifikasi berhasil disimpan.');
     }
 }

@@ -12,21 +12,30 @@
         'resources/js/app.js'
     ])
 
+    <!-- Phosphor Icons -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"/>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css"/>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css"/>
+
     @stack('styles')
 </head>
 
-<body class="bg-slate-50 text-slate-900 antialiased font-sans overflow-x-hidden">
+<body class="bg-slate-50 text-slate-900 antialiased font-sans overflow-x-hidden print:bg-white print:overflow-visible">
     
     <!-- App Shell: Sidebar + Content area fill full viewport -->
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex h-screen overflow-hidden print:h-auto print:overflow-visible print:block">
         
         <!-- Surface 1: Sidebar -->
-        <x-puskesmas-sidebar />
+        <div class="print:hidden h-full">
+            <x-puskesmas-sidebar />
+        </div>
 
         <!-- Main Column -->
-        <div x-data="{ scrolled: false }" class="flex flex-col flex-1 w-full min-w-0 overflow-hidden relative lg:ml-72">
+        <div x-data="{ scrolled: false }" class="flex flex-col flex-1 w-full min-w-0 overflow-hidden relative print:overflow-visible print:block">
             <!-- Surface 1: Topbar -->
-            <x-navbar />
+            <div class="print:hidden">
+                <x-navbar />
+            </div>
 
             <!--
                 Main Content Area.
@@ -37,13 +46,13 @@
             -->
             @if(View::hasSection('page-mode') && View::getSection('page-mode') === 'app')
                 {{-- APP MODE: Full-height, edge-to-edge, no outer wrapper --}}
-                <main class="flex-1 min-h-0 overflow-hidden -mt-[76px] pt-[76px] pb-6 lg:pb-0 w-full relative flex flex-col">
+                <main class="flex-1 min-h-0 overflow-hidden -mt-[76px] pt-[76px] pb-6 lg:pb-0 w-full relative flex flex-col print:overflow-visible print:h-auto print:block print:mt-0 print:pt-0">
                     @yield('content')
                 </main>
             @else
                 {{-- SCROLL MODE: Padded, scrollable container --}}
-                <main @scroll.passive="scrolled = ($event.target.scrollTop > 10)" class="flex-1 overflow-y-auto overflow-x-hidden -mt-[76px] pt-[76px] pb-6 lg:pb-0 w-full relative bg-slate-50">
-                    <div class="max-w-7xl mx-auto w-full px-5 py-6 lg:px-8 lg:py-8">
+                <main @scroll.passive="scrolled = ($event.target.scrollTop > 10)" class="flex-1 overflow-y-auto overflow-x-hidden -mt-[76px] pt-[76px] pb-6 lg:pb-0 w-full relative bg-slate-50 print:overflow-visible print:bg-white print:block print:mt-0 print:pt-0">
+                    <div class="max-w-7xl mx-auto w-full px-5 py-6 lg:px-8 lg:py-8 print:p-0 print:max-w-none">
                         @yield('content')
                     </div>
                 </main>

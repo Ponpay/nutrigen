@@ -70,7 +70,7 @@
             <div class="space-y-4 flex-1">
                 @forelse($children ?? [] as $child)
                     <!-- Child Card Button -->
-                    <button class="w-full text-left focus:outline-none focus:ring-4 focus:ring-mint-100 rounded-[28px] transition-transform active:scale-[0.98] group">
+                    <a href="{{ $child['url'] }}" class="block w-full text-left focus:outline-none focus:ring-4 focus:ring-mint-100 rounded-[28px] transition-transform active:scale-[0.98] group">
                         <x-ui.card padding="p-4" class="flex items-center group-hover:border-mint-200 transition-colors">
                             
                             <x-ui.avatar src="{{ $child['avatar'] ?? null }}" initials="{{ $child['initials'] ?? 'A' }}" size="w-[60px] h-[60px]" class="mr-4" />
@@ -89,7 +89,7 @@
                             </div>
 
                         </x-ui.card>
-                    </button>
+                    </a>
                 @empty
                     <!-- Fallback data dummy jika array kosong untuk preview saat development -->
                     <button class="w-full text-left focus:outline-none focus:ring-4 focus:ring-mint-100 rounded-[28px] transition-transform active:scale-[0.98] group">

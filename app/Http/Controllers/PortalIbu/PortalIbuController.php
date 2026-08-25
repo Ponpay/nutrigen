@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PortalIbu;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Balita;
+use App\Models\OrangTua;
 use App\Models\Pengukuran;
 use App\Models\Kader;
 use App\Models\Jadwal;
@@ -343,9 +344,60 @@ class PortalIbuController extends Controller
         return view('portal-ibu.posyandu.index', $data);
     }
 
-    // Optional method depending on routing structure
     public function childSelector()
     {
-        return redirect()->route('portal-ibu.home');
+        $user = Auth::user();
+
+        // Ambil profil OrangTua milik user yang login
+        $orangTua = OrangTua::where('user_id', $user->id)->first();
+
+        // Ambil semua balita yang terdaftar di bawah OrangTua tersebut
+        $balitaList = $orangTua
+            ? Balita::where('orang_tua_id', $orangTua->id)
+                ->with(['pengukurans' => function ($q) {
+                    $q->where('status_validasi', 'approved')->latest('tanggal_ukur');
+                }])
+                ->get()
+            : collect();
+
+        $hour = Carbon::now('Asia/Jakarta')->hour;
+        if ($hour < 12)       $greeting = "Selamat pagi, Ibunda";
+        elseif ($hour < 15)   $greeting = "Selamat siang, Ibunda";
+        elseif ($hour < 18)   $greeting = "Selamat sore, Ibunda";
+        else                  $greeting = "Selamat malam, Ibunda";
+
+        if ($balitaList->isEmpty()) {
+            return view('portal-ibu.child-selector.index', [
+                'pageState' => 'empty',
+                'children'  => [],
+                'greeting'  => $greeting,
+            ]);
+        }
+
+        $children = $balitaList->map(function ($balita) {
+            $latest = $balita->pengukurans->first();
+            $status = $latest ? ucfirst(strtolower($latest->status_gizi)) : null;
+
+            $ageParts = Carbon::parse($balita->tanggal_lahir)->diff(Carbon::now('Asia/Jakarta'));
+            $age = $ageParts->y > 0
+                ? $ageParts->y . ' Tahun ' . $ageParts->m . ' Bulan'
+                : $ageParts->m . ' Bulan ' . $ageParts->d . ' Hari';
+
+            return [
+                'id'       => $balita->id,
+                'name'     => $balita->nama,
+                'initials' => strtoupper(substr($balita->nama, 0, 1)),
+                'avatar'   => null,
+                'age'      => $age,
+                'status'   => $status,
+                'url'      => route('portal-ibu.home', ['balita' => $balita->id]),
+            ];
+        })->toArray();
+
+        return view('portal-ibu.child-selector.index', [
+            'pageState' => 'normal',
+            'children'  => $children,
+            'greeting'  => $greeting,
+        ]);
     }
 }

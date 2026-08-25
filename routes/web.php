@@ -155,3 +155,11 @@ Route::prefix('portal-ibu')->name('portal-ibu.')->middleware(['web', 'prevent-ba
     Route::get('/riwayat', [PortalIbuController::class, 'growth'])->name('growth');
     Route::get('/grafik', [PortalIbuController::class, 'nutrition'])->name('nutrition');
 });
+
+
+// Local-only shortcut for previewing the portal without a login link.
+if (app()->environment('local')) {
+    Route::get('/dev/portal-ibu/{balita}', [PortalIbuController::class, 'home'])
+        ->middleware('web')
+        ->name('dev.portal-ibu');
+}

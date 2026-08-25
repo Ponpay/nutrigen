@@ -1,10 +1,15 @@
 <x-layout.mobile-shell>
     <div x-data="{ state: '{{ $pageState ?? 'normal' }}' }" class="flex-1 overflow-y-auto hide-scrollbar flex flex-col relative pb-[100px] pb-safe w-full">
         
-        <!-- TOP BAR -->
-        <x-navigation.top-bar title="Pertumbuhan Anak" :backUrl="\Illuminate\Support\Facades\URL::signedRoute('portal-ibu.home', ['balita' => request('balita')])">
-            <x-ui.avatar src="{{ $avatar ?? null }}" initials="{{ $initials ?? 'A' }}" size="w-9 h-9" />
-        </x-navigation.top-bar>
+        <!-- TOP BAR (komponen bersama) -->
+        <x-navigation.portal-header
+            variant="page"
+            title="Pertumbuhan Anak"
+            :hasBack="true"
+            :backUrl="\Illuminate\Support\Facades\URL::signedRoute('portal-ibu.home', ['balita' => request('balita')])"
+            :initials="$initials ?? 'A'"
+            :avatar="$avatar ?? null"
+        />
 
         <div class="px-5 pt-6 pb-6 space-y-6 flex-1 flex flex-col">
             <!-- LOADING OVERLAY -->

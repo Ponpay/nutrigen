@@ -116,26 +116,18 @@ Skenario serangan:
 Dampak    : Data kesehatan balita bocor antar keluarga. Fatal untuk
             kredibilitas aplikasi kesehatan di mata juri/user.
 Tindakan  (pilih salah satu strategi, JANGAN dicampur):
-  Opsi A (disarankan, paling cepat):
-    [ ] Di approve() PuskesmasController baris 351, tambahkan parameter
-        orang_tua_id ke signature:
-          URL::temporarySignedRoute('portal-ibu.home', now()->addDays(7),
-            ['balita' => $id, 'orang_tua' => $pengukuran->balita->orang_tua_id])
-    [ ] Di getActiveBalita():
-          $orangTuaId = request('orang_tua');
-          return Balita::with([...])
-              ->where('id', $balitaId)
-              ->where('orang_tua_id', $orangTuaId)
-              ->first();
-        (jika orang_tua_id tidak cocok -> null -> halaman empty state)
-    [ ] Pastikan SEMUA link internal portal meneruskan parameter
-        orang_tua (cek route names portal-ibu.posyandu/growth/nutrition
-        di view blade)
-  Opsi B (lebih rapi tapi lebih kerja):
-    [ ] Tambah kolom access_token unik di tabel orang_tuas (migration baru)
-    [ ] Signed URL memuat token, controller cocokkan token -> orang_tua_id
-        -> scope semua query balita
-  [ ] Buat test: buka URL dengan balita_id milik orang lain HARUS empty
+  Opsi A (DIPILIH - SELESAI 26 Ags 2026):
+    [x] Di approve() PuskesController: signed URL kini membawa balita + orang_tua
+        (lihat PuskesmasController::approve(), TTL via config('portal.link_ttl_days'))
+    [x] Di getActiveBalita(): scoped where('orang_tua_id', request('orang_tua'))
+        -> kombinasi balita+ortu yang tidak cocok = null = empty state
+    [x] SEMUA link internal portal meneruskan orang_tua + temporarySignedRoute
+        (home x8, growth back-button, bottom-navigation x3, child-selector)
+  Opsi B (tidak dijalankan): token akses per orang_tua
+  [x] Buat test: tests/Feature/PortalIbuAccessTest.php (7 tes / 16 asersi, PASS)
+      - data anak sendiri tampil; anak orang lain kosong walau signature valid
+      - tamper balita_id -> 403; tanpa orang_tua -> kosong; expired -> 403
+      - child-selector hanya anak kandung; pengukuran pending tidak bocor
 
 ===============================================================================
 BAGIAN B - MASALAH PRIORITAS TINGGI
@@ -274,10 +266,10 @@ KRITIS  Signed URL tidak dikirim      | DIPERBAIKI 26 Ags 2026: approve()
                                       | mengirim portal_link (banner Salin
                                       | Link + WhatsApp di validasi.blade)
 KRITIS  Referensi model Ibu           | Masih terjadi (dead code + alias)
-KRITIS  IDOR Portal Ibu               | DIPERBAIKI 26 Ags 2026: getActiveBalita
-                                      | scoped ke orang_tua; semua link internal
-                                      | membawa orang_tua + temporarySignedRoute;
-                                      | terverifikasi tamper=403, cross-parent=empty
+KRITIS  IDOR Portal Ibu               | DIPERBAIKI + TERUJI 26 Ags 2026:
+                                      | scope orang_tua + link signed semua
+                                      | halaman; tests/Feature/PortalIbuAccessTest
+                                      | 7 tes PASS (tamper=403, cross=empty, dst)
 TINGGI  Navigasi signed URL rapuh     | Belum diverifikasi runtime,
                                       | secara kode masih berlaku
 TINGGI  Tanpa audit record validasi   | Sebagian: catatan_validator ada,

@@ -1,7 +1,7 @@
 @props(['active' => 'home'])
 
 <nav class="fixed bottom-0 left-0 right-0 w-full bg-white px-8 py-3 z-50 flex justify-between items-center rounded-t-3xl shadow-[0_-4px_24px_rgba(0,0,0,0.04)] pb-safe">
-    
+
     <!-- Beranda Tab -->
     <a href="{!! \Illuminate\Support\Facades\URL::signedRoute('portal-ibu.home', ['balita' => request('balita') ?? 0]) !!}" class="flex flex-col items-center justify-center focus:outline-none w-16 group relative pb-2">
         @if($active === 'home')
@@ -17,7 +17,7 @@
             </div>
         @endif
     </a>
-    
+
     <!-- Edukasi Tab -->
     <a href="{!! \Illuminate\Support\Facades\URL::signedRoute('portal-ibu.nutrition', ['balita' => request('balita') ?? 0]) !!}" class="flex flex-col items-center justify-center focus:outline-none w-16 group relative pb-2">
         @if($active === 'nutrition')

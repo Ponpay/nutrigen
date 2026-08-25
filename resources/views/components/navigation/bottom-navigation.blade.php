@@ -3,7 +3,7 @@
 <nav class="fixed bottom-0 left-0 right-0 w-full bg-white px-8 py-3 z-50 flex justify-between items-center rounded-t-3xl shadow-[0_-4px_24px_rgba(0,0,0,0.04)] pb-safe">
 
     <!-- Beranda Tab -->
-    <a href="{!! \Illuminate\Support\Facades\URL::signedRoute('portal-ibu.home', ['balita' => request('balita') ?? 0]) !!}" class="flex flex-col items-center justify-center focus:outline-none w-16 group relative pb-2">
+    <a href="{!! \Illuminate\Support\Facades\URL::temporarySignedRoute('portal-ibu.home', now()->addDays(config('portal.link_ttl_days')), ['balita' => request('balita'), 'orang_tua' => request('orang_tua')]) !!}" class="flex flex-col items-center justify-center focus:outline-none w-16 group relative pb-2">
         @if($active === 'home')
             <div class="flex flex-col items-center text-[#10B981]">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
@@ -19,7 +19,7 @@
     </a>
 
     <!-- Edukasi Tab -->
-    <a href="{!! \Illuminate\Support\Facades\URL::signedRoute('portal-ibu.nutrition', ['balita' => request('balita') ?? 0]) !!}" class="flex flex-col items-center justify-center focus:outline-none w-16 group relative pb-2">
+    <a href="{!! \Illuminate\Support\Facades\URL::temporarySignedRoute('portal-ibu.nutrition', now()->addDays(config('portal.link_ttl_days')), ['balita' => request('balita'), 'orang_tua' => request('orang_tua')]) !!}" class="flex flex-col items-center justify-center focus:outline-none w-16 group relative pb-2">
         @if($active === 'nutrition')
             <div class="flex flex-col items-center text-[#10B981]">
                 <!-- Book outline icon -->
@@ -36,7 +36,7 @@
     </a>
 
     <!-- Posyandu Tab -->
-    <a href="{!! \Illuminate\Support\Facades\URL::signedRoute('portal-ibu.posyandu', ['balita' => request('balita') ?? 0]) !!}" class="flex flex-col items-center justify-center focus:outline-none w-16 group relative pb-2">
+    <a href="{!! \Illuminate\Support\Facades\URL::temporarySignedRoute('portal-ibu.posyandu', now()->addDays(config('portal.link_ttl_days')), ['balita' => request('balita'), 'orang_tua' => request('orang_tua')]) !!}" class="flex flex-col items-center justify-center focus:outline-none w-16 group relative pb-2">
         @if($active === 'posyandu')
             <div class="flex flex-col items-center text-[#10B981]">
                 <!-- People icon outline -->

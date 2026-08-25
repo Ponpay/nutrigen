@@ -11,7 +11,6 @@ use App\Models\Kader;
 use App\Models\Jadwal;
 use App\Services\RecommendationService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class PortalIbuController extends Controller
 {
@@ -25,12 +24,17 @@ class PortalIbuController extends Controller
     private function getActiveBalita()
     {
         $balitaId = request('balita');
-        if (!$balitaId) return null;
+        $orangTuaId = request('orang_tua');
+        if (!$balitaId || !$orangTuaId) return null;
 
-        // Fetch balita with only approved measurements
+        // KRITIS-04: scope ke orang_tua pemilik link — balita milik
+        // orang tua lain tidak akan pernah ter-resolve (empty state).
         return Balita::with(['pengukurans' => function($q) {
             $q->where('status_validasi', 'approved')->latest('tanggal_ukur');
-        }, 'posyandu'])->find($balitaId);
+        }, 'posyandu'])
+            ->where('id', $balitaId)
+            ->where('orang_tua_id', $orangTuaId)
+            ->first();
     }
 
     public function home()
@@ -322,7 +326,15 @@ class PortalIbuController extends Controller
             'kader' => $kader ? [
                 'name' => $kader->user->name ?? $kader->nama,
                 'role' => 'Kader Posyandu',
-                'whatsapp_url' => 'https://wa.me/' . preg_replace('/[^0-9]/', '', $kader->no_hp ?? '081234567890'),
+                // wa.me butuh format internasional (62...); fallback hanya jika kader belum punya nomor
+                'whatsapp_url' => 'https://wa.me/' . (function () use ($kader) {
+                    $digits = preg_replace('/[^0-9]/', '', $kader->no_hp ?? '');
+                    if ($digits === '') return '';
+                    if (str_starts_with($digits, '62')) return $digits;
+                    if (str_starts_with($digits, '0')) return '62' . substr($digits, 1);
+                    if (str_starts_with($digits, '8')) return '62' . $digits;
+                    return $digits;
+                })(),
                 'avatar' => null
             ] : null,
             'checklist' => [
@@ -344,12 +356,12 @@ class PortalIbuController extends Controller
         return view('portal-ibu.posyandu.index', $data);
     }
 
-    public function childSelector()
+    public function childSelector(Request $request)
     {
-        $user = Auth::user();
-
-        // Ambil profil OrangTua milik user yang login
-        $orangTua = OrangTua::where('user_id', $user->id)->first();
+        // Portal Ibu memakai signed URL (tanpa login), jadi identitas
+        // OrangTua diambil dari parameter yang terikat signature.
+        $orangTuaId = $request->query('orang_tua');
+        $orangTua = $orangTuaId ? OrangTua::find($orangTuaId) : null;
 
         // Ambil semua balita yang terdaftar di bawah OrangTua tersebut
         $balitaList = $orangTua
@@ -374,7 +386,7 @@ class PortalIbuController extends Controller
             ]);
         }
 
-        $children = $balitaList->map(function ($balita) {
+        $children = $balitaList->map(function ($balita) use ($orangTuaId) {
             $latest = $balita->pengukurans->first();
             $status = $latest ? ucfirst(strtolower($latest->status_gizi)) : null;
 
@@ -390,7 +402,12 @@ class PortalIbuController extends Controller
                 'avatar'   => null,
                 'age'      => $age,
                 'status'   => $status,
-                'url'      => route('portal-ibu.home', ['balita' => $balita->id]),
+                // TINGGI-01: link antar halaman portal wajib signed + membawa orang_tua
+                'url'      => \Illuminate\Support\Facades\URL::temporarySignedRoute(
+                    'portal-ibu.home',
+                    now()->addDays(config('portal.link_ttl_days')),
+                    ['balita' => $balita->id, 'orang_tua' => $orangTuaId]
+                ),
             ];
         })->toArray();
 

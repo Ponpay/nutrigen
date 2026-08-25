@@ -6,7 +6,7 @@
             variant="page"
             title="Pertumbuhan Anak"
             :hasBack="true"
-            :backUrl="\Illuminate\Support\Facades\URL::signedRoute('portal-ibu.home', ['balita' => request('balita')])"
+            :backUrl="\Illuminate\Support\Facades\URL::temporarySignedRoute('portal-ibu.home', now()->addDays(config('portal.link_ttl_days')), ['balita' => request('balita'), 'orang_tua' => request('orang_tua')])"
             :initials="$initials ?? 'A'"
             :avatar="$avatar ?? null"
         />

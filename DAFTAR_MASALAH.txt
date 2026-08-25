@@ -270,9 +270,14 @@ Temuan audit                          | Status verifikasi
 --------------------------------------|--------------------------------------
 KRITIS  Validasi model hilang         | Sebagian: controller utama sudah
                                       | benar; dead code masih ada
-KRITIS  Signed URL tidak dikirim      | Masih terjadi (persis)
+KRITIS  Signed URL tidak dikirim      | DIPERBAIKI 26 Ags 2026: approve()
+                                      | mengirim portal_link (banner Salin
+                                      | Link + WhatsApp di validasi.blade)
 KRITIS  Referensi model Ibu           | Masih terjadi (dead code + alias)
-KRITIS  IDOR Portal Ibu               | Masih terjadi (BELUM diperbaiki)
+KRITIS  IDOR Portal Ibu               | DIPERBAIKI 26 Ags 2026: getActiveBalita
+                                      | scoped ke orang_tua; semua link internal
+                                      | membawa orang_tua + temporarySignedRoute;
+                                      | terverifikasi tamper=403, cross-parent=empty
 TINGGI  Navigasi signed URL rapuh     | Belum diverifikasi runtime,
                                       | secara kode masih berlaku
 TINGGI  Tanpa audit record validasi   | Sebagian: catatan_validator ada,

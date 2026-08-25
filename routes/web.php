@@ -150,6 +150,7 @@ use App\Http\Controllers\PortalIbu\PortalIbuController;
 
 Route::prefix('portal-ibu')->name('portal-ibu.')->middleware(['web', 'prevent-back-history', 'signed'])->group(function () {
     // URL mapped to user's requested routes, but Name strictly preserved for UI
+    Route::get('/pilih-anak', [PortalIbuController::class, 'childSelector'])->name('child-selector');
     Route::get('/dashboard', [PortalIbuController::class, 'home'])->name('home');
     Route::get('/profil-anak', [PortalIbuController::class, 'posyandu'])->name('posyandu');
     Route::get('/riwayat', [PortalIbuController::class, 'growth'])->name('growth');

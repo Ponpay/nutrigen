@@ -347,16 +347,37 @@ class PuskesmasController extends Controller
             'catatan_validator' => $request->input('catatan_validator')
         ]);
 
-        // Generate signed URL for Portal Ibu (valid for 7 days to prevent permanent access)
-        $signedUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute('portal-ibu.home', now()->addDays(7), ['balita' => $pengukuran->balita_id]);
-
-        // Get updated stats to pass back to frontend
-        $stats = $this->statisticsService->getValidationQueueStats(
-            $puskesmasId,
-            $request->input('posyandu_id') ?: null
+        // KRITIS-02: signed URL untuk Portal Ibu kini DIKIRIM ke petugas
+        // untuk diteruskan ke Ibu (tombol Salin/WhatsApp), bukan dibuang.
+        // TTL dari config('portal.link_ttl_days'); orang_tua disertakan
+        // agar server memvalidasi kepemilikan balita (anti-IDOR).
+        $ttlDays = (int) config('portal.link_ttl_days', 7);
+        $signedUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+            'portal-ibu.home',
+            now()->addDays($ttlDays),
+            ['balita' => $pengukuran->balita_id, 'orang_tua' => $pengukuran->balita->orang_tua_id]
         );
 
-        return redirect()->route('puskesmas.validasi')->with('success', 'Data balita berhasil disetujui dan divalidasi.');
+        // TINGGI-02 (short-term): link wa.me dengan pesan berisi URL portal
+        $waDigits = preg_replace('/[^0-9]/', '', $pengukuran->balita->orangTua->no_hp_whatsapp ?? '');
+        if ($waDigits !== '') {
+            if (!str_starts_with($waDigits, '62')) {
+                $waDigits = str_starts_with($waDigits, '0') ? '62' . substr($waDigits, 1) : '62' . $waDigits;
+            }
+        }
+        $waMessage = "Assalamualaikum Bu, data pengukuran anak Ibu telah divalidasi. "
+            . "Silakan buka portal NutriGen berikut (berlaku {$ttlDays} hari): " . $signedUrl;
+        $portalLink = [
+            'url' => $signedUrl,
+            'ttl_days' => $ttlDays,
+            'wa_url' => $waDigits !== '' ? 'https://wa.me/' . $waDigits . '?text=' . rawurlencode($waMessage) : null,
+            'child_name' => $pengukuran->balita->nama,
+        ];
+
+        return redirect()
+            ->route('puskesmas.validasi')
+            ->with('success', 'Data balita berhasil disetujui dan divalidasi.')
+            ->with('portal_link', $portalLink);
     }
 
     public function reject(Request $request, $id)

@@ -59,7 +59,26 @@ Route::get('/dashboard', function () {
     } elseif ($user->role === 'puskesmas') {
         return redirect()->route('puskesmas.dashboard');
     } elseif ($user->role === 'ibu') {
-        return redirect()->route('portal-ibu.home');
+        // KRITIS-02/TINGGI-01: route portal-ibu memakai middleware 'signed',
+        // jadi redirect WAJIB memakai temporarySignedRoute + membawa orang_tua.
+        $orangTua = \App\Models\OrangTua::where('user_id', $user->id)->first();
+        if (!$orangTua || $orangTua->balitas()->count() === 0) {
+            return redirect()->route('team')->with('info', 'Belum ada data balita yang tertaut dengan akun Ibu ini.');
+        }
+
+        if ($orangTua->balitas()->count() === 1) {
+            return redirect()->to(\Illuminate\Support\Facades\URL::temporarySignedRoute(
+                'portal-ibu.home',
+                now()->addDays(config('portal.link_ttl_days')),
+                ['balita' => $orangTua->balitas()->first()->id, 'orang_tua' => $orangTua->id]
+            ));
+        }
+
+        return redirect()->to(\Illuminate\Support\Facades\URL::temporarySignedRoute(
+            'portal-ibu.child-selector',
+            now()->addDays(config('portal.link_ttl_days')),
+            ['orang_tua' => $orangTua->id]
+        ));
     }
 
     return view('dashboard');
@@ -159,8 +178,29 @@ Route::prefix('portal-ibu')->name('portal-ibu.')->middleware(['web', 'prevent-ba
 
 
 // Local-only shortcut for previewing the portal without a login link.
+// Jembatan redirect: men-generate signed URL (dengan orang_tua) lalu
+// melempar browser ke halaman portal yang diminta.
 if (app()->environment('local')) {
-    Route::get('/dev/portal-ibu/{balita}', [PortalIbuController::class, 'home'])
-        ->middleware('web')
-        ->name('dev.portal-ibu');
+    Route::get('/dev/portal-ibu/{balita}/{page?}', function ($balita, $page = 'home') {
+        $routes = [
+            'home'       => 'portal-ibu.home',
+            'growth'     => 'portal-ibu.growth',
+            'nutrition'  => 'portal-ibu.nutrition',
+            'posyandu'   => 'portal-ibu.posyandu',
+            'pilih-anak' => 'portal-ibu.child-selector',
+        ];
+        abort_unless(isset($routes[$page]), 404);
+
+        $b = \App\Models\Balita::findOrFail($balita);
+        $params = ['balita' => $b->id, 'orang_tua' => $b->orang_tua_id];
+        if ($page === 'pilih-anak') {
+            unset($params['balita']);
+        }
+
+        return redirect()->to(\Illuminate\Support\Facades\URL::temporarySignedRoute(
+            $routes[$page],
+            now()->addDays(config('portal.link_ttl_days')),
+            $params
+        ));
+    })->middleware('web')->name('dev.portal-ibu');
 }

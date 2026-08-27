@@ -30,7 +30,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[760px]">
+                <table class="w-full text-left border-collapse min-w-[980px]">
                     <thead class="bg-slate-50">
                         <tr class="border-b border-slate-200">
                             <th class="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wide">Tanggal</th>
@@ -42,6 +42,10 @@
                             <th class="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wide">Status Gizi
                             </th>
                             <th class="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wide">Validasi</th>
+                            <th class="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wide">Validator
+                            </th>
+                            <th class="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wide">Diputuskan
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,10 +87,16 @@
                                         {{ $validationLabel }}
                                     </span>
                                 </td>
+                                <td class="px-5 py-3 text-xs text-slate-600">
+                                    {{ $measurement->validator?->name ?? '-' }}
+                                </td>
+                                <td class="px-5 py-3 text-xs text-slate-600 whitespace-nowrap">
+                                    {{ $measurement->validated_at?->translatedFormat('d M Y, H:i') ?? '-' }}
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="px-5 py-10 text-center text-xs text-slate-400">Belum ada riwayat
+                                <td colspan="10" class="px-5 py-10 text-center text-xs text-slate-400">Belum ada riwayat
                                     pengukuran.</td>
                             </tr>
                         @endforelse

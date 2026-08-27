@@ -65,17 +65,17 @@ class PuskesmasController extends Controller
         return view('puskesmas.dashboard', compact('stats', 'distribution', 'recentActivities'));
     }
 
-    
+
     public function reviewValidasi($id)
     {
         $puskesmasId = $this->getPuskesmasId();
-        
+
         $p = \App\Models\Pengukuran::with(['balita.orangTua', 'balita.posyandu', 'kader.user'])
             ->whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
                 $q->where('puskesmas_id', $puskesmasId);
             })
             ->findOrFail($id);
-            
+
         $statusGizi = strtolower($p->status_gizi);
         $statusType = 'success';
         $statusLabel = 'Normal';
@@ -317,13 +317,14 @@ class PuskesmasController extends Controller
     {
         $puskesmasId = $this->getPuskesmasId();
 
-        $currentMeasurement = Pengukuran::with(['balita.posyandu'])
+        $currentMeasurement = Pengukuran::with(['balita.posyandu', 'validator'])
             ->whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
                 $q->where('puskesmas_id', $puskesmasId);
             })
             ->findOrFail($id);
 
-        $measurements = Pengukuran::where('balita_id', $currentMeasurement->balita_id)
+        $measurements = Pengukuran::with('validator')
+            ->where('balita_id', $currentMeasurement->balita_id)
             ->orderBy('tanggal_ukur', 'desc')
             ->get();
 
@@ -344,7 +345,9 @@ class PuskesmasController extends Controller
 
         $pengukuran->update([
             'status_validasi' => 'approved',
-            'catatan_validator' => $request->input('catatan_validator')
+            'catatan_validator' => $request->input('catatan_validator'),
+            'validated_by' => Auth::id(),
+            'validated_at' => now(),
         ]);
 
         // KRITIS-02: signed URL untuk Portal Ibu kini DIKIRIM ke petugas
@@ -390,7 +393,9 @@ class PuskesmasController extends Controller
 
         $pengukuran->update([
             'status_validasi' => 'rejected',
-            'catatan_validator' => $request->input('catatan_validator', 'Data tidak valid, mohon perbaiki.')
+            'catatan_validator' => $request->input('catatan_validator', 'Data tidak valid, mohon perbaiki.'),
+            'validated_by' => Auth::id(),
+            'validated_at' => now(),
         ]);
 
         // Get updated stats to pass back to frontend
@@ -465,7 +470,7 @@ class PuskesmasController extends Controller
             $rawStatus = $latestPengukuran ? $latestPengukuran['status_gizi'] : 'Belum Diukur';
             $statusLabel = ucwords($rawStatus);
             $checkStatus = strtolower($rawStatus);
-            
+
             $statusType = 'success'; // Default normal
             if(in_array($checkStatus, ['kurang', 'kurus', 'risiko lebih', 'risiko'])) $statusType = 'warning';
             elseif(in_array($checkStatus, ['stunting', 'gizi buruk', 'sangat kurus', 'obesitas'])) $statusType = 'danger';
@@ -735,7 +740,7 @@ class PuskesmasController extends Controller
     public function showBalita($id)
     {
         $puskesmasId = $this->getPuskesmasId();
-        
+
         $b = Balita::with(['orangTua', 'posyandu', 'latestPengukuran', 'pengukurans' => function($q) {
             $q->orderBy('tanggal_ukur', 'desc')->orderBy('id', 'desc');
         }])->whereHas('posyandu', function($q) use ($puskesmasId) {
@@ -772,8 +777,8 @@ class PuskesmasController extends Controller
             $measureDate = Carbon::parse($p->tanggal_ukur);
             $birthDate = Carbon::parse($b->tanggal_lahir);
             $ageDiff = $birthDate->diff($measureDate);
-            $ageAtMeasure = $p->umur_bulan 
-                ? $p->umur_bulan . ' Bulan' 
+            $ageAtMeasure = $p->umur_bulan
+                ? $p->umur_bulan . ' Bulan'
                 : ($ageDiff->y > 0 ? $ageDiff->y . ' Thn ' . $ageDiff->m . ' Bln' : $ageDiff->m . ' Bulan');
 
             return [

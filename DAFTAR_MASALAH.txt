@@ -323,7 +323,14 @@ Hasil browser :
   [x] Login akun Puskesmas berhasil
   [x] Dashboard Puskesmas tampil di /puskesmas/dashboard
   [x] Halaman login tampil
-  [ ] /register menghasilkan 404 karena route registrasi tidak tersedia
+  [x] /register menghasilkan 404 sesuai desain: registrasi publik tidak
+      diperlukan karena akun petugas dibuat oleh pihak Puskesmas
+
+Aturan akses akun :
+  - Akun Puskesmas dan Kader dibuat atau dikelola oleh pihak Puskesmas.
+  - Ibu tidak melakukan login melalui form web.
+  - Setelah validasi pengukuran, Ibu menerima signed token link melalui
+    WhatsApp untuk membuka Portal Ibu sesuai balita miliknya.
 
 Hasil test otomatis :
   - 28 test lulus
@@ -332,8 +339,13 @@ Hasil test otomatis :
   - Setelah perbaikan TINGGI-01: PortalIbuAccessTest tetap 7/7 lulus
 
 Test yang gagal :
-  [ ] AuthenticationTest: test masih mengharapkan redirect /dashboard,
-      sedangkan aplikasi mengarahkan ke /portal-ibu/dashboard
-  [ ] RegistrationTest: route /register tidak tersedia
+  [ ] AuthenticationTest: test generik membuat User tanpa role sehingga
+    memakai default role ibu, sedangkan test masih mengharapkan redirect
+    umum /dashboard. Alur aplikasi memakai redirect berdasarkan role;
+    akun petugas harus diuji dengan role puskesmas atau kader.
+  [x] RegistrationTest: 404 pada /register adalah perilaku yang diharapkan;
+    route registrasi publik sengaja dinonaktifkan.
+  [x] RegistrationTest: POST /register ikut gagal karena registrasi publik
+    memang bukan bagian dari alur pembuatan akun aplikasi.
   [ ] ProfileTest: test mengharapkan hard delete, sedangkan aplikasi memakai
       soft delete

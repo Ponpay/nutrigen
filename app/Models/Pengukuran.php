@@ -25,6 +25,8 @@ class Pengukuran extends Model
         'status_kenaikan',
         'status_validasi',
         'catatan_validator',
+        'validated_by',
+        'validated_at',
         'catatan_kader',
     ];
 
@@ -37,6 +39,7 @@ class Pengukuran extends Model
         'asi_eksklusif' => 'boolean',
         'z_score_bbu' => 'float',
         'z_score_tbu' => 'float',
+        'validated_at' => 'datetime',
     ];
 
     public function balita(): BelongsTo
@@ -47,6 +50,11 @@ class Pengukuran extends Model
     public function kader(): BelongsTo
     {
         return $this->belongsTo(Kader::class);
+    }
+
+    public function validator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'validated_by');
     }
     /**
     * Scope a query to only include pending validations.

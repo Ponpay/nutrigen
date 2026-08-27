@@ -31,17 +31,18 @@ Catatan   : Jalur UTAMA simpan pengukuran sekarang lewat
             (langsung Pengukuran::create dengan status_validasi 'pending')
             dan SUDAH BENAR - tidak menyentuh model Validasi.
 Tindakan  :
-  [x] Hapus app/Services/KaderService.php
-  [x] Hapus app/Services/PuskesmasService.php
-  [x] Hapus app/Services/Puskesmas/PuskesmasService.php
-  [x] Verifikasi: tidak ada lagi App\Models\Validasi atau Validasi:: di app/
+  [✓] Hapus app/Services/KaderService.php
+  [✓] Hapus app/Services/PuskesmasService.php
+  [✓] Hapus app/Services/Puskesmas/PuskesmasService.php
+  [✓] Verifikasi: tidak ada lagi App\Models\Validasi atau Validasi:: di app/
       (nama kolom/status_validasi tetap digunakan oleh alur aktif dan aman)
-Catatan   : Service PortalIbu lama belum dihapus karena masuk KRITIS-03 /
-            SEDANG-01, bukan bagian dari perbaikan model Validasi.
+Catatan   : Service PortalIbu lama dicatat dan dihapus pada perbaikan
+            KRITIS-03 / SEDANG-01.
 
 [KRITIS-02] Signed URL dibuat tapi tidak pernah dikirim ke Ibu
 ----------------------------------------------------------------
-Status    : Masih terjadi persis seperti di audit
+Status    : SELESAI 26 Ags 2026 untuk kebutuhan demo; signed URL sekarang
+            ditampilkan kepada petugas melalui banner Salin Link dan WhatsApp
 Lokasi    : app/Http/Controllers/Puskesmas/PuskesmasController.php
             baris 351 ($signedUrl) sampai 359 (return redirect)
 Masalah   : Saat approve(), URL::temporarySignedRoute('portal-ibu.home',
@@ -56,7 +57,7 @@ Bug tambahan di fungsi yang sama:
 Dampak    : Ibu TIDAK PERNAH menerima link portal setelah data disetujui.
             Alur Kader -> Puskesmas -> Ibu PUTUS di langkah terakhir.
 Tindakan  :
-  [ ] Short-term (untuk demo hackathon): tampilkan signed URL di flash
+  [✓] Short-term (untuk demo hackathon): tampilkan signed URL di flash
       message / halaman detail antrean setelah approve, mis:
       return redirect()->route('puskesmas.validasi')->with([
           'success' => '...',
@@ -85,16 +86,16 @@ Fakta     : Route Portal Ibu aktif memakai middleware 'signed'.
             App\Models\Notification, App\Models\PetugasPuskesmas,
             atau alias auth.ibu di app/, routes/, tests/, dan resources/.
 Tindakan  :
-  [x] Hapus app/Http/Middleware/PortalIbuAuth.php
-  [x] Hapus baris alias auth.ibu di app/Http/Kernel.php
-  [x] Hapus app/Services/NotificationService.php
-  [x] Hapus service PortalIbu lama yang tidak dipakai
-  [x] Verifikasi referensi class legacy menjadi kosong
+  [✓] Hapus app/Http/Middleware/PortalIbuAuth.php
+  [✓] Hapus baris alias auth.ibu di app/Http/Kernel.php
+  [✓] Hapus app/Services/NotificationService.php
+  [✓] Hapus service PortalIbu lama yang tidak dipakai
+  [✓] Verifikasi referensi class legacy menjadi kosong
 
 [KRITIS-04] IDOR: Portal Ibu membuka data balita mana pun hanya dengan
             mengubah angka ID di URL
 ----------------------------------------------------------------
-Status    : Masih terjadi - BELUM DIPERBAIKI
+Status    : SELESAI 26 Ags 2026 dan sudah diuji dengan PortalIbuAccessTest
 Lokasi    : app/Http/Controllers/PortalIbu/PortalIbuController.php
             baris 24-33 (fungsi getActiveBalita)
 Masalah   : getActiveBalita() hanya melakukan:
@@ -112,14 +113,14 @@ Dampak    : Data kesehatan balita bocor antar keluarga. Fatal untuk
             kredibilitas aplikasi kesehatan di mata juri/user.
 Tindakan  (pilih salah satu strategi, JANGAN dicampur):
   Opsi A (DIPILIH - SELESAI 26 Ags 2026):
-    [x] Di approve() PuskesController: signed URL kini membawa balita + orang_tua
+    [✓] Di approve() PuskesController: signed URL kini membawa balita + orang_tua
         (lihat PuskesmasController::approve(), TTL via config('portal.link_ttl_days'))
-    [x] Di getActiveBalita(): scoped where('orang_tua_id', request('orang_tua'))
+    [✓] Di getActiveBalita(): scoped where('orang_tua_id', request('orang_tua'))
         -> kombinasi balita+ortu yang tidak cocok = null = empty state
-    [x] SEMUA link internal portal meneruskan orang_tua + temporarySignedRoute
+    [✓] SEMUA link internal portal meneruskan orang_tua + temporarySignedRoute
         (home x8, growth back-button, bottom-navigation x3, child-selector)
   Opsi B (tidak dijalankan): token akses per orang_tua
-  [x] Buat test: tests/Feature/PortalIbuAccessTest.php (7 tes / 16 asersi, PASS)
+  [✓] Buat test: tests/Feature/PortalIbuAccessTest.php (7 tes / 16 asersi, PASS)
       - data anak sendiri tampil; anak orang lain kosong walau signature valid
       - tamper balita_id -> 403; tanpa orang_tua -> kosong; expired -> 403
       - child-selector hanya anak kandung; pengukuran pending tidak bocor
@@ -139,19 +140,21 @@ Masalah   : Signature hanya sah untuk exact URL. Link di dalam halaman
             sendiri; kalau view membuat link tanpa signature ->
             error 403 Invalid signature saat diklik.
 Tindakan  :
-  [x] Audit semua link internal di views/portal-ibu/**
-  [x] Ganti back URL Nutrition dari url()->previous() menjadi
+  [✓] Audit semua link internal di views/portal-ibu/**
+  [✓] Ganti back URL Nutrition dari url()->previous() menjadi
       URL::temporarySignedRoute() dengan balita + orang_tua
-  [x] Pastikan link Home, Growth, Nutrition, Posyandu, dan child selector
+  [✓] Pastikan link Home, Growth, Nutrition, Posyandu, dan child selector
       membawa signature serta parameter balita + orang_tua
 
 [TINGGI-02] Tidak ada integrasi WhatsApp sama sekali + tidak ada log kirim
 ----------------------------------------------------------------
+Status    : SEBAGIAN SELESAI 26 Ags 2026 - link wa.me tersedia untuk demo;
+            gateway resmi dan log pengiriman belum dibuat
 Masalah   : Audit benar - tidak ada service WA, job, endpoint, atau API call.
             no_hp_whatsapp tersimpan di orang_tuas (sudah unique, bagus)
             tapi belum pernah dipakai untuk mengirim apa pun.
 Tindakan  :
-  [ ] Minimal untuk demo: link wa.me (lihat KRITIS-02 short-term)
+  [✓] Minimal untuk demo: link wa.me (lihat KRITIS-02 short-term)
   [ ] Jika sempat: buat App\Services\WhatsAppService dengan driver
       configurable (config/services.php: 'wa' => ['driver' => env('WA_DRIVER')]),
       support fonnte/wablas/twilio
@@ -171,12 +174,12 @@ Masalah sebelumnya : Yang tersimpan hanya status_validasi + catatan_validator
             waktu keputusan belum tersimpan. Kolom catatan_validator sudah
             ada dan terpakai (ini progress sejak audit ditulis).
 Tindakan  :
-  [x] Migration baru: database/migrations/2026_08_27_000001_add_validator_tracking_to_pengukurans_table.php
+  [✓] Migration baru: database/migrations/2026_08_27_000001_add_validator_tracking_to_pengukurans_table.php
       - validated_by (foreignId users nullable)
       - validated_at (timestamp nullable)
-  [x] Isi keduanya di approve() dan reject() dengan Auth::id() dan now()
-  [x] Tampilkan nama validator dan waktu keputusan di riwayat validasi puskesmas
-  [x] Migration dan regresi PortalIbuAccessTest berhasil dijalankan
+  [✓] Isi keduanya di approve() dan reject() dengan Auth::id() dan now()
+  [✓] Tampilkan nama validator dan waktu keputusan di riwayat validasi puskesmas
+  [✓] Migration dan regresi PortalIbuAccessTest berhasil dijalankan
   [ ] Tambahkan test khusus approve/reject pada pekerjaan test berikutnya
 Perubahan per fungsi :
   - Migration::up(): menambahkan validated_by sebagai foreign key nullable
@@ -217,8 +220,8 @@ Status    : SELESAI 27 Ags 2026 untuk service legacy yang tidak dipakai.
             Service aktif tetap dipertahankan di namespace Kader/PortalIbu
             sesuai pemakaian controller saat ini.
 Tindakan  :
-  [x] Hapus service Kader/Puskesmas legacy yang mereferensikan Validasi
-  [x] Hapus service PortalIbu legacy yang mereferensikan model Ibu
+  [✓] Hapus service Kader/Puskesmas legacy yang mereferensikan Validasi
+  [✓] Hapus service PortalIbu legacy yang mereferensikan model Ibu
 
 [SEDANG-02] Test baseline minim dan tidak ada test untuk alur inti
 ----------------------------------------------------------------
@@ -232,16 +235,17 @@ Masalah   : Alur inti bisnis TIDAK TERTEST:
 Tindakan  :
   [ ] Feature test: KaderPengukuranTest (simpan -> status pending)
   [ ] Feature test: ApproveRejectTest (status berubah + validated_at terisi)
-  [x] Feature test: PortalIbuAccessTest
+  [✓] Feature test: PortalIbuAccessTest
       (signature valid -> 200; signature expired -> 403;
        balita milik orang lain -> empty; pengukuran pending tidak tampil)
 
 [SEDANG-03] TTL signed URL hard-coded di controller
 ----------------------------------------------------------------
+Status    : SELESAI 27 Ags 2026 - TTL signed URL sudah dipindahkan ke config
 Lokasi    : PuskesmasController.php baris 351 (now()->addDays(7))
 Tindakan  :
-  [ ] Pindahkan ke config: config/portal.php => 'link_ttl_days' => 7
-  [ ] Panggil: now()->addDays(config('portal.link_ttl_days'))
+  [✓] Pindahkan ke config: config/portal.php => 'link_ttl_days' => 7
+  [✓] Panggil: now()->addDays(config('portal.link_ttl_days'))
 
 [SEDANG-04] Tidak ada Policy/Gate untuk akses balita
 ----------------------------------------------------------------
@@ -283,12 +287,12 @@ Temuan audit                          | Status verifikasi
 --------------------------------------|--------------------------------------
 KRITIS  Validasi model hilang         | Sebagian: controller utama sudah
                                       | benar; dead code sudah dihapus
-KRITIS  Signed URL tidak dikirim      | DIPERBAIKI 26 Ags 2026: approve()
+KRITIS  Signed URL tidak dikirim      | SELESAI 26 Ags 2026: approve()
                                       | mengirim portal_link (banner Salin
                                       | Link + WhatsApp di validasi.blade)
 KRITIS  Referensi model Ibu           | SELESAI 27 Ags 2026: dead code,
                                       | middleware, dan alias auth.ibu dihapus
-KRITIS  IDOR Portal Ibu               | DIPERBAIKI + TERUJI 26 Ags 2026:
+KRITIS  IDOR Portal Ibu               | SELESAI + TERUJI 26 Ags 2026:
                                       | scope orang_tua + link signed semua
                                       | halaman; tests/Feature/PortalIbuAccessTest
                                       | 7 tes PASS (tamper=403, cross=empty, dst)
@@ -298,7 +302,8 @@ TINGGI  Navigasi signed URL rapuh     | SELESAI 27 Ags 2026: seluruh link
 TINGGI  Tanpa audit record validasi   | SELESAI 27 Ags 2026: validated_by
                                       | dan validated_at tersimpan serta
                                       | tampil di riwayat validasi
-SEDANG  getActiveBalita tanpa scope   | Masih terjadi (= IDOR)
+SEDANG  getActiveBalita tanpa scope   | SELESAI 26 Ags 2026: scope orang_tua
+                                      | sudah diterapkan dan diuji
 SEDANG  PortalIbuService usang        | SELESAI 27 Ags 2026: service legacy dihapus
 SEDANG  Test baseline gagal/minim     | Minim terkonfirmasi
 
@@ -319,11 +324,11 @@ Server       :
     (port 3000 sudah digunakan proses Vite lain)
 
 Hasil browser :
-  [x] Halaman utama NutriGen tampil
-  [x] Login akun Puskesmas berhasil
-  [x] Dashboard Puskesmas tampil di /puskesmas/dashboard
-  [x] Halaman login tampil
-  [x] /register menghasilkan 404 sesuai desain: registrasi publik tidak
+  [✓] Halaman utama NutriGen tampil
+  [✓] Login akun Puskesmas berhasil
+  [✓] Dashboard Puskesmas tampil di /puskesmas/dashboard
+  [✓] Halaman login tampil
+  [✓] /register menghasilkan 404 sesuai desain: registrasi publik tidak
       diperlukan karena akun petugas dibuat oleh pihak Puskesmas
 
 Aturan akses akun :
@@ -343,9 +348,9 @@ Test yang gagal :
     memakai default role ibu, sedangkan test masih mengharapkan redirect
     umum /dashboard. Alur aplikasi memakai redirect berdasarkan role;
     akun petugas harus diuji dengan role puskesmas atau kader.
-  [x] RegistrationTest: 404 pada /register adalah perilaku yang diharapkan;
+  [✓] RegistrationTest: 404 pada /register adalah perilaku yang diharapkan;
     route registrasi publik sengaja dinonaktifkan.
-  [x] RegistrationTest: POST /register ikut gagal karena registrasi publik
+  [✓] RegistrationTest: POST /register ikut gagal karena registrasi publik
     memang bukan bagian dari alur pembuatan akun aplikasi.
   [ ] ProfileTest: test mengharapkan hard delete, sedangkan aplikasi memakai
       soft delete

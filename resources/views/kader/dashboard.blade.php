@@ -60,12 +60,12 @@
 
             <div class="flex items-center gap-3 shrink-0 mt-2 md:mt-0">
                 <a href="{{ route('balita.create') }}" 
-                   class="flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 rounded-lg text-sm font-semibold transition-colors focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                   class="flex items-center justify-center gap-2 px-4 min-h-[48px] bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 rounded-lg text-sm font-semibold transition-colors focus:ring-2 focus:ring-teal-500 focus:outline-none">
                     <x-icon name="user-plus" weight="bold" class="text-slate-500" />
                     <span>Balita Baru</span>
                 </a>
                 <a href="{{ route('balita.index') }}" 
-                   class="flex items-center justify-center gap-2 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-semibold transition-colors focus:ring-2 focus:ring-teal-500 focus:outline-none shadow-sm">
+                   class="flex items-center justify-center gap-2 px-4 min-h-[48px] bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-semibold transition-colors focus:ring-2 focus:ring-teal-500 focus:outline-none shadow-sm">
                     <x-icon name="scales" weight="bold" />
                     <span>Mulai Timbang</span>
                 </a>
@@ -85,7 +85,7 @@
                 </div>
             </div>
             <a href="{{ route('balita.index', ['filter' => 'ditolak']) }}" 
-               class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 text-sm font-semibold rounded-lg transition-colors shrink-0 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+               class="inline-flex items-center justify-center gap-1.5 px-4 min-h-[48px] bg-amber-100 hover:bg-amber-200 text-amber-900 text-sm font-semibold rounded-lg transition-colors shrink-0 focus:ring-2 focus:ring-amber-500 focus:outline-none">
                 <span>Tinjau Catatan</span>
                 <x-icon name="arrow-right" weight="bold" />
             </a>
@@ -301,7 +301,7 @@
                         </div>
                     </div>
                     <a href="{{ route('laporan.index') }}" 
-                       class="w-full sm:w-auto px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-sm font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 shrink-0 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                       class="w-full sm:w-auto px-4 min-h-[48px] bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-sm font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 shrink-0 focus:ring-2 focus:ring-teal-500 focus:outline-none">
                         <span>Buka</span> <x-icon name="arrow-right" weight="bold" />
                     </a>
                 </div>

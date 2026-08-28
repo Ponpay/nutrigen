@@ -17,7 +17,7 @@
     $roleText = $roleMatch[1] ?? null;
 @endphp
 
-<div class="w-full min-h-screen bg-slate-50 pb-24 lg:pb-16 text-slate-800 antialiased font-sans selection:bg-teal-100 selection:text-teal-900">
+<div class="w-full min-h-screen bg-slate-50 pb-32 sm:pb-28 lg:pb-16 text-slate-800 antialiased font-sans selection:bg-teal-100 selection:text-teal-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col gap-6 sm:gap-8">
         
         {{-- 1. WELCOME COMMAND HEADER --}}
@@ -74,14 +74,14 @@
 
         {{-- 2. ALERT PERLU REVISI --}}
         @if(isset($statRevisi) && $statRevisi > 0)
-        <div class="bg-amber-50 rounded-xl p-4 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="bg-amber-50 rounded-xl p-4 border border-amber-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-start sm:items-center gap-3">
                 <div class="mt-0.5 sm:mt-0 shrink-0 text-amber-600">
                     <x-icon name="warning-circle" weight="fill" class="text-xl" />
                 </div>
                 <div>
                     <h3 class="text-sm font-semibold text-amber-900 mb-0.5">Perlu Tindakan: <span class="tabular-nums">{{ $statRevisi }}</span> Data Balita Perlu Koreksi</h3>
-                    <p class="text-sm text-amber-700">Puskesmas memberikan catatan verifikasi. Silakan tinjau dan perbaiki data penimbangan.</p>
+                    <p class="text-sm text-amber-800">Puskesmas memberikan catatan verifikasi. Silakan tinjau dan perbaiki data penimbangan.</p>
                 </div>
             </div>
             <a href="{{ route('balita.index', ['filter' => 'ditolak']) }}" 
@@ -93,32 +93,32 @@
         @endif
 
         {{-- 3. KPI METRICS --}}
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {{-- Total Terdaftar --}}
-            <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 flex flex-col">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Total Balita</div>
-                    <div class="text-slate-400"><x-icon name="users" weight="fill" class="text-lg" /></div>
+            <div class="bg-white rounded-xl p-3.5 sm:p-5 border border-slate-200 flex flex-col">
+                <div class="flex justify-between items-start mb-2 sm:mb-4">
+                    <div class="text-[11px] sm:text-xs font-semibold uppercase text-slate-500 tracking-wider leading-tight">Total Balita</div>
+                    <div class="text-slate-400 hidden sm:block"><x-icon name="users" weight="fill" class="text-lg" /></div>
                 </div>
                 <div class="flex items-baseline gap-1.5 mt-auto">
-                    <span class="text-3xl font-semibold text-slate-900 tabular-nums">{{ $total }}</span>
-                    <span class="text-sm text-slate-500">anak</span>
+                    <span class="text-2xl sm:text-3xl font-semibold text-slate-900 tabular-nums leading-none">{{ $total }}</span>
+                    <span class="text-xs sm:text-sm text-slate-500">anak</span>
                 </div>
             </div>
 
             {{-- Selesai Ditimbang --}}
-            <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 flex flex-col">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Sudah Diukur</div>
-                    <div class="text-emerald-500"><x-icon name="check-circle" weight="fill" class="text-lg" /></div>
+            <div class="bg-white rounded-xl p-3.5 sm:p-5 border border-slate-200 flex flex-col">
+                <div class="flex justify-between items-start mb-2 sm:mb-4">
+                    <div class="text-[11px] sm:text-xs font-semibold uppercase text-slate-500 tracking-wider leading-tight">Sudah Diukur</div>
+                    <div class="text-emerald-500 hidden sm:block"><x-icon name="check-circle" weight="fill" class="text-lg" /></div>
                 </div>
                 <div class="mt-auto">
-                    <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center justify-between mb-1.5 sm:mb-2">
                         <div class="flex items-baseline gap-1.5">
-                            <span class="text-3xl font-semibold text-slate-900 tabular-nums">{{ $sudah }}</span>
-                            <span class="text-sm text-slate-400 font-medium tabular-nums">/{{ $total }}</span>
+                            <span class="text-2xl sm:text-3xl font-semibold text-slate-900 tabular-nums leading-none">{{ $sudah }}</span>
+                            <span class="text-xs sm:text-sm text-slate-400 font-medium tabular-nums">/{{ $total }}</span>
                         </div>
-                        <span class="text-sm font-medium text-emerald-600 tabular-nums">{{ $percent }}%</span>
+                        <span class="text-xs sm:text-sm font-medium text-emerald-600 tabular-nums">{{ $percent }}%</span>
                     </div>
                     <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                         <div class="h-full bg-emerald-500 rounded-full" style="width: {{ $percent }}%"></div>
@@ -127,35 +127,35 @@
             </div>
 
             {{-- Belum Hadir --}}
-            <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 flex flex-col">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="text-xs font-semibold uppercase text-amber-600 tracking-wider">Belum Diukur</div>
-                    <div class="text-amber-500"><x-icon name="clock" weight="fill" class="text-lg" /></div>
+            <div class="bg-white rounded-xl p-3.5 sm:p-5 border border-slate-200 flex flex-col">
+                <div class="flex justify-between items-start mb-2 sm:mb-4">
+                    <div class="text-[11px] sm:text-xs font-semibold uppercase text-amber-600 tracking-wider leading-tight">Belum Diukur</div>
+                    <div class="text-amber-500 hidden sm:block"><x-icon name="clock" weight="fill" class="text-lg" /></div>
                 </div>
                 <div class="mt-auto">
-                    <div class="flex items-baseline gap-1.5 mb-2">
-                        <span class="text-3xl font-semibold text-amber-600 tabular-nums">{{ $belum }}</span>
-                        <span class="text-sm text-slate-500">anak</span>
+                    <div class="flex items-baseline gap-1.5 mb-1.5 sm:mb-2">
+                        <span class="text-2xl sm:text-3xl font-semibold text-amber-600 tabular-nums leading-none">{{ $belum }}</span>
+                        <span class="text-xs sm:text-sm text-slate-500">anak</span>
                     </div>
-                    <a href="{{ route('balita.index', ['filter' => 'belum_diukur']) }}" class="text-sm font-medium text-teal-600 hover:text-teal-700 flex items-center gap-1 focus:outline-none focus:underline">
-                        Buka antrean hadir <x-icon name="arrow-right" weight="bold" />
+                    <a href="{{ route('balita.index', ['filter' => 'belum_diukur']) }}" class="text-xs sm:text-sm font-medium text-teal-600 hover:text-teal-700 flex items-center gap-1 focus:outline-none focus:underline">
+                        Lihat antrean <x-icon name="arrow-right" weight="bold" />
                     </a>
                 </div>
             </div>
 
             {{-- Perlu Pantauan --}}
-            <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 flex flex-col">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="text-xs font-semibold uppercase text-rose-600 tracking-wider">Perlu Pantauan</div>
-                    <div class="text-rose-500"><x-icon name="heart" weight="fill" class="text-lg" /></div>
+            <div class="bg-white rounded-xl p-3.5 sm:p-5 border border-slate-200 flex flex-col">
+                <div class="flex justify-between items-start mb-2 sm:mb-4">
+                    <div class="text-[11px] sm:text-xs font-semibold uppercase text-rose-600 tracking-wider leading-tight">Perlu Pantauan</div>
+                    <div class="text-rose-500 hidden sm:block"><x-icon name="heart" weight="fill" class="text-lg" /></div>
                 </div>
                 <div class="mt-auto">
-                    <div class="flex items-baseline gap-1.5 mb-2">
-                        <span class="text-3xl font-semibold text-rose-600 tabular-nums">{{ $statPerlu ?? count($priorityChildren ?? []) }}</span>
-                        <span class="text-sm text-slate-500">anak</span>
+                    <div class="flex items-baseline gap-1.5 mb-1.5 sm:mb-2">
+                        <span class="text-2xl sm:text-3xl font-semibold text-rose-600 tabular-nums leading-none">{{ $statPerlu ?? count($priorityChildren ?? []) }}</span>
+                        <span class="text-xs sm:text-sm text-slate-500">anak</span>
                     </div>
-                    <a href="{{ route('balita.index', ['filter' => 'absen_bulan_lalu']) }}" class="text-sm font-medium text-teal-600 hover:text-teal-700 flex items-center gap-1 focus:outline-none focus:underline">
-                        Lihat daftar pantau <x-icon name="arrow-right" weight="bold" />
+                    <a href="{{ route('balita.index', ['filter' => 'absen_bulan_lalu']) }}" class="text-xs sm:text-sm font-medium text-teal-600 hover:text-teal-700 flex items-center gap-1 focus:outline-none focus:underline">
+                        Daftar pantau <x-icon name="arrow-right" weight="bold" />
                     </a>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                     </a>
                 </div>
 
-                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col">
                     <ul class="divide-y divide-slate-100">
                         @forelse($priorityChildren ?? [] as $child)
                             @php
@@ -229,12 +229,13 @@
                             </li>
                         @endforelse
                     </ul>
-                </div>
-                
-                <div class="text-center sm:hidden mt-2">
-                    <a href="{{ route('balita.index') }}" class="text-sm font-medium text-teal-600 inline-flex items-center justify-center gap-1 focus:outline-none focus:underline">
-                        Semua balita <x-icon name="arrow-right" weight="bold" />
-                    </a>
+                    
+                    {{-- Mobile "Semua Balita" Footer (attached to container) --}}
+                    <div class="border-t border-slate-100 bg-slate-50/50 sm:hidden mt-auto">
+                        <a href="{{ route('balita.index') }}" class="flex items-center justify-center gap-1.5 w-full min-h-[48px] text-sm font-semibold text-teal-600 focus:outline-none focus:bg-slate-100 active:bg-slate-100 transition-colors">
+                            Semua balita <x-icon name="arrow-right" weight="bold" />
+                        </a>
+                    </div>
                 </div>
             </div>
 

@@ -123,7 +123,7 @@
     <div class="hidden lg:flex px-4 py-3 border-t border-slate-100 shrink-0">
         <button @click="sidebarExpanded = !sidebarExpanded" 
                 class="flex items-center gap-3 text-slate-400 hover:text-slate-700 transition-colors w-full p-2 rounded-xl hover:bg-slate-50 focus:outline-none">
-            <x-icon name="caret-left" weight="bold" class="text-[18px] shrink-0 transition-transform duration-300" :class="{ 'rotate-180': !sidebarExpanded }" />
+            <x-icon name="caret-left" weight="bold" class="text-[18px] shrink-0 transition-transform duration-300" x-bind:class="{ 'rotate-180': !sidebarExpanded }" />
             <span class="text-sm font-semibold whitespace-nowrap transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Collapse Menu</span>
         </button>
     </div>
@@ -145,7 +145,7 @@
                     <span class="text-[11px] font-medium text-slate-500 truncate">{{ request()->is('puskesmas*') ? Auth::user()->puskesmas->nama ?? 'Puskesmas' : $posyanduName ?? 'Posyandu Melati 1' }}</span>
                 </div>
                 
-                <x-icon name="dots-three-vertical" weight="bold" class="text-slate-400 shrink-0 transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:hidden': !sidebarExpanded}" />
+                <x-icon name="dots-three-vertical" weight="bold" class="text-slate-400 shrink-0 transition-opacity duration-200" x-bind:class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:hidden': !sidebarExpanded}" />
             </button>
 
             <!-- Popup Menu -->

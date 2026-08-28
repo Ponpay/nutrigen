@@ -45,14 +45,14 @@
             <!-- PUSKESMAS LINKS -->
             <a href="{{ route('puskesmas.dashboard') }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->routeIs('puskesmas.dashboard') ? 'bg-sky-50 text-sky-700' : 'text-slate-500 hover:bg-slate-50 hover:text-sky-600' }}">
-                <x-icon name="squares-four" weight="{{ request()->routeIs('puskesmas.dashboard') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="squares-four" :weight="request()->routeIs('puskesmas.dashboard') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Dashboard</span>
             </a>
 
             <a href="{{ route('puskesmas.validasi') }}" 
                class="flex items-center justify-between px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->routeIs('puskesmas.validasi') ? 'bg-sky-50 text-sky-700' : 'text-slate-500 hover:bg-slate-50 hover:text-sky-600' }}">
                 <div class="flex items-center gap-3.5">
-                    <x-icon name="check-circle" weight="{{ request()->routeIs('puskesmas.validasi') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                    <x-icon name="check-circle" :weight="request()->routeIs('puskesmas.validasi') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                     <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Validasi</span>
                 </div>
                 @if(($validationNotifsCount ?? 0) > 0)
@@ -62,25 +62,25 @@
 
             <a href="{{ route('puskesmas.balita') }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->routeIs('puskesmas.balita') ? 'bg-sky-50 text-sky-700' : 'text-slate-500 hover:bg-slate-50 hover:text-sky-600' }}">
-                <x-icon name="users" weight="{{ request()->routeIs('puskesmas.balita') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="users" :weight="request()->routeIs('puskesmas.balita') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Data Balita</span>
             </a>
 
             <a href="{{ route('puskesmas.posyandu') ?? '/puskesmas/posyandu' }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->is('puskesmas/posyandu*') ? 'bg-sky-50 text-sky-700' : 'text-slate-500 hover:bg-slate-50 hover:text-sky-600' }}">
-                <x-icon name="storefront" weight="{{ request()->is('puskesmas/posyandu*') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="storefront" :weight="request()->is('puskesmas/posyandu*') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Posyandu & Kader</span>
             </a>
 
             <a href="{{ route('puskesmas.laporan') ?? '/puskesmas/laporan' }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->is('puskesmas/laporan*') ? 'bg-sky-50 text-sky-700' : 'text-slate-500 hover:bg-slate-50 hover:text-sky-600' }}">
-                <x-icon name="chart-bar" weight="{{ request()->is('puskesmas/laporan*') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="chart-bar" :weight="request()->is('puskesmas/laporan*') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Laporan</span>
             </a>
 
             <a href="{{ route('puskesmas.pengaturan') ?? '/puskesmas/pengaturan' }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->is('puskesmas/pengaturan*') ? 'bg-sky-50 text-sky-700' : 'text-slate-500 hover:bg-slate-50 hover:text-sky-600' }}">
-                <x-icon name="gear" weight="{{ request()->is('puskesmas/pengaturan*') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="gear" :weight="request()->is('puskesmas/pengaturan*') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Pengaturan</span>
             </a>
 
@@ -88,31 +88,31 @@
             <!-- KADER LINKS -->
             <a href="{{ route('kader.dashboard') }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->routeIs('kader.dashboard') ? 'bg-teal-50 text-teal-700' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600' }}">
-                <x-icon name="squares-four" weight="{{ request()->routeIs('kader.dashboard') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="squares-four" :weight="request()->routeIs('kader.dashboard') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Dashboard</span>
             </a>
 
             <a href="{{ route('balita.index') }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->routeIs('balita.*') ? 'bg-teal-50 text-teal-700' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600' }}">
-                <x-icon name="users" weight="{{ request()->routeIs('balita.*') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="users" :weight="request()->routeIs('balita.*') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Data Balita</span>
             </a>
 
             <a href="{{ route('jadwal.index') }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->routeIs('jadwal.*') ? 'bg-teal-50 text-teal-700' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600' }}">
-                <x-icon name="calendar-blank" weight="{{ request()->routeIs('jadwal.*') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="calendar-blank" :weight="request()->routeIs('jadwal.*') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Jadwal Posyandu</span>
             </a>
 
             <a href="{{ route('laporan.index') }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->routeIs('laporan.*') ? 'bg-teal-50 text-teal-700' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600' }}">
-                <x-icon name="chart-bar" weight="{{ request()->routeIs('laporan.*') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="chart-bar" :weight="request()->routeIs('laporan.*') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Laporan</span>
             </a>
             
             <a href="{{ route('kader.profil') }}" 
                class="flex items-center gap-3.5 px-3 py-2.5 rounded-xl font-semibold text-[14px] transition-all group whitespace-nowrap {{ request()->routeIs('kader.profil*') ? 'bg-teal-50 text-teal-700' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600' }}">
-                <x-icon name="user" weight="{{ request()->routeIs('kader.profil*') ? 'fill' : 'bold' }}" class="text-[20px] shrink-0" />
+                <x-icon name="user" :weight="request()->routeIs('kader.profil*') ? 'fill' : 'bold'" class="text-[20px] shrink-0" />
                 <span class="truncate transition-opacity duration-200" :class="{'opacity-100': sidebarExpanded, 'lg:opacity-0 lg:w-0 lg:overflow-hidden': !sidebarExpanded}">Profil Kader</span>
             </a>
         @endif

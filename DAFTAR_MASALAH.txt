@@ -225,6 +225,7 @@ Tindakan  :
 
 [SEDANG-02] Test baseline minim dan tidak ada test untuk alur inti
 ----------------------------------------------------------------
+Status    : SELESAI 29 Ags 2026 - test alur inti dibuat dan lulus
 Kondisi   : tests/Feature hanya berisi Auth/*, ExampleTest, ProfileTest.
             tests/Unit hanya ExampleTest. PortalIbuAccessTest sudah ditambahkan
             dan mencakup isolasi data serta signed URL.
@@ -233,11 +234,28 @@ Masalah   : Alur inti bisnis TIDAK TERTEST:
             - approve/reject puskesmas
             (akses portal dan isolasi balita sudah teruji)
 Tindakan  :
-  [ ] Feature test: KaderPengukuranTest (simpan -> status pending)
-  [ ] Feature test: ApproveRejectTest (status berubah + validated_at terisi)
+  [✓] Feature test: KaderPengukuranTest (simpan -> status pending)
+      - simpan pengukuran => status_validasi pending + status_gizi terhitung
+      - kader tidak bisa mengukur balita di posyandu lain (404)
+      - validasi form: field wajib kosong => session error
+  [✓] Feature test: ApproveRejectTest (status berubah + validated_at terisi)
+      - approve => status approved + validated_by/validated_at + portal_link session
+      - reject => status rejected + validated_by/validated_at
+      - puskesmas tidak bisa approve pengukuran di wilayah lain (404)
   [✓] Feature test: PortalIbuAccessTest
       (signature valid -> 200; signature expired -> 403;
        balita milik orang lain -> empty; pengukuran pending tidak tampil)
+INFRA (tanpa build Vite). File tests/TestCase.php kini memanggil
+$this->withoutVite() di setUp(). Tanpa ini, semua test yang merender
+halaman (yang memakai @vite) gagal 500 karena public/build/manifest.json
+tidak dibangun di lingkungan test. Perubahan ini membuat seluruh test
+render kembali hijau (34 lulus).
+Sisa 4 test gagal (pra-ada, perbedaan perilaku yang disengaja):
+  - AuthenticationTest: test generik membuat User tanpa role (default ibu),
+    sedangkan app memakai redirect berbasis role.
+  - RegistrationTest (x2): /register memang 404 / registrasi publik
+    dinonaktifkan.
+  - ProfileTest: test mengharapkan hard delete, app memakai soft delete.
 
 [SEDANG-03] TTL signed URL hard-coded di controller
 ----------------------------------------------------------------

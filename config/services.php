@@ -31,4 +31,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // TINGGI-02 — Gateway WhatsApp.
+    // Driver default 'log' TIDAK butuh akun/token/nomor apa pun: pesan hanya
+    // dicatat ke notification_logs + log aplikasi (cocok untuk demo tanpa
+    // setup eksternal). Untuk kirim sungguhan, isi WA_DRIVER + token di .env:
+    //   WA_DRIVER=fonnte  + FONNTE_TOKEN=...
+    //   WA_DRIVER=wablas  + WABLAS_TOKEN=...
+    'wa' => [
+        'driver' => env('WA_DRIVER', 'log'),   // log | fonnte | wablas
+        'fonnte_token' => env('FONNTE_TOKEN'),
+        'wablas_token' => env('WABLAS_TOKEN'),
+    ],
+
 ];

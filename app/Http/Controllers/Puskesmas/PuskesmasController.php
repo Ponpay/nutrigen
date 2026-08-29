@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\DashboardService;
 use App\Services\StatisticsService;
+use App\Services\WhatsAppService;
 use App\Models\Balita;
 use App\Models\Posyandu;
 use App\Models\Pengukuran;
@@ -19,7 +20,8 @@ class PuskesmasController extends Controller
 {
     public function __construct(
         protected DashboardService $dashboardService,
-        protected StatisticsService $statisticsService
+        protected StatisticsService $statisticsService,
+        protected WhatsAppService $whatsAppService
     ) {}
 
     /**
@@ -370,11 +372,27 @@ class PuskesmasController extends Controller
         }
         $waMessage = "Assalamualaikum Bu, data pengukuran anak Ibu telah divalidasi. "
             . "Silakan buka portal NutriGen berikut (berlaku {$ttlDays} hari): " . $signedUrl;
+
+        // TINGGI-02: kirim pesan & catat ke notification_logs.
+        // Driver default 'log' -> tidak butuh akun/token/nomor (demo-safe).
+        // Kirim asli tinggal dinyalakan via WA_DRIVER + token di .env.
+        $notification = null;
+        if ($waDigits !== '') {
+            $notification = $this->whatsAppService->send(
+                $pengukuran->balita->orang_tua_id,
+                $pengukuran->id,
+                $waDigits,
+                $waMessage
+            );
+        }
+
         $portalLink = [
             'url' => $signedUrl,
             'ttl_days' => $ttlDays,
             'wa_url' => $waDigits !== '' ? 'https://wa.me/' . $waDigits . '?text=' . rawurlencode($waMessage) : null,
             'child_name' => $pengukuran->balita->nama,
+            'notif_log_id' => $notification['log_id'] ?? null,
+            'notif_status' => $notification['status'] ?? null,
         ];
 
         return redirect()

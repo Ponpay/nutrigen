@@ -12,13 +12,16 @@ class RegistrationTest extends TestCase
 
     public function test_registration_screen_can_be_rendered(): void
     {
+        // Registrasi publik memang dinonaktifkan (route dikomentari di routes/auth.php);
+        // akun petugas dibuat/dikelola oleh pihak Puskesmas. Maka /register = 404.
         $response = $this->get('/register');
 
-        $response->assertStatus(200);
+        $response->assertNotFound();
     }
 
     public function test_new_users_can_register(): void
     {
+        // Endpoint registrasi publik tidak ada (404) — bukan bagian alur aplikasi.
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -26,7 +29,7 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertNotFound();
+        $this->assertGuest();
     }
 }

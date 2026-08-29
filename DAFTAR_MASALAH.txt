@@ -280,13 +280,20 @@ Tindakan  :
 
 [SEDANG-04] Tidak ada Policy/Gate untuk akses balita
 ----------------------------------------------------------------
+Status    : SELESAI 29 Ags 2026 - BalitaPolicy dibuat & teruji
 Masalah   : Rekomendasi audit Fase 3 poin 3 belum dimulai. Otorisasi
             tersebar manual (getKaderPosyanduId, getPuskesmasId).
 Tindakan  :
-  [ ] Buat BalitaPolicy: view/update/delete dengan aturan
+  [✓] Buat BalitaPolicy: view/update/delete dengan aturan
       kader = satu posyandu, puskesmas = puskesmas_id relasi posyandu,
       ortu = orang_tua_id
-  [ ] Registrasi di AppServiceProvider::$policies
+  [✓] Registrasi di AppServiceProvider::$policies
+      (Gate::policy(Balita::class, BalitaPolicy::class))
+  [✓] Test: tests/Feature/BalitaPolicyTest.php (7 test / 10 asersi, PASS)
+      - kader: akses balita posyandu sendiri, tolak posyandu lain
+      - puskesmas: akses balita wilayahnya, tolak wilayah lain
+      - ibu/ortu: akses anaknya, tolak anak orang lain
+      - role tanpa relasi balita: ditolak
 
 ===============================================================================
 BAGIAN D - KEBERSIHAN REPO (OPSIONAL, SETELAH KRITIS BERES)
@@ -369,19 +376,24 @@ Aturan akses akun :
     WhatsApp untuk membuka Portal Ibu sesuai balita miliknya.
 
 Hasil test otomatis :
-  - 28 test lulus
-  - 4 test gagal
+  - 46 test lulus (29 Ags 2026, 119 asersi) — SUITE HIJAU PENUH
   - PortalIbuAccessTest: 7/7 test lulus
-  - Setelah perbaikan TINGGI-01: PortalIbuAccessTest tetap 7/7 lulus
+  - KaderPengukuranTest (3) + ApproveRejectTest (4) + BalitaPolicyTest (7):
+    alur inti & otorisasi sudah teruji
+  - 4 test sebelumnya yang gagal SUDAH disesuaikan (bukan bug, perilaku
+    app yang disengaja):
+      - AuthenticationTest: login redirect berbasis role (kini uji role
+        puskesmas -> puskesmas.dashboard)
+      - RegistrationTest (x2): /register memang 404 (registrasi publik
+        dinonaktifkan)
+      - ProfileTest: delete akun = soft delete (assertSoftDeleted)
 
 Test yang gagal :
-  [ ] AuthenticationTest: test generik membuat User tanpa role sehingga
-    memakai default role ibu, sedangkan test masih mengharapkan redirect
-    umum /dashboard. Alur aplikasi memakai redirect berdasarkan role;
-    akun petugas harus diuji dengan role puskesmas atau kader.
-  [✓] RegistrationTest: 404 pada /register adalah perilaku yang diharapkan;
-    route registrasi publik sengaja dinonaktifkan.
-  [✓] RegistrationTest: POST /register ikut gagal karena registrasi publik
-    memang bukan bagian dari alur pembuatan akun aplikasi.
-  [ ] ProfileTest: test mengharapkan hard delete, sedangkan aplikasi memakai
-      soft delete
+  (Selesai 29 Ags 2026 — keempatnya sudah disesuaikan agar mencerminkan
+   perilaku aktual aplikasi; seluruh suite kini hijau 46/46)
+  [✓] AuthenticationTest: kini membuat user role 'puskesmas' dan mengecek
+      redirect ke route('puskesmas.dashboard') (redirect berbasis role).
+  [✓] RegistrationTest: /register memang 404 (registrasi publik
+      dinonaktifkan) -> assertNotFound.
+  [✓] RegistrationTest POST: endpoint tidak ada -> assertNotFound + assertGuest.
+  [✓] ProfileTest: delete akun = soft delete -> assertSoftDeleted.

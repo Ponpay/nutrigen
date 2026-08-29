@@ -178,16 +178,19 @@ class PuskesmasController extends Controller
 
         $posyandus = Posyandu::where('puskesmas_id', $puskesmasId)->get(['id', 'nama'])->toArray();
 
-        // Base query for pending validations
-        $query = Pengukuran::with(['balita.orangTua', 'balita.posyandu', 'kader.user'])
+        // Determine validation status by tab ('pending' default, 'selesai' = approved)
+        $statusValidation = $filters['tab'] === 'selesai' ? 'approved' : 'pending';
+
+        // Eager-load all measurements per balita once to avoid N+1 on history/chart
+        $query = Pengukuran::with(['balita.orangTua', 'balita.posyandu', 'kader.user', 'balita.pengukurans'])
             ->whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
                 $q->where('puskesmas_id', $puskesmasId);
             })
-            ->where('status_validasi', 'pending');
+            ->where('status_validasi', $statusValidation);
 
         if ($filters['posyandu_id']) {
             $query->whereHas('balita.posyandu', function ($q) use ($filters) {
-                $q->where('nama', $filters['posyandu_id']);
+                $q->where('id', $filters['posyandu_id']);
             });
         }
 
@@ -225,13 +228,12 @@ class PuskesmasController extends Controller
             if ($filters['tab'] === 'normal' && !$isNormal) continue;
             if ($filters['tab'] === 'anomali' && !$isAnomali) continue;
             if ($filters['tab'] === 'berisiko' && !$isBerisiko) continue;
-            if ($filters['tab'] === 'selesai') continue; // placeholder
 
-            $history = Pengukuran::where('balita_id', $p->balita_id)
-                ->where('tanggal_ukur', '<', $p->tanggal_ukur)
-                ->orderBy('tanggal_ukur', 'desc')
-                ->limit(3)
-                ->get()
+            // Load already-aware measurements from eager-loaded relation (no N+1)
+            $measurements = $p->balita->pengukurans->sortByDesc('tanggal_ukur');
+            $history = $measurements
+                ->filter(fn($h) => $h->tanggal_ukur < $p->tanggal_ukur)
+                ->take(3)
                 ->map(function ($h) {
                     return [
                         'date' => Carbon::parse($h->tanggal_ukur)->translatedFormat('d M Y'),
@@ -244,6 +246,7 @@ class PuskesmasController extends Controller
                         'status' => $h->status_gizi,
                     ];
                 })
+                ->values()
                 ->toArray();
 
             $zTbu = (float) $p->z_score_tbu;
@@ -252,9 +255,8 @@ class PuskesmasController extends Controller
             if ($zTbu < -2) {
                 $valText .= ' (Pendek)';
             }
-            $allMeasurements = Pengukuran::where('balita_id', $p->balita_id)
-                ->orderBy('tanggal_ukur', 'asc')
-                ->get();
+            // Use already-loaded measurements for the chart (ascending order)
+            $allMeasurements = $p->balita->pengukurans->sortBy('tanggal_ukur');
 
             $chartData = [
                 'labels' => [],

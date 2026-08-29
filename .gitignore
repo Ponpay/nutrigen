@@ -17,3 +17,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.hermes-qa
+/.hermes-tmp.*
+/designIbu
+__pycache__/
+*.pyc

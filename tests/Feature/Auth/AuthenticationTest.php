@@ -20,7 +20,9 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
-        $user = User::factory()->create();
+        // Redirect setelah login berbasis role. Akun petugas (puskesmas) adalah
+        // representative untuk alur aplikasi ini — bukan user default 'ibu'.
+        $user = User::factory()->create(['role' => 'puskesmas']);
 
         $response = $this->post('/login', [
             'email' => $user->email,
@@ -28,7 +30,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect(route('puskesmas.dashboard'));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void

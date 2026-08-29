@@ -6,7 +6,10 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use App\Models\Balita;
 use App\Models\Pengukuran;
+use App\Policies\BalitaPolicy;
 use App\Services\StatisticsService;
 use Carbon\Carbon;
 
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // SEDANG-04 — otorisasi terpusat akses balita.
+        Gate::policy(Balita::class, BalitaPolicy::class);
+
         if (config('app.env') !== 'local') {
             URL::forceScheme('https');
         }

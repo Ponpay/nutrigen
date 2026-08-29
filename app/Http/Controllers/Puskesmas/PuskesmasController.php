@@ -402,9 +402,6 @@ class PuskesmasController extends Controller
             ->route('puskesmas.validasi')
             ->with('success', 'Data balita berhasil disetujui dan divalidasi.')
             ->with('portal_link', $portalLink);
-        return redirect()->route('puskesmas.validasi')
-            ->with('success', 'Data balita berhasil disetujui dan divalidasi.')
-            ->with('approvedUrl', $signedUrl);
     }
 
     public function reject(Request $request, $id)

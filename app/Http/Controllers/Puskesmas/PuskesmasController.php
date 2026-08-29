@@ -759,6 +759,8 @@ class PuskesmasController extends Controller
             $q->where('puskesmas_id', $puskesmasId);
         })->findOrFail($id);
 
+        $this->authorize('view', $b);
+
         $ageDiff = Carbon::parse($b->tanggal_lahir)->diff(Carbon::now());
         $ageStr = $ageDiff->y > 0 ? $ageDiff->y . ' Tahun ' . $ageDiff->m . ' Bulan' : $ageDiff->m . ' Bulan';
 

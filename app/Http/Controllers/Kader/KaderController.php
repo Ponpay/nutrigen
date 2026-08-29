@@ -477,6 +477,7 @@ class KaderController extends Controller
     {
         $posyanduId = $this->getKaderPosyanduId();
         $balita = Balita::where('posyandu_id', $posyanduId)->findOrFail($id);
+        $this->authorize('delete', $balita);
 
         $orangTuaId = $balita->orang_tua_id;
         $orangTua = OrangTua::find($orangTuaId);

@@ -13,6 +13,10 @@ use App\Models\Pengukuran;
 use App\Models\Posyandu;
 use App\Models\OrangTua;
 use App\Models\User;
+use App\Http\Requests\Kader\StoreBalitaRequest;
+use App\Http\Requests\Kader\UpdateBalitaRequest;
+use App\Http\Requests\Kader\StorePengukuranRequest;
+use App\Http\Requests\Kader\StoreJadwalRequest;
 use App\Models\Jadwal;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -335,31 +339,8 @@ class KaderController extends Controller
         ]);
     }
 
-    public function simpanBalita(Request $request)
+    public function simpanBalita(StoreBalitaRequest $request)
     {
-        $request->validate([
-            'nama'                 => 'required|string|max:255',
-            'nik'                  => 'required|digits:16|unique:balitas,nik',
-            'no_bpjs'              => 'nullable|string|max:30',
-            'jenis_kelamin'        => 'required|in:L,P',
-            'tanggal_lahir'        => 'required|date',
-            'berat_lahir'          => 'nullable|numeric|min:0.5|max:10',
-            'panjang_lahir'        => 'nullable|numeric|min:20|max:80',
-            'lingkar_kepala_lahir' => 'nullable|numeric|min:15|max:50',
-            
-            // Orang Tua
-            'no_kk'                => 'nullable|digits:16',
-            'nama_ibu'             => 'required|string|max:255',
-            'nik_ibu'              => 'nullable|digits:16',
-            'pekerjaan_ibu'        => 'nullable|string|max:100',
-            'no_hp'                => 'required|string|max:20',
-            'nama_ayah'            => 'nullable|string|max:255',
-            'nik_ayah'             => 'nullable|digits:16',
-            'pekerjaan_ayah'       => 'nullable|string|max:100',
-            'desa'                 => 'nullable|string|max:255',
-            'kecamatan'            => 'nullable|string|max:255',
-        ]);
-
         $posyanduId = $this->getKaderPosyanduId();
 
         $alamatJson = json_encode([
@@ -444,31 +425,8 @@ class KaderController extends Controller
         ]);
     }
 
-    public function updateBalita(Request $request, $id)
+    public function updateBalita(UpdateBalitaRequest $request, $id)
     {
-        $request->validate([
-            'nama'                 => 'required|string|max:255',
-            'nik'                  => 'required|digits:16|unique:balitas,nik,' . $id,
-            'no_bpjs'              => 'nullable|string|max:30',
-            'jenis_kelamin'        => 'required|in:L,P',
-            'tanggal_lahir'        => 'required|date',
-            'berat_lahir'          => 'nullable|numeric|min:0.5|max:10',
-            'panjang_lahir'        => 'nullable|numeric|min:20|max:80',
-            'lingkar_kepala_lahir' => 'nullable|numeric|min:15|max:50',
-            
-            // Orang Tua
-            'no_kk'                => 'nullable|digits:16',
-            'nama_ibu'             => 'required|string|max:255',
-            'nik_ibu'              => 'nullable|digits:16',
-            'pekerjaan_ibu'        => 'nullable|string|max:100',
-            'no_hp'                => 'required|string|max:20',
-            'nama_ayah'            => 'nullable|string|max:255',
-            'nik_ayah'             => 'nullable|digits:16',
-            'pekerjaan_ayah'       => 'nullable|string|max:100',
-            'desa'                 => 'nullable|string|max:255',
-            'kecamatan'            => 'nullable|string|max:255',
-        ]);
-
         $posyanduId = $this->getKaderPosyanduId();
         $balita = Balita::where('posyandu_id', $posyanduId)->findOrFail($id);
 
@@ -660,24 +618,13 @@ class KaderController extends Controller
         return redirect()->route('balita.index')->with('info', 'Silakan pilih balita terlebih dahulu untuk melakukan pengukuran.');
     }
 
-    public function simpanPengukuran(Request $request)
+    public function simpanPengukuran(StorePengukuranRequest $request)
     {
         if (!Auth::user()?->kader) {
             abort(403, 'Akses ditolak: Anda tidak memiliki data Kader yang valid.');
         }
 
         $posyanduId = $this->getKaderPosyanduId();
-
-        $request->validate([
-            'balita_id'        => 'required|exists:balitas,id',
-            'tanggal_ukur'     => 'required|date',
-            'berat_badan'      => 'required|numeric|min:1|max:999.99',
-            'tinggi_badan'     => 'required|numeric|min:10|max:999.99',
-            'lingkar_kepala'   => 'nullable|numeric|min:10|max:99.99',
-            'asi_eksklusif'    => 'nullable',
-            'status_kenaikan'  => 'nullable|string|max:10',
-            'catatan_kader'    => 'nullable|string|max:500',
-        ]);
 
         // Pastikan Balita yang diukur berada di Posyandu Kader yang login
         $balita = Balita::where('posyandu_id', $posyanduId)->findOrFail($request->balita_id);
@@ -806,25 +753,12 @@ class KaderController extends Controller
         ]); 
     }
 
-    public function simpanJadwal(Request $request)
+    public function simpanJadwal(StoreJadwalRequest $request)
     {
         $posyanduId = $this->getKaderPosyanduId();
         $kaderId = Auth::user()?->kader?->id;
 
-        $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
-            'tanggal' => 'required|date',
-            'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
-            'catatan' => 'nullable|string|max:1000',
-        ], [
-            'judul.required' => 'Judul kegiatan wajib diisi.',
-            'lokasi.required' => 'Lokasi pelaksanaan wajib diisi.',
-            'tanggal.required' => 'Tanggal kegiatan wajib diisi.',
-            'waktu_mulai.required' => 'Jam mulai kegiatan wajib diisi.',
-            'waktu_selesai.required' => 'Jam selesai kegiatan wajib diisi.',
-        ]);
+        $validated = $request->validated();
 
         Jadwal::create([
             'posyandu_id' => $posyanduId,

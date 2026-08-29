@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Http\Requests\Puskesmas\StorePosyanduRequest;
+use App\Http\Requests\Puskesmas\StoreKaderRequest;
+use App\Http\Requests\Puskesmas\UpdateKeamananRequest;
 
 class PuskesmasController extends Controller
 {
@@ -534,32 +537,23 @@ class PuskesmasController extends Controller
         return view('puskesmas.posyandu', ['posyandus' => $posyandus, 'selectedPosyandu' => $selectedPosyandu, 'filters' => $request->all()]);
     }
 
-    public function storePosyandu(Request $request)
+    public function storePosyandu(StorePosyanduRequest $request)
     {
         $puskesmasId = $this->getPuskesmasId();
 
-        $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:255'],
-            'desa_kelurahan' => ['required', 'string', 'max:255'],
-            'alamat' => ['nullable', 'string'],
-        ]);
+        $validated = $request->validated();
 
         Posyandu::create(array_merge($validated, ['puskesmas_id' => $puskesmasId]));
 
         return redirect()->route('puskesmas.posyandu')->with('success', 'Posyandu berhasil ditambahkan.');
     }
 
-    public function storeKader(Request $request, $id)
+    public function storeKader(StoreKaderRequest $request, $id)
     {
         $puskesmasId = $this->getPuskesmasId();
 
         $posyandu = Posyandu::where('puskesmas_id', $puskesmasId)->findOrFail($id);
-        $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:255'],
-            'no_hp' => ['nullable', 'string', 'max:30'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
+        $validated = $request->validated();
 
         DB::transaction(function () use ($validated, $posyandu) {
             $user = User::create([
@@ -845,14 +839,9 @@ class PuskesmasController extends Controller
         return view('puskesmas.pengaturan_keamanan');
     }
 
-    public function updateKeamanan(Request $request)
+    public function updateKeamanan(UpdateKeamananRequest $request)
     {
         $user = Auth::user();
-
-        $request->validate([
-            'current_password' => 'required',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
 
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors(['current_password' => 'Kata sandi saat ini tidak cocok.']);

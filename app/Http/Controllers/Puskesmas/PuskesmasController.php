@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Http\Requests\Puskesmas\StorePosyanduRequest;
+use App\Http\Requests\Puskesmas\StoreKaderRequest;
+use App\Http\Requests\Puskesmas\UpdateKeamananRequest;
 
 class PuskesmasController extends Controller
 {
@@ -180,16 +183,19 @@ class PuskesmasController extends Controller
 
         $posyandus = Posyandu::where('puskesmas_id', $puskesmasId)->get(['id', 'nama'])->toArray();
 
-        // Base query for pending validations
-        $query = Pengukuran::with(['balita.orangTua', 'balita.posyandu', 'kader.user'])
+        // Determine validation status by tab ('pending' default, 'selesai' = approved)
+        $statusValidation = $filters['tab'] === 'selesai' ? 'approved' : 'pending';
+
+        // Eager-load all measurements per balita once to avoid N+1 on history/chart
+        $query = Pengukuran::with(['balita.orangTua', 'balita.posyandu', 'kader.user', 'balita.pengukurans'])
             ->whereHas('balita.posyandu', function ($q) use ($puskesmasId) {
                 $q->where('puskesmas_id', $puskesmasId);
             })
-            ->where('status_validasi', 'pending');
+            ->where('status_validasi', $statusValidation);
 
         if ($filters['posyandu_id']) {
             $query->whereHas('balita.posyandu', function ($q) use ($filters) {
-                $q->where('nama', $filters['posyandu_id']);
+                $q->where('id', $filters['posyandu_id']);
             });
         }
 
@@ -201,7 +207,7 @@ class PuskesmasController extends Controller
         $allPengukurans = $query->get();
 
         // Use StatisticsService for aggregated queue stats
-        $queueStats = $this->statisticsService->getValidationQueueStats(
+        $stats = $this->statisticsService->getValidationQueueStats(
             $puskesmasId,
             $filters['posyandu_id'] ?: null
         );
@@ -227,13 +233,12 @@ class PuskesmasController extends Controller
             if ($filters['tab'] === 'normal' && !$isNormal) continue;
             if ($filters['tab'] === 'anomali' && !$isAnomali) continue;
             if ($filters['tab'] === 'berisiko' && !$isBerisiko) continue;
-            if ($filters['tab'] === 'selesai') continue; // placeholder
 
-            $history = Pengukuran::where('balita_id', $p->balita_id)
-                ->where('tanggal_ukur', '<', $p->tanggal_ukur)
-                ->orderBy('tanggal_ukur', 'desc')
-                ->limit(3)
-                ->get()
+            // Load already-aware measurements from eager-loaded relation (no N+1)
+            $measurements = $p->balita->pengukurans->sortByDesc('tanggal_ukur');
+            $history = $measurements
+                ->filter(fn($h) => $h->tanggal_ukur < $p->tanggal_ukur)
+                ->take(3)
                 ->map(function ($h) {
                     return [
                         'date' => Carbon::parse($h->tanggal_ukur)->translatedFormat('d M Y'),
@@ -246,6 +251,7 @@ class PuskesmasController extends Controller
                         'status' => $h->status_gizi,
                     ];
                 })
+                ->values()
                 ->toArray();
 
             $zTbu = (float) $p->z_score_tbu;
@@ -254,9 +260,8 @@ class PuskesmasController extends Controller
             if ($zTbu < -2) {
                 $valText .= ' (Pendek)';
             }
-            $allMeasurements = Pengukuran::where('balita_id', $p->balita_id)
-                ->orderBy('tanggal_ukur', 'asc')
-                ->get();
+            // Use already-loaded measurements for the chart (ascending order)
+            $allMeasurements = $p->balita->pengukurans->sortBy('tanggal_ukur');
 
             $chartData = [
                 'labels' => [],
@@ -305,8 +310,6 @@ class PuskesmasController extends Controller
             ];
         }
 
-        // Merge queue stats into view data
-        $stats = $queueStats;
         return view('puskesmas.validasi', [
             'children' => $children,
             'filters' => $filters,
@@ -399,6 +402,9 @@ class PuskesmasController extends Controller
             ->route('puskesmas.validasi')
             ->with('success', 'Data balita berhasil disetujui dan divalidasi.')
             ->with('portal_link', $portalLink);
+        return redirect()->route('puskesmas.validasi')
+            ->with('success', 'Data balita berhasil disetujui dan divalidasi.')
+            ->with('approvedUrl', $signedUrl);
     }
 
     public function reject(Request $request, $id)
@@ -576,32 +582,23 @@ class PuskesmasController extends Controller
         return view('puskesmas.posyandu', ['posyandus' => $posyandus, 'selectedPosyandu' => $selectedPosyandu, 'filters' => $request->all()]);
     }
 
-    public function storePosyandu(Request $request)
+    public function storePosyandu(StorePosyanduRequest $request)
     {
         $puskesmasId = $this->getPuskesmasId();
 
-        $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:255'],
-            'desa_kelurahan' => ['required', 'string', 'max:255'],
-            'alamat' => ['nullable', 'string'],
-        ]);
+        $validated = $request->validated();
 
         Posyandu::create(array_merge($validated, ['puskesmas_id' => $puskesmasId]));
 
         return redirect()->route('puskesmas.posyandu')->with('success', 'Posyandu berhasil ditambahkan.');
     }
 
-    public function storeKader(Request $request, $id)
+    public function storeKader(StoreKaderRequest $request, $id)
     {
         $puskesmasId = $this->getPuskesmasId();
 
         $posyandu = Posyandu::where('puskesmas_id', $puskesmasId)->findOrFail($id);
-        $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:255'],
-            'no_hp' => ['nullable', 'string', 'max:30'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
+        $validated = $request->validated();
 
         DB::transaction(function () use ($validated, $posyandu) {
             $user = User::create([
@@ -887,14 +884,9 @@ class PuskesmasController extends Controller
         return view('puskesmas.pengaturan_keamanan');
     }
 
-    public function updateKeamanan(Request $request)
+    public function updateKeamanan(UpdateKeamananRequest $request)
     {
         $user = Auth::user();
-
-        $request->validate([
-            'current_password' => 'required',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
 
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors(['current_password' => 'Kata sandi saat ini tidak cocok.']);

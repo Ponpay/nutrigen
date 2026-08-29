@@ -23,19 +23,18 @@
 <body class="bg-slate-50 text-slate-800 antialiased font-sans overflow-x-hidden">
     
     <!-- Responsive App Container -->
-    <div class="flex h-[100dvh] overflow-hidden">
+    <div x-data="{ sidebarExpanded: true, mobileSidebarOpen: false }" class="flex h-[100dvh] overflow-hidden">
         
-        <!-- Sidebar Drawer (Mobile) / Permanent (Desktop) -->
+        <!-- Sidebar -->
         <x-sidebar />
 
         <!-- Main Wrapper -->
-        <div x-data="{ scrolled: false }" class="flex flex-col flex-1 w-full min-w-0 overflow-hidden relative">
+        <div x-data="{ scrolled: false }" class="flex flex-col flex-1 w-full min-w-0 overflow-hidden relative bg-slate-50">
             <x-navbar />
 
             <!-- Main Content Area -->
-            <!-- -mt-[76px] pt-[76px] allows content to scroll under the navbar -->
-            <main @scroll.passive="scrolled = ($event.target.scrollTop > 10)" class="flex-1 overflow-y-auto overflow-x-hidden -mt-[76px] pt-[76px] pb-[80px] lg:pb-0 w-full relative">
-                <div class="w-full">
+            <main @scroll.passive="scrolled = ($event.target.scrollTop > 10)" class="flex-1 overflow-y-auto overflow-x-hidden pb-[80px] lg:pb-0 w-full relative">
+                <div class="w-full h-full">
                     @yield('content')
                 </div>
             </main>

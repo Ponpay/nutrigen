@@ -40,6 +40,10 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            // Role eksplisit agar tidak jatuh ke default 'ibu' dari migration
+            // (users.role default 'ibu'). Registrasi publik memang nonaktif saat
+            // ini, tapi role yang disengaja mencegah akun tak terduga.
+            'role' => 'ibu',
         ]);
 
         event(new Registered($user));

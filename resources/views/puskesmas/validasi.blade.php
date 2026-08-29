@@ -17,6 +17,21 @@
 
 <div class="min-h-screen bg-slate-50/50 w-full pb-16">
 
+    @if(session('approvedUrl'))
+    <div class="px-4 pt-4 lg:px-6 max-w-7xl mx-auto">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-3 shadow-sm">
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-emerald-800">Link Akses Ibu Berhasil Dibuat</p>
+                <p class="text-[12px] text-emerald-700 break-all mt-0.5">{{ session('approvedUrl') }}</p>
+            </div>
+            <button type="button" onclick="navigator.clipboard.writeText('{{ session('approvedUrl') }}')"
+                    class="shrink-0 px-4 py-2 rounded-lg bg-[#06667A] text-white text-[12px] font-semibold hover:bg-[#05566a] transition">
+                Salin Link
+            </button>
+        </div>
+    </div>
+    @endif
+
     {{-- ══════════════════════════════════════════
          HERO HEADER
     ══════════════════════════════════════════ --}}

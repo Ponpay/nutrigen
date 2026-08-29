@@ -20,7 +20,7 @@ yarn-error.log
 /.agent
 /.hermes
 /.hermes-qa
-/.hermes-tmp.*
+.hermes-tmp.*/
 /designIbu
 __pycache__/
 *.pyc

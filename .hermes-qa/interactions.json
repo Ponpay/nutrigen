@@ -1,0 +1,8 @@
+[
+  {
+    "severity": "INFO",
+    "area": "Puskesmas validasi",
+    "title": "Tidak menemukan form approve di /puskesmas/validasi/3/review",
+    "detail": "mungkin tombol via JS/x-on:click; perlu pengecekan manual"
+  }
+]

@@ -358,7 +358,9 @@ class PuskesmasController extends Controller
             $request->input('posyandu_id') ?: null
         );
 
-        return redirect()->route('puskesmas.validasi')->with('success', 'Data balita berhasil disetujui dan divalidasi.');
+        return redirect()->route('puskesmas.validasi')
+            ->with('success', 'Data balita berhasil disetujui dan divalidasi.')
+            ->with('approvedUrl', $signedUrl);
     }
 
     public function reject(Request $request, $id)

@@ -141,6 +141,8 @@ Route::prefix('kader')->middleware(['web', 'auth', 'prevent-back-history', 'role
     Route::get('/profil', [KaderController::class, 'profilKader'])->name('kader.profil');
     Route::get('/profil/edit', [KaderController::class, 'editProfilKader'])->name('kader.profil.edit');
     Route::put('/profil', [KaderController::class, 'updateProfilKader'])->name('kader.profil.update');
+    Route::get('/profil/keamanan', [KaderController::class, 'keamanan'])->name('kader.keamanan');
+    Route::put('/profil/keamanan', [KaderController::class, 'updateKeamanan'])->name('kader.keamanan.update');
 });
 
 // ==========================================================================

@@ -1256,6 +1256,37 @@ class KaderController extends Controller
     }
 
     /**
+     * Show the Kader account security page.
+     */
+    public function keamanan()
+    {
+        return view('kader.keamanan');
+    }
+
+    /**
+     * Update the Kader's password.
+     */
+    public function updateKeamanan(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Kata sandi saat ini tidak cocok.']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('kader.keamanan')->with('success', 'Kata sandi berhasil diperbarui.');
+    }
+
+    /**
      * Show rejected measurements for the Kader's Posyandu.
      */
     public function rejectedData(Request $request)

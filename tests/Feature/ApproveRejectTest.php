@@ -108,6 +108,24 @@ class ApproveRejectTest extends TestCase
         $response->assertSessionHas('portal_link');
     }
 
+    public function test_approve_mencatat_log_notifikasi_ke_table(): void
+    {
+        $this->actingAs($this->puskesmasUser);
+
+        $this->post(route('puskesmas.validasi.approve', $this->pengukuran->id), [
+            'catatan_validator' => 'Data lengkap, disetujui.',
+        ]);
+
+        // TINGGI-02: setiap approve mencatat satu baris notification_logs,
+        // terhubung ke orang_tua dan pengukuran dari balita tersebut.
+        $this->assertDatabaseHas('notification_logs', [
+            'orang_tua_id'   => $this->pengukuran->balita->orang_tua_id,
+            'pengukuran_id'  => $this->pengukuran->id,
+            'channel'        => 'whatsapp',
+            'status'         => 'sent',
+        ]);
+    }
+
     public function test_puskesmas_reject_mengubah_status_dan_mencatat_validator(): void
     {
         $this->actingAs($this->puskesmasUser);

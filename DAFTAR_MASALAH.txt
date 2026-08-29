@@ -148,20 +148,33 @@ Tindakan  :
 
 [TINGGI-02] Tidak ada integrasi WhatsApp sama sekali + tidak ada log kirim
 ----------------------------------------------------------------
-Status    : SEBAGIAN SELESAI 26 Ags 2026 - link wa.me tersedia untuk demo;
-            gateway resmi dan log pengiriman belum dibuat
+Status    : SELESAI untuk bagian "tanpa ribet" (log-only) 29 Ags 2026;
+            gateway ASLI (Fonnte/Wablas) DICADANGKAN dulu oleh user
+            (siap disambungkan nanti via .env, tidak mengganggu demo).
 Masalah   : Audit benar - tidak ada service WA, job, endpoint, atau API call.
             no_hp_whatsapp tersimpan di orang_tuas (sudah unique, bagus)
             tapi belum pernah dipakai untuk mengirim apa pun.
 Tindakan  :
   [✓] Minimal untuk demo: link wa.me (lihat KRITIS-02 short-term)
-  [ ] Jika sempat: buat App\Services\WhatsAppService dengan driver
-      configurable (config/services.php: 'wa' => ['driver' => env('WA_DRIVER')]),
-      support fonnte/wablas/twilio
-  [ ] Buat migration notification_logs (atau wa_send_logs):
-      id, orang_tua_id, pengukuran_id, channel, payload, status
-      (sent/failed), response_body, created_at -> agar kegagalan gateway
-      bisa dilacak (rekomendasi audit Fase 1 poin 3)
+  [✓] App\Services\WhatsAppService (29 Ags 2026) dengan driver configurable
+      di config/services.php: 'wa' => ['driver' => env('WA_DRIVER', 'log')].
+      - Driver 'log' (default): TIDAK butuh akun/token/nomor. Pesan hanya
+        dicatat ke notification_logs + log aplikasi -> demo-safe.
+      - Driver 'fonnte' & 'wablas': kirim sungguhan, tinggal isi token.
+      - Semua driver melempar exception -> log 'failed', alur tak terblokir.
+  [✓] Migration 2026_08_29_000001_create_notification_logs_table.php:
+      id, orang_tua_id, pengukuran_id, channel, status (sent/failed),
+      payload, response_body, created_at, updated_at + index status.
+  [✓] Model App\Models\NotificationLog.
+  [✓] PuskesmasController::approve() kini memanggil WhatsAppService::send()
+      (setelah build waUrl) dan hasilnya dibawa di portal_link
+      (notif_log_id, notif_status). Tombol wa.me manual tetap sebagai fallback.
+  [✓] Test: ApproveRejectTest::test_approve_mencatat_log_notifikasi_ke_table
+      (approve -> baris notification_logs 'sent' terhubung ortu/pengukuran).
+KRITERIA PENTING (diputuskan user 29 Ags 2026): bagian yang butuh daftar
+  akun/token/nomor (gateway asli) DITUNDA. Yang disiapkan sekarang hanya
+  infrastruktur yang jalan tanpa setup eksternal. Untuk mengaktifkan kirim
+  asli nanti: WA_DRIVER=fonnte + FONNTE_TOKEN=... (atau wablas) di .env.
 
 [TINGGI-03] Tidak ada jejak siapa validator & kapan approve/reject dilakukan
 ----------------------------------------------------------------

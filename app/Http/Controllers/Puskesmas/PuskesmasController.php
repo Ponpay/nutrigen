@@ -202,7 +202,7 @@ class PuskesmasController extends Controller
         $allPengukurans = $query->get();
 
         // Use StatisticsService for aggregated queue stats
-        $queueStats = $this->statisticsService->getValidationQueueStats(
+        $stats = $this->statisticsService->getValidationQueueStats(
             $puskesmasId,
             $filters['posyandu_id'] ?: null
         );
@@ -305,8 +305,6 @@ class PuskesmasController extends Controller
             ];
         }
 
-        // Merge queue stats into view data
-        $stats = $queueStats;
         return view('puskesmas.validasi', [
             'children' => $children,
             'filters' => $filters,
